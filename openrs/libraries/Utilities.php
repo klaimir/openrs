@@ -27,9 +27,9 @@ class Utilities {
      *
      * @access public
      */
-    function Utilities() {
+    function __construct() {
         $this->CI = & get_instance();
-         $this->CI->load->library('image_lib');
+        $this->CI->load->library('image_lib');
     }
 
     /**
@@ -1526,5 +1526,128 @@ class Utilities {
     // Las imágenes almacenadas en el propio servidor se almacenan con esta ruta
     function filterPathImage($html) {
          return str_replace('../../../', base_url(), $html);
-    }    
+    }
+    
+    function getKeyObjectArray($object_array,$key) {
+        // Datos necesarios
+        $array_valores=array();        
+        // Eliminamos repetidos de objetos
+        if($object_array)
+        {
+            foreach($object_array as $object) {
+                    $array_valores[]=$object->$key;
+            }
+        }
+        return $array_valores;
+    }
+    
+    function in_array_object($searched_value,$object_array,$key) {
+        // Obtenemos valores de búsqueda de un listado de objetos
+        $array_valores=$this->getKeyObjectArray($object_array,$key); 
+        // Si el valor buscado es un array, debe buscarse en el conjunto de valores
+        if(is_array($searched_value))
+        {
+            foreach($searched_value as $valor) {
+                if(in_array($valor,$array_valores))
+                {
+                    return TRUE;
+                }
+            }
+            return FALSE;
+        }
+        // Si no sólo tiene que buscar en el valor
+        else
+        {
+            return in_array($searched_value,$array_valores);
+        }
+    }
+    
+    function eliminarResultadosRepetidos($resultados,$key) {
+        // Datos necesarios
+        $array_string=array();
+        $array_valores=array();        
+        // Eliminamos repetidos de objetos
+        if($resultados)
+        {
+            foreach($resultados as $resultado) {
+                if(!in_array($resultados->$key,$array_string))
+                {
+                    $array_string[]=$resultado->$key;
+                    $array_valores[]=$resultado;
+                }
+            }            
+            return $array_valores;
+        }
+        else
+        {
+            return $resultados;
+        }        
+    }
+    
+    function show_access_error($mensaje) 
+    {
+        $this->CI->session->set_flashdata('mensaje', $mensaje);
+        $this->CI->session->set_flashdata('color', 'error');
+        redirect(site_url('usuarios/show_error'), 'refresh');
+    }
+    
+    public function check_security_access_perfiles_or($perfiles) {
+        // Comprobación OR
+        $error=TRUE;
+        $mensaje = "Usted no tiene acceso a esta sección";
+        foreach($perfiles as $perfil)
+        {
+            if($this->CI->data[$perfil])
+            {                
+                $error=FALSE;
+            }
+        }
+        // Check del error
+        if($error)
+        {
+            show_error($mensaje);
+        }
+    }
+    
+    public function check_security_access_perfiles_and($perfiles) {
+        // Comprobación OR
+        $error=FALSE;
+        $mensaje = "Usted no tiene acceso a esta sección";
+        foreach($perfiles as $perfil)
+        {
+            if(!$this->CI->data[$perfil])
+            {                
+                $error=TRUE;
+            }
+        }
+        // Check del error
+        if($error)
+        {
+            show_error($mensaje);
+        }
+    }
+    
+    function get_csrf_nonce()
+    {
+        $this->CI->load->helper('string');
+        $key = random_string('alnum', 8);
+        $value = random_string('alnum', 20);
+        $this->CI->session->set_flashdata('csrfkey', $key);
+        $this->CI->session->set_flashdata('csrfvalue', $value);
+
+        return array($key => $value);
+    }
+
+    function valid_csrf_nonce()
+    {
+        if ($this->CI->input->post($this->CI->session->flashdata('csrfkey')) !== FALSE &&
+            $this->CI->input->post($this->CI->session->flashdata('csrfkey')) == $this->CI->session->flashdata('csrfvalue'))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
 }

@@ -59,11 +59,11 @@
                 <td><span class="label label-sm label-warning"><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, lang('index_active_link')) : anchor("auth/activate/". $user->id, lang('index_inactive_link'));?></span></td>
                 <td>
                     <div class="hidden-sm hidden-xs action-buttons">
-                        <a class="green" href="<?php echo site_url("auth/edit_user/".$user->id) ;?>">
+                        <a class="green" href="<?php echo site_url("auth/edit_user/".$user->id) ;?>" title="Editar">
                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                         </a>
 
-                        <a class="red borrar-usuario" data-id="<?php echo $user->id; ?>" href="#">
+                        <a class="red borrar-usuario" data-id="<?php echo $user->id; ?>" href="#" title="Borrar">
                             <i class="ace-icon fa fa-trash-o bigger-130"></i>
                         </a>
                     </div>

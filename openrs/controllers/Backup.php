@@ -1,12 +1,12 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH.'/core/BaseController.php';
+require_once APPPATH . '/core/MY_Controller.php';
 
 /**
  *
  * @author roytuts.com
  */
-class Backup extends BaseController {
+class Backup extends MY_Controller {
 
     /**
      * error messages

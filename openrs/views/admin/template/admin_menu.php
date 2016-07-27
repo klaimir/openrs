@@ -214,21 +214,43 @@
 </li>
 
 <li>
-    <a href="<?php echo site_url('oficinas'); ?>">
-        <i class="menu-icon fa fa-building"></i>
-        <span class="menu-text"> Oficinas </span>
-    </a>
-
-    <b class="arrow"></b>
-</li>
-
-<li>
     <a href="<?php echo site_url('backup'); ?>">
         <i class="menu-icon fa fa-database"></i>
         <span class="menu-text"> Copias Seguridad </span>
     </a>
 
     <b class="arrow"></b>
+</li>
+
+<li class="">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-building"></i>
+        <span class="menu-text"> Config. Datos </span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+
+    <b class="arrow"></b>
+
+    <ul class="submenu">
+        <li>
+            <a href="<?php echo site_url('oficinas'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Oficinas </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+
+        <li>
+            <a href="<?php echo site_url('tipos_inmueble'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Tipos inmueble </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+    </ul>
 </li>
 
 <li class="">

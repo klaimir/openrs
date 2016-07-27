@@ -1,4 +1,7 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 //>  makes dw cs4 happy
 
 /**
@@ -17,7 +20,7 @@ class MY_Session
 
     function MY_Session()
     {
-        $this->object =& get_instance();
+        $this->object = & get_instance();
         log_message('debug', "Native_session Class Initialized");
         $this->_sess_run();
     }
@@ -52,7 +55,6 @@ class MY_Session
         // session_write_close() patch based on this thread
         // http://www.codeigniter.com/forums/viewthread/1624/
         // there is a question mark ?? as to side affects
-
         // end the current session and store session data.
         session_write_close();
     }
@@ -63,7 +65,8 @@ class MY_Session
     function destroy()
     {
         unset($_SESSION);
-        if (isset($_COOKIE[session_name()])) {
+        if (isset($_COOKIE[session_name()]))
+        {
             setcookie(session_name(), '', time() - 42000, '/');
         }
         @session_destroy();
@@ -82,9 +85,12 @@ class MY_Session
      */
     function userdata($item)
     {
-        if ($item == 'session_id') { //added for backward-compatibility
+        if ($item == 'session_id')
+        { //added for backward-compatibility
             return session_id();
-        } else {
+        }
+        else
+        {
             return (!isset($_SESSION[$item])) ? false : $_SESSION[$item];
         }
     }
@@ -94,12 +100,15 @@ class MY_Session
      */
     function set_userdata($newdata = array(), $newval = '')
     {
-        if (is_string($newdata)) {
+        if (is_string($newdata))
+        {
             $newdata = array($newdata => $newval);
         }
 
-        if (count($newdata) > 0) {
-            foreach ($newdata as $key => $val) {
+        if (count($newdata) > 0)
+        {
+            foreach ($newdata as $key => $val)
+            {
                 $_SESSION[$key] = $val;
             }
         }
@@ -110,12 +119,15 @@ class MY_Session
      */
     function unset_userdata($newdata = array())
     {
-        if (is_string($newdata)) {
+        if (is_string($newdata))
+        {
             $newdata = array($newdata => '');
         }
 
-        if (count($newdata) > 0) {
-            foreach ($newdata as $key => $val) {
+        if (count($newdata) > 0)
+        {
+            foreach ($newdata as $key => $val)
+            {
                 unset($_SESSION[$key]);
             }
         }
@@ -130,16 +142,21 @@ class MY_Session
 
         $session_id_ttl = $this->object->config->item('sess_expiration');
 
-        if (is_numeric($session_id_ttl)) {
-            if ($session_id_ttl > 0) {
+        if (is_numeric($session_id_ttl))
+        {
+            if ($session_id_ttl > 0)
+            {
                 $this->session_id_ttl = $this->object->config->item('sess_expiration');
-            } else {
+            }
+            else
+            {
                 $this->session_id_ttl = (60 * 60 * 24 * 365 * 2);
             }
         }
 
 // check if session id needs regeneration
-        if ($this->_session_id_expired()) {
+        if ($this->_session_id_expired())
+        {
 // regenerate session id (session data stays the
 // same, but old session storage is destroyed)
             $this->regenerate_id();
@@ -157,14 +174,16 @@ class MY_Session
      */
     function _session_id_expired()
     {
-        if (!isset($_SESSION['regenerated'])) {
+        if (!isset($_SESSION['regenerated']))
+        {
             $_SESSION['regenerated'] = time();
             return false;
         }
 
         $expiry_time = time() - $this->session_id_ttl;
 
-        if ($_SESSION['regenerated'] <= $expiry_time) {
+        if ($_SESSION['regenerated'] <= $expiry_time)
+        {
             return true;
         }
 
@@ -178,18 +197,20 @@ class MY_Session
      */
     function set_flashdata($newdata = array(), $newval = '')
     {
-        if (is_string($newdata)) {
+        if (is_string($newdata))
+        {
             $newdata = array($newdata => $newval);
         }
 
-        if (count($newdata) > 0) {
-            foreach ($newdata as $key => $val) {
+        if (count($newdata) > 0)
+        {
+            foreach ($newdata as $key => $val)
+            {
                 $flashdata_key = $this->flashdata_key . ':new:' . $key;
                 $this->set_userdata($flashdata_key, $val);
             }
         }
     }
-
 
     /**
      * Keeps existing "flash" data available to next request.
@@ -217,9 +238,11 @@ class MY_Session
      */
     function _flashdata_mark()
     {
-        foreach ($_SESSION as $name => $value) {
+        foreach ($_SESSION as $name => $value)
+        {
             $parts = explode(':new:', $name);
-            if (is_array($parts) && count($parts) == 2) {
+            if (is_array($parts) && count($parts) == 2)
+            {
                 $new_name = $this->flashdata_key . ':old:' . $parts[1];
                 $this->set_userdata($new_name, $value);
                 $this->unset_userdata($name);
@@ -232,12 +255,14 @@ class MY_Session
      */
     function _flashdata_sweep()
     {
-        foreach ($_SESSION as $name => $value) {
+        foreach ($_SESSION as $name => $value)
+        {
             $parts = explode(':old:', $name);
-            if (is_array($parts) && count($parts) == 2 && $parts[0] == $this->flashdata_key) {
+            if (is_array($parts) && count($parts) == 2 && $parts[0] == $this->flashdata_key)
+            {
                 $this->unset_userdata($name);
             }
         }
     }
-}
 
+}
