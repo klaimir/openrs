@@ -137,5 +137,14 @@ class Usuarios extends MY_Controller
         $this->email->send();
         echo $this->email->print_debugger();
     }
+    
+    public function cabecera(){
+    	//Comprobamos permisos
+    	if (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id)){
+    		redirect('auth', 'refresh');
+    	}
+    	//Cargamos configuración cabecera
+    	$data['config'] = $this->Usuarios_model->datos_config(1);
+    }
 
 }

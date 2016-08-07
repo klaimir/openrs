@@ -192,5 +192,10 @@ class Usuarios_model extends MY_Model
     {
         return $this->ion_auth->is_admin($id);
     }
+    
+    public function datos_config($user){
+    	$this->db->where('user_id',$user);
+    	return $this->db->get('config')->row();
+    }
 
 }
