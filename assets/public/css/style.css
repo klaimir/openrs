@@ -12,3 +12,9 @@
 .icon-block .material-icons {
 	font-size: inherit;
 }
+
+/************* CABECERA **************/
+.cabecera-logo{
+	margin-top: 12px;
+	text-align: center;
+}

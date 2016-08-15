@@ -197,5 +197,10 @@ class Usuarios_model extends MY_Model
     	$this->db->where('user_id',$user);
     	return $this->db->get('config')->row();
     }
+    
+    public function actualizar_configuracion($id_user, $datos){
+    	$this->db->where('user_id', $id_user);
+    	$this->db->update('config', $datos);
+    }
 
 }

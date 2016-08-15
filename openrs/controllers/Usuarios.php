@@ -144,7 +144,113 @@ class Usuarios extends MY_Controller
     		redirect('auth', 'refresh');
     	}
     	//Cargamos configuración cabecera
-    	$data['config'] = $this->Usuarios_model->datos_config(1);
+    	$this->data['config'] = $this->Usuarios_model->datos_config(1);
+    	// Render
+    	$this->data['color'] = $this->session->flashdata('color');
+    	$this->data['mensaje'] = $this->session->flashdata('mensaje');
+    	$this->render_private('admin/cabecera', $this->data);
+    }
+    
+    public function modificarCabecera(){
+    	$this->form_validation->set_rules('nombre',$this->lang->line('admin_nombre_web'),'trim|required');
+    	$this->form_validation->set_rules('cabecera_fija',$this->lang->line('admin_cabecera_fija'),'trim|required');
+    	$this->form_validation->set_rules('ccabecera',$this->lang->line('admin_color_cabecera'),'trim|required');
+    	$this->form_validation->set_rules('cfuentecabecera',$this->lang->line('admin_color_fuente_cabecera'),'trim|required');
+    	$this->form_validation->set_rules('cbordecabecera',$this->lang->line('admin_color_borde_cabecera'),'trim|required');
+    	$this->form_validation->set_rules('cfondo',$this->lang->line('admin_color_fondo'),'trim|required');
+    	$this->form_validation->set_rules('cfuentefondo',$this->lang->line('admin_color_fuente_fondo'),'trim|required');
+    	$this->form_validation->set_rules('cpie',$this->lang->line('admin_color_pie'),'trim|required');
+    	$this->form_validation->set_rules('cfuentepie',$this->lang->line('admin_color_fuente_pie'),'trim|required');
+    	
+    	//editamos mensajes
+    	$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
+    	
+    	if ($this->form_validation->run()){
+    		$preferencias = array(
+    				'nombre' => $this->input->post('nombre'),
+    				'cabecera_fija' => $this->input->post('cabecera_fija'),
+    				'ccabecera' => $this->input->post('ccabecera'),
+    				'cfuentecabecera' => $this->input->post('cfuentecabecera'),
+    				'cbordecabecera' => $this->input->post('cbordecabecera'),
+    				'cfondo' => $this->input->post('cfondo'),
+    				'cfuentefondo' => $this->input->post('cfuentefondo'),
+    				'cpie' => $this->input->post('cpie'),
+    				'cfuentepie' => $this->input->post('cfuentepie'),
+    		);
+    		//Si se cambia la imagen
+    		if($this->input->post('change_logo') == 1){
+    			if (isset($_FILES['userfile']['tmp_name'])) {
+    				//Para panales independientes
+    				/*if(!file_exists('img/preferencias/'.$this->simple_sessions->get_value('id_usuario')))
+    				 mkdir('img/preferencias/'.$this->simple_sessions->get_value('id_usuario'), '0755', true);*/
+    					
+    				//Para panales independientes
+    				//$config['upload_path'] = 'img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/';
+    				$config['upload_path'] = 'img/preferencias/1/';
+    				$config['allowed_types']='gif|jpg|jpeg|png';
+    				$config['max_size']	= '1000';
+    				$config['overwrite']=TRUE;
+    				//$config['encrypt_name'] = TRUE;
+    	
+    				$this->load->library('upload', $config);
+    	
+    				if (!$this->upload->do_upload()) {
+    					$this->session->set_flashdata('color','danger');
+    					$this->session->set_flashdata('error', 'La imagen no puede superar 1MB');
+                		redirect('usuarios/cabecera', 'refresh');
+    				}else {
+    					//Para paneles independientes
+    					//$configuracion = $this->user_model->datos_config($this->simple_sessions->get_value('id_usuario'));
+    					//if($configuracion && isset($configuracion->imagen) && file_exists('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen)){
+    					//unlink('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen);
+    					//unlink('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen_thumb);
+    					//}
+    					$configuracion = $this->user_model->datos_config(1);
+    					if($configuracion && isset($configuracion->imagen) && file_exists('img/preferencias/1/'.$configuracion->imagen)){
+    						unlink('img/preferencias/1/'.$configuracion->imagen);
+    						//unlink('img/preferencias/1/'.$configuracion->imagen_thumb);
+    					}
+    					$file_data = $this->upload->data();
+    					$preferencias['imagen'] = $file_data['file_name'];
+    					//Ahora creamos una copia de la imagen a tamaño 279*98
+    					$this->load->library('image_lib');
+    					$config['image_library']='gd2';
+    					//Para paneles independientes
+    					//$config['source_image']='img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$file_data['file_name'];
+    					//$config['new_image']='img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/';
+    					$config['source_image']='img/preferencias/1/'.$file_data['file_name'];
+    					$config['new_image']='img/preferencias/1/';
+    					$config['create_thumb'] = TRUE;
+    					$config['maintain_ratio'] = FALSE;
+    					$config['width'] = 182;
+    					$config['height'] = 47;
+    						
+    					$this->image_lib->clear();
+    					$this->image_lib->initialize($config);
+    						
+    					$preferencias['imagen_thumb'] = $file_data['raw_name'].'_thumb'.$file_data['file_ext'];
+    					$this->image_lib->resize();
+    					//Para paneles independientes
+    					//$this->user_model->actualizar_configuracion($this->simple_sessions->get_value('id_usuario'), $preferencias);
+    					$this->Usuarios_model->actualizar_configuracion(1, $preferencias);
+    					$this->session->set_flashdata('color','success');
+    					$this->session->set_flashdata('mensaje','Cambios realizados correctamente.');
+    					redirect('usuarios/caecera','refresh');
+    				}
+    			}else{
+    				$this->session->set_flashdata('color','danger');
+    				$this->session->set_flashdata('mensaje', validation_errors());
+                	redirect('usuarios/cabecera', 'refresh');
+    			}
+    		}else{
+    			//Para paneles independientes
+    			//$this->user_model->actualizar_configuracion($this->simple_sessions->get_value('id_usuario'), $preferencias);
+    			$this->user_model->actualizar_configuracion(1, $preferencias);
+    			redirect('usuarios/cabecera','refresh');
+    		}
+    	}else{
+    		$this->mi_cuenta(1,4);
+    	}
     }
 
 }

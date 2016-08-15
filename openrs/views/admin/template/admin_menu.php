@@ -265,7 +265,7 @@
 
     <ul class="submenu">
         <li class="">
-            <a href="#">
+            <a href="<?php echo site_url('usuarios/cabecera');?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 Cabecera
             </a>
