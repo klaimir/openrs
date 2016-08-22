@@ -274,7 +274,7 @@
         </li>
 
         <li class="">
-            <a href="#">
+            <a href="<?php echo site_url('usuarios/pie');?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 Pie
             </a>

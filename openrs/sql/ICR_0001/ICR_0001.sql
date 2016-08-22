@@ -24,3 +24,14 @@ CREATE TABLE IF NOT EXISTS `config` (
   `vimeo` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id_config`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Estructura de tabla para la tabla `config`
+--
+
+CREATE TABLE IF NOT EXISTS `footer_opciones` (
+	`id_opc` int(2) NOT NULL AUTO_INCREMENT,
+	`nombre` varchar(25) NOT NULL,
+	`id_idioma` int(11) NOT NULL,
+	PRIMARY KEY (`id_opc`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

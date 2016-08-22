@@ -202,5 +202,18 @@ class Usuarios_model extends MY_Model
     	$this->db->where('user_id', $id_user);
     	$this->db->update('config', $datos);
     }
+    
+    public function get_footer_opciones(){
+    	return $this->db->get('footer_opciones')->result();
+    }
+    
+    public function get_footer_cliente($iduser, $col){
+    	$this->db->select('*');
+    	$this->db->from('footer_opciones');
+    	$this->db->join('footer_opciones_cliente', 'footer_opciones.id_opc = footer_opciones_cliente.id_opc');
+    	$this->db->where('footer_opciones_cliente.iduser', $iduser);
+    	$this->db->where('columna', $col);
+    	return $this->db->get('')->row();
+    }
 
 }

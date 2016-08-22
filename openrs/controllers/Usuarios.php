@@ -249,8 +249,120 @@ class Usuarios extends MY_Controller
     			redirect('usuarios/cabecera','refresh');
     		}
     	}else{
-    		$this->mi_cuenta(1,4);
+    		$this->session->set_flashdata('color','danger');
+    		$this->session->set_flashdata('mensaje', validation_errors());
+            redirect('usuarios/cabecera', 'refresh');
     	}
+    }
+    
+    public function pie(){
+    	//Comprobamos permisos
+    	if (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id)){
+    		redirect('auth', 'refresh');
+    	}
+    	//Cargamos configuración cabecera
+    	$this->data['config'] = $this->Usuarios_model->datos_config(1);
+    	$data['opc_footer'] = $this->user_model->get_footer_opciones();
+    	for($i=1;$i<5;$i++){//sacamos las opciones segun columna
+    		//Para panales independientes
+    		//$opc_cliente = $this->user_model->get_footer_cliente($this->simple_sessions->get_value('id_usuario'), $i);
+    		$opc_cliente = $this->user_model->get_footer_cliente(1, $i);
+    		if($opc_cliente != NULL)
+    			$data['opc_col'.$i]=$opc_cliente;
+    	}
+    	// Render
+    	$this->data['color'] = $this->session->flashdata('color');
+    	$this->data['mensaje'] = $this->session->flashdata('mensaje');
+    	$this->render_private('admin/pie', $this->data);
+    }
+    
+    function modificarPie(){
+    	$this->comprobar_sesion();
+    
+    	if($this->user_model->get_user($this->simple_sessions->get_value('id_usuario'))){
+    		//Comprobación borrado de columna
+    		if($this->input->post('col') == 'vacio'){
+    			//Para paneles independientes
+    			//$cliente_opc = $this->user_model->get_footer_cliente($this->simple_sessions->get_value('id_usuario'), $this->input->post('columna'));
+    			//$this->user_model->borrar_texto_columna($cliente_opc->id);
+    			//$this->user_model->borrar_columna_pie($this->simple_sessions->get_value('id_usuario'), $this->input->post('columna'));
+    			$cliente_opc = $this->user_model->get_footer_cliente(1, $this->input->post('columna'));
+    			$this->user_model->borrar_texto_columna($cliente_opc->id);
+    			$this->user_model->borrar_columna_pie(1, $this->input->post('columna'));
+    		}
+    			
+    		//Comprobación opción articulos
+    		if($this->input->post('num_art')){
+    			//Para paneles independientes
+    			//$this->user_model->actualizar_pie_cliente($this->simple_sessions->get_value('id_usuario'), $this->input->post('columna'), $this->input->post('col'), $this->input->post('num_art'));
+    			$this->user_model->actualizar_pie_cliente(1, $this->input->post('columna'), $this->input->post('col'), $this->input->post('num_art'));
+    		}else{
+    			//Para paneles independientes
+    			//$this->user_model->actualizar_pie_cliente($this->simple_sessions->get_value('id_usuario'), $this->input->post('columna'), $this->input->post('col'));
+    			$this->user_model->actualizar_pie_cliente(1, $this->input->post('columna'), $this->input->post('col'));
+    		}
+    		//Comprobación opción redes sociales
+    		if($this->input->post('facebook')){
+    			$datos_profile = array('facebook' => $this->input->post('facebook'));
+    			//Para paneles independientes
+    			//$this->user_model->actualizar_red_social($this->simple_sessions->get_value('id_usuario'), $datos_profile);
+    			$this->user_model->actualizar_red_social(1, $datos_profile);
+    		}
+    		if($this->input->post('twitter')){
+    			$datos_profile = array('twitter' => $this->input->post('twitter'));
+    			//Para paneles independientes
+    			//$this->user_model->actualizar_red_social($this->simple_sessions->get_value('id_usuario'), $datos_profile);
+    			$this->user_model->actualizar_red_social(1, $datos_profile);
+    		}
+    		if($this->input->post('google')){
+    			$datos_profile = array('google' => $this->input->post('google'));
+    			//Para paneles independientes
+    			//$this->user_model->actualizar_red_social($this->simple_sessions->get_value('id_usuario'), $datos_profile);
+    			$this->user_model->actualizar_red_social(1, $datos_profile);
+    		}
+    		if($this->input->post('vimeo')){
+    			$datos_profile = array('vimeo' => $this->input->post('vimeo'));
+    			//Para paneles independientes
+    			//$this->user_model->actualizar_red_social($this->simple_sessions->get_value('id_usuario'), $datos_profile);
+    			$this->user_model->actualizar_red_social(1, $datos_profile);
+    		}
+    			
+    		//Comprobación Inserción de texto
+    		if($this->input->post('idioma')){
+    			//Para paneles independientes
+    			//$opc_cliente = $this->user_model->get_footer_cliente($this->simple_sessions->get_value('id_usuario'), $this->input->post('columna'));
+    			$opc_cliente = $this->user_model->get_footer_cliente(1, $this->input->post('columna'));
+    			$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido'),$this->input->post('idioma'));
+    		}
+    		//Comprobación Edición de texto
+    		if($this->input->post('idiomas')){
+    			//Para paneles independientes
+    			//$opc_cliente = $this->user_model->get_footer_cliente($this->simple_sessions->get_value('id_usuario'), $this->input->post('columna'));
+    			$opc_cliente = $this->user_model->get_footer_cliente(1, $this->input->post('columna'));
+    			$idiomas = $this->input->post('idiomas');
+    			foreach($idiomas as $idioma){
+    				$col=$this->input->post('columna');
+    				if($col == 1)
+    					$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido_'.$idioma),$idioma);
+    				elseif($col == 2)
+    				$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido2_'.$idioma),$idioma);
+    				elseif($col == 3)
+    				$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido3_'.$idioma),$idioma);
+    				elseif($col == 4)
+    				$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido4_'.$idioma),$idioma);
+    			}
+    		}
+    		redirect('admin-mi-cuenta/4/13','refresh');
+    	}else{
+    		$this->mi_cuenta(4,3);
+    	}
+    }
+    
+    function limpiar_red($red){
+    	//Para paneles independientes
+    	//$this->user_model->limpiar_red_social($this->simple_sessions->get_value('id_usuario'), $red);
+    	$this->user_model->limpiar_red_social(1, $red);
+    	redirect('admin-mi-cuenta/4/13','refresh');
     }
 
 }

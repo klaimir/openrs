@@ -90,8 +90,7 @@ $no_change_logo = array(
 		'checked' => TRUE,
 		'class'=> 'no_change_logo'
 );?>
-<div class="container">
-	<div class="row">
+
 		<div class="col-sm-12">
 			<?php if(isset($mensaje)){?>
 				<div class="alert alert-<?php echo $color;?> alert-dismissible" role="alert">
@@ -99,10 +98,10 @@ $no_change_logo = array(
 		  			<?php echo $mensaje;?>
 				</div>
 			<?php }?>
-			<?php echo form_open_multipart(base_url('usuarios/modificarCabecera'), array('class'=>'form-horizontal'));?>
+			<?php echo form_open_multipart(site_url('usuarios/modificarCabecera'), array('class'=>'form-horizontal'));?>
 				<div class="form-group">
 					<div class="control-label col-sm-2">
-						<?php echo form_label($this->lang->line('login_nombre'),'nombre');?>
+						<?php echo form_label($this->lang->line('admin_nombre_web'),'nombre');?>
 					</div>
 					<div class="col-sm-3">
 						<?php echo form_input($nombre); ?>
@@ -251,5 +250,4 @@ $no_change_logo = array(
 				<?php echo form_close(); ?>
 			</div>
 		</div>
-	</div>
-</div>
+	
