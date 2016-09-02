@@ -1,3 +1,45 @@
+<script>
+function formulario(form, idioma){
+	var opc;
+	if(form == "f1"){
+   		opc = document.f1.col[document.f1.col.selectedIndex].value;
+   		//borramos el contenido de la capa
+   		document.getElementById("grupo1").innerHTML="";
+   		document.getElementById("formulario-t1").innerHTML="";
+   	   	if (opc == 2) 
+   	   		$("#formulario-t1").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
+   	   	else if(opc == 3)
+	   		$("#formulario-t1").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");   	
+	}else if(form == "f2"){
+		opc = document.f2.col[document.f2.col.selectedIndex].value;
+		//borramos el contenido de la capa
+   		document.getElementById("grupo2").innerHTML="";
+   		document.getElementById("formulario-t2").innerHTML="";
+   	   	if (opc == 2) 
+   	   		$("#formulario-t2").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
+   	   	else if(opc == 3)
+	   		$("#formulario-t2").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
+   	}else if(form == "f3"){
+		opc = document.f3.col[document.f3.col.selectedIndex].value;
+		//borramos el contenido de la capa
+   		document.getElementById("grupo3").innerHTML="";
+   		document.getElementById("formulario-t3").innerHTML="";
+   	   	if (opc == 2) 
+   	   		$("#formulario-t3").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
+   	   	else if(opc == 3)
+	   		$("#formulario-t3").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
+	}else if(form == "f4"){
+		opc = document.f4.col[document.f4.col.selectedIndex].value;
+		//borramos el contenido de la capa
+   		document.getElementById("grupo4").innerHTML="";
+   		document.getElementById("formulario-t4").innerHTML="";
+   	   	if (opc == 2) 
+   	   		$("#formulario-t4").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
+   	   	else if(opc == 3)
+	   		$("#formulario-t4").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
+	}
+}
+</script>
 <?php echo form_open(site_url('usuarios/modificarPie'), array('name'=>'f1','class'=>'form-horizontal'));?>
 	<div class="form-group">
 		<div class="col-md-2">
@@ -16,16 +58,7 @@
 			<span><?php echo form_error('col'); ?></span>
 			<div id="grupo1">
 				<?php if(isset($opc_col1)){?>
-					<?php if($opc_col1->num_articulos != 0){?>
-						<?php echo form_label($this->lang->line('admin_num_art'),'num_art',array('class'=>'control-label'));?>
-							<select name="num_art" id="num_art" class="form-control">
-								<option value="<?php echo $opc_col1->num_articulos; ?>"><?php echo $opc_col1->num_articulos; ?></option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-							</select>
-						<?php }?>
-						<?php if($opc_col1->id_opc == 3){?>
+						<?php if($opc_col1->id_opc == 2){?>
 							<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
 							<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
 							<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
@@ -46,7 +79,7 @@
 							<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
 							<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
 						<?php }?>
-						<?php if($opc_col1->id_opc == 4){?>
+						<?php if($opc_col1->id_opc == 3){?>
 							<ul class="nav nav-tabs">
 								<?php foreach($cargar_idiomas as $idioma){ ?>
 									<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
@@ -118,16 +151,7 @@
 						<span><?php echo form_error('col'); ?></span>
 						<div id="grupo2">
 							<?php if(isset($opc_col2)){?>
-								<?php if($opc_col2->num_articulos != 0){?>
-									<?php echo form_label($this->lang->line('admin_num_art'),'num_art',array('class'=>'control-label'));?>
-									<select name="num_art" id="num_art" class="form-control">
-										<option value="<?php echo $opc_col2->num_articulos; ?>"><?php echo $opc_col2->num_articulos; ?></option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-									</select>
-								<?php }?>
-								<?php if($opc_col2->id_opc == 3){?>
+								<?php if($opc_col2->id_opc == 2){?>
 									<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
 									<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
 									<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
@@ -148,7 +172,7 @@
 									<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
 									<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
 								<?php }?>
-								<?php if($opc_col2->id_opc == 4){?>
+								<?php if($opc_col2->id_opc == 3){?>
 									<ul class="nav nav-tabs">
 										<?php foreach($cargar_idiomas as $idioma){ ?>
 											<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
@@ -221,16 +245,7 @@
 								<span><?php echo form_error('col'); ?></span>
 								<div id="grupo3">
 								<?php if(isset($opc_col3)){?>
-									<?php if($opc_col3->num_articulos != 0){?>
-										<?php echo form_label($this->lang->line('admin_num_art'),'num_art',array('class'=>'control-label'));?>
-										<select name="num_art" id="num_art" class="form-control">
-											<option value="<?php echo $opc_col3->num_articulos; ?>"><?php echo $opc_col3->num_articulos; ?></option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-										</select>
-									<?php }?>
-									<?php if($opc_col3->id_opc == 3){?>
+									<?php if($opc_col3->id_opc == 2){?>
 										<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
 										<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
 										<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
@@ -252,7 +267,7 @@
 										<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
 										
 									<?php }?>
-									<?php if($opc_col3->id_opc == 4){?>
+									<?php if($opc_col3->id_opc == 3){?>
 										<ul class="nav nav-tabs">
 											<?php foreach($cargar_idiomas as $idioma){ ?>
 												<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
@@ -326,16 +341,7 @@
 								<span><?php echo form_error('col'); ?></span>
 								<div id="grupo4">
 								<?php if(isset($opc_col4)){?>
-									<?php if($opc_col4->num_articulos != 0){?>
-										<?php echo form_label($this->lang->line('admin_num_art'),'num_art',array('class'=>'control-label'));?>
-										<select name="num_art" id="num_art" class="form-control">
-											<option value="<?php echo $opc_col4->num_articulos; ?>"><?php echo $opc_col4->num_articulos; ?></option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-										</select>
-									<?php }?>
-									<?php if($opc_col4->id_opc == 3){?>
+									<?php if($opc_col4->id_opc == 2){?>
 										<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
 										<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
 										<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
@@ -356,7 +362,7 @@
 										<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
 										<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
 									<?php }?>
-									<?php if($opc_col4->id_opc == 4){?>
+									<?php if($opc_col4->id_opc == 3){?>
 										<ul class="nav nav-tabs">
 											<?php foreach($cargar_idiomas as $idioma){ ?>
 												<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
@@ -412,54 +418,4 @@
 							echo form_close();?>
 						</div>
 					</div>
-<script>
-function formulario(form, idioma){
-	var opc;
-	if(form == "f1"){
-   		opc = document.f1.col[document.f1.col.selectedIndex].value;
-   		//borramos el contenido de la capa
-   		document.getElementById("grupo1").innerHTML="";
-   		document.getElementById("formulario-t1").innerHTML="";
-   	   	if (opc == 2) 
-   			$("#formulario-t1").append("<label>Nº Articulos</label><select class=\"form-control\" name=\"num_art\" id=\"num_art\"><option value=3>3</option><option value=4>4</option><option value=5>5</option></select>");
-   	   	else if(opc == 3)
-   	   		$("#formulario-t1").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
-   	 	else if(opc == 4)
-	   		$("#formulario-t1").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
-	}else if(form == "f2"){
-		opc = document.f2.col[document.f2.col.selectedIndex].value;
-		//borramos el contenido de la capa
-   		document.getElementById("grupo2").innerHTML="";
-   		document.getElementById("formulario-t2").innerHTML="";
-   	   	if (opc == 2) 
-   			$("#formulario-t2").append("<label>Nº Articulos</label><select class=\"form-control\" name=\"num_art\" id=\"num_art\"><option value=3>3</option><option value=4>4</option><option value=5>5</option></select>");
-   	   	else if(opc == 3)
-   	   		$("#formulario-t2").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
-   	 	else if(opc == 4)
-	   		$("#formulario-t2").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
-   	}else if(form == "f3"){
-		opc = document.f3.col[document.f3.col.selectedIndex].value;
-		//borramos el contenido de la capa
-   		document.getElementById("grupo3").innerHTML="";
-   		document.getElementById("formulario-t3").innerHTML="";
-   	   	if (opc == 2) 
-   			$("#formulario-t3").append("<label>Nº Articulos</label><select class=\"form-control\" name=\"num_art\" id=\"num_art\"><option value=3>3</option><option value=4>4</option><option value=5>5</option></select>");
-   	   	else if(opc == 3)
-   	   		$("#formulario-t3").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
-   	 	else if(opc == 4)
-	   		$("#formulario-t3").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
-	}else if(form == "f4"){
-		opc = document.f4.col[document.f4.col.selectedIndex].value;
-		//borramos el contenido de la capa
-   		document.getElementById("grupo4").innerHTML="";
-   		document.getElementById("formulario-t4").innerHTML="";
-   	   	if (opc == 2) 
-   			$("#formulario-t4").append("<label>Nº Articulos</label><select class=\"form-control\" name=\"num_art\" id=\"num_art\"><option value=3>3</option><option value=4>4</option><option value=5>5</option></select>");
-   	   	else if(opc == 3)
-   	   		$("#formulario-t4").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
-   	 	else if(opc == 4)
-	   		$("#formulario-t4").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
-	}
-}
-</script>
 					

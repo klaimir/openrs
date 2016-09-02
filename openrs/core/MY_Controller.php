@@ -14,6 +14,8 @@ class MY_Controller extends CI_controller
         $this->load->library(array('ion_auth', 'form_validation'));
         $this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form'));
         $this->load->model('Usuarios_model');
+        $this->load->model('Admin_model');
+        $this->load->model('Idioma_model');
         $this->lang->load('auth');
         // Public
         $this->initializePublic();

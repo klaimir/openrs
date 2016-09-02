@@ -265,7 +265,7 @@
 
     <ul class="submenu">
         <li class="">
-            <a href="<?php echo site_url('usuarios/cabecera');?>">
+            <a href="<?php echo site_url('admin/cabecera');?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 Cabecera
             </a>
@@ -274,7 +274,7 @@
         </li>
 
         <li class="">
-            <a href="<?php echo site_url('usuarios/pie');?>">
+            <a href="<?php echo site_url('admin/pie');?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 Pie
             </a>

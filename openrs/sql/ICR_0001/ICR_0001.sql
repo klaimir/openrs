@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `config` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Estructura de tabla para la tabla `config`
+-- Estructura de tabla para la tabla `footer_opciones`
 --
 
 CREATE TABLE IF NOT EXISTS `footer_opciones` (
@@ -35,3 +35,46 @@ CREATE TABLE IF NOT EXISTS `footer_opciones` (
 	`id_idioma` int(11) NOT NULL,
 	PRIMARY KEY (`id_opc`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Estructura de tabla para la tabla `footer_opciones_cliente`
+--
+
+CREATE TABLE IF NOT EXISTS `footer_opciones_cliente` (
+	`id` int(2) NOT NULL AUTO_INCREMENT,
+	`id_opc` int(2) NOT NULL,
+	`iduser` int(11) NOT NULL,
+	`columna` int(2) NOT NULL,
+	`num_articulos` int(2) NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Estructura de tabla para la tabla `footer_opciones_cliente`
+--
+
+CREATE TABLE IF NOT EXISTS `footer_texto_idiomas` (
+	`id` int(2) NOT NULL AUTO_INCREMENT,
+	`id_opc_cliente` int(2) NOT NULL,
+	`contenido` text NOT NULL,
+	`columna` int(2) NOT NULL,
+	`id_idioma` int(11) NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Estructura de tabla para la tabla `footer_opciones_cliente`
+--
+
+CREATE TABLE IF NOT EXISTS `idiomas` (
+	`id_idioma` int(11) NOT NULL AUTO_INCREMENT,
+	`nombre` varchar(50) NOT NULL,
+	`nombre_seo` varchar(3) NOT NULL,
+	`nombre_seo2` varchar(10) NOT NULL,
+	`activo` int(1) NOT NULL,
+	`subido` int(1) NOT NULL,
+	`carpeta_idioma` varchar(50) NOT NULL,
+	PRIMARY KEY (`id_idioma`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE  `users` ADD  `id_idioma` INT( 11 ) NOT NULL DEFAULT  '1';
