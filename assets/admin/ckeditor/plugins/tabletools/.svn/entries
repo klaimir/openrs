@@ -1,0 +1,31 @@
+10
+
+dir
+2
+svn://puntoliga.com/nuteco/trunk/CI/ckeditor/plugins/tabletools
+svn://puntoliga.com/nuteco
+
+
+
+2016-01-06T12:43:05.055052Z
+2
+vancaru
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+d579c73f-530e-44c7-bf5f-6b958217ebb8
+
+dialogs
+dir
+

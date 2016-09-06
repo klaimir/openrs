@@ -40,7 +40,7 @@ function formulario(form, idioma){
 	}
 }
 </script>
-<?php echo form_open(site_url('usuarios/modificarPie'), array('name'=>'f1','class'=>'form-horizontal'));?>
+	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f1','class'=>'form-horizontal'));?>
 	<div class="form-group">
 		<div class="col-md-2">
 			<?php echo form_label($this->lang->line('admin_col_1'),'col',array('class'=>'control-label pull-right'));?>
@@ -120,21 +120,21 @@ function formulario(form, idioma){
 					</div>
 					<div id="formulario-t1"></div>
 				</div>
-			</div>
-			<?php echo form_hidden('columna',1);?>
-			<?php $atrib=array(
-				'id'=>'submit',
-				'name'=>'submit',
-				'content'=>$this->lang->line('admin_footer_boton'),
-				'type'=>'submit',
-				'class'=>'btn btn-primary'
-			); ?>
-			<div class="separacion-col">
-				<?php echo form_button($atrib);
-				echo form_close();?>
-			</div>
-			<?php echo form_open('admin-configurar-pie', array('name'=>'f2','class'=>'form-horizontal'));?>
-				<div class="form-group separacion-col-sup">
+	</div>
+	<?php echo form_hidden('columna',1);?>
+	<?php $atrib=array(
+		'id'=>'submit',
+		'name'=>'submit',
+		'content'=>$this->lang->line('admin_footer_boton'),
+		'type'=>'submit',
+		'class'=>'btn btn-primary'
+	); ?>
+	<div class="separacion-col">
+		<?php echo form_button($atrib);
+		echo form_close();?>
+	</div>
+	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f2','class'=>'form-horizontal'));?>
+		<div class="form-group separacion-col-sup">
 					<div class="col-sm-2">
 						<?php echo form_label($this->lang->line('admin_col_2'),'col',array('class'=>'control-label pull-right'));?>
 					</div>
@@ -195,7 +195,7 @@ function formulario(form, idioma){
 														'id'=>'contenido2_'.$idioma->id_idioma,
 														'class'=>'form-control',
 														'value'=>set_value('contenido2_'.$idioma->id_idioma,isset($texto_footer2[$idioma->id_idioma]->contenido) ? $texto_footer2[$idioma->id_idioma]->contenido : ''),
-													);?>	
+													); echo $idioma->id_idioma.' Contenido: '.$texto_footer2[$idioma->id_idioma]->contenido;?>	
 													<div class="col-md-12">
 														<?php echo form_label($this->lang->line('blog_contenido'),'contenido2_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
 													</div>
@@ -213,21 +213,21 @@ function formulario(form, idioma){
 							<div id="formulario-t2"></div>
 								
 						</div>
-					</div>
-					<?php echo form_hidden('columna',2);?>
-					<?php $atrib=array(
-						'id'=>'submit',
-						'name'=>'submit',
-						'content'=>$this->lang->line('admin_footer_boton'),
-						'type'=>'submit',
-						'class'=>'btn btn-primary'
-					); ?>
-					<div class="separacion-col">
-						<?php echo form_button($atrib);
-						echo form_close();?>
-					</div>
-					<?php echo form_open('admin-configurar-pie', array('name'=>'f3','class'=>'form-horizontal'));?>
-						<div class="form-group separacion-col-sup">
+	</div>
+	<?php echo form_hidden('columna',2);?>
+	<?php $atrib=array(
+		'id'=>'submit',
+		'name'=>'submit',
+		'content'=>$this->lang->line('admin_footer_boton'),
+		'type'=>'submit',
+		'class'=>'btn btn-primary'
+	); ?>
+	<div class="separacion-col">
+		<?php echo form_button($atrib);
+		echo form_close();?>
+	</div>
+	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f3','class'=>'form-horizontal'));?>
+		<div class="form-group separacion-col-sup">
 						 	<div class="col-md-2">
 								<?php echo form_label($this->lang->line('admin_col_3'),'col',array('class'=>'control-label pull-right'));?>
 							</div>
@@ -309,113 +309,114 @@ function formulario(form, idioma){
 								</div>
 								<div id="formulario-t3"></div>
 							</div>
-						</div>
-						<?php echo form_hidden('columna',3);?>
-						<?php $atrib=array(
-							'id'=>'submit',
-							'name'=>'submit',
-							'content'=>$this->lang->line('admin_footer_boton'),
-							'type'=>'submit',
-							'class'=>'btn btn-primary'
-						); ?>
-						<div class="separacion-col">
-							<?php echo form_button($atrib);
-							echo form_close();?>
-						</div>
-						<?php echo form_open('admin-configurar-pie', array('name'=>'f4','class'=>'form-horizontal'));?>
-						<div class="form-group separacion-col-sup">
-						 	<div class="col-md-2">
-								<?php echo form_label($this->lang->line('admin_col_4'),'col',array('class'=>'control-label pull-right'));?>
-							</div>
-						 	<div class="col-md-10">
-						 		<select name="col" id="col" class="form-control" onchange="formulario('f4','<?php echo $idioma_actual->id_idioma;?>')">
-								<?php if(isset($opc_col4)){?>
-									<option value="<?php echo $opc_col4 -> id_opc; ?>"><?php echo $opc_col4 -> nombre; ?></option>
-					        	<?php }?>
-					        		<option value="vacio">Vacío</option>
-					        	<?php 
-								   	foreach($opc_footer as $opc){?>
-								    	<option value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
-								<?php } ?>        
-								</select>
-								<span><?php echo form_error('col'); ?></span>
-								<div id="grupo4">
-								<?php if(isset($opc_col4)){?>
-									<?php if($opc_col4->id_opc == 2){?>
-										<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
-										<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
-										<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
-										<input class="form-control" type="text" name="facebook" value="<?php echo $valf;?>"></input>
+	</div>
+	<?php echo form_hidden('columna',3);?>
+	<?php $atrib=array(
+		'id'=>'submit',
+		'name'=>'submit',
+		'content'=>$this->lang->line('admin_footer_boton'),
+		'type'=>'submit',
+		'class'=>'btn btn-primary'
+	); ?>
+	<div class="separacion-col">
+		<?php echo form_button($atrib);
+		echo form_close();?>
+	</div>
+	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f4','class'=>'form-horizontal'));?>
+		<div class="form-group separacion-col-sup">
+			<div class="col-sm-2">
+				<?php echo form_label($this->lang->line('admin_col_4'),'col',array('class'=>'control-label pull-right'));?>
+			</div>
+			<div class="col-sm-10">
+				<select name="col" id="col" class="form-control" onchange="formulario('f4','<?php echo $idioma_actual->id_idioma;?>')">
+					<?php if(isset($opc_col4)){?>
+						<option value="<?php echo $opc_col4 -> id_opc; ?>"><?php echo $opc_col4 -> nombre; ?></option>
+					<?php }?>
+					<option value="vacio">Vacío</option>
+					<?php foreach($opc_footer as $opc){?>
+						<option value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
+					<?php } ?>        
+				</select>
+				<span><?php echo form_error('col'); ?></span>
+				<div id="grupo4">
+					<?php if(isset($opc_col4)){?>
+						<?php if($opc_col4->id_opc == 2){?>
+							<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
+							<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
+							<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
+							<input class="form-control" type="text" name="facebook" value="<?php echo $valf;?>"></input>
 										
-										<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
-										<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
-										<?php if(isset($config->twitter))$valt=$config->twitter; else $valt='';?>
-										<input class="form-control" type="text" name="twitter" value="<?php echo $valt;?>"></input>
+							<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
+							<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
+							<?php if(isset($config->twitter))$valt=$config->twitter; else $valt='';?>
+							<input class="form-control" type="text" name="twitter" value="<?php echo $valt;?>"></input>
 										
-										<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
-										<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
-										<?php if(isset($config->google))$valg=$config->google; else $valg='';?>
-										<input class="form-control" type="text" name="google" value="<?php echo $valg;?>"></input>
+							<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
+							<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
+							<?php if(isset($config->google))$valg=$config->google; else $valg='';?>
+							<input class="form-control" type="text" name="google" value="<?php echo $valg;?>"></input>
 										
-										<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
-										<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
-										<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
-										<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
-									<?php }?>
-									<?php if($opc_col4->id_opc == 3){?>
-										<ul class="nav nav-tabs">
-											<?php foreach($cargar_idiomas as $idioma){ ?>
-												<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-													<li class="active"><a href="#tab4_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-												<?php }else{?>
-													<li><a href="#tab4_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-												<?php }?>
-											<?php }?>
-										</ul>
-										<div class="tab-content">
-											<?php foreach($cargar_idiomas as $idioma){?>
-												<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-													<div class="tab-pane active" id="tab4_<?php echo $idioma->id_idioma;?>">
-												<?php }else{?>
-													<div class="tab-pane" id="tab4_<?php echo $idioma->id_idioma;?>">
-												<?php }
-														echo form_hidden('idiomas[]', $idioma->id_idioma);
-														$contenido=array(
-																'name'=>'contenido4_'.$idioma->id_idioma,
-																'id'=>'contenido4_'.$idioma->id_idioma,
-																'class'=>'form-control',
-																'value'=>set_value('contenido4_'.$idioma->id_idioma,isset($texto_footer4[$idioma->id_idioma]->contenido) ? $texto_footer4[$idioma->id_idioma]->contenido : ''),
-														);?>
-														
-															<div class="col-md-12">
-																<?php echo form_label($this->lang->line('blog_contenido'),'contenido4_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
-															</div>
-															<div class="col-md-12">
-																<?php echo form_textarea($contenido); ?>
-																<span><?php echo form_error('contenido4_'.$idioma->id_idioma); ?></span>
-																<p></p>
-															</div>
-														
-													</div>
-											<?php }?>
-										</div>
+							<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
+							<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
+							<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
+							<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
+						<?php }?>
+						<?php if($opc_col4->id_opc == 3){?>
+							<ul class="nav nav-tabs">
+								<?php foreach($cargar_idiomas as $idioma){ ?>
+									<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
+										<li class="active"><a href="#tab4_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+									<?php }else{?>
+										<li><a href="#tab4_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
 									<?php }?>
 								<?php }?>
-								</div>
-								<div id="formulario-t4"></div>
+							</ul>
+							<div class="tab-content">
+								<?php foreach($cargar_idiomas as $idioma){?>
+									<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
+										<div class="tab-pane active" id="tab4_<?php echo $idioma->id_idioma;?>">
+									<?php }else{?>
+										<div class="tab-pane" id="tab4_<?php echo $idioma->id_idioma;?>">
+									<?php }
+										echo form_hidden('idiomas[]', $idioma->id_idioma);
+										$contenido=array(
+											'name'=>'contenido4_'.$idioma->id_idioma,
+											'id'=>'contenido4_'.$idioma->id_idioma,
+											'class'=>'form-control',
+											'value'=>set_value('contenido4_'.$idioma->id_idioma,isset($texto_footer4[$idioma->id_idioma]->contenido) ? $texto_footer4[$idioma->id_idioma]->contenido : ''),
+										);?>
+														
+										<div class="col-md-12">
+											<?php echo form_label($this->lang->line('blog_contenido'),'contenido4_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
+										</div>
+										<div class="col-md-12">
+											<?php echo form_textarea($contenido); ?>
+											<span><?php echo form_error('contenido4_'.$idioma->id_idioma); ?></span>
+											<p></p>
+										</div>
+														
+									</div>
+								<?php }?>
 							</div>
-						</div>
-						<?php echo form_hidden('columna',4);?>
-						<?php $atrib=array(
-							'id'=>'submit',
-							'name'=>'submit',
-							'content'=>$this->lang->line('admin_footer_boton'),
-							'type'=>'submit',
-							'class'=>'btn btn-primary'
-						); ?>
-						<div class="separacion-col">
-							<?php echo form_button($atrib);
-							echo form_close();?>
-						</div>
-					</div>
+						<?php }?>
+					<?php }?>
+				</div>
+				<div id="formulario-t4"></div>
+			</div>
+	</div>
+	<?php echo form_hidden('columna',4);?>
+	<?php $atrib=array(
+		'id'=>'submit',
+		'name'=>'submit',
+		'content'=>$this->lang->line('admin_footer_boton'),
+		'type'=>'submit',
+		'class'=>'btn btn-primary'
+	); ?>
+	<div class="separacion-col">
+		<?php echo form_button($atrib);
+		echo form_close();?>
+	</div>
+</div>
+<?php $this->load->view('javascript/ckeditor');?>
+
 					

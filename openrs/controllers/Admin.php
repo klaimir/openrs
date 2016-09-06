@@ -24,43 +24,39 @@ class Admin extends MY_Controller
     }
     
     function inicializar($seccion, $titulo){
-    	$this->comprobar_sesion();
-    
-    	$data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
+    	$this->data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
     	$opc_cliente_col1 = $this->Admin_model->get_footer_cliente(1, 1);
     	$opc_cliente_col2 = $this->Admin_model->get_footer_cliente(1, 2);
     	$opc_cliente_col3 = $this->Admin_model->get_footer_cliente(1, 3);
     	$opc_cliente_col4 = $this->Admin_model->get_footer_cliente(1, 4);
-    	foreach($data['cargar_idiomas'] as $idioma){
+    	//echo $opc_cliente_col1->id.' '.$opc_cliente_col2->id.' '.$opc_cliente_col3->id.' '.$opc_cliente_col4->id;exit();
+    	foreach($this->data['cargar_idiomas'] as $idioma){
     		if($opc_cliente_col1 != NULL && $opc_cliente_col1->id_opc == 4)
-    			$data['texto_footer1'][$idioma->id_idioma] = $this->user_model->get_texto_footer($opc_cliente_col1->id, $idioma->id_idioma, 1);
+    			$this->data['texto_footer1'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer(1, $idioma->id_idioma, 1);
     		if($opc_cliente_col2 != NULL && $opc_cliente_col2->id_opc == 4)
-    			$data['texto_footer2'][$idioma->id_idioma] = $this->user_model->get_texto_footer($opc_cliente_col2->id, $idioma->id_idioma, 2);
+    			$this->data['texto_footer2'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer(1, $idioma->id_idioma, 2);
     		if($opc_cliente_col3 != NULL && $opc_cliente_col3->id_opc == 4)
-    			$data['texto_footer3'][$idioma->id_idioma] = $this->user_model->get_texto_footer($opc_cliente_col3->id, $idioma->id_idioma, 3);
+    			$this->data['texto_footer3'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer(1, $idioma->id_idioma, 3);
     		if($opc_cliente_col4 != NULL && $opc_cliente_col4->id_opc == 4)
-    			$data['texto_footer4'][$idioma->id_idioma] = $this->user_model->get_texto_footer($opc_cliente_col4->id, $idioma->id_idioma, 4);
+    			$this->data['texto_footer4'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer(1, $idioma->id_idioma, 4);
     	}
-    	$data['idioma_actual'] = $this->Idioma_model->get_usuario_idioma($this->simple_sessions->get_value('id_usuario'));
-    	$data['config']=$this->general_model->get_config();
-    	$data['title']= $titulo.' - '.$data['config']->nombre;
-    	$data['secciones'] = $this->seccion_model->get_secciones($data['idioma_actual']->id_idioma);
-    	$data['sec'] = $seccion;
-    	return $data;
+    	$this->data['idioma_actual'] = $this->Idioma_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
+    	$this->data['config']=$this->Admin_model->datos_config(1);
+    	$this->data['title']= $titulo.' - '.$this->data['config']->nombre;
+    	//$data['secciones'] = $this->seccion_model->get_secciones($data['idioma_actual']->id_idioma);
+    	//$this->data['sec'] = $seccion;
+    	return $this->data;
     }
     
     function index()
     {
-    	$data = $this->inicializar('0', $this->lang->line('admin_c_panel_administracion'));
-    	$data['es_admin'] = '1';
-    	$this->template->write_view('header','templates/header_admin',$data);
-    	$this->template->write_view('content','admin/index',$data);
-    	$this->template->render();
+    	$this->cabecera();
     }
     
     public function cabecera(){
+    	$data = $this->inicializar('0', 'Cabecera');
     	//Cargamos configuración cabecera
-    	$this->data['config'] = $this->Admin_model->datos_config(1);
+    	//$this->data['config'] = $this->Admin_model->datos_config(1);
     	// Render
     	$this->data['color'] = $this->session->flashdata('color');
     	$this->data['mensaje'] = $this->session->flashdata('mensaje');
@@ -170,8 +166,8 @@ class Admin extends MY_Controller
     }
     
     public function pie(){
-    	//Cargamos configuración cabecera
-    	$this->data['config'] = $this->Admin_model->datos_config(1);
+    	$this->data = $this->inicializar('0', 'Pie');
+    	//Cargamos configuración pie
     	$this->data['opc_footer'] = $this->Admin_model->get_footer_opciones();
     	for($i=1;$i<5;$i++){//sacamos las opciones segun columna
     		//Para panales independientes
@@ -189,7 +185,7 @@ class Admin extends MY_Controller
     function modificarPie(){  
     	//Comprobación borrado de columna
     	if($this->input->post('col') == 'vacio'){
-    		$cliente_opc = $this->user_model->get_footer_cliente(1, $this->input->post('columna'));
+    		$cliente_opc = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
     		$this->Admin_model->borrar_texto_columna($cliente_opc->id);
     		$this->Admin_model->borrar_columna_pie(1, $this->input->post('columna'));
     	}
@@ -197,42 +193,45 @@ class Admin extends MY_Controller
     	//Comprobación opción redes sociales
     	if($this->input->post('facebook')){
     		$datos_profile = array('facebook' => $this->input->post('facebook'));
-    		$this->user_model->actualizar_red_social(1, $datos_profile);
+    		$this->Admin_model->actualizar_red_social(1, $datos_profile);
     	}
     	if($this->input->post('twitter')){
     		$datos_profile = array('twitter' => $this->input->post('twitter'));
-    		$this->user_model->actualizar_red_social(1, $datos_profile);
+    		$this->Admin_model->actualizar_red_social(1, $datos_profile);
     	}
     	if($this->input->post('google')){
     		$datos_profile = array('google' => $this->input->post('google'));
-    		$this->user_model->actualizar_red_social(1, $datos_profile);
+    		$this->Admin_model->actualizar_red_social(1, $datos_profile);
     	}
     	if($this->input->post('vimeo')){
     		$datos_profile = array('vimeo' => $this->input->post('vimeo'));
-    		$this->user_model->actualizar_red_social(1, $datos_profile);
+    		$this->Admin_model->actualizar_red_social(1, $datos_profile);
     	}
     		 
     	//Comprobación Inserción de texto
     	if($this->input->post('idioma')){
-    		$opc_cliente = $this->user_model->get_footer_cliente(1, $this->input->post('columna'));
-    		$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido'),$this->input->post('idioma'));
+    		//$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
+    		$this->Admin_model->actualizar_texto(1, $this->input->post('contenido'),$this->input->post('idioma'));
     	}
     	//Comprobación Edición de texto
     	if($this->input->post('idiomas')){
-    		$opc_cliente = $this->user_model->get_footer_cliente(1, $this->input->post('columna'));
+    		//$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
     		$idiomas = $this->input->post('idiomas');
     		foreach($idiomas as $idioma){
     			$col=$this->input->post('columna');
     			if($col == 1)
-    				$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido_'.$idioma),$idioma);
+    				$this->Admin_model->actualizar_texto(1, $this->input->post('contenido_'.$idioma),$idioma);
     			elseif($col == 2)
-    				$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido2_'.$idioma),$idioma);
+    				$this->Admin_model->actualizar_texto(1, $this->input->post('contenido2_'.$idioma),$idioma);
     			elseif($col == 3)
-    				$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido3_'.$idioma),$idioma);
+    				$this->Admin_model->actualizar_texto(1, $this->input->post('contenido3_'.$idioma),$idioma);
     			elseif($col == 4)
-    				$this->user_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido4_'.$idioma),$idioma);
+    				$this->Admin_model->actualizar_texto(1, $this->input->post('contenido4_'.$idioma),$idioma);
     		}
     	}
+    	
+    	$this->Admin_model->actualizar_pie_cliente(1, $this->input->post('columna'), $this->input->post('col'));
+    	
     	$this->session->set_flashdata('color','success');
     	$this->session->set_flashdata('mensaje', 'Modificación realizada correctamente');
     	redirect('admin/pie','refresh');
@@ -241,7 +240,9 @@ class Admin extends MY_Controller
     function limpiar_red($red){
     	//Para paneles independientes
     	//$this->user_model->limpiar_red_social($this->simple_sessions->get_value('id_usuario'), $red);
-    	$this->user_model->limpiar_red_social(1, $red);
-    	redirect('admin-mi-cuenta/4/13','refresh');
+    	$this->Admin_model->limpiar_red_social(1, $red);
+    	$this->session->set_flashdata('color','success');
+    	$this->session->set_flashdata('mensaje', 'Modificación realizada correctamente');
+    	redirect('admin/pie','refresh');
     }
 }

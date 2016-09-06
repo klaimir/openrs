@@ -65,22 +65,16 @@ class Admin_model extends MY_Model
     	$this->db->delete('footer_texto_idiomas', array('id_opc_cliente'=>$id));
     }
     
-    function actualizar_pie_cliente($iduser, $columna, $opc, $num_art=NULL){
+    function actualizar_pie_cliente($iduser, $columna, $opc){
     	$this->db->where('iduser',$iduser);
     	$this->db->where('columna',$columna);
     	$query=$this->db->get('footer_opciones_cliente');
     	if($query->num_rows()== 1){
     		$this->db->where('iduser',$iduser);
     		$this->db->where('columna',$columna);
-    		if($num_art != NULL)
-    			$this->db->update('footer_opciones_cliente', array('id_opc'=>$opc, 'num_articulos'=>$num_art));
-    		else
-    			$this->db->update('footer_opciones_cliente', array('id_opc'=>$opc));
+    		$this->db->update('footer_opciones_cliente', array('id_opc'=>$opc));
     	}else{
-    		if($num_art != NULL)
-    			$this->db->insert('footer_opciones_cliente', array('iduser'=>$iduser, 'id_opc'=>$opc, 'columna'=>$columna, 'num_articulos'=>$num_art));
-    		else
-    			$this->db->insert('footer_opciones_cliente', array('iduser'=>$iduser, 'id_opc'=>$opc, 'columna'=>$columna));
+    		$this->db->insert('footer_opciones_cliente', array('iduser'=>$iduser, 'id_opc'=>$opc, 'columna'=>$columna));
     	}
     }
     
@@ -88,6 +82,7 @@ class Admin_model extends MY_Model
     	$this->db->where('user_id', $id_user);
     	$this->db->update('config', $datos);
     }
+    
     function limpiar_red_social($id_user, $red){
     	$this->db->where('user_id', $id_user);
     	if($red == 'facebook')
@@ -100,5 +95,44 @@ class Admin_model extends MY_Model
     	$this->db->update('config', array('linkedin'=>NULL));
     	elseif($red == 'vimeo')
     	$this->db->update('config', array('vimeo'=>NULL));
+    }
+    
+    function actualizar_texto($id, $contenido, $idioma=NULL){
+    	if($idioma == NULL){
+    		$this->db->where('id_opc_cliente',$id);
+    		$this->db->where('id_idioma',1);
+    		$query=$this->db->get('footer_texto_idiomas');
+    		if($query->num_rows()== 1){
+    			$this->db->where('id_opc_cliente',$id);
+    			$this->db->where('id_idioma',1);
+    			$this->db->update('footer_texto_idiomas', array('contenido'=>$contenido));
+    		}else{
+    			$this->db->insert('footer_texto_idiomas', array('id_opc_cliente'=>$id, 'contenido'=>$contenido, 'id_idioma'=>1));
+    		}
+    	}else{
+    		$this->db->where('id_opc_cliente',$id);
+    		$this->db->where('id_idioma',$idioma);
+    		$query=$this->db->get('footer_texto_idiomas');
+    		if($query->num_rows()== 1){
+    			$this->db->where('id_opc_cliente',$id);
+    			$this->db->where('id_idioma',$idioma);
+    			$this->db->update('footer_texto_idiomas', array('contenido'=>$contenido));
+    		}else{
+    			$this->db->insert('footer_texto_idiomas', array('id_opc_cliente'=>$id, 'contenido'=>$contenido, 'id_idioma'=>$idioma));
+    		}
+    	}
+    }
+    
+    function get_codigo_pie($id, $idioma){
+    	$this->db->where('id_opc_cliente',$id);
+    	$this->db->where('id_idioma',$idioma);
+    	return $this->db->get('footer_texto_idiomas')->row()->contenido;
+    }
+    
+    function get_texto_footer($id, $idioma, $columna){
+    	$this->db->where('id_opc_cliente',$id);
+    	$this->db->where('id_idioma',$idioma);
+    	$this->db->where('columna',$columna);
+    	return $this->db->get('footer_texto_idiomas')->row();
     }
 }
