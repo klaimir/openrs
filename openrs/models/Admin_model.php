@@ -45,8 +45,9 @@ class Admin_model extends MY_Model
     	$this->db->from('footer_opciones');
     	$this->db->join('footer_opciones_cliente', 'footer_opciones.id_opc = footer_opciones_cliente.id_opc');
     	$this->db->where('footer_opciones_cliente.iduser', $iduser);
-    	$this->db->where('columna', $col);
-    	return $this->db->get('')->row();
+    	$this->db->where('footer_opciones_cliente.columna', $col);
+    	return $this->db->get()->row();
+    	//echo $this->db->last_query();
     }
     
     /***********************************************************************/
@@ -129,10 +130,9 @@ class Admin_model extends MY_Model
     	return $this->db->get('footer_texto_idiomas')->row()->contenido;
     }
     
-    function get_texto_footer($id, $idioma, $columna){
+    function get_texto_footer($id, $idioma){
     	$this->db->where('id_opc_cliente',$id);
     	$this->db->where('id_idioma',$idioma);
-    	$this->db->where('columna',$columna);
     	return $this->db->get('footer_texto_idiomas')->row();
     }
 }

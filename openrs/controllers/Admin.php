@@ -32,13 +32,13 @@ class Admin extends MY_Controller
     	//echo $opc_cliente_col1->id.' '.$opc_cliente_col2->id.' '.$opc_cliente_col3->id.' '.$opc_cliente_col4->id;exit();
     	foreach($this->data['cargar_idiomas'] as $idioma){
     		if($opc_cliente_col1 != NULL && $opc_cliente_col1->id_opc == 4)
-    			$this->data['texto_footer1'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer(1, $idioma->id_idioma, 1);
+    			$this->data['texto_footer1'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer($opc_cliente_col1->id, $idioma->id_idioma);
     		if($opc_cliente_col2 != NULL && $opc_cliente_col2->id_opc == 4)
-    			$this->data['texto_footer2'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer(1, $idioma->id_idioma, 2);
+    			$this->data['texto_footer2'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer($opc_cliente_col2->id, $idioma->id_idioma);
     		if($opc_cliente_col3 != NULL && $opc_cliente_col3->id_opc == 4)
-    			$this->data['texto_footer3'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer(1, $idioma->id_idioma, 3);
+    			$this->data['texto_footer3'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer($opc_cliente_col3->id, $idioma->id_idioma);
     		if($opc_cliente_col4 != NULL && $opc_cliente_col4->id_opc == 4)
-    			$this->data['texto_footer4'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer(1, $idioma->id_idioma, 4);
+    			$this->data['texto_footer4'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer($opc_cliente_col4->id, $idioma->id_idioma);
     	}
     	$this->data['idioma_actual'] = $this->Idioma_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
     	$this->data['config']=$this->Admin_model->datos_config(1);
@@ -210,23 +210,24 @@ class Admin extends MY_Controller
     		 
     	//Comprobación Inserción de texto
     	if($this->input->post('idioma')){
-    		//$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
-    		$this->Admin_model->actualizar_texto(1, $this->input->post('contenido'),$this->input->post('idioma'));
+    		$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
+    		//echo var_dump($opc_cliente);
+    		$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido'),$this->input->post('idioma'));
     	}
     	//Comprobación Edición de texto
     	if($this->input->post('idiomas')){
-    		//$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
+    		$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
     		$idiomas = $this->input->post('idiomas');
     		foreach($idiomas as $idioma){
     			$col=$this->input->post('columna');
     			if($col == 1)
-    				$this->Admin_model->actualizar_texto(1, $this->input->post('contenido_'.$idioma),$idioma);
+    				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido_'.$idioma),$idioma);
     			elseif($col == 2)
-    				$this->Admin_model->actualizar_texto(1, $this->input->post('contenido2_'.$idioma),$idioma);
+    				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido2_'.$idioma),$idioma);
     			elseif($col == 3)
-    				$this->Admin_model->actualizar_texto(1, $this->input->post('contenido3_'.$idioma),$idioma);
+    				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido3_'.$idioma),$idioma);
     			elseif($col == 4)
-    				$this->Admin_model->actualizar_texto(1, $this->input->post('contenido4_'.$idioma),$idioma);
+    				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido4_'.$idioma),$idioma);
     		}
     	}
     	
