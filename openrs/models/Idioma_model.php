@@ -23,4 +23,14 @@ class Idioma_model extends MY_Model
     	$this->db->where('id', $id_usuario);
     	return $this->db->get()->row();
     }
+    
+    public function get_idioma($id){
+    	$this->db->where('id_idioma', $id);
+    	return $this->db->get('idiomas')->row();
+    }
+    
+    public function get_id_idioma_by_nombre($nombre_seo2){
+    	$this->db->where('nombre_seo2', $nombre_seo2);
+    	return $this->db->get('idiomas')->row();
+    }
 }

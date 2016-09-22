@@ -1,18 +1,21 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Seccion extends MY_Controller
+require_once APPPATH . '/core/MY_Controller_Front.php';
+
+class Seccion extends MY_Controller_Front
 {
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->helper('cookie');
-		$this->load->library('cadenas');
+		//$this->load->library('cadenas');
 		$this->load->library('form_validation');
 		$this->load->model('seccion_model');
 		$this->load->model('bloque_model');
 		$this->load->model('carrusel_model');
-		$this->load->model('user_model');
-		$this->load->model('general_model');
+		$this->load->model('Usuarios_model');
+		$this->load->model('General_model');
+		$this->load->model('Idioma_model');
 	}
 	
 	//Método para la portada: diferente en cada tienda, para que la portada sea original
@@ -55,17 +58,17 @@ class Seccion extends MY_Controller
 	}
 	
 	function inicializar($seccion, $titulo=NULL){
-		$data['cargar_idiomas'] = $this->idioma_model->get_idiomas_subidos_activos();
-		if($this->simple_sessions->es_usuario() || $this->simple_sessions->es_cliente() || $this->simple_sessions->es_admin())
-			$data['idioma_actual'] = $this->user_model->get_usuario_idioma($this->simple_sessions->get_value('id_usuario'));
+		$data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
+		if($this->ion_auth->logged_in())
+			$data['idioma_actual'] = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
 		else
-			$data['idioma_actual'] = $this->idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));
-		$data['config']=$this->general_model->get_config();
-		$data['categorias_principales']=$this->producto_model->get_categorias_principales($data['idioma_actual']->id_idioma);
+			$data['idioma_actual'] = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));
+		$data['config']=$this->General_model->get_config();
+		//$data['categorias_principales']=$this->producto_model->get_categorias_principales($data['idioma_actual']->id_idioma);
 		$data['secciones_header']=$this->seccion_model->get_secciones_header($data['idioma_actual']->id_idioma);
 		$data['subsecciones_header']=$this->seccion_model->get_subsecciones_header($data['idioma_actual']->id_idioma);
 		
-		$data['cols_pie']=$this->user_model->get_columnas_pie();
+		$data['cols_pie']=$this->Usuarios_model->get_columnas_pie();
 		if(count($data['cols_pie'])){
 			$data['span']=12/count($data['cols_pie']);
 		}else{
@@ -76,8 +79,6 @@ class Seccion extends MY_Controller
 			$cont++;
 			if($col->id_opc == 1)
 				$data['menu_footer']=$this->seccion_model->get_secciones_footer($data['idioma_actual']->id_idioma);
-			elseif($col->id_opc == 2)
-				$data['articulos_footer']=$this->articulo_model->ultimos_articulos($data['idioma_actual']->id_idioma, $col->num_articulos);
 			elseif($col->id_opc == 4)
 				$data['codigo'.$cont]=$this->user_model->get_codigo_pie($col->id, $data['idioma_actual']->id_idioma);
 		}

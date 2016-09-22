@@ -192,5 +192,25 @@ class Usuarios_model extends MY_Model
     {
         return $this->ion_auth->is_admin($id);
     }
+    
+    function modificar_idioma_usuario($id, $id_idioma){
+    	$this->db->where('id', $id);
+    	$this->db->update('users', array('id_idioma' => $id_idioma));
+    }
+    
+    function get_usuario_idioma($id_usuario){
+    	$this->db->select('idiomas.nombre, idiomas.id_idioma, idiomas.nombre_seo2');
+    	$this->db->from('users');
+    	$this->db->join('idiomas', 'users.id_idioma = idiomas.id_idioma');
+    	$this->db->where('id', $id_usuario);
+    	return $this->db->get()->row();
+    }
+    
+    function get_columnas_pie(){
+    	$this->db->where('iduser', 1);
+    	$this->db->where('id_opc > 0');
+    	$this->db->order_by('columna', 'asc');
+    	return $this->db->get('footer_opciones_cliente')->result();
+    }
 
 }

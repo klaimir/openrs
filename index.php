@@ -234,6 +234,10 @@ switch (ENVIRONMENT)
 
 	// Name of the "system" directory
 	define('SYSDIR', basename(BASEPATH));
+	
+	// The PHP file extension
+	// this global constant is deprecated.
+	define('EXT', '.php');
 
 	// The path to the "application" directory
 	if (is_dir($application_folder))
