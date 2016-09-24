@@ -212,5 +212,11 @@ class Usuarios_model extends MY_Model
     	$this->db->order_by('columna', 'asc');
     	return $this->db->get('footer_opciones_cliente')->result();
     }
+    
+    function get_codigo_pie($id, $idioma){
+    	$this->db->where('id_opc_cliente',$id);
+    	$this->db->where('id_idioma',$idioma);
+    	return $this->db->get('footer_texto_idiomas')->row()->contenido;
+    }
 
 }
