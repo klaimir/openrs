@@ -28,9 +28,9 @@ class Seccion extends MY_Controller_Front
 			}
 		}
 		
-		$this->template->write_view('header','public/templates/header',$data);
+		$this->template->write_view('header','public/template/header',$data);
 		$this->template->write_view('content_center','public/seccion',$data);
-		$this->template->write_view('footer','public/templates/footer',$data);
+		$this->template->write_view('footer','public/template/footer',$data);
 		$this->template->render();
 	}
 	
@@ -72,5 +72,71 @@ class Seccion extends MY_Controller_Front
 		$data['meta_keywords']=$data['seccion']->keyword_seo;
 		
 		return $data;
+	}
+	
+	function seccion($seccion){
+		$idseccion = $this->Seccion_model->get_seccion_nombre($this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'))->id_idioma, $seccion)->id;
+		$data = $this->inicializar($idseccion);
+		$data['bloques']=$this->Bloque_model->get_bloques(1,$data['idioma_actual']->id_idioma, $idseccion);
+		foreach ($data['bloques'] as $k=>$v){
+			if($v->id_tipo_bloque==1 || $v->id_tipo_bloque==4){ //bloque de texto
+				$data['bloques'][$k]->texto=$this->Bloque_model->get_contenido($v->id_bloque,"texto", $data['idioma_actual']->id_idioma);
+			}
+		}
+		if($this->input->post()){
+	
+			$this->form_validation->set_rules('nombre','Nombre','trim|xss_clean|required');
+			$this->form_validation->set_rules('email','Email','trim|xss_clean|required|valid_email');
+			$this->form_validation->set_rules('telefono','Teléfono','trim|xss_clean|required|is_natural');
+	
+			if ($this->form_validation->run()){
+	
+				$this->load->library('email');
+	
+				$config['protocol'] = 'mail';
+				//$config['mailpath'] = '/usr/sbin/sendmail';
+				//$config['charset'] = 'iso-8859-1';
+				$config['wordwrap'] = TRUE;
+	
+				$this->email->initialize($config);
+	
+				$this->email->from('noreply@lojident.com', 'Email de contacto');
+				$this->email->to('desarrollos@tipycos.com');
+	
+				$this->email->subject('Correo entrante de la WEB');
+				$this->email->message('
+						<html>
+						<head>
+						<title>Contacto Lojident</title>
+						</head>
+						<body>
+						<p>Detalles del formulario de contacto:</p>
+						<p><b>Nombre</b>: '.$this->input->post('nombre').'</p>'.'
+						<p><b>Empresa</b>: '.$this->input->post('empresa').'</p>'.'
+						<p><b>Email</b>: '.$this->input->post('email').'</p>'.'
+						<p><b>Teléfono</b>: '.$this->input->post('telefono').'</p>'.'
+						<p><b>Mensaje</b>: '.$this->input->post('mensaje').'</p>'.'
+						</body>
+						</html>'
+				);
+				$this->email->send();
+				redirect('site/envio/'.$seccion);
+			}
+		}
+	
+		$this->template->write_view('header','public/template/header',$data);
+		$this->template->write_view('content_center','public/seccion',$data);
+		$this->template->write_view('footer','public/template/footer',$data);
+		$this->template->render();
+	}
+	
+	function envio($seccion){
+		$idseccion = $this->seccion_model->get_seccion_nombre(1, $seccion)->id;
+		$data = $this->inicializar($idseccion);
+		$data['nseccion']=$seccion;
+		$this->template->write_view('header','templates/header',$data);
+		$this->template->write_view('content_center','site/envio',$data);
+		$this->template->write_view('footer','templates/footer',$data);
+		$this->template->render();
 	}
 }

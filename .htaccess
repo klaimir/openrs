@@ -51,8 +51,8 @@ Header set P3P "policyref='/w3c/p3p.xml', CP='NOI DSP COR NID CUR ADM DEV OUR BU
 
 </IfModule>
 
-<FilesMatch "\.(ttf|ttc|otf|eot|woff)$">
-    <IfModule mod_headers.c>
-        Header set Access-Control-Allow-Origin "*"
-    </IfModule>
-</FilesMatch>
+#<FilesMatch "\.(ttf|ttc|otf|eot|woff)$">
+    #<IfModule mod_headers.c>
+        #Header set Access-Control-Allow-Origin "*"
+    #</IfModule>
+#</FilesMatch>

@@ -120,7 +120,7 @@ class dynamic_route{
 			$return_data = new stdClass;
 
 			if(isset($row['id_seccion_no_nativa'])){
-				$return_data->url = 'site/seccion/'.$row['url_seo'];
+				$return_data->url = 'seccion/seccion/'.$row['url_seo'];
 				$return_data->route = $row['url_seo'];
 				$r_data[] = $return_data;
 			}elseif(isset($row['nombre_seo'])){
@@ -129,7 +129,7 @@ class dynamic_route{
 					foreach($query2 as $fila){
 
 						$return_data = new stdClass;
-						$return_data->url = 'site/seccion/'.$fila['url_seo'];
+						$return_data->url = 'seccion/seccion/'.$fila['url_seo'];
 						$return_data->route = '^'.$row['nombre_seo'].'/'.$fila['url_seo'];
 						$r_data[] = $return_data;
 					}
@@ -138,7 +138,7 @@ class dynamic_route{
 				if($query){
 					foreach($query as $fila){
 						$return_data = new stdClass;
-						$return_data->url = 'site/ver_articulo/'.$fila['id_articulo'];
+						$return_data->url = 'seccion/ver_articulo/'.$fila['id_articulo'];
 						$return_data->route = '^'.$row['nombre_seo'].'/blog/'.$fila['url_seo_articulo'];
 						$r_data[] = $return_data;
 					}
