@@ -78,3 +78,69 @@ CREATE TABLE IF NOT EXISTS `idiomas` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE  `users` ADD  `id_idioma` INT( 11 ) NOT NULL DEFAULT  '1';
+
+CREATE TABLE IF NOT EXISTS `bloque` (
+  `id_bloque` int(4) unsigned NOT NULL AUTO_INCREMENT,
+  `prioridad` int(2) unsigned NOT NULL,
+  `background` varchar(10) DEFAULT NULL,
+  `c_titulo` varchar(10) DEFAULT NULL,
+  `id_tipo_bloque` int(10) unsigned NOT NULL,
+  `id_seccion` int(10) unsigned NOT NULL,
+  `id_estado` int(10) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_bloque`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `bloque_idiomas` (
+  `id_bloque` int(4) unsigned NOT NULL,
+  `titulo_bloque` varchar(100) NOT NULL,
+  `id_idioma` int(11) unsigned NOT NULL,
+  `id_bloque_idiomas` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id_bloque_idiomas`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `seccion` (
+  `id` int(3) unsigned NOT NULL AUTO_INCREMENT,
+  `prioridad` int(2) unsigned NOT NULL,
+  `background` varchar(10) DEFAULT NULL,
+  `menu` tinyint(1) NOT NULL,
+  `footer` tinyint(1) NOT NULL,
+  `desplegable` tinyint(1) NOT NULL,
+  `id_estado` int(10) unsigned NOT NULL,
+  `tipo_seccion` int(10) unsigned NOT NULL DEFAULT '2' COMMENT '1 automático, 2 manual',
+  `id_super_seccion` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `seccion_idiomas` (
+  `id_seccion_idiomas` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `titulo` varchar(20) NOT NULL,
+  `url_seo` varchar(50) NOT NULL,
+  `descripcion_seo` varchar(150) NOT NULL,
+  `titulo_seo` varchar(70) NOT NULL,
+  `keyword_seo` text NOT NULL,
+  `id_seccion` int(3) unsigned NOT NULL,
+  `id_idioma` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id_seccion_idiomas`),
+  UNIQUE KEY `url_seo` (`url_seo`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `texto` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_bloque` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `texto_idiomas` (
+  `id_texto_idiomas` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_bloque` int(10) unsigned NOT NULL,
+  `contenido` text CHARACTER SET latin1 NOT NULL,
+  `id_idioma` int(11) unsigned NOT NULL,
+  `id_texto` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id_texto_idiomas`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `tipo_bloque` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
