@@ -54,8 +54,8 @@ $route['seo/sitemap_blog\.xml'] = "seo/sitemap_blog";
 $route['seo/sitemap_etiq\.xml'] = "seo/sitemap_etiq";
 
 
-$route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+//$route['404_override'] = '';
+//$route['translate_uri_dashes'] = FALSE;
 
 class dynamic_route{
 
