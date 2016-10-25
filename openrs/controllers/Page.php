@@ -1,16 +1,36 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Page extends MY_Functions
+require_once APPPATH . '/core/MY_Controller.php';
+
+class Page extends MY_Controller
 {
-	function __construct()
+	/*function __construct()
 	{
 		parent::__construct();
-		$this->load->model('carrusel_model');
+		//$this->load->model('carrusel_model');
 		$this->load->model('Seccion_model');
 		$this->load->model('Usuarios_model');
 		$this->load->model('Idioma_model');
  		$this->load->model('General_model');
  		$this->load->library('ion_auth');
+ 		
+ 		// Comprobación de acceso
+ 		//$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+	}*/
+	function __construct()
+	{
+		$this->s_model = "Admin_model";
+		$this->m_model = "admin_model";
+		$this->_controller = "admin";
+		$this->_view = "admin";
+	
+		parent::__construct();
+	
+		// Secure the access
+		$this->_security();
+	
+		// Comprobación de acceso
+		$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
 	}
 	
 	//Desde este controlador cargaremos las secciones seleccionadas. Las secciones deben tener el campo url único
@@ -31,7 +51,7 @@ class Page extends MY_Functions
 								  $this->lang->line('cms_c_listado_titulo')=> 'titulo',
 								  $this->lang->line('cms_c_listado_menu')=> 'menu',
 								  $this->lang->line('cms_c_listado_estado')=>'id_estado'),
-				'opciones'=> array('Editar'=>array('href'=>site_url('cms-crear-seccion'),
+				'opciones'=> array('Editar'=>array('href'=>site_url('page/crear_seccion'),
 												   'icon'=>'glyphicon glyphicon-edit',
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_editar_seccion')),
@@ -129,12 +149,6 @@ class Page extends MY_Functions
 	}
 
 	function inicializar($seccion, $titulo){
-		if($this->simple_sessions->get_value('rol') == '1')
-			$this->simple_sessions->check_admin();
-		elseif($this->simple_sessions->get_value('rol') == '2')
-			$this->simple_sessions->check_cliente();
-		else
-			redirect('logout');
 	
 		$data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
 		$data['idioma_actual'] = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
@@ -423,7 +437,7 @@ class Page extends MY_Functions
 		$estados_dd['1'] = $this->lang->line('cms_publicado');
 		$estados_dd['2'] = $this->lang->line('cms_eliminado');
 		$estados_dd['3'] = $this->lang->line('cms_borrador');
-		$ssecion_dd=$this->formularios->dropdown_idioma('super_seccion','id','nombre', $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma);
+		//$ssecion_dd=$this->formularios->dropdown_idioma('super_seccion','id','nombre', $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma);
 
 		$prioridad_max=$this->General_model->maximo('seccion','prioridad');
 		//Comprobamos si se está editando
@@ -882,7 +896,7 @@ class Page extends MY_Functions
 		$this->template->render();
 	}
 	
-	function crear_carrusel($id_carrusel=null){
+	/*function crear_carrusel($id_carrusel=null){
 		$data = $this->inicializar('6', $this->lang->line('cms_crear_galeria'));
 		if($id_carrusel==null){
 			redirect('errors/error_404');
@@ -1379,7 +1393,7 @@ class Page extends MY_Functions
 			$this->General_model->delete('categoria_carrusel',array('id'=>$id_categoria_carrusel));
 			redirect('cms-crear-bloque-carrusel/'.$id_carrusel);
 		}
-	}
+	}*/
 
 	function borrar_bloque($id_bloque,$borrar_bloque=null){
 		//Primero comprobar el tipo y borrar su contenido

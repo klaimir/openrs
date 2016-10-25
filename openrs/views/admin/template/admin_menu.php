@@ -283,3 +283,41 @@
         </li>
     </ul>
 </li>
+<li class="">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-globe"></i>
+        <span class="menu-text"> Secciones </span>
+
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+
+    <b class="arrow"></b>
+
+    <ul class="submenu">
+        <li class="">
+        	<a href="<?php echo site_url('Page/listar_secciones'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Listado
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+        	<a href="<?php echo site_url('Page/ordenar_secciones'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Ordenar
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+        	<a href="<?php echo site_url('Page/crear_seccion'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Ordenar
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+	</ul>					
+</li>							
+								
