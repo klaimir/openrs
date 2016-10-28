@@ -111,7 +111,17 @@ $lang['admin_col_1'] = 'Columna 1';
 $lang['admin_col_2'] = 'Columna 2';
 $lang['admin_col_3'] = 'Columna 3';
 $lang['admin_col_4'] = 'Columna 4';
-$lang['admin_nombre_web'] = 'Nombre web';
+$lang['admin_sin_iva'] = 'Catálogo sin IVA';
+$lang['admin_tlf_pedidos'] = 'Tlf. Pedidos';
+$lang['admin_email_pedidos'] = 'Email Pedidos';
+$lang['admin_mostrar_stock'] = 'Mostrar stock';
+$lang['admin_serie_pedidos'] = 'Serie pedidos';
+$lang['admin_activar_paypal'] = 'Activar PayPal';
+$lang['admin_email_paypal'] = 'Email PayPal';
+$lang['admin_activar_transferencia'] = 'Activar transferencia bancaria';
+$lang['admin_beneficiario'] = 'Beneficiario';
+$lang['admin_banco'] = 'Banco';
+$lang['admin_iban'] = 'IBAN';
 
 //Botones
 $lang['admin_aplicar'] = 'Aplicar';

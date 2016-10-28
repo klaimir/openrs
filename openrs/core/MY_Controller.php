@@ -11,8 +11,8 @@ class MY_Controller extends CI_controller
         parent::__construct();
         
         $this->load->database();
-        $this->load->library(array('ion_auth', 'form_validation'));
-        $this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form'));
+        $this->load->library(array('ion_auth', 'form_validation', 'formularios'));
+        $this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form', 'security'));
         $this->load->model('Usuarios_model');
         $this->load->model('Admin_model');
         $this->load->model('Idioma_model');
@@ -166,7 +166,7 @@ class MY_Controller extends CI_controller
     					$this->$config['model_insert_idiomas']['model']->$config['model_insert_idiomas']['method']($config['model_insert_idiomas']['table'],$datos_insert_idiomas,isset($config['model_insert_idiomas']['extra'])?$config['model_insert_idiomas']['extra']:'');
     				}else{
     					$config['model_update_idiomas']['where']['id_idioma'] = $idioma->id_idioma;
-    					if($this->general_model->existe($config['model_insert_idiomas']['table'], $config['model_update_idiomas']['where'])){
+    					if($this->General_model->existe($config['model_insert_idiomas']['table'], $config['model_update_idiomas']['where'])){
     						$this->$config['model_update_idiomas']['model']->$config['model_update_idiomas']['method']($config['model_update_idiomas']['table'],$datos_insert_idiomas,$config['model_update_idiomas']['where']);
     					}else{
     						$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;

@@ -55,22 +55,22 @@ class Page extends MY_Controller
 												   'icon'=>'glyphicon glyphicon-edit',
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_editar_seccion')),
-								   'Bloque'=>array('href'=>site_url('cms-crear-bloque'),
+								   'Bloque'=>array('href'=>site_url('page/crear_bloque'),
 												   'icon'=>'glyphicon glyphicon-plus-sign',
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_nuevo_bloque')),
-								   'ListBloque'=>array('href'=>site_url('cms-listar-bloques'),
+								   'ListBloque'=>array('href'=>site_url('page/listar_bloques'),
 												   'icon'=>'glyphicon glyphicon-list',
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_listar_bloques')),
-								   'Borrar'=>array('href'=>site_url('cms-borrar-seccion'),
+								   'Borrar'=>array('href'=>site_url('page/borrar_seccion'),
 												   'icon'=>'glyphicon glyphicon-trash borrar',
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_borrar_seccion'))),
-				'botones'=>array('1'=>array('href'=>site_url('cms-crear-seccion'),
+				'botones'=>array('1'=>array('href'=>site_url('page/crear_seccion'),
 											'class'=>'btn btn-default pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-plus"></span> '.$this->lang->line('cms_c_listado_boton_nueva')),
-								 '2'=>array('href'=>site_url('cms-ordenar-secciones'),
+								 '2'=>array('href'=>site_url('page/ordenar_secciones'),
 											'class'=>'btn btn-default pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-random"></span> '.$this->lang->line('cms_c_listado_boton_ordenar')))
 		);
@@ -133,7 +133,7 @@ class Page extends MY_Controller
 			case '1':
 				$texto=$this->Seccion_model->get_bloque_txt($idioma, $bloque->id_bloque);
 				//redirect('asd/'.$texto->id);
-				redirect('cms-crear-bloque-texto/'.$texto->id);
+				redirect('page/crear_bloque_texto/'.$texto->id);
 				break;
 			case '2':
 				$carrusel=$this->Seccion_model->get_bloque_carrusel($bloque->id_bloque);
@@ -143,7 +143,7 @@ class Page extends MY_Controller
 			case '4':
 				$iframe=$this->Seccion_model->get_bloque_txt($idioma, $bloque->id_bloque);
 				//redirect('asd/'.$texto->id);
-				redirect('cms-crear-bloque-texto/'.$iframe->id);
+				redirect('page/crear_bloque_texto/'.$iframe->id);
 				break;
 		}
 	}
@@ -177,12 +177,11 @@ class Page extends MY_Controller
 		}else{
 			redirect('errors/error_404');
 		}
-		$data = $this->inicializar('6', $this->lang->line('cms_c_crear_bloque'));
-		$data['seccion'] = $seccion;
+		$this->data = $this->inicializar('6', $this->lang->line('cms_c_crear_bloque'));
+		$this->data['seccion'] = $seccion;
 		//$tipo_bloque_dd=$this->formularios->dropdown('tipo_bloque','id','nombre');
 		//$estado_dd=$this->formularios->dropdown('estados','id','estado');
 		$tipo_bloque_dd['1'] = $this->lang->line('cms_texto');
-		$tipo_bloque_dd['2'] = $this->lang->line('cms_carrusel');
 		$tipo_bloque_dd['4'] = $this->lang->line('cms_iframe');
 		$estado_dd['0'] = $this->lang->line('drop_seleccione');
 		$estado_dd['1'] = $this->lang->line('cms_publicado');
@@ -344,14 +343,14 @@ class Page extends MY_Controller
 				'editando'=>isset($bloque->titulo_bloque) ? $bloque->titulo_bloque : '' ,
 				'nuevo'=>$nuevo,
 				'view'=>'seccion/crear_bloque',
-				'redirect'=>'cms-listar-bloques/'.$url_seccion
+				'redirect'=>'page/listar_bloques/'.$url_seccion
 		);
-		$data = array_merge($data, $datos);
-		$data['inputs']=$inputs;
-		$data['id_bloque']=isset($bloque->id_bloque)?$bloque->id_bloque:'';
+		$this->data = array_merge($this->data, $datos);
+		$this->data['inputs']=$inputs;
+		$this->data['id_bloque']=isset($bloque->id_bloque)?$bloque->id_bloque:'';
 		if(isset($bloque->id_bloque)){
 			foreach($this->Idioma_model->get_idiomas_subidos_activos() as $idioma){
-				$data['elementos'][$idioma->id_idioma] = $this->Seccion_model->get_bloque($idioma->id_idioma, $bloque->id_bloque);
+				$this->data['elementos'][$idioma->id_idioma] = $this->Seccion_model->get_bloque($idioma->id_idioma, $bloque->id_bloque);
 			}
 		}
 		if($this->input->post()){
@@ -359,9 +358,9 @@ class Page extends MY_Controller
 			$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
 			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
 			$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));
-			foreach($data['cargar_idiomas'] as $idioma){
+			foreach($this->data['cargar_idiomas'] as $idioma){
 				if($idioma->id_idioma == $conf->idioma_defecto){
-					foreach($data['inputs'] as $it){
+					foreach($this->data['inputs'] as $it){
 						if($it['fijo']){
 							if($it['val_req']){
 								$this->form_validation->set_rules($it['form_group']['name'],$it['label'],'required|'.$it['form_validation']);
@@ -377,14 +376,14 @@ class Page extends MY_Controller
 						}
 					}
 				}else{
-					foreach($data['inputs'] as $it){
+					foreach($this->data['inputs'] as $it){
 						if(!$it['fijo'])
 							$this->form_validation->set_rules($it['form_group']['name'].'_'.$idioma->id_idioma,$it['label'],$it['form_validation']);
 					}
 				}
 			}
 			if($this->form_validation->run()){
-				foreach($data['inputs'] as $it){
+				foreach($this->data['inputs'] as $it){
 					if($it['fijo'])
 						$datos_insert[$it['form_group']['name']]=$this->input->post($it['form_group']['name']);
 				}
@@ -396,8 +395,8 @@ class Page extends MY_Controller
 					$this->General_model->update('bloque',$datos_insert,array('id_bloque'=>$id_bloque));
 					//Falta borrar los datos si se cambia el tipo de bloque
 				} 
-				foreach($data['cargar_idiomas'] as $idioma){
-					foreach($data['inputs'] as $it){
+				foreach($this->data['cargar_idiomas'] as $idioma){
+					foreach($this->data['inputs'] as $it){
 						if(!$it['fijo']){
 							if($this->input->post($it['form_group']['name'].'_'.$idioma->id_idioma)){
 								$datos_insert_idiomas[$it['form_group']['name']]=$this->input->post($it['form_group']['name'].'_'.$idioma->id_idioma);
@@ -420,13 +419,10 @@ class Page extends MY_Controller
 						}	
 					}
 				}
-				redirect('cms-editar-bloque/'.$id_bloque);			
+				redirect('page/editar_bloque/'.$id_bloque);			
 			}
 		}
-		$this->template->set_template('header_and_content');
-		$this->template->write_view('content','seccion/crear_bloque',$data);
-		$this->template->write_view('header','templates/header_admin',$data);
-		$this->template->render();
+		$this->render_private('seccion/crear_bloque', $this->data);
 	}
 	
 	
@@ -489,7 +485,7 @@ class Page extends MY_Controller
 					'table'=>'seccion_idiomas',
 					'enlace'=>'id_seccion'
 			),
-			'redirect'=>'cms-listar-secciones',
+			'redirect'=>'page/listar_secciones',
 		);
 		$config = array_merge($config, $title);
 		//array para formularios
@@ -789,13 +785,13 @@ class Page extends MY_Controller
 	}
 	
 	function crear_bloque_texto($id_texto=null){
-		$data = $this->inicializar('6', $this->lang->line('cms_c_crear_bloque_texto'));
+		$this->data = $this->inicializar('6', $this->lang->line('cms_c_crear_bloque_texto'));
 		$idioma = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
 		//Comprobamos si se está editando
 		if(isset($id_texto)){
 			$nuevo=false;
-			$data['texto']=$this->Seccion_model->get_bloque_texto($idioma, $id_texto);
-			if (count($data['texto'])==0){
+			$this->data['texto']=$this->Seccion_model->get_bloque_texto($idioma, $id_texto);
+			if (count($this->data['texto'])==0){
 				redirect('errors/error_404');
 			}
 		}else{
@@ -823,12 +819,12 @@ class Page extends MY_Controller
 	
 		);
 	
-		$data['nuevo']=$nuevo;
-		$data['seccion']=$this->Seccion_model->get_seccion_bloque($idioma, $data['texto']->id_bloque);
-		$data['inputs']=$inputs;
-		if(isset($data['texto']->contenido)){
+		$this->data['nuevo']=$nuevo;
+		$this->data['seccion']=$this->Seccion_model->get_seccion_bloque($idioma, $this->data['texto']->id_bloque);
+		$this->data['inputs']=$inputs;
+		if(isset($this->data['texto']->contenido)){
 			foreach($this->Idioma_model->get_idiomas_subidos_activos() as $idioma){
-				$data['elementos'][$idioma->id_idioma] = $this->Seccion_model->get_bloque_texto($idioma->id_idioma, $id_texto);
+				$this->data['elementos'][$idioma->id_idioma] = $this->Seccion_model->get_bloque_texto($idioma->id_idioma, $id_texto);
 			}
 		}
 		if($this->input->post()){
@@ -837,9 +833,9 @@ class Page extends MY_Controller
 			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
 			$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));
 			$this->form_validation->set_message('is_unique',$this->lang->line('login_c_is_unique'));
-			foreach($data['cargar_idiomas'] as $idioma){
+			foreach($this->data['cargar_idiomas'] as $idioma){
 				if($idioma->id_idioma == $conf->idioma_defecto){
-					foreach($data['inputs'] as $it){
+					foreach($this->data['inputs'] as $it){
 						if($it['fijo']){
 							if($it['val_req']){
 								$this->form_validation->set_rules($it['form_group']['name'],$it['label'],'required|'.$it['form_validation']);
@@ -855,15 +851,15 @@ class Page extends MY_Controller
 						}
 					}
 				}else{
-					foreach($data['inputs'] as $it){
+					foreach($this->data['inputs'] as $it){
 						if(!$it['fijo'])
 							$this->form_validation->set_rules($it['form_group']['name'].'_'.$idioma->id_idioma,$it['label'],$it['form_validation']);
 					}
 				}
 			}
 			if($this->form_validation->run()){
-				foreach($data['cargar_idiomas'] as $idioma){
-					foreach($data['inputs'] as $it){
+				foreach($this->data['cargar_idiomas'] as $idioma){
+					foreach($this->data['inputs'] as $it){
 						if(!$it['fijo']){
 							if($this->input->post($it['form_group']['name'].'_'.$idioma->id_idioma)){
 								$datos_insert_idiomas[$it['form_group']['name']]=$this->input->post($it['form_group']['name'].'_'.$idioma->id_idioma);
@@ -886,14 +882,11 @@ class Page extends MY_Controller
 						}
 					}
 				}
-				redirect('cms-listar-bloques/'.$data['seccion']->url_seo);
+				redirect('page/listar_bloques/'.$this->data['seccion']->url_seo);
 			}
 		}
 	
-		$this->template->set_template('header_and_content');
-		$this->template->write_view('content','seccion/crear_texto',$data);
-		$this->template->write_view('header','templates/header_admin',$data);
-		$this->template->render();
+		$this->render_private('seccion/crear_texto', $this->data);
 	}
 	
 	/*function crear_carrusel($id_carrusel=null){
