@@ -313,7 +313,7 @@
         <li class="">
         	<a href="<?php echo site_url('Page/crear_seccion'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
-                Ordenar
+                Nueva
             </a>
 
             <b class="arrow"></b>

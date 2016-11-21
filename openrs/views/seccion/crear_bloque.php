@@ -4,12 +4,12 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<a href="<?php echo site_url('cms-listar-bloques/'.$seccion->url_seo);?>" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span> <?php echo $seccion->titulo?></a>
+			<a href="<?php echo site_url('page/listar_bloques/'.$seccion->url_seo);?>" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span> <?php echo $seccion->titulo?></a>
 		</div>
 		<div class="col-md-12">
 			<ul class="nav nav-pills nav-justified">
 				<li role="presentation" class="active"><a><?php echo $this->lang->line('cms_bloques_paso1');?></a></li>
-				<li role="presentation"><a <?php echo ($nuevo==false)?'href="'.site_url('cms-editar-bloque/'.$id_bloque).'"':'';?>><?php echo $this->lang->line('cms_bloques_paso2');?></a></li>
+				<li role="presentation"><a <?php echo ($nuevo==false)?'href="'.site_url('page/editar_bloque/'.$id_bloque).'"':'';?>><?php echo $this->lang->line('cms_bloques_paso2');?></a></li>
 			</ul>
 		</div>
 		<div class="col-md-12">

@@ -103,6 +103,7 @@ $lang['cms_c_crear_galeria'] = 'Crear Galería';
 $lang['cms_c_editar_imagen_galeria'] = 'Editar imagen galería';
 $lang['cms_c_ordenar_categorias_carrusel'] = 'Ordenar categorias carrusel';
 $lang['cms_c_galeria_editar_categoria'] = 'Editar categoría';
+$lang['cms_c_bloques_ancho'] = 'Ancho';
 
 //Controlador Formularios
 $lang['cms_titulo'] = 'Título';
@@ -135,6 +136,8 @@ $lang['cms_bloques_contenido'] = 'Contenido';
 $lang['cms_c_crear_bloque_texto'] = 'Crear Bloque de Texto';
 $lang['cms_c_bloques_titulo_placeholder'] = 'Nombre del bloque';
 $lang['cms_color'] = 'Color';
+$lang['cms_ancho_completo'] = 'Ancho completo';
+$lang['cms_ancho_margen'] = 'Ancho con margen';
 
 //Controlador Inmobiliaria
 

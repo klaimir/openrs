@@ -54,8 +54,8 @@
 								     					<span class="<?php echo $vo['icon'];?>"></span>
 								     				</a>
 								     			<?php else: ?>
-								     				<a class="action-tooltip" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
-								     					<span class="<?php echo $vo['icon'];?>" id="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" ></span>
+								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
+								     					<span class="<?php echo $vo['icon'];?>" id="" ></span>
 								     				</a>
 								     			<?php endif;?>
 							     			<?php endforeach;?>

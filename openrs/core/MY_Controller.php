@@ -181,5 +181,20 @@ class MY_Controller extends CI_controller
     
     	$this->render_private($config['view'], $this->data);
     }
+    
+    public function ordenar ($config){
+    	//$data = $this->inicializar(6, $config['title']);
+    
+    	$this->data['ordenar']=$this->$config['model_get']['model_name']->$config['model_get']['model_method'](isset($config['model_get']['idioma']) ? $config['model_get']['idioma']:'', isset($config['model_get']['model_param']) ? $config['model_get']['model_param']:'');
+    	if($this->input->post()){
+    		$ids_ordenadas = explode(";", $this->input->post('input_orden'));
+    		for($i=0; $i<count($ids_ordenadas); $i++){
+    			$this->$config['model_update']['model_name']->$config['model_update']['model_method']($config['model_update']['tabla'],array('prioridad' => ($i+1)),array($config['model_update']['id_tabla']=>$ids_ordenadas[$i]));
+    		}
+    		redirect($config['redirect']);
+    	}
+    
+    	$this->render_private($config['view'], $this->data);
+    }
 
 }

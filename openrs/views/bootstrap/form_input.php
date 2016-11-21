@@ -1,3 +1,4 @@
+<?php $this->load->view('javascript/ckeditor');?>
 <?php if($type!='hidden'):?>
 <div class="form-group">
 	<div class="col-md-2">

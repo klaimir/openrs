@@ -30,7 +30,7 @@ class Page extends MY_Controller
 		$this->_security();
 	
 		// Comprobación de acceso
-		$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+		//$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
 	}
 	
 	//Desde este controlador cargaremos las secciones seleccionadas. Las secciones deben tener el campo url único
@@ -96,22 +96,22 @@ class Page extends MY_Controller
 				'columnas'=>array($this->lang->line('cms_c_listado_prioridad')=>'prioridad',
 								  $this->lang->line('cms_c_listado_titulo')=>'titulo',
 								  $this->lang->line('cms_c_listado_estado')=>'estado'),
-				'opciones'=>  array('Editar'=>array('href'=>site_url('cms-crear-bloque'),
+				'opciones'=>  array('Editar'=>array('href'=>site_url('page/crear_bloque'),
 												    'icon'=>'glyphicon glyphicon-edit',
 													'keys'=>array('url_seo','id_bloque'),
 													'title'=>$this->lang->line('cms_c_editar_bloques')),
-									'Contenido'=>array('href'=>site_url('cms-editar-bloque'),
+									'Contenido'=>array('href'=>site_url('page/editar_bloque'),
 												    'icon'=>'glyphicon glyphicon-screenshot',
 													'keys'=>array('id_bloque'),
 													'title'=>$this->lang->line('cms_c_editar_contenido')),
-									'Borrar'=>array('href'=>site_url('cms-borrar-bloque'),
+									'Borrar'=>array('href'=>site_url('page/borrar_bloque'),
 												    'icon'=>'glyphicon glyphicon-trash borrar',
 													'keys'=>array('id_bloque'),
 													'title'=>$this->lang->line('cms_c_borrar_bloque'))),
-				'botones'=>array('1'=>array('href'=>site_url('cms-crear-bloque/'.$url_seccion),
+				'botones'=>array('1'=>array('href'=>site_url('page/crear_bloque/'.$url_seccion),
 											'class'=>'btn btn-default pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-plus"></span> '.$this->lang->line('cms_c_listado_boton_nuevo')),
-								 '2'=>array('href'=>site_url('cms-ordenar-bloques/'.$url_seccion),
+								 '2'=>array('href'=>site_url('page/ordenar_bloques/'.$url_seccion),
 											'class'=>'btn btn-default pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-random"></span> '.$this->lang->line('cms_c_listado_boton_ordenar')))
 		);
@@ -131,7 +131,14 @@ class Page extends MY_Controller
 		//redirect('asd/'.$bloque->id_tipo_bloque);
 		switch($bloque->id_tipo_bloque){
 			case '1':
+				echo $idioma.' '.$bloque->id_bloque.'<b>';
 				$texto=$this->Seccion_model->get_bloque_txt($idioma, $bloque->id_bloque);
+				/*if($texto){
+					print_r($texto);
+					echo $texto->id;exit();
+				}else{
+					echo 'nada';exit();
+				}*/
 				//redirect('asd/'.$texto->id);
 				redirect('page/crear_bloque_texto/'.$texto->id);
 				break;
@@ -150,15 +157,14 @@ class Page extends MY_Controller
 
 	function inicializar($seccion, $titulo){
 	
-		$data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
-		$data['idioma_actual'] = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
-		$data['config']=$this->General_model->get_config();
-		$data['title']= $titulo.' - '.$data['config']->nombre;
-		$data['secciones'] = $this->Seccion_model->get_secciones($data['idioma_actual']->id_idioma);
-		$data['max_prioridad_seccion'] = $this->General_model->maximo('seccion','prioridad');
-		$data['sec'] = $seccion;
+		$this->data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
+		$this->data['idioma_actual'] = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
+		$this->data['config']=$this->General_model->get_config();
+		$this->data['title']= $titulo.' - '.$this->data['config']->nombre;
+		$this->data['secciones'] = $this->Seccion_model->get_secciones($this->data['idioma_actual']->id_idioma);
+		$this->data['max_prioridad_seccion'] = $this->General_model->maximo('seccion','prioridad');
 	
-		return $data;
+		return $this->data;
 	}
 	
 	function crear_bloque($url_seccion,$id_bloque=null){		
@@ -353,6 +359,7 @@ class Page extends MY_Controller
 				$this->data['elementos'][$idioma->id_idioma] = $this->Seccion_model->get_bloque($idioma->id_idioma, $bloque->id_bloque);
 			}
 		}
+		//$this->crear($inputs,$datos);
 		if($this->input->post()){
 			$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
 			$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
@@ -389,7 +396,7 @@ class Page extends MY_Controller
 				}
 				
 				if ($nuevo==true){
-					$id_bloque=$this->Seccion_model->crear_bloque('bloque',$datos_insert, $this->input->post('id_tipo_bloque'), $data['cargar_idiomas']);
+					$id_bloque=$this->Seccion_model->crear_bloque('bloque',$datos_insert, $this->input->post('id_tipo_bloque'), $this->data['cargar_idiomas']);
 				}else{
 					$datos_insert['id_tipo_bloque']=$bloque->id_tipo_bloque;
 					$this->General_model->update('bloque',$datos_insert,array('id_bloque'=>$id_bloque));
@@ -422,7 +429,7 @@ class Page extends MY_Controller
 				redirect('page/editar_bloque/'.$id_bloque);			
 			}
 		}
-		$this->render_private('seccion/crear_bloque', $this->data);
+		$this->render_private($datos['view'], $this->data);
 	}
 	
 	
@@ -756,7 +763,7 @@ class Page extends MY_Controller
 								   	  'model_method'=>'update',
 								   	  'tabla'=>'seccion',
 									  'id_tabla'=>'id'),
-				'redirect'=>'cms-listar-secciones',
+				'redirect'=>'page/listar_secciones',
 		);
 		$this->ordenar($config); 
 	}
@@ -885,7 +892,7 @@ class Page extends MY_Controller
 				redirect('page/listar_bloques/'.$this->data['seccion']->url_seo);
 			}
 		}
-	
+		$this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."ckeditor/", 'outPut' => true));
 		$this->render_private('seccion/crear_texto', $this->data);
 	}
 	
@@ -1458,7 +1465,7 @@ class Page extends MY_Controller
 		}
 		$this->General_model->delete('seccion',array('id'=>$seccion->id));
 		if($seccion == 'seccion')
-			redirect('cms-listar-secciones');
+			redirect('page/listar_secciones');
 	}
 	
 // 	/*********************************** Grupos de secciones ***************************************/
