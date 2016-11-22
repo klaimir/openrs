@@ -5,6 +5,14 @@
 			$('.btn-borrar').append('<a href="'+$(this).attr('id')+'" class="btn btn-primary">'+"<?php echo $this->lang->line('modal_boton_confirmar');?>"+'</a>');
 			$('#modalBorrar').modal();
 		});
+		//Ordenar secciones
+		$('#guardar_orden').click(function(){
+			var $ids = '';
+			$('#sortable li').each(function(){
+				$ids = $ids+''+this.id+';';
+			});
+			$('#input_orden').val($ids);
+		});
 	});
     $(function() {
       $( "#sortable" ).sortable();

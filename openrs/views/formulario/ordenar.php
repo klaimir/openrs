@@ -2,7 +2,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<h2><?php echo $this->lang->line('admin_ordenar_secciones');?></h2>
+			<h2><?php echo $title;?></h2>
 		</div>
 		<div class="col-md-8">			
 	    	<ul id="sortable">

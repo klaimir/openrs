@@ -765,7 +765,19 @@ class Page extends MY_Controller
 									  'id_tabla'=>'id'),
 				'redirect'=>'page/listar_secciones',
 		);
-		$this->ordenar($config); 
+		$this->ordenar($config);
+		/*$this->data = $this->inicializar('6', 'ordenar sección');
+		$idioma = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
+		$this->data['ordenar']=$this->Seccion_model->get_secciones($idioma);
+		if($this->input->post()){
+			$ids_ordenadas = explode(";", $this->input->post('input_orden'));
+			for($i=0; $i<count($ids_ordenadas); $i++){
+				$this->General_model->update('seccion',array('prioridad' => ($i+1)),array('id'=>$ids_ordenadas[$i]));
+			}
+			redirect('page/listar_secciones');
+		}
+		
+		$this->render_private('formulario/ordenar', $this->data);*/
 	}
 	
 	function ordenar_bloques($url_seccion=null){
@@ -786,7 +798,7 @@ class Page extends MY_Controller
 									  'model_method'=>'update',
 									  'tabla'=>'bloque',
 									  'id_tabla'=>'id_bloque'),
-				'redirect'=>'cms-listar-bloques/'.$url_seccion,
+				'redirect'=>'page/listar_bloques/'.$url_seccion,
 		);
 		$this->ordenar($config);
 	}
@@ -1446,7 +1458,7 @@ class Page extends MY_Controller
 		$this->General_model->delete('bloque',array('id_bloque'=>$id_bloque));
 		$seccion=$this->Seccion_model->get_seccion($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $bloque->id_seccion);
 		if($borrar_bloque==true){
-			redirect('cms-listar-bloques/'.$seccion->url_seo);
+			redirect('page/listar_bloques/'.$seccion->url_seo);
 		}
 	}
 	

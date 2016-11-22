@@ -11,7 +11,8 @@
         <!-- bootstrap & fontawesome -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/bootstrap.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/font-awesome/4.2.0/css/font-awesome.min.css" />
-
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/admin.css" />
+		
         <!-- page specific plugin styles -->
 
         <!-- text fonts -->
