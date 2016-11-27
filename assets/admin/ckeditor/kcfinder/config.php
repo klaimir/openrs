@@ -21,7 +21,7 @@ $url = substr($url[2], 0, 1); // assuming the full path is "/home/username/tmp"
 
 $_CONFIG = array(
 
-    'disabled' => true,
+    'disabled' => false,
     'denyZipDownload' => false,
     'denyUpdateCheck' => false,
     'denyExtensionRename' => false,

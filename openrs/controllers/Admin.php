@@ -98,7 +98,7 @@ class Admin extends MY_Controller
     					
     				//Para panales independientes
     				//$config['upload_path'] = 'img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/';
-    				$config['upload_path'] = 'img/preferencias/1/';
+    				$config['upload_path'] = 'assets/admin/img/preferencias/';
     				$config['allowed_types']='gif|jpg|jpeg|png';
     				$config['max_size']	= '1000';
     				$config['overwrite']=TRUE;
@@ -109,7 +109,7 @@ class Admin extends MY_Controller
     				if (!$this->upload->do_upload()) {
     					$this->session->set_flashdata('color','danger');
     					$this->session->set_flashdata('error', 'La imagen no puede superar 1MB');
-    					redirect('usuarios/cabecera', 'refresh');
+    					redirect('admin/cabecera', 'refresh');
     				}else {
     					//Para paneles independientes
     					//$configuracion = $this->user_model->datos_config($this->simple_sessions->get_value('id_usuario'));
@@ -117,9 +117,9 @@ class Admin extends MY_Controller
     					//unlink('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen);
     					//unlink('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen_thumb);
     					//}
-    					$configuracion = $this->user_model->datos_config(1);
-    					if($configuracion && isset($configuracion->imagen) && file_exists('img/preferencias/1/'.$configuracion->imagen)){
-    						unlink('img/preferencias/1/'.$configuracion->imagen);
+    					$configuracion = $this->Admin_model->datos_config(1);
+    					if($configuracion && isset($configuracion->imagen) && file_exists('assets/admin/img/preferencias/'.$configuracion->imagen)){
+    						unlink('assets/admin/img/preferencias/'.$configuracion->imagen);
     						//unlink('img/preferencias/1/'.$configuracion->imagen_thumb);
     					}
     					$file_data = $this->upload->data();
@@ -130,8 +130,8 @@ class Admin extends MY_Controller
     					//Para paneles independientes
     					//$config['source_image']='img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$file_data['file_name'];
     					//$config['new_image']='img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/';
-    					$config['source_image']='img/preferencias/1/'.$file_data['file_name'];
-    					$config['new_image']='img/preferencias/1/';
+    					$config['source_image']='assets/admin/img/preferencias/'.$file_data['file_name'];
+    					$config['new_image']='assets/admin/img/preferencias/';
     					$config['create_thumb'] = TRUE;
     					$config['maintain_ratio'] = FALSE;
     					$config['width'] = 182;
@@ -147,16 +147,16 @@ class Admin extends MY_Controller
     					$this->Admin_model->actualizar_configuracion(1, $preferencias);
     					$this->session->set_flashdata('color','success');
     					$this->session->set_flashdata('mensaje','Cambios realizados correctamente.');
-    					redirect('usuarios/caecera','refresh');
+    					redirect('admin/cabecera','refresh');
     				}
     			}else{
     				$this->session->set_flashdata('color','danger');
     				$this->session->set_flashdata('mensaje', validation_errors());
-    				redirect('usuarios/cabecera', 'refresh');
+    				redirect('admin/cabecera', 'refresh');
     			}
     		}else{
-    			$this->user_model->actualizar_configuracion(1, $preferencias);
-    			redirect('usuarios/cabecera','refresh');
+    			$this->Admin_model->actualizar_configuracion(1, $preferencias);
+    			redirect('admin/cabecera','refresh');
     		}
     	}else{
     		$this->session->set_flashdata('color','danger');

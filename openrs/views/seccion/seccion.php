@@ -43,8 +43,7 @@ $mensaje = array(
 <div class="inicio-seccion-movil hidden-sm hidden-md hidden-lg"></div>
 <div class="container-fluid">
 	<div class="row">
-		<!--<div class="col-lg-12">-->
-			<!--<h1><?php echo $seccion->titulo; ?></h1>-->
+		
 			<?php foreach ($bloques as $it):?>
 				<?php if ($it->id_tipo_bloque == 1): //Bloque de texto?>
 					<div style="background:<?php echo $it->background;?>">

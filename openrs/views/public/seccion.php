@@ -48,7 +48,7 @@ $mensaje = array(
 				<?php if ($it->id_tipo_bloque == 1): //Bloque de texto?>
 						<!-- <h3 class="titulo-bloque" style="text-align:center;color:<?php echo $it->c_titulo;?>;"><?php echo $it->titulo_bloque; ?></h3> -->
 						<?php if($it->ancho == 1){?>
-							<div class="container-fluid" style="background:<?php echo $it->background;?>"><?php echo $it->texto->contenido;?></div>
+							<div class="container-fluid" style="background:<?php echo $it->background;?>; padding:0;"><?php echo $it->texto->contenido;?></div>
 						<?php }elseif($it->ancho == 2){?>
 							<div class="container" style="background:<?php echo $it->background;?>"><?php echo $it->texto->contenido;?></div>
 						<?php }?>

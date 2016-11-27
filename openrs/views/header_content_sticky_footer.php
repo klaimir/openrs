@@ -45,7 +45,7 @@
 			</div>
 		</div>
 	</div>
-	<footer id="footer" style="background-color:<?php echo $config->cpie;?>;border-top: 3px solid #ff5959;">
+	<footer id="footer" style="background-color:<?php echo $config->cpie;?>;border-top: 3px solid #000;">
 		<?php echo $footer; ?>
 	</footer>
 
