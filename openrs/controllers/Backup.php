@@ -93,6 +93,9 @@ class Backup extends MY_Controller {
         $this->load->library('form_validation');
         $this->load->model('backup_model', 'backup');
         $this->back_url = $this->session->flashdata($this->back_url_key);
+        
+         // Secure the access
+        $this->_security();
     }
 
     private function handle_error($err) {

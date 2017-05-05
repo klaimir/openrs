@@ -16,13 +16,22 @@ class MY_Controller extends CI_controller
         $this->load->model('Usuarios_model');
         $this->load->model('Admin_model');
         $this->load->model('Idioma_model');
-        $this->lang->load('auth');
+        
         // Public
         $this->initializePublic();
         // Private
         if ($this->ion_auth->logged_in())
         {
             $this->initializePrivate();
+        }
+        else
+        {
+            $this->lang->load('auth');
+        }
+        // Enable profiler if ENVIRONMENT is development or testing
+        if(ENVIRONMENT=='development' || ENVIRONMENT=='testing')
+        {
+            //$this->output->enable_profiler(TRUE);
         }
     }
 
@@ -50,14 +59,20 @@ class MY_Controller extends CI_controller
 
     private function initializePrivate()
     {
+        // Datos de sesión
         $this->data['session_logged_in'] = true;
         $this->data['session_user_id'] = $this->session->userdata('user_id');
         $this->data['session_user_name'] = $this->session->userdata('username');
         //$this->data['session_user_group'] = $this->ion_auth->get_users_groups()->row()->id;
 
+        // Permisos
         $this->data['session_es_admin'] = $this->Usuarios_model->getEsAdmin($this->data['session_user_id']);
         $this->data['session_es_gerente'] = $this->Usuarios_model->getEsGerente($this->data['session_user_id']);
         $this->data['session_es_empleado'] = $this->Usuarios_model->getEsEmpleado($this->data['session_user_id']);
+        
+        // Idioma
+        $this->data['session_user_language'] = $this->Usuarios_model->get_lang($this->session->userdata('user_id'));
+        $this->lang->load('auth',$this->data['session_user_language']);
     }
 
     protected function is_post()

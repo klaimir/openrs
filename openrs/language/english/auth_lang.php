@@ -87,6 +87,7 @@ $lang['edit_user_validation_fname_label']            = 'First Name';
 $lang['edit_user_validation_lname_label']            = 'Last Name';
 $lang['edit_user_validation_email_label']            = 'Email Address';
 $lang['edit_user_validation_phone_label']            = 'Phone';
+$lang['edit_user_validation_language_label']         = 'Language';
 $lang['edit_user_validation_company_label']          = 'Company Name';
 $lang['edit_user_validation_groups_label']           = 'Groups';
 $lang['edit_user_validation_password_label']         = 'Password';
