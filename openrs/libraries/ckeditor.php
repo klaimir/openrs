@@ -459,6 +459,7 @@ class CKEditor
 
 		$args = "";
 		$ckeditorPath = $this->ckeditorPath();
+		//$ckeditorPath = base_url('assets/admin/ckeditor/');
 
 		if (!empty($this->timestamp) && $this->timestamp != "%"."TIMESTAMP%") {
 			$args = '?t=' . $this->timestamp;

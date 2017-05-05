@@ -904,7 +904,7 @@ class Page extends MY_Controller
 				redirect('page/listar_bloques/'.$this->data['seccion']->url_seo);
 			}
 		}
-		$this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."ckeditor/", 'outPut' => true));
+		$this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
 		$this->render_private('seccion/crear_texto', $this->data);
 	}
 	

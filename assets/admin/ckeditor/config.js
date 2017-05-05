@@ -3,9 +3,8 @@ Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
-CKEDITOR.editorConfig = function( config )
-	config.toolbar_Full =
-	[
+CKEDITOR.editorConfig = function( config ){
+	config.toolbar_Full = [
 		{ name: 'document',    items : [ 'Source','-','Print' ] },
 		{ name: 'clipboard',   items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
 		{ name: 'editing',     items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
@@ -19,12 +18,12 @@ CKEDITOR.editorConfig = function( config )
 		{ name: 'code',        items : [ 'Code'] }
 	];  
 
-   config.filebrowserBrowseUrl = 'http://URL-DOMAIN/ckeditor/kcfinder/browse.php';
-   config.filebrowserImageBrowseUrl = 'http://URL-DOMAIN/ckeditor/kcfinder/browse.php?type=images';
-   config.filebrowserFlashBrowseUrl = 'http://URL-DOMAIN/ckeditor/kcfinder//browse.php?type=flash';
-   config.filebrowserUploadUrl = 'http://URL-DOMAIN/ckeditor/kcfinder/upload.php?type=files';
-   config.filebrowserImageUploadUrl = 'http://URL-DOMAIN//ckeditor/kcfinder/upload.php?type=images';
-   config.filebrowserFlashUploadUrl = 'http://URL-DOMAIN//ckeditor/kcfinder/upload.php?type=flash';
+   config.filebrowserBrowseUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/browse.php';
+   config.filebrowserImageBrowseUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/browse.php?type=images';
+   config.filebrowserFlashBrowseUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder//browse.php?type=flash';
+   config.filebrowserUploadUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/upload.php?type=files';
+   config.filebrowserImageUploadUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/upload.php?type=images';
+   config.filebrowserFlashUploadUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/upload.php?type=flash';
    config.enterMode = 'CKEDITOR.ENTER_BR' ; // p | div | br
    config.shiftEnterMode = ' CKEDITOR.ENTER_P' ; // p | div | br
    config.height = 400;

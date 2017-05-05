@@ -12,6 +12,13 @@
 		<?php }?>
 	<?php //}?>
 </script>
+	<script>
+	<?php //if(isset($sec) && ($sec == "-3" || $sec == "6" || $sec == "-2")){ ?>
+		<?php foreach($cargar_idiomas as $idioma){?>
+			CKEDITOR.replace('contenido2e_<?php echo $idioma->id_idioma;?>');
+		<?php }?>
+	<?php //}?>
+</script>
 <script>
 	<?php //if(isset($sec) && ($sec == "-3" || $sec == "6" || $sec == "-2")){ ?>
 		<?php foreach($cargar_idiomas as $idioma){?>
