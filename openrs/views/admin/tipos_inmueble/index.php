@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-8">
             <h1>
-                Tipos de inmueble
+                <?php echo lang($_controller . '_heading'); ?>
             </h1>
         </div>
 
@@ -32,7 +32,7 @@
         <li class="hover">
             <a href="<?php echo site_url('tipos_inmueble/insert'); ?>">
                 <i class="menu-icon fa fa-plus-circle"></i>
-                <span class="menu-text"> Insertar </span>
+                <span class="menu-text"> <?php echo lang($_controller . '_btn_insert'); ?> </span>
             </a>
 
             <b class="arrow"></b>

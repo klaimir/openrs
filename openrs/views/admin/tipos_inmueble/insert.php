@@ -3,7 +3,7 @@
         <?php echo lang($_controller . '_heading'); ?>
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            Insertar
+            <?php echo lang($_controller . '_btn_insert'); ?>
         </small>
     </h1>
 </div>

@@ -8,6 +8,7 @@ class Usuarios_model extends MY_Model
     public function __construct()
     {        
         parent::__construct();
+        $this->load->model('Idioma_model');
     }
 
     public function test_names()
@@ -67,72 +68,6 @@ class Usuarios_model extends MY_Model
     public function _get_formatted_datas() {
         $datas=$this->input->post();
         return $datas;
-    }
-
-    function comprobarDeleteNotificaciones($id)
-    {
-        $notificaciones_recibidas = $this->Notificaciones_Model->getNotificacionesUsuario($id);
-        $notificaciones_enviadas = $this->Notificaciones_Model->getNotificacionesEnviadasUsuario($id);
-        if (count($notificaciones_recibidas) == 0 && count($notificaciones_enviadas) == 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-    function comprobarDeleteLicencias($id)
-    {
-        $licencias_usuario = $this->Licencias_Model->getLicenciasUsuario($id);
-        $licencias_club = $this->Licencias_Model->getLicenciasClub($id);
-        if (count($licencias_usuario) == 0 && count($licencias_club) == 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-    function comprobarDeleteDocumentos($id)
-    {
-        $documentos = $this->getDocumentos($id);
-        if (count($documentos) == 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-    function comprobarDeleteCarreras($id)
-    {
-        $pruebas = $this->getCarreras($id);
-        if (count($pruebas) == 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-    function comprobarDeleteEquipos($id)
-    {
-        $equipos = $this->getEquipos($id);
-        if (count($equipos) == 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-    function comprobarDeleteIncidencias($id)
-    {
-        $incidencias_enviadas = $this->Incidencias_Model->getIncidencias($id);
-        $incidencias_recibidas = $this->Incidencias_Model->getIncidenciasToUser($id);
-        if (count($incidencias_enviadas) == 0 && count($incidencias_recibidas) == 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-    function comprobarDeleteDatosPersonales($id)
-    {
-        $enlazados_historico = $this->getHistoricoUsuario($id);
-        if (count($enlazados_historico) == 0)
-            return TRUE;
-        else
-            return FALSE;
     }
 
     function check_delete($id)
@@ -195,7 +130,7 @@ class Usuarios_model extends MY_Model
     
     function modificar_idioma_usuario($id, $id_idioma){
     	$this->db->where('id', $id);
-    	$this->db->update('users', array('id_idioma' => $id_idioma));
+    	return $this->db->update('users', array('id_idioma' => $id_idioma));
     }
     
     function get_usuario_idioma($id_usuario){
@@ -217,6 +152,12 @@ class Usuarios_model extends MY_Model
     	$this->db->where('id_opc_cliente',$id);
     	$this->db->where('id_idioma',$idioma);
     	return $this->db->get('footer_texto_idiomas')->row()->contenido;
+    }
+    
+    function get_lang($id_usuario){
+    	$idioma_usuario=$this->get_usuario_idioma($id_usuario);
+        $idioma=$this->Idioma_model->get_idioma($idioma_usuario->id_idioma);
+        return $idioma->carpeta_idioma;
     }
 
 }

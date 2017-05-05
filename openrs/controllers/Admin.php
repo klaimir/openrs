@@ -8,12 +8,7 @@ class Admin extends MY_Controller
 {
 
     function __construct()
-    {
-        $this->s_model = "Admin_model";
-        $this->m_model = "admin_model";
-        $this->_controller = "admin";
-        $this->_view = "admin";
-        
+    {        
         parent::__construct();       
 
         // Secure the access

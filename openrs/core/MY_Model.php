@@ -15,30 +15,15 @@ class MY_Model extends Base_Model
     {
         $this->timestamps = FALSE;
         $this->protected = array($this->primary_key);
+        $this->datas=new stdClass();
         
         parent::__construct();
     }
     
-    // Security Section
-    public function _check_security_access_by_id($id) {
-        return $this->_check_security_access(NULL,$id);
-    }
-    
-    public function _check_security_access_by_object($datos) {
-        return $this->_check_security_access($datos);
-    }
-    
-    public function _check_security_exist($datos,$id=NULL) {
-        if(!is_null($id))
-        {
-            $this->datas=$this->get_by_id($id);
-        }
-        else
-        {
-            $this->datas=$datos;
-        }
+    // Security Section    
+    public function _check_security_exist($datos) {
         // Seguridad
-        if($this->datas)
+        if($datos)
         {
             return TRUE;
         }
@@ -56,11 +41,11 @@ class MY_Model extends Base_Model
         return FALSE;
     }
     
-    public function _check_security_access($datos,$id=NULL) {
+    public function check_access($datos) {
         // Existe        
-        $this->_check_security_exist($datos,$id);                
+        $this->_check_security_exist($datos);                
         // Definir en la clase hija
-        $this->check_access_conditions();
+        $this->check_access_conditions($datos);
         // Check del error
         if($this->error_access && $this->show_errors)
         {          
@@ -72,14 +57,18 @@ class MY_Model extends Base_Model
     
     // Others functions
     
-    public function set_datas($datas)
+    public function set_datas_array($array)
     {
-        $this->datas=$datas;
+        foreach ($array as $key => $value)
+        {
+            $this->datas->$key=$value;
+        }
     }
     
     public function set_datas_object($id)
     {
         $this->datas=$this->get_by_id($id);
+        return $this->datas;
     }
 
     function get_by_id($id)
@@ -89,6 +78,89 @@ class MY_Model extends Base_Model
         if ($query->num_rows === 0)
             return FALSE;
         return $query->first_row();
+    }
+    
+    function _get_value($field)
+    {
+        if(isset($this->datas->$field))
+        {
+            return $this->datas->$field;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+    
+    function get_value($fields)
+    {
+        if(is_array($fields))
+        {
+            $array=array();
+            foreach ($fields as $key => $value)
+            {
+                $array[$key]=$this->_get_value($key,$value);
+            }
+            return $array;
+        }
+        else
+        {
+            return $this->_get_value($fields);
+        }
+    }
+        
+    private function _set_value($field,$value)
+    {
+        return $this->datas->$field=$value;
+    }
+    
+    function set_value($fields,$value)
+    {
+        if(is_array($fields))
+        {
+            foreach ($fields as $key => $value)
+            {
+                $this->_set_value($key,$value);
+            }
+        }
+        else
+        {
+            $this->_set_value($fields,$value);
+        }
+        
+    }
+    
+    function _create()
+    {
+        // Formatted datas
+        $formatted_datas=$this->get_formatted_datas();
+        
+        // Set datas
+        $this->set_datas_array($formatted_datas);
+        
+        // Parent insert
+        $last_id=$this->insert($formatted_datas);
+        
+        $this->set_value($this->primary_key,$last_id);
+        
+        return $last_id;
+    }
+    
+    function _edit()
+    {
+        // Formatted datas
+        $formatted_datas=$this->get_formatted_datas();
+        
+        // Set datas
+        $this->set_datas_array($formatted_datas);
+        
+        // Parent update
+        return $this->update($formatted_datas,$this->get_value($this->primary_key));
+    }
+    
+    function _remove()
+    {        
+        return $this->delete($this->get_value($this->primary_key));
     }
 
     function getFieldsTable($table, $db = 'db')

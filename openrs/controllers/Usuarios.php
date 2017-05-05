@@ -8,12 +8,7 @@ class Usuarios extends MY_Controller
 {
 
     function __construct()
-    {
-        $this->s_model = "Usuarios_model";
-        $this->m_model = "usuarios_model";
-        $this->_controller = "usuarios";
-        $this->_view = "admin";
-        
+    {        
         parent::__construct();       
 
         // Secure the access
@@ -35,9 +30,9 @@ class Usuarios extends MY_Controller
             redirect('auth', 'refresh');
         }
 
-        if ($this->_model->check_delete($id))
+        if ($this->Usuarios_model->check_delete($id))
         {
-            if ($this->_model->delete_all($id))
+            if ($this->Usuarios_model->delete_all($id))
             {
                 $this->session->set_flashdata('message', 'El usuario ha sido borrado con éxito');
                 $this->session->set_flashdata('color_message', 'success');
@@ -56,86 +51,47 @@ class Usuarios extends MY_Controller
 
         redirect(site_url('auth'), 'refresh');
     }
-
-    // test
-    function test()
-    {
-        if ($this->is_post())
+    
+    public function cargar_idioma($id = 0) {
+        // Permisos acceso
+        if (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id))
         {
-            /*             * ************* RULES ************* */
-            $rules_first_name = array(
-                'required',
-                array('test_names', array($this->Usuarios_model, 'test_names'))
-            );
-            $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), $rules_first_name);
-            $this->form_validation->set_rules('last_name', 'Apellidos', 'required');
-
-            /*             * ************* DATAS ************* */
-            /*
-              $data = array(
-              'first_name' => '',
-              'last_name' => ''
-              ); */
-            $data = $this->input->post();
-            $data['validation_datas_test_names'] = array('first_name' => $data['first_name'], 'last_name' => $data['last_name']);
-            $this->form_validation->set_data($data);
-
-            /*             * ************* CHECK ************* */
-            if ($this->form_validation->run() == true)
+            echo "No tiene permiso para realizar esta acción";
+        } 
+        // Consultamos listado de idiomas
+        $this->data['idiomas']=$this->Idioma_model->get_idiomas_subidos_activos();
+        // Consultamos el idioma del usuario
+        $usuario_idioma=$this->Idioma_model->get_usuario_idioma($id);
+        // Asignamos a vista resto de datos
+        $this->data['id_idioma']=$usuario_idioma->id_idioma;
+        $this->data['usuario_id']=$id;
+        // Cargamos la vista
+        $this->load->view('admin/usuarios/cambiar_idioma', $this->data);
+    }
+    
+    public function cambiar_idioma() {
+        // Comprobación de petición por AJAX
+        if($this->input->is_ajax_request())
+        {     
+            // Id. usuario seleccionado
+            $id=$this->input->post('id');
+            // Permisos acceso
+            if (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id))
             {
-                $this->session->set_flashdata('message', 'NICEEEEEE¡¡');
-                redirect("usuarios/test", 'refresh');
+                echo "No tiene permiso para realizar esta acción";
+            } 
+            // Datos federado
+            $check_cambiar_idioma = $this->Usuarios_model->modificar_idioma_usuario($id, $this->input->post('id_idioma'));            
+            // Actualización de datos        
+            if($check_cambiar_idioma)
+            {
+                echo 1;
             }
             else
             {
-                $this->data['message'] = validation_errors();
+                echo "Error al introducir los datos. Inténtelo más tarde";
             }
         }
-
-        $this->data['first_name'] = array(
-            'name' => 'first_name',
-            'id' => 'first_name',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('first_name'),
-        );
-
-        $this->data['last_name'] = array(
-            'name' => 'last_name',
-            'id' => 'last_name',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('last_name'),
-        );
-
-        // Render
-        $this->render_private('admin/test', $this->data);
-    }
-
-    public function email()
-    {
-        $this->load->library('email');
-        $config = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'angel.berasuain@gmail.com',
-            'smtp_pass' => 'BreakbeaT2',
-            'mailtype' => 'html',
-            'charset' => 'UTF-8'
-        );
-        $this->email->initialize($config);
-        $this->email->set_newline("\r\n");
-
-
-        //$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
-        $message = "HOLA";
-        $this->email->clear();
-        $this->email->from('angel.berasuain@gmail.com', 'OPENRS');
-        $this->email->to('angel.berasuain@gmail.com');
-        $this->email->subject('Correo');
-        $this->email->message($message);
-
-        $this->email->send();
-        echo $this->email->print_debugger();
     }
 
 }

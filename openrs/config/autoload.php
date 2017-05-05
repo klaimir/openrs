@@ -120,7 +120,7 @@ $autoload['config'] = array();
 |
 */
 
-$autoload['language'] = array('login', 'admin', 'usuarios', 'general', 'cliente','cms','tipos_inmueble');
+$autoload['language'] = array('login', 'admin', 'usuarios', 'general', 'cliente', 'cms');
 
 /*
 | -------------------------------------------------------------------

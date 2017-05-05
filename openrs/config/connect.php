@@ -7,7 +7,7 @@ function pdo_connect(){
 		$hostname   = 'localhost';
 		$database   = 'openrs';
 		$username   = 'root';
-		$password   = '';
+		$password   = 'root';
 
 		//to connect
 		$DB = new PDO($dbdriver.':host='.$hostname.'; dbname='.$database, $username, $password);
