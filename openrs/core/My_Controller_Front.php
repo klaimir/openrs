@@ -181,34 +181,33 @@ class MY_Controller_Front extends CI_Controller
         return str_replace('%', $model, $this->model_string);
     }
 }
-
 class MY_Functions extends CI_Controller
-{    
+{
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->library('form_validation');
 		$this->load->library('formularios');
 	}
-	
+
 	function inicializar($seccion, $titulo){
 		if($this->simple_sessions->get_value('rol') == '1')
 			$this->simple_sessions->check_admin();
 		elseif($this->simple_sessions->get_value('rol') == '2')
-			$this->simple_sessions->check_cliente();
+		$this->simple_sessions->check_cliente();
 		else
 			redirect('logout');
-		
+
 		$data['cargar_idiomas'] = $this->idioma_model->get_idiomas_subidos_activos();
 		$data['idioma_actual'] = $this->user_model->get_usuario_idioma($this->simple_sessions->get_value('id_usuario'));
 		$data['title'] = $titulo;
 		$data['secciones'] = $this->seccion_model->get_secciones($data['idioma_actual']->id_idioma);
 		$data['max_prioridad_seccion'] = $this->general_model->maximo('seccion','prioridad');
-		$data['sec'] = $seccion;		
+		$data['sec'] = $seccion;
 
 		return $data;
 	}
-	
+
 	public function crear($inputs,$config,$elementos = NULL){
 		$data = $this->inicializar(6, $config['title']);
 		$data['inputs']=$inputs;
@@ -266,20 +265,20 @@ class MY_Functions extends CI_Controller
 								$datos_insert_idiomas[$it['form_group']['name']]=$this->input->post($it['form_group']['name'].'_'.$conf->idioma_defecto).'_'.$idioma->id_idioma;
 							}
 						}
-					}					
+					}
 					if($config['nuevo']==true){
 						$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;
 						$datos_insert_idiomas[$config['model_insert_idiomas']['enlace']] = $id;
 						$this->$config['model_insert_idiomas']['model']->$config['model_insert_idiomas']['method']($config['model_insert_idiomas']['table'],$datos_insert_idiomas,isset($config['model_insert_idiomas']['extra'])?$config['model_insert_idiomas']['extra']:'');
 					}else{
 						$config['model_update_idiomas']['where']['id_idioma'] = $idioma->id_idioma;
-						if($this->general_model->existe($config['model_insert_idiomas']['table'], $config['model_update_idiomas']['where'])){						
+						if($this->general_model->existe($config['model_insert_idiomas']['table'], $config['model_update_idiomas']['where'])){
 							$this->$config['model_update_idiomas']['model']->$config['model_update_idiomas']['method']($config['model_update_idiomas']['table'],$datos_insert_idiomas,$config['model_update_idiomas']['where']);
 						}else{
 							$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;
 							$datos_insert_idiomas[$config['model_insert_idiomas']['enlace']] = $id;
 							$this->$config['model_insert_idiomas']['model']->$config['model_insert_idiomas']['method']($config['model_insert_idiomas']['table'],$datos_insert_idiomas,isset($config['model_insert_idiomas']['extra'])?$config['model_insert_idiomas']['extra']:'');
-						}					
+						}
 					}
 				}
 				redirect($config['redirect']);
@@ -289,9 +288,9 @@ class MY_Functions extends CI_Controller
 		$this->template->set_template('header_and_content');
 		$this->template->write_view('content',$config['view'],$data);
 		$this->template->write_view('header','templates/header_admin',$data);
-		$this->template->render();	
+		$this->template->render();
 	}
-	
+
 	public function listado ($config){
 		$data = $this->inicializar(6, $config['title']);
 		//Datos del listado
@@ -301,25 +300,25 @@ class MY_Functions extends CI_Controller
 		//Colimnas del listado
 		$data['columnas']=$config['columnas'];
 		$data['opciones']=$config['opciones'];
-	
+
 		$this->template->set_template('header_and_content');
 		$this->template->write_view('content',$config['view'],$data);
 		$this->template->write_view('header','templates/header_admin',$data);
 		$this->template->render();
 	}
-	
+
 	public function ordenar ($config){
 		$data = $this->inicializar(6, $config['title']);
-		
+
 		$data['ordenar']=$this->$config['model_get']['model_name']->$config['model_get']['model_method'](isset($config['model_get']['idioma']) ? $config['model_get']['idioma']:'', isset($config['model_get']['model_param']) ? $config['model_get']['model_param']:'');
 		if($this->input->post()){
 			$ids_ordenadas = explode(";", $this->input->post('input_orden'));
 			for($i=0; $i<count($ids_ordenadas); $i++){
-				$this->$config['model_update']['model_name']->$config['model_update']['model_method']($config['model_update']['tabla'],array('prioridad' => ($i+1)),array($config['model_update']['id_tabla']=>$ids_ordenadas[$i]));	
+				$this->$config['model_update']['model_name']->$config['model_update']['model_method']($config['model_update']['tabla'],array('prioridad' => ($i+1)),array($config['model_update']['id_tabla']=>$ids_ordenadas[$i]));
 			}
 			redirect($config['redirect']);
 		}
-	
+
 		$this->template->set_template('header_and_content');
 		$this->template->write_view('content',$config['view'],$data);
 		$this->template->write_view('header','templates/header_admin',$data);

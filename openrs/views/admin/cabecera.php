@@ -98,7 +98,7 @@ $no_change_logo = array(
 		  			<?php echo $mensaje;?>
 				</div>
 			<?php }?>
-			<?php echo form_open_multipart(site_url('usuarios/modificarCabecera'), array('class'=>'form-horizontal'));?>
+			<?php echo form_open_multipart(site_url('admin/modificarCabecera'), array('class'=>'form-horizontal'));?>
 				<div class="form-group">
 					<div class="control-label col-sm-2">
 						<?php echo form_label($this->lang->line('admin_nombre_web'),'nombre');?>
@@ -190,8 +190,7 @@ $no_change_logo = array(
 							<div class="logo_marca">
 								<?php if($config->imagen){?>
 									<!-- Para paneles independientes -->
-									<!-- <img src="<?php echo base_url('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$config->imagen); ?>" class="img-responsive"> -->
-									<img src="<?php echo base_url('img/preferencias/1/'.$config->imagen); ?>" class="img-responsive">
+									<img src="<?php echo base_url('assets/admin/img/preferencias/'.$config->imagen); ?>" class="img-responsive">
 								<?php }else{?>
 									<?php echo $this->lang->line('admin_no_hay_logo');?>
 								<?php }?>

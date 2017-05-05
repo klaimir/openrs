@@ -112,7 +112,7 @@
 				</div>
 			</div>
 			
-			<div class="row" style="background:#fff;">
+			<div class="row">
 				<div class="subfooter">
 					<p style="color:#000;"><?php echo $config->nombre.' '.date('Y'); ?>. Todos los derechos reservados</p>
 				</div>

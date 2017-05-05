@@ -49,13 +49,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = "/idioma";
+$route['default_controller'] = "/auth/login";
 $route['seo/sitemap_blog\.xml'] = "seo/sitemap_blog";
 $route['seo/sitemap_etiq\.xml'] = "seo/sitemap_etiq";
 
 
-$route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+//$route['404_override'] = '';
+//$route['translate_uri_dashes'] = FALSE;
 
 class dynamic_route{
 

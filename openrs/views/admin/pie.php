@@ -4,21 +4,27 @@ function formulario(form, idioma){
 	if(form == "f1"){
    		opc = document.f1.col[document.f1.col.selectedIndex].value;
    		//borramos el contenido de la capa
-   		document.getElementById("grupo1").innerHTML="";
-   		document.getElementById("formulario-t1").innerHTML="";
+   		//document.getElementById("grupo1").innerHTML="";
+   		//document.getElementById("formulario-t1").innerHTML="";
+   		document.getElementById('grupo1').style.display = 'none';
    	   	if (opc == 2) 
-   	   		$("#formulario-t1").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
+   	   		document.getElementById('redes1').style.display = 'block';
+   	   		//$("#redes1").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
    	   	else if(opc == 3)
-	   		$("#formulario-t1").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");   	
+   	   		document.getElementById('contenido1').style.display = 'block';
+	   		//$("#formulario-t1").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido_1\" id=\"contenido_1\"></textarea>");   	
 	}else if(form == "f2"){
 		opc = document.f2.col[document.f2.col.selectedIndex].value;
 		//borramos el contenido de la capa
-   		document.getElementById("grupo2").innerHTML="";
-   		document.getElementById("formulario-t2").innerHTML="";
+   		//document.getElementById("grupo2").innerHTML="";
+   		//document.getElementById("formulario-t2").innerHTML="";
+   		document.getElementById('grupo2').style.display = 'none';
    	   	if (opc == 2) 
-   	   		$("#formulario-t2").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
+   	   		document.getElementById('redes2').style.display = 'block';
+   	   		//$("#formulario-t2").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
    	   	else if(opc == 3)
-	   		$("#formulario-t2").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
+   	   		document.getElementById('contenido2').style.display = 'block';
+	   		//$("#formulario-t2").append("<input type=\"hidden\" name=\"idioma\" id=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
    	}else if(form == "f3"){
 		opc = document.f3.col[document.f3.col.selectedIndex].value;
 		//borramos el contenido de la capa
@@ -27,7 +33,7 @@ function formulario(form, idioma){
    	   	if (opc == 2) 
    	   		$("#formulario-t3").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
    	   	else if(opc == 3)
-	   		$("#formulario-t3").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
+	   		$("#formulario-t3").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido3_1\" id=\"contenido3_1\"></textarea>");
 	}else if(form == "f4"){
 		opc = document.f4.col[document.f4.col.selectedIndex].value;
 		//borramos el contenido de la capa
@@ -36,7 +42,7 @@ function formulario(form, idioma){
    	   	if (opc == 2) 
    	   		$("#formulario-t4").append("<label>Facebook</label><input class=\"form-control\" type=\"text\" name=\"facebook\"></input><label>Twitter</label><input class=\"form-control\" type=\"text\" name=\"twitter\"></input><label>Google+</label><input class=\"form-control\" type=\"text\" name=\"google\"></input><label>Vimeo</label><input class=\"form-control\" type=\"text\" name=\"vimeo\"></input>");
    	   	else if(opc == 3)
-	   		$("#formulario-t4").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido\" id=\"contenido\"></textarea>");
+	   		$("#formulario-t4").append("<input type=\"hidden\" name=\"idioma\" value=\""+idioma+"\"><textarea class=\"form-control\" name=\"contenido4_1\" id=\"contenido4_1\"></textarea>");
 	}
 }
 </script>
@@ -116,9 +122,57 @@ function formulario(form, idioma){
 							<?php }?>
 							</div>
 						<?php }?>
+					<?php }else{?>
+						<div id="redes1" style="display:none;">
+							<label>Facebook</label>
+							<input class="form-control" type="text" name="facebook"></input>
+							<label>Twitter</label>
+							<input class="form-control" type="text" name="twitter"></input>
+							<label>Google+</label>
+							<input class="form-control" type="text" name="google"></input>
+							<label>Vimeo</label>
+							<input class="form-control" type="text" name="vimeo"></input>
+						</div>
+						<div id="contenido1" style="display: none;">
+							<ul class="nav nav-tabs">
+								<?php foreach($cargar_idiomas as $idioma){ ?>
+									<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
+										<li class="active"><a href="#tab1_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+									<?php }else{?>
+										<li><a href="#tab1_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+									<?php }?>
+								<?php }?>
+							</ul>
+							<div class="tab-content">
+								<?php foreach($cargar_idiomas as $idioma){?>
+									<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
+										<div class="tab-pane active" id="tab1_<?php echo $idioma->id_idioma;?>">
+									<?php }else{?>
+										<div class="tab-pane" id="tab1_<?php echo $idioma->id_idioma;?>">
+									<?php }
+									echo form_hidden('idiomas[]', $idioma->id_idioma);
+									$contenido=array(
+										'name'=>'contenido_'.$idioma->id_idioma,
+										'id'=>'contenido_'.$idioma->id_idioma,
+										'class'=>'form-control',
+										'value'=>set_value('contenido_'.$idioma->id_idioma,isset($texto_footer1[$idioma->id_idioma]->contenido) ? $texto_footer1[$idioma->id_idioma]->contenido : ''),
+									);?>
+														
+									<div class="col-sm-12">
+										<?php echo form_label($this->lang->line('blog_contenido'),'contenido_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
+									</div>
+									<div class="col-sm-12">
+										<?php echo form_textarea($contenido); ?>
+										<span><?php echo form_error('contenido_'.$idioma->id_idioma); ?></span>
+										<p></p>
+									</div>					
+								</div>
+							<?php }?>
+							</div>
+						</div>
 					<?php }?>
 					</div>
-					<div id="formulario-t1"></div>
+					<!-- <div id="formulario-t1"></div> -->
 				</div>
 	</div>
 	<?php echo form_hidden('columna',1);?>
@@ -208,10 +262,57 @@ function formulario(form, idioma){
 										<?php }?>
 									</div>
 								<?php }?>
+							<?php }else{?>
+								<div id="redes2" style="display:none;">
+									<label>Facebook</label>
+									<input class="form-control" type="text" name="facebook"></input>
+									<label>Twitter</label>
+									<input class="form-control" type="text" name="twitter"></input>
+									<label>Google+</label>
+									<input class="form-control" type="text" name="google"></input>
+									<label>Vimeo</label>
+									<input class="form-control" type="text" name="vimeo"></input>
+								</div>
+								<div id="contenido2" style="display: none;">
+									<ul class="nav nav-tabs">
+										<?php foreach($cargar_idiomas as $idioma){ ?>
+											<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
+												<li class="active"><a href="#tab2_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+											<?php }else{?>
+												<li><a href="#tab2_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+											<?php }?>
+										<?php }?>
+									</ul>
+									<div class="tab-content">
+										<?php foreach($cargar_idiomas as $idioma){?>
+											<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
+												<div class="tab-pane active" id="tab2_<?php echo $idioma->id_idioma;?>">
+											<?php }else{?>
+												<div class="tab-pane" id="tab2_<?php echo $idioma->id_idioma;?>">
+											<?php }
+											echo form_hidden('idiomas[]', $idioma->id_idioma);
+											$contenido=array(
+												'name'=>'contenido2_'.$idioma->id_idioma,
+												'id'=>'contenido2_'.$idioma->id_idioma,
+												'class'=>'form-control',
+												'value'=>set_value('contenido2_'.$idioma->id_idioma,isset($texto_footer1[$idioma->id_idioma]->contenido) ? $texto_footer1[$idioma->id_idioma]->contenido : ''),
+											);?>
+																
+											<div class="col-sm-12">
+												<?php echo form_label($this->lang->line('blog_contenido'),'contenido2_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
+											</div>
+											<div class="col-sm-12">
+												<?php echo form_textarea($contenido); ?>
+												<span><?php echo form_error('contenido2_'.$idioma->id_idioma); ?></span>
+												<p></p>
+											</div>					
+										</div>
+									<?php }?>
+									</div>
+								</div>
 							<?php }?>
 							</div>
-							<div id="formulario-t2"></div>
-								
+							<!-- <div id="formulario-t2"></div>-->
 						</div>
 	</div>
 	<?php echo form_hidden('columna',2);?>
@@ -417,6 +518,6 @@ function formulario(form, idioma){
 		echo form_close();?>
 	</div>
 </div>
-<?php $this->load->view('javascript/ckeditor');?>
+<?php //$this->load->view('javascript/ckeditor');?>
 
 					

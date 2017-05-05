@@ -50,6 +50,22 @@ class Admin_model extends MY_Model
     	//echo $this->db->last_query();
     }
     
+    /**********************************************************************/
+    /* Recibe: id usuario, numero columna pie y opción                    */
+    /* Devuelve: row con la opción de pie para esa columna y su contenido */
+    /**********************************************************************/
+    public function insert_footer_cliente($iduser, $col, $opc){
+    	$this->db->insert('footer_opciones_cliente', array('iduser'=>$iduser, 'columna'=>$col, 'id_opc'=>$opc));
+    	return $this->db->insert_id();
+    	/*$this->db->select('*');
+    	$this->db->from('footer_opciones');
+    	$this->db->join('footer_opciones_cliente', 'footer_opciones.id_opc = footer_opciones_cliente.id_opc');
+    	$this->db->where('footer_opciones_cliente.iduser', $iduser);
+    	$this->db->where('footer_opciones_cliente.columna', $col);
+    	return $this->db->get(footer_opciones_cliente)->row();*/
+    	//echo $this->db->last_query();
+    }
+    
     /***********************************************************************/
     /* Recibe: id usuario y numero columna pie                             */
     /* Devuelve: nada. (borra el contenido de esa columna para el usuario) */
