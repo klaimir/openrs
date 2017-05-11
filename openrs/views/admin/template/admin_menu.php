@@ -1,4 +1,4 @@
-<li class="active">
+<!--<li class="active">
     <a href="#">
         -<span class="menu-text"> ADMINISTRADOR </span>-
     </a>
@@ -6,7 +6,7 @@
     <b class="arrow"></b>
 </li>
 
-<!--<li class="">
+    <li class="">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-desktop"></i>
         <span class="menu-text">
@@ -242,7 +242,7 @@
             <b class="arrow"></b>
         </li>
 
-        <li>
+        <li class="active">
             <a href="<?php echo site_url('tipos_inmueble'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Tipos inmueble </span>

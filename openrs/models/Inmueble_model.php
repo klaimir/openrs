@@ -2,21 +2,21 @@
 
 require_once APPPATH . '/core/MY_Model.php';
 
-class Inmuebles_model extends MY_Model
+class Tipo_inmueble_model extends MY_Model
 {
 
     public function __construct()
     {
         $this->table = 'inmuebles';
-        $this->primary_key = 'id_inmueble';                
-        $this->has_one['inmuebles'] = array('local_key'=>'id_inmueble', 'foreign_key'=>'tipo', 'model'=>'Tipos_inmueble');
+        $this->primary_key = 'id';                
+        //$this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'tipo_id', 'model'=>'Inmuebles_model');
         
         parent::__construct();
     }
     
     /************************* SECURITY *************************/
     
-    public function check_access_conditions()
+    public function check_access_conditions($datos)
     {
         return TRUE;
     }
@@ -35,17 +35,15 @@ class Inmuebles_model extends MY_Model
     {
         $this->form_validation->set_rules('nombre_tipo', 'Tipo del inmueble', 'required');
     }
-
-    /**
-     * Establece la procedencia de los datos utilizados para la validación, por defecto es el POST pero podría ser un array (por ejemplo validación desde un CSV)
-     *
-     * @return array con los datos especificados para utilizarlos en los diferentes helpers
-     */
     
-    public function set_rules_datas()
-    {
-        $data = $this->input->post();
-        $this->form_validation->set_data($data);
+    /**
+     * Ejecuta las validaciones
+     *
+     * @return void
+     */
+    public function validation()
+    {    
+        return $this->form_validation->run();
     }
 
     /**
@@ -56,13 +54,13 @@ class Inmuebles_model extends MY_Model
      * @return array con los datos especificados para utilizarlos en los diferentes helpers
      */
     
-    public function set_datas_html($id=0)
+    public function set_datas_html($datos=NULL)
     {        
         $data['nombre_tipo'] = array(
             'name' => 'nombre_tipo',
             'id' => 'nombre_tipo',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nombre_tipo',isset($this->m_model->datas->nombre_tipo) ? $this->m_model->datas->nombre_tipo : ""),
+            'value' => $this->form_validation->set_value('nombre_tipo',isset($datos) ? $datos->nombre : ""),
         );
 
         return $data;
@@ -76,7 +74,7 @@ class Inmuebles_model extends MY_Model
     
     public function get_formatted_datas()
     {
-        $datas['nombre_tipo'] = $this->input->post('nombre_tipo');
+        $datas['nombre'] = $this->input->post('nombre');
         return $datas;
     }
 
@@ -89,15 +87,31 @@ class Inmuebles_model extends MY_Model
      */
     
     function check_delete($id)
-    {
-        if ($id !== 1)
-        {
-            return TRUE;
-        }
-        else
+    {        
+        if (count($this->with_inmuebles()->get($id)->inmuebles))
         {
             return FALSE;
         }
+        else
+        {
+            return TRUE;
+        }
+    }
+    
+    function create()
+    {
+        // Formatted datas
+        $formatted_datas=$this->get_formatted_datas();                
+        // Parent insert
+        return $this->insert($formatted_datas);
+    }
+    
+    function edit($id)
+    {
+        // Formatted datas
+        $formatted_datas=$this->get_formatted_datas();        
+        // Parent update
+        return $this->update($formatted_datas,$id);
     }
 
 }

@@ -365,12 +365,8 @@
                 
                 <ul class="nav nav-list">
                 <?php
-                if($session_es_empleado) {
-                    $this->load->view('admin/template/empleado_menu', $this->data);
-                }
-                
-                if($session_es_gerente) {
-                    $this->load->view('admin/template/gerente_menu', $this->data);
+                if($session_es_agente) {
+                    $this->load->view('admin/template/agente_menu', $this->data);
                 }
                 
                 if($session_es_admin) {
@@ -488,7 +484,7 @@
                 <div class="footer-inner">
                     <div class="footer-content">
                         <span class="bigger-120">
-                            OpenRS &copy; 2015
+                            Open RS &copy; 2017
                         </span>
 
                         &nbsp; &nbsp;

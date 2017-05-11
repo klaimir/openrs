@@ -7,7 +7,7 @@ class Tipos_inmueble extends CRUD_Controller
 
     function __construct()
     {
-        $this->_model = "Tipos_inmueble_model";
+        $this->_model = "Tipo_inmueble_model";
         $this->_controller = "tipos_inmueble";
         $this->_view = "admin/tipos_inmueble";
         
@@ -17,7 +17,8 @@ class Tipos_inmueble extends CRUD_Controller
         $this->_security();
         
         // Comprobación de acceso
-        $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+        $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));       
+        
     }
     
     // index
@@ -43,7 +44,7 @@ class Tipos_inmueble extends CRUD_Controller
                 // do we have a valid request?
                 if ($this->utilities->valid_csrf_nonce() === FALSE)
                 {
-                    show_error('Error CSRF: Petición incorrecta');
+                    show_error(lang('common_error_csrf'));
                 }
                 // Insert
                 $last_id=$this->{$this->_model}->create();

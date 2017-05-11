@@ -30,9 +30,9 @@ class Usuarios extends MY_Controller
             redirect('auth', 'refresh');
         }
 
-        if ($this->Usuarios_model->check_delete($id))
+        if ($this->Usuario_model->check_delete($id))
         {
-            if ($this->Usuarios_model->delete_all($id))
+            if ($this->Usuario_model->delete_all($id))
             {
                 $this->session->set_flashdata('message', 'El usuario ha sido borrado con éxito');
                 $this->session->set_flashdata('color_message', 'success');
@@ -81,7 +81,7 @@ class Usuarios extends MY_Controller
                 echo "No tiene permiso para realizar esta acción";
             } 
             // Datos federado
-            $check_cambiar_idioma = $this->Usuarios_model->modificar_idioma_usuario($id, $this->input->post('id_idioma'));            
+            $check_cambiar_idioma = $this->Usuario_model->modificar_idioma_usuario($id, $this->input->post('id_idioma'));            
             // Actualización de datos        
             if($check_cambiar_idioma)
             {

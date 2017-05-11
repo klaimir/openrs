@@ -9,7 +9,7 @@ class Page extends MY_Controller
 		parent::__construct();
 		//$this->load->model('carrusel_model');
 		$this->load->model('Seccion_model');
-		$this->load->model('Usuarios_model');
+		$this->load->model('Usuario_model');
 		$this->load->model('Idioma_model');
  		$this->load->model('General_model');
  		$this->load->library('ion_auth');
@@ -46,7 +46,7 @@ class Page extends MY_Controller
 				'model'=>array('model_name'=>'Seccion_model',
 							   'model_method'=>'listar_secciones',
 							   'model_param'=>$id_super_seccion,
-							   'idioma'=>$this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
+							   'idioma'=>$this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'columnas'=>array($this->lang->line('cms_c_listado_prioridad')=>'prioridad',
 								  $this->lang->line('cms_c_listado_titulo')=> 'titulo',
 								  $this->lang->line('cms_c_listado_menu')=> 'menu',
@@ -79,7 +79,7 @@ class Page extends MY_Controller
 	
 	function listar_bloques($url_seccion=null){
 		if(isset($url_seccion)){
-			$seccion=$this->Seccion_model->get_seccion_nombre($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
+			$seccion=$this->Seccion_model->get_seccion_nombre($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
 			if (count($seccion)==0){
 				redirect('errors/error_404');
 			}
@@ -92,7 +92,7 @@ class Page extends MY_Controller
 				'model'=>array('model_name'=>'Seccion_model',
 							   'model_method'=>'listar_bloques',
 							   'model_param'=>$url_seccion,
-							   'idioma' => $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
+							   'idioma' => $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'columnas'=>array($this->lang->line('cms_c_listado_prioridad')=>'prioridad',
 								  $this->lang->line('cms_c_listado_titulo')=>'titulo',
 								  $this->lang->line('cms_c_listado_estado')=>'estado'),
@@ -120,7 +120,7 @@ class Page extends MY_Controller
 	
 	function editar_bloque($id_bloque){
 		if(isset($id_bloque)){
-			$idioma = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
+			$idioma = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
 			$bloque=$this->Seccion_model->get_bloque($idioma,$id_bloque);
 			if (count($bloque)==0){
 				redirect('errors/error_404');
@@ -158,7 +158,7 @@ class Page extends MY_Controller
 	function inicializar($seccion, $titulo){
 	
 		$this->data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
-		$this->data['idioma_actual'] = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
+		$this->data['idioma_actual'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
 		$this->data['config']=$this->General_model->get_config();
 		$this->data['title']= $titulo.' - '.$this->data['config']->nombre;
 		$this->data['secciones'] = $this->Seccion_model->get_secciones($this->data['idioma_actual']->id_idioma);
@@ -169,11 +169,11 @@ class Page extends MY_Controller
 	
 	function crear_bloque($url_seccion,$id_bloque=null){		
 		if(isset($url_seccion)){
-			$seccion=$this->Seccion_model->get_seccion_nombre($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
+			$seccion=$this->Seccion_model->get_seccion_nombre($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
 			if (count($seccion)==0){
 				redirect('errors/error_404');
 			}else{
-				$bloque=$this->Seccion_model->get_bloque($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $id_bloque);
+				$bloque=$this->Seccion_model->get_bloque($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $id_bloque);
 				if (count($bloque)==0){
 					$nuevo=true;
 				}else{
@@ -440,13 +440,13 @@ class Page extends MY_Controller
 		$estados_dd['1'] = $this->lang->line('cms_publicado');
 		$estados_dd['2'] = $this->lang->line('cms_eliminado');
 		$estados_dd['3'] = $this->lang->line('cms_borrador');
-		//$ssecion_dd=$this->formularios->dropdown_idioma('super_seccion','id','nombre', $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma);
+		//$ssecion_dd=$this->formularios->dropdown_idioma('super_seccion','id','nombre', $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma);
 
 		$prioridad_max=$this->General_model->maximo('seccion','prioridad');
 		//Comprobamos si se está editando
 		if(isset($url_seccion) && $url_seccion){
 			$nuevo=false;
-			$seccion = $this->Seccion_model->get_seccion_nombre($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
+			$seccion = $this->Seccion_model->get_seccion_nombre($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
 			if(count($seccion) == 0)
 				redirect('errors/error_404');
 			foreach($this->Idioma_model->get_idiomas_subidos_activos() as $idioma){
@@ -758,7 +758,7 @@ class Page extends MY_Controller
 				'model_get'=>array('model_name'=>'Seccion_model',
 								   'model_method'=>'get_secciones',
 								   'model_param'=> '',
-								   'idioma' =>$this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
+								   'idioma' =>$this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'model_update'=>array('model_name'=>'General_model',
 								   	  'model_method'=>'update',
 								   	  'tabla'=>'seccion',
@@ -767,7 +767,7 @@ class Page extends MY_Controller
 		);
 		$this->ordenar($config);
 		/*$this->data = $this->inicializar('6', 'ordenar sección');
-		$idioma = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
+		$idioma = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
 		$this->data['ordenar']=$this->Seccion_model->get_secciones($idioma);
 		if($this->input->post()){
 			$ids_ordenadas = explode(";", $this->input->post('input_orden'));
@@ -793,7 +793,7 @@ class Page extends MY_Controller
 				'model_get'=>array('model_name'=>'Seccion_model',
 								   'model_method'=>'listar_bloques',
 								   'model_param'=>$url_seccion,
-								   'idioma'=>$this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
+								   'idioma'=>$this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'model_update'=>array('model_name'=>'General_model',
 									  'model_method'=>'update',
 									  'tabla'=>'bloque',
@@ -805,7 +805,7 @@ class Page extends MY_Controller
 	
 	function crear_bloque_texto($id_texto=null){
 		$this->data = $this->inicializar('6', $this->lang->line('cms_c_crear_bloque_texto'));
-		$idioma = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
+		$idioma = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
 		//Comprobamos si se está editando
 		if(isset($id_texto)){
 			$nuevo=false;
@@ -1111,7 +1111,7 @@ class Page extends MY_Controller
 				'model_get'=>array('model_name'=>'carrusel_model',
 						'model_method'=>'get_imagenes',
 						'model_param'=>$carrusel,
-						'idioma'=> $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
+						'idioma'=> $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'model_update'=>array('model_name'=>'General_model',
 						'model_method'=>'update',
 						'tabla'=>'imagen_carrusel',
@@ -1260,7 +1260,7 @@ class Page extends MY_Controller
 				'model_get'=> array('model_name'=>'carrusel_model',
 						'model_method'=>'get_categorias_carrusel',
 						'model_param'=>$carrusel,
-						'idioma'=> $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
+						'idioma'=> $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'model_update'=>array('model_name'=>'General_model',
 						'model_method'=>'update',
 						'tabla'=>'categoria_carrusel',
@@ -1456,7 +1456,7 @@ class Page extends MY_Controller
 			$this->General_model->delete('bloque_idiomas',array('id_bloque'=>$id_bloque, 'id_idioma'=>$idioma->id_idioma));
 		}
 		$this->General_model->delete('bloque',array('id_bloque'=>$id_bloque));
-		$seccion=$this->Seccion_model->get_seccion($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $bloque->id_seccion);
+		$seccion=$this->Seccion_model->get_seccion($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $bloque->id_seccion);
 		if($borrar_bloque==true){
 			redirect('page/listar_bloques/'.$seccion->url_seo);
 		}
@@ -1464,13 +1464,13 @@ class Page extends MY_Controller
 	
 	function borrar_seccion($url_seo, $seccion = 'seccion'){
 		//borramos los bloques de la sección
-		$bloques=$this->Seccion_model->listar_bloques($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seo, 0);
+		$bloques=$this->Seccion_model->listar_bloques($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seo, 0);
 		if(count($bloques)!=0){
 			foreach($bloques as $bl){
 				$this->borrar_bloque($bl->id_bloque, $seccion);
 			}
 		}
-		$seccion = $this->Seccion_model->get_seccion_nombre($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seo);
+		$seccion = $this->Seccion_model->get_seccion_nombre($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seo);
 		//Eliminamos la sección
 		foreach($this->Idioma_model->get_idiomas_subidos_activos() as $idioma){
 			$this->General_model->delete('seccion_idiomas',array('id_seccion'=>$seccion->id, 'id_idioma'=>$idioma->id_idioma));
@@ -1487,7 +1487,7 @@ class Page extends MY_Controller
 				'view'=>'listado/listado',
 				'model'=>array('model_name'=>'Seccion_model',
 						'model_method'=>'get_lista_super_secciones',
-						'idioma'=>$this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
+						'idioma'=>$this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'columnas'=>array($this->lang->line('cms_c_listado_prioridad')=>'prioridad',
 								$this->lang->line('cms_c_listado_nombre')=> 'nombre',
 								$this->lang->line('cms_c_listado_footer')=> 'footer',),
@@ -1520,7 +1520,7 @@ class Page extends MY_Controller
 				'model_get'=>array('model_name'=>'Seccion_model',
 									'model_method'=>'get_super_secciones',
 									'model_param'=>'',
-									'idioma'=>$this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
+									'idioma'=>$this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'model_update'=>array('model_name'=>'General_model',
 									'model_method'=>'update',
 									'tabla'=>'super_seccion',
@@ -1533,7 +1533,7 @@ class Page extends MY_Controller
 	function crear_super_seccion($id_super_seccion=null){
 		$prioridad_max=$this->General_model->maximo('super_seccion','prioridad');
 		if(isset($id_super_seccion)){
-			$super_seccion=$this->Seccion_model->get_super_seccion($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $id_super_seccion);
+			$super_seccion=$this->Seccion_model->get_super_seccion($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $id_super_seccion);
 			if (count($super_seccion)==0){
 				redirect('errors/error_404');
 			}else{
@@ -1648,7 +1648,7 @@ class Page extends MY_Controller
 	
 	function borrar_super_seccion($id_super_seccion){
 		//borramos los secciones
-		$secciones=$this->Seccion_model->listar_secciones($this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $id_super_seccion);
+		$secciones=$this->Seccion_model->listar_secciones($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $id_super_seccion);
 		if(count($secciones)!=0){
 			foreach($secciones as $sec){
 				$this->borrar_seccion($sec->url_seo, 'superseccion');

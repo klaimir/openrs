@@ -4,7 +4,8 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class MY_Controller extends CI_controller
 {
-    var $config_template = NULL;
+    var $breadcrumbs = NULL;
+    var $active_section = NULL;
 
     public function __construct()
     {
@@ -13,17 +14,17 @@ class MY_Controller extends CI_controller
         $this->load->database();
         $this->load->library(array('ion_auth', 'form_validation', 'formularios'));
         $this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form', 'security'));
-        $this->load->model('Usuarios_model');
+        $this->load->model('Usuario_model');
         $this->load->model('Admin_model');
         $this->load->model('Idioma_model');
         $this->load->model('Seccion_model');
         $this->load->model('General_model');
         // Public
-        $this->initializePublic();
+        $this->initialize_public();
         // Private
         if ($this->ion_auth->logged_in())
         {
-            $this->initializePrivate();
+            $this->initialize_private();
         }
         else
         {
@@ -52,13 +53,12 @@ class MY_Controller extends CI_controller
         }
     }
 
-    private function initializePublic()
+    // Por si se desea inicializar algo publico
+    private function initialize_public()
     {
-        $this->config_template = array('menu_izquierda' => 'template', 'mostrar_copyright' => 0);
-        $this->data['config_template'] = $this->config_template;
     }
 
-    private function initializePrivate()
+    private function initialize_private()
     {
         // Datos de sesión
         $this->data['session_logged_in'] = true;
@@ -67,13 +67,22 @@ class MY_Controller extends CI_controller
         //$this->data['session_user_group'] = $this->ion_auth->get_users_groups()->row()->id;
 
         // Permisos
-        $this->data['session_es_admin'] = $this->Usuarios_model->getEsAdmin($this->data['session_user_id']);
-        $this->data['session_es_gerente'] = $this->Usuarios_model->getEsGerente($this->data['session_user_id']);
-        $this->data['session_es_empleado'] = $this->Usuarios_model->getEsEmpleado($this->data['session_user_id']);
+        $this->data['session_es_admin'] = $this->Usuario_model->is_admin($this->data['session_user_id']);
+        $this->data['session_es_agente'] = $this->Usuario_model->is_agente($this->data['session_user_id']);
         
         // Idioma
-        $this->data['session_user_language'] = $this->Usuarios_model->get_lang($this->session->userdata('user_id'));
-        $this->lang->load('auth',$this->data['session_user_language']);
+        $this->data['session_user_language'] = $this->Usuario_model->get_lang($this->session->userdata('user_id'));
+        // Si la sesión se va muestra un warning
+        if(empty($this->data['session_user_language']))
+        {            
+            $this->lang->load('auth',$this->config->item('language'));
+            $this->lang->load('common',$this->config->item('language'));
+        }
+        else
+        {
+            $this->lang->load('auth',$this->data['session_user_language']);
+            $this->lang->load('common',$this->data['session_user_language']);
+        }
     }
 
     protected function is_post()
@@ -95,7 +104,7 @@ class MY_Controller extends CI_controller
     
     public function listado ($config){
     	$this->data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
-		$this->data['idioma_actual'] = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
+		$this->data['idioma_actual'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
 		$this->data['config']=$this->General_model->get_config();
 		$this->data['title']= '';
 		$this->data['secciones'] = $this->Seccion_model->get_secciones($this->data['idioma_actual']->id_idioma);
@@ -113,7 +122,7 @@ class MY_Controller extends CI_controller
     
     public function crear($inputs,$config,$elementos = NULL){
     	$this->data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
-		$this->data['idioma_actual'] = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
+		$this->data['idioma_actual'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
 		$this->data['config']=$this->General_model->get_config();
 		$this->data['title']= '';
 		$this->data['secciones'] = $this->Seccion_model->get_secciones($this->data['idioma_actual']->id_idioma);

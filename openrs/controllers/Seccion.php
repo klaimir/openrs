@@ -12,7 +12,7 @@ class Seccion extends MY_Controller_Front
 		$this->load->library('form_validation');
 		$this->load->model('Seccion_model');
 		$this->load->model('Bloque_model');
-		$this->load->model('Usuarios_model');
+		$this->load->model('Usuario_model');
 		$this->load->model('General_model');
 		$this->load->model('Idioma_model');
 	}
@@ -37,7 +37,7 @@ class Seccion extends MY_Controller_Front
 	function inicializar($seccion, $titulo=NULL){
 		$data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
 		if($this->ion_auth->logged_in())
-			$data['idioma_actual'] = $this->Usuarios_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
+			$data['idioma_actual'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
 		else
 			$data['idioma_actual'] = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));
 		$data['config']=$this->General_model->get_config();
@@ -45,7 +45,7 @@ class Seccion extends MY_Controller_Front
 		$data['secciones_header']=$this->Seccion_model->get_secciones_header($data['idioma_actual']->id_idioma);
 		$data['subsecciones_header']=$this->Seccion_model->get_subsecciones_header($data['idioma_actual']->id_idioma);
 		
-		$data['cols_pie']=$this->Usuarios_model->get_columnas_pie();
+		$data['cols_pie']=$this->Usuario_model->get_columnas_pie();
 		if(count($data['cols_pie'])){
 			$data['span']=12/count($data['cols_pie']);
 		}else{

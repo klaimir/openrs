@@ -22,7 +22,8 @@ class Backup_model extends CI_Model {
         $data = array(
             'backup_name' => $file_name,
             'backup_location' => $file_path,
-            'created_date' => date('Y-m-d H:i:s')
+            'created_date' => date('Y-m-d H:i:s'),
+            'admin_id' => $this->data['session_user_id']
         );
         $this->db->insert($this->backup, $data);
         $id = $this->db->insert_id();

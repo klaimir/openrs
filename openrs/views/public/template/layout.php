@@ -49,24 +49,7 @@
 
         <div class="container">
 
-            <?php if ($config_template['menu_izquierda'] === 'template') { ?>
-                <!-- Page Layout here -->
-                <div class="row">
-
-                    <div class="col s12 m3 l2">
-                        <!-- Grey navigation panel -->
-                        <ul>
-                            <li><a href="#">Grey Link1</a></li>
-                            <li><a href="#">Grey Link2</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col s12 m9 l10">
-                        <!-- Teal page content  -->
-                        <?php $this->load->view($_view_path, $this->data); ?>
-                    </div>
-                </div>
-            <?php } else { $this->load->view($_view_path, $this->data); } ?>
+            <?php $this->load->view($_view_path, $this->data); ?>
 
         </div>
 
@@ -91,13 +74,6 @@
                     </div>
                 </div>
             </div>
-            <?php if ($config_template['mostrar_copyright']) { ?>
-            <div class="footer-copyright">
-                <div class="container">
-                    Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-                </div>
-            </div>
-            <?php } ?>
         </footer>  
 
     </body>

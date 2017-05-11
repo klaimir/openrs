@@ -5,7 +5,7 @@ class Idioma extends MY_Controller_Front
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Usuarios_model');
+		$this->load->model('Usuario_model');
 		$this->load->model('Idioma_model');
 		$this->load->model('General_model');
 	}
@@ -24,7 +24,7 @@ class Idioma extends MY_Controller_Front
 		$url_antigua = $this->input->post('location');
 		$url_nueva = str_replace('/'.$idioma_actual->nombre_seo2.'/', '/'.$idioma->nombre_seo2.'/', $url_antigua);
 		if(!$cookie){
-			$this->Usuarios_model->modificar_idioma_usuario($this->ion_auth->user()->row()->id, $idioma->id_idioma);
+			$this->Usuario_model->modificar_idioma_usuario($this->ion_auth->user()->row()->id, $idioma->id_idioma);
 		}else{
 			if(get_cookie('cookieLOPD')){
 				$cookie = array(

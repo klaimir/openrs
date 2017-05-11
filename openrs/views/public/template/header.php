@@ -8,20 +8,6 @@
 	    <div class="col-sm-3 cabecera-logo hidden-xs">
 			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'assets/admin/img/preferencias/'.$config->imagen; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
 		</div>
-	    <?php /*if($config_template['menu_izquierda']==='template') { ?>
-	    <!-- Page Layout here -->
-	    <div class="row">
-	
-	      <div class="col s12 m3 l2">
-	        <!-- Grey navigation panel -->
-	        <ul>
-	            <li><a href="#">Grey Link1</a></li>
-	            <li><a href="#">Grey Link2</a></li>
-	        </ul>
-	      </div>
-	
-	      <div class="col s12 m9 l10">
-	    <?php } */?>
 	    <div class="col-md-9 menu-desplegable hidden-xs">
 			<div class="menu-nav hidden-xs" style="background-color:<?php echo $config->ccabecera;?>">
 				<div class="menu">

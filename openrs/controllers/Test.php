@@ -44,12 +44,12 @@ class Test extends MY_Controller
 
     function load_example()
     {
-        //$this->load->model('Usuarios_model');
+        //$this->load->model('Usuario_model');
         // Es sensible a mayúsculas
         //echo $this->usuarios_model->get_lang(1);
-        //echo $this->Usuarios_model->get_lang(1);
+        //echo $this->Usuario_model->get_lang(1);
 
-        $test = $this->Usuarios_model->get_lang(1);
+        $test = $this->Usuario_model->get_lang(1);
 
         $expected_result = 'English';
 
@@ -79,7 +79,7 @@ class Test extends MY_Controller
             /*             * ************* RULES ************* */
             $rules_first_name = array(
                 'required',
-                array('test_names', array($this->Usuarios_model, 'test_names'))
+                array('test_names', array($this->Usuario_model, 'test_names'))
             );
             $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), $rules_first_name);
             $this->form_validation->set_rules('last_name', 'Apellidos', 'required');

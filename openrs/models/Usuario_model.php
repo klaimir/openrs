@@ -2,7 +2,7 @@
 
 require_once APPPATH . '/core/MY_Model.php';
 
-class Usuarios_model extends MY_Model
+class Usuario_model extends MY_Model
 {
 
     public function __construct()
@@ -29,7 +29,7 @@ class Usuarios_model extends MY_Model
     {
         $rules_first_name = array(
                 'required',
-                array('test_names', array($this->Usuarios_model, 'test_names'))
+                array('test_names', array($this->Usuario_model, 'test_names'))
             );
         $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), $rules_first_name);
         $this->form_validation->set_rules('last_name', 'Apellidos', 'required');
@@ -97,33 +97,26 @@ class Usuarios_model extends MY_Model
     }
 
     /**
-     * getEsGerente
+     * Determina si un determinado usuario es agente inmobiliario
      *
-     * @return bool
-     * */
-    public function getEsGerente($id = false)
+     * @param [id]			Identificador del usuario
+     *
+     * @return valor formateado
+     */
+    public function is_agente($id = false)
     {
-        $gerente_group = $this->config->item('gerente_group', 'ion_auth');
-        return $this->ion_auth->in_group($gerente_group, $id);
+        $agente_group = $this->config->item('agente_group', 'ion_auth');
+        return $this->ion_auth->in_group($agente_group, $id);
     }
 
     /**
-     * getEsEmpleado
+     * Determina si un determinado usuario es administrador
      *
-     * @return bool
-     * */
-    public function getEsEmpleado($id = false)
-    {
-        $empleado_group = $this->config->item('empleado_group', 'ion_auth');
-        return $this->ion_auth->in_group($empleado_group, $id);
-    }
-
-    /**
-     * getEsEmpleado
+     * @param [id]			Identificador del usuario
      *
-     * @return bool
-     * */
-    public function getEsAdmin($id = false)
+     * @return valor formateado
+     */
+    public function is_admin($id = false)
     {
         return $this->ion_auth->is_admin($id);
     }
