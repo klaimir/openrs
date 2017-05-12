@@ -14,15 +14,13 @@ class CRUD_controller extends MY_Controller
     {
         parent::__construct();
         
-        $this->load->model($this->_model);
-        
-        $this->lang->load($this->_controller,$this->data['session_user_language']);
+        $this->load->model($this->_model);        
 
         $this->data['_controller'] = $this->_controller;
         $this->data['_view'] = $this->_view;
         
         // Sección activa
-        $this->data['active_section']=$this->_controller;
+        $this->data['_active_section']=$this->_controller;
     }
     
 }

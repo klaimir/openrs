@@ -366,11 +366,11 @@
                 <ul class="nav nav-list">
                 <?php
                 if($session_es_agente) {
-                    $this->load->view('admin/template/agente_menu', $this->data);
+                    $this->load->view('template/admin/agente_menu', $this->data);
                 }
                 
                 if($session_es_admin) {
-                    $this->load->view('admin/template/admin_menu', $this->data);
+                    $this->load->view('template/admin/admin_menu', $this->data);
                 }
                 ?>
                 </ul><!-- /.nav-list -->

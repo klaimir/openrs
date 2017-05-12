@@ -4,16 +4,14 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class MY_Controller extends CI_controller
 {
-    var $breadcrumbs = NULL;
-    var $active_section = NULL;
-
+    
     public function __construct()
     {
         parent::__construct();
         
         $this->load->database();
         $this->load->library(array('ion_auth', 'form_validation', 'formularios'));
-        $this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form', 'security'));
+        $this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form', 'html', 'security'));
         $this->load->model('Usuario_model');
         $this->load->model('Admin_model');
         $this->load->model('Idioma_model');
@@ -33,8 +31,11 @@ class MY_Controller extends CI_controller
         // Enable profiler if ENVIRONMENT is development or testing
         if(ENVIRONMENT=='development' || ENVIRONMENT=='testing')
         {
-            //$this->output->enable_profiler(TRUE);
+            $this->output->enable_profiler(TRUE);
         }
+        // Para que no de fallos en layout se definen inicializamente
+        $this->data['_active_section']=NULL;
+        $this->data['_breadcrumbs']=NULL;
     }
 
     protected function _security()
@@ -93,7 +94,7 @@ class MY_Controller extends CI_controller
     protected function render_private($cuerpo, $data)
     {
         $data['_view_path'] = $cuerpo;
-        $this->load->view('admin/template/layout', $data);
+        $this->load->view('template/admin/layout', $data);
     }
 
     protected function render_public($cuerpo, $data)

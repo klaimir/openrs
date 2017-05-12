@@ -19,7 +19,7 @@ class Usuarios extends MY_Controller
     function dashboard()
     {
         // Render
-        $this->render_private('admin/index', $this->data);
+        $this->render_private('admin/dashboard', $this->data);
     }
 
     public function delete_user($id)
@@ -30,22 +30,34 @@ class Usuarios extends MY_Controller
             redirect('auth', 'refresh');
         }
 
-        if ($this->Usuario_model->check_delete($id))
+        // Restricciones de existencia
+        $this->data['element'] = $this->Usuario_model->get_by_id($id);
+        // Existe usuario
+        if ($this->Usuario_model->check_access($this->data['element']))
         {
-            if ($this->Usuario_model->delete_all($id))
+            // Restricciones del modelo
+            if ($this->Usuario_model->check_delete($id))
             {
-                $this->session->set_flashdata('message', 'El usuario ha sido borrado con éxito');
-                $this->session->set_flashdata('color_message', 'success');
+                if ($this->Usuario_model->delete_usuario($id))
+                {
+                    $this->session->set_flashdata('message', 'El usuario ha sido borrado con éxito');
+                    $this->session->set_flashdata('color_message', 'success');
+                }
+                else
+                {
+                    $this->session->set_flashdata('message', 'Error al borrar el usuario');
+                    $this->session->set_flashdata('color_message', 'danger');
+                }
             }
             else
             {
-                $this->session->set_flashdata('message', 'Error al borrar el usuario');
+                $this->session->set_flashdata('message', 'El usuario seleccionado tiene datos asociados o es un usuario especial del sistema');
                 $this->session->set_flashdata('color_message', 'danger');
             }
         }
         else
         {
-            $this->session->set_flashdata('message', 'El usuario seleccionado tiene datos asociados o es un usuario especial del sistema');
+            $this->session->set_flashdata('message', 'Error usuario seleccionado no existe');
             $this->session->set_flashdata('color_message', 'danger');
         }
 
@@ -66,7 +78,7 @@ class Usuarios extends MY_Controller
         $this->data['id_idioma']=$usuario_idioma->id_idioma;
         $this->data['usuario_id']=$id;
         // Cargamos la vista
-        $this->load->view('admin/usuarios/cambiar_idioma', $this->data);
+        $this->load->view('usuarios/cambiar_idioma', $this->data);
     }
     
     public function cambiar_idioma() {

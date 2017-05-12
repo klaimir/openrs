@@ -130,7 +130,7 @@ class Backup extends MY_Controller {
         $this->data['list']=$this->backup->getAll();
         // Datas
         $data_merged=array_merge($this->data, $data);
-        $this->render_private('admin/backup/index', $data_merged);
+        $this->render_private('backup/index', $data_merged);
     }
 
     /**

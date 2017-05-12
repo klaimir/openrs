@@ -2,14 +2,14 @@
 
 require_once APPPATH . '/core/MY_Model.php';
 
-class Inmueble_model extends MY_Model
+class Tipo_fichero_model extends MY_Model
 {
 
     public function __construct()
     {
-        $this->table = 'inmuebles';
-        $this->primary_key = 'id';                
-        //$this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'tipo_id', 'model'=>'Inmuebles_model');
+        $this->table = 'tipos_ficheros';
+        $this->primary_key = 'id';
+        $this->has_many['inmuebles_ficheros'] = array('local_key'=>'id', 'foreign_key'=>'tipo_fichero_id', 'model'=>'Inmueble_Fichero_model');
         
         parent::__construct();
     }
@@ -33,7 +33,8 @@ class Inmueble_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('nombre_tipo', 'Tipo del inmueble', 'required');
+        $this->form_validation->set_rules('nombre', 'Nombre del tipo de fichero adjunto', 'required|is_unique_global[tipos_ficheros.nombre,'.$id.']|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('descripcion', 'Descripción del tipo de fichero adjunto', 'xss_clean|max_length[255]');
     }
     
     /**
@@ -41,8 +42,14 @@ class Inmueble_model extends MY_Model
      *
      * @return void
      */
-    public function validation()
+    public function validation($id=0)
     {    
+        // Rules
+        $this->set_rules($id);
+        
+        // Other functions validations
+        
+        // Run form validation        
         return $this->form_validation->run();
     }
 
@@ -56,11 +63,18 @@ class Inmueble_model extends MY_Model
     
     public function set_datas_html($datos=NULL)
     {        
-        $data['nombre_tipo'] = array(
-            'name' => 'nombre_tipo',
-            'id' => 'nombre_tipo',
+        $data['nombre'] = array(
+            'name' => 'nombre',
+            'id' => 'nombre',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nombre_tipo',isset($datos) ? $datos->nombre : ""),
+            'value' => $this->form_validation->set_value('nombre',is_object($datos) ? $datos->nombre : ""),
+        );
+        
+        $data['descripcion'] = array(
+            'name' => 'descripcion',
+            'id' => 'descripcion',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('descripcion',is_object($datos) ? $datos->descripcion : ""),
         );
 
         return $data;
@@ -75,6 +89,7 @@ class Inmueble_model extends MY_Model
     public function get_formatted_datas()
     {
         $datas['nombre'] = $this->input->post('nombre');
+        $datas['descripcion'] = $this->input->post('descripcion');
         return $datas;
     }
 
@@ -88,7 +103,7 @@ class Inmueble_model extends MY_Model
     
     function check_delete($id)
     {        
-        if (count($this->with_inmuebles()->get($id)->inmuebles))
+        if (count($this->with_inmuebles_ficheros()->get($id)->inmuebles_ficheros))
         {
             return FALSE;
         }
@@ -98,6 +113,12 @@ class Inmueble_model extends MY_Model
         }
     }
     
+    /**
+     * Formatea los datos introducidos por el usuario y crea un registro en la base de datos
+     *
+     * @return void
+     */
+    
     function create()
     {
         // Formatted datas
@@ -105,6 +126,14 @@ class Inmueble_model extends MY_Model
         // Parent insert
         return $this->insert($formatted_datas);
     }
+    
+    /**
+     * Formatea los datos introducidos por el usuario y actualiza un registro en la base de datos
+     *
+     * @param [id]                  Indentificador del elemento
+     *
+     * @return void
+     */
     
     function edit($id)
     {

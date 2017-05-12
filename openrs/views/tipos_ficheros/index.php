@@ -1,62 +1,33 @@
 <div class="page-header">
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-12">
             <h1>
-                <?php echo lang($_controller . '_heading'); ?>
+                Tipos de ficheros adjuntos
             </h1>
         </div>
-
-        <div class="col-xs-4">
-            <button id="menu-toggler-horizontal" class="navbar-toggle menu-toggler pull-right" data-target="#sidebar_horizontal" type="button">
-                <span class="sr-only">Toggle sidebar</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
     </div>
-</button>
 </div>
 
 <?php $this->load->view('common/message', $this->data); ?>
 
-<div id="sidebar_horizontal" class="sidebar h-sidebar responsive">
-    <script type="text/javascript">
-        try {
-            ace.settings.check('sidebar_horizontal', 'fixed')
-        } catch (e) {
-        }
-    </script>
-
-    <ul class="nav nav-list">
-        <li class="hover">
-            <a href="<?php echo site_url('tipos_inmueble/insert'); ?>">
-                <i class="menu-icon fa fa-plus-circle"></i>
-                <span class="menu-text"> <?php echo lang($_controller . '_btn_insert'); ?> </span>
-            </a>
-
-            <b class="arrow"></b>
-        </li>
-    </ul><!-- /.nav-list -->
-
-    <div class="sidebar-toggle sidebar-collapse" id="sidebar-horizontal-collapse">
-        <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+<div class="row">
+    <div class="col-xs-12">
+        <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/insert'); ?>">
+            <i class="menu-icon fa fa-plus-circle"></i>
+            <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
+        </a>
     </div>
-
-    <script type="text/javascript">
-        try {
-            ace.settings.check('sidebar_horizontal', 'collapsed')
-        } catch (e) {
-        }
-    </script>
 </div>
+
+<div class="space-10"></div>
 
 <div class="row">
     <div class="col-xs-12">
         <table class="table table-striped table-bordered table-hover" id="tabgrid">
             <thead>
                 <tr>
-                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -66,14 +37,15 @@
                 {
                 ?>
                 <tr>
-                    <td><?php echo $element->nombre_tipo; ?></td>
+                    <td><?php echo $element->nombre; ?></td>
+                    <td><?php echo $element->descripcion; ?></td>
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">
-                            <a class="green" href="<?php echo site_url($_controller."/edit/" . $element->id_tipo); ?>" title="Editar">
+                            <a class="green" href="<?php echo site_url($_controller."/edit/" . $element->id); ?>" title="Editar">
                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                             </a>
 
-                            <a class="red borrar-elemento" data-id="<?php echo $element->id_tipo; ?>" href="#" title="Borrar">
+                            <a class="red borrar-elemento" data-id="<?php echo $element->id; ?>" href="#" title="Borrar">
                                 <i class="ace-icon fa fa-trash-o bigger-130"></i>
                             </a>
                         </div>
@@ -86,7 +58,7 @@
 
                                 <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                     <li>
-                                        <a href="<?php echo site_url("tipos_inmueble/edit/" . $element->id_tipo); ?>" class="tooltip-success" data-rel="tooltip" title="Editar">
+                                        <a href="<?php echo site_url($_controller."/edit/" . $element->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar">
                                             <span class="green">
                                                 <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                             </span>
@@ -94,7 +66,7 @@
                                     </li>
 
                                     <li>
-                                        <a href="#" class="tooltip-error borrar-elemento" data-id="<?php echo $element->id_tipo; ?>" data-rel="tooltip" title="Borrar">
+                                        <a href="#" class="tooltip-error borrar-elemento" data-id="<?php echo $element->id; ?>" data-rel="tooltip" title="Borrar">
                                             <span class="red">
                                                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                             </span>
@@ -119,7 +91,7 @@
             var id = $(this).data("id");
             bootbox.confirm("¿Estás seguro/a?", function (result) {
                 if (result) {
-                    window.location = '<?php echo site_url(); ?>/tipos_inmueble/delete/' + id;
+                    window.location = '<?php echo site_url($_controller); ?>/delete/' + id;
                 }
             });
         });

@@ -15,21 +15,10 @@ class Test extends MY_Controller
         $this->_security();
 
         $this->load->library('unit_test');
-        /*
-          $str = '
-          <table border="0" cellpadding="4" cellspacing="1">
-          {rows}
-          <tr>
-          <td>{item}</td>
-          <td>{result}</td>
-          </tr>
-          {/rows}
-          </table>';
-
-          $this->unit->set_template($str); */
+       
     }
 
-    function index()
+    function kcfinder()
     {
         # Variables de sesion de KCFinder, deben declararse al hacer LogIn con un usuario
         $_SESSION['KCFINDER'] = array();
@@ -132,7 +121,7 @@ class Test extends MY_Controller
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
             'smtp_user' => 'angel.berasuain@gmail.com',
-            'smtp_pass' => 'BreakbeaT2',
+            'smtp_pass' => 'BreakbeaT',
             'mailtype' => 'html',
             'charset' => 'UTF-8'
         );

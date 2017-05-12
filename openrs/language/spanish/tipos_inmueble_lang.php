@@ -15,4 +15,5 @@
 
 // Errors
 $lang['tipos_inmueble_heading'] = 'Tipos Inmueble';
-$lang['tipos_inmueble_label_nombre_tipo'] = 'Nombre';
+$lang['tipos_inmueble_label_nombre'] = 'Nombre';
+$lang['tipos_inmueble_label_descripcion'] = 'Descripción';

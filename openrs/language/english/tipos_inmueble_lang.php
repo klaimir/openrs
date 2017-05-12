@@ -15,6 +15,5 @@
 
 // Errors
 $lang['tipos_inmueble_heading'] = 'Real State Types';
-$lang['tipos_inmueble_label_nombre_tipo'] = 'Name';
-$lang['tipos_inmueble_btn_insert'] = 'Create';
-$lang['tipos_inmueble_btn_edit'] = 'Edit';
+$lang['tipos_inmueble_label_nombre'] = 'Name';
+$lang['tipos_inmueble_label_descripcion'] = 'Description';

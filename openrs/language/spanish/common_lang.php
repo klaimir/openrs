@@ -16,4 +16,12 @@
 // Errors
 $lang['common_error_csrf'] = 'Error CSRF: Petición incorrecta';
 $lang['common_btn_insert'] = 'Insertar';
+$lang['common_success_insert'] = 'Elemento insertado';
+$lang['common_error_insert'] = 'Error al insertar';
 $lang['common_btn_edit'] = 'Editar';
+$lang['common_success_edit'] = 'Elemento actualizado';
+$lang['common_error_edit'] = 'Error al editar';
+$lang['common_success_delete'] = 'Elemento eliminado';
+$lang['common_error_delete'] = 'Error al eliminar';
+$lang['common_error_elemento_asociado_delete'] = 'El elemento seleccionado tiene datos asociados en el sistema';
+

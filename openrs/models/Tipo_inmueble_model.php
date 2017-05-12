@@ -9,7 +9,7 @@ class Tipo_inmueble_model extends MY_Model
     {
         $this->table = 'tipos_inmueble';
         $this->primary_key = 'id';                
-        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'tipo_id', 'model'=>'Inmuebles_model');
+        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'tipo_id', 'model'=>'Inmueble_model');
         
         parent::__construct();
     }
@@ -33,7 +33,8 @@ class Tipo_inmueble_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('nombre_tipo', 'Tipo del inmueble', 'required');
+        $this->form_validation->set_rules('nombre', 'Nombre del tipo del inmueble', 'required|is_unique_global[tipos_inmueble.nombre,'.$id.']|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('descripcion', 'Descripción del tipo del inmueble', 'xss_clean|max_length[255]');
     }
     
     /**
@@ -41,8 +42,14 @@ class Tipo_inmueble_model extends MY_Model
      *
      * @return void
      */
-    public function validation()
+    public function validation($id=0)
     {    
+        // Rules
+        $this->set_rules($id);
+        
+        // Other functions validations
+        
+        // Run form validation        
         return $this->form_validation->run();
     }
 
@@ -56,11 +63,18 @@ class Tipo_inmueble_model extends MY_Model
     
     public function set_datas_html($datos=NULL)
     {        
-        $data['nombre_tipo'] = array(
-            'name' => 'nombre_tipo',
-            'id' => 'nombre_tipo',
+        $data['nombre'] = array(
+            'name' => 'nombre',
+            'id' => 'nombre',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nombre_tipo',isset($datos) ? $datos->nombre : ""),
+            'value' => $this->form_validation->set_value('nombre',is_object($datos) ? $datos->nombre : ""),
+        );
+        
+        $data['descripcion'] = array(
+            'name' => 'descripcion',
+            'id' => 'descripcion',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('descripcion',is_object($datos) ? $datos->descripcion : ""),
         );
 
         return $data;
@@ -75,6 +89,7 @@ class Tipo_inmueble_model extends MY_Model
     public function get_formatted_datas()
     {
         $datas['nombre'] = $this->input->post('nombre');
+        $datas['descripcion'] = $this->input->post('descripcion');
         return $datas;
     }
 

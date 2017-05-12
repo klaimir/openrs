@@ -2,14 +2,14 @@
 
 require_once APPPATH . '/core/CRUD_Controller.php';
 
-class Tipos_inmueble extends CRUD_Controller
+class Tipos_ficheros extends CRUD_Controller
 {
 
     function __construct()
     {
-        $this->_model = "Tipo_inmueble_model";
-        $this->_controller = "tipos_inmueble";
-        $this->_view = "tipos_inmueble";
+        $this->_model = "Tipo_fichero_model";
+        $this->_controller = "tipos_ficheros";
+        $this->_view = "tipos_ficheros";
         
         parent::__construct();
         
