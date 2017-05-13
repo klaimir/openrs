@@ -222,7 +222,7 @@
     <b class="arrow"></b>
 </li>
 
-<li class="<?php echo set_active_menu($_active_section,array("tipos_ficheros","tipos_inmueble")); ?>">
+<li class="<?php echo set_active_menu($_active_section,array("tipos_ficheros","tipos_inmueble","plantillas_documentacion")); ?>">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-building"></i>
         <span class="menu-text"> Config. Datos </span>
@@ -233,7 +233,16 @@
     <b class="arrow"></b>
 
     <ul class="submenu">
-        <li>
+        <li class="<?php echo set_active_option($_active_section,'plantillas_documentacion'); ?>">
+            <a href="<?php echo site_url('plantillas_documentacion'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Plantillas Documentación </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        
+        <li class="<?php echo set_active_option($_active_section,'tipos_ficheros'); ?>">
             <a href="<?php echo site_url('tipos_ficheros'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Tipos ficheros </span>
