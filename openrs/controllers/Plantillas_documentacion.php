@@ -37,11 +37,6 @@ class Plantillas_documentacion extends CRUD_Controller
             // Check
             if ($this->{$this->_model}->validation())
             {
-                // do we have a valid request?
-                if ($this->utilities->valid_csrf_nonce() === FALSE)
-                {
-                    show_error(lang('common_error_csrf'));
-                }
                 // Insert
                 $last_id=$this->{$this->_model}->create();
                 // Check
@@ -57,10 +52,7 @@ class Plantillas_documentacion extends CRUD_Controller
             {
                 $this->data['message'] = validation_errors();
             }
-        }
-        // CSRF
-        $this->data['csrf'] = $this->utilities->get_csrf_nonce();
-        
+        }        
         // Set datas
         $this->_set_datas_html();
         
@@ -80,11 +72,6 @@ class Plantillas_documentacion extends CRUD_Controller
             // Check
             if ($this->{$this->_model}->validation($id))
             {
-                // do we have a valid request?
-                if ($this->utilities->valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
-                {
-                    show_error(lang('common_error_csrf'));
-                }
                 // Edit
                 $updated_rows=$this->{$this->_model}->edit($id);
                 // Check
@@ -101,8 +88,6 @@ class Plantillas_documentacion extends CRUD_Controller
                 $this->data['message'] = validation_errors();
             }
         }
-        // CSRF
-        $this->data['csrf'] = $this->utilities->get_csrf_nonce();
         
         // Set datas
         $this->_set_datas_html($this->data['element']);
@@ -142,6 +127,37 @@ class Plantillas_documentacion extends CRUD_Controller
         }
 
         redirect($this->_controller, 'refresh');
+    }
+    
+    public function duplicar($id)
+    {
+        $this->data['element'] = $this->{$this->_model}->get_by_id($id);
+        // Permisos acceso
+        $this->{$this->_model}->check_access($this->data['element']);
+
+        if ($this->{$this->_model}->duplicar($this->data['element']))
+        {
+            $this->session->set_flashdata('message', lang('common_success_duplicate'));
+            $this->session->set_flashdata('message_color', 'success');
+        }
+        else
+        {
+            $this->session->set_flashdata('message', lang('common_error_duplicate'));
+        }
+
+        redirect($this->_controller, 'refresh');
+    }
+    
+    public function show_marcas($tipo_plantilla_id) {
+        // Comprobación de petición por AJAX
+        if($this->input->is_ajax_request())
+        {
+            $this->output->enable_profiler(FALSE);
+            // Consultamos las 
+            $this->data['categorias']=$this->Tipo_plantilla_documentacion_model->get_categorias_with_marcas($tipo_plantilla_id);
+            // Cargamos la vista
+            $this->load->view('plantillas_documentacion/marcas', $this->data);
+        }
     }
 
 }

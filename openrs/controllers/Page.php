@@ -18,19 +18,14 @@ class Page extends MY_Controller
  		//$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
 	}*/
 	function __construct()
-	{
-		$this->s_model = "Admin_model";
-		$this->m_model = "admin_model";
-		$this->_controller = "admin";
-		$this->_view = "admin";
-	
+	{	
 		parent::__construct();
 	
 		// Secure the access
 		$this->_security();
 	
 		// Comprobación de acceso
-		//$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+		$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
 	}
 	
 	//Desde este controlador cargaremos las secciones seleccionadas. Las secciones deben tener el campo url único

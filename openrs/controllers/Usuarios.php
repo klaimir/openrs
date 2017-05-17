@@ -19,7 +19,7 @@ class Usuarios extends MY_Controller
     function dashboard()
     {
         // Render
-        $this->render_private('admin/dashboard', $this->data);
+        $this->render_private('dashboard', $this->data);
     }
 
     public function delete_user($id)
@@ -65,6 +65,8 @@ class Usuarios extends MY_Controller
     }
     
     public function cargar_idioma($id = 0) {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
         // Permisos acceso
         if (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id))
         {
@@ -82,6 +84,8 @@ class Usuarios extends MY_Controller
     }
     
     public function cambiar_idioma() {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
         // Comprobación de petición por AJAX
         if($this->input->is_ajax_request())
         {     

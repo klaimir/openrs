@@ -1,6 +1,6 @@
 <div class="page-header">
     <h1>
-        Tipos de inmuebles
+        Opciones extras de inmuebles
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             <?php echo lang('common_btn_edit'); ?>

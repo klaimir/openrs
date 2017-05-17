@@ -222,7 +222,7 @@
     <b class="arrow"></b>
 </li>
 
-<li class="<?php echo set_active_menu($_active_section,array("tipos_ficheros","tipos_inmueble","plantillas_documentacion")); ?>">
+<li class="<?php echo set_active_menu($_active_section,array("tipos_ficheros","tipos_inmueble","plantillas_documentacion","opciones_extras","lugares_interes")); ?>">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-building"></i>
         <span class="menu-text"> Config. Datos </span>
@@ -255,6 +255,24 @@
             <a href="<?php echo site_url('tipos_inmueble'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Tipos inmueble </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        
+        <li class="<?php echo set_active_option($_active_section,'opciones_extras'); ?>">
+            <a href="<?php echo site_url('opciones_extras'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Opciones extras inmuebles </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        
+        <li class="<?php echo set_active_option($_active_section,'lugares_interes'); ?>">
+            <a href="<?php echo site_url('lugares_interes'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Lugares Interés inmuebles </span>
             </a>
 
             <b class="arrow"></b>

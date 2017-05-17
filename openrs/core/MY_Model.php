@@ -10,6 +10,8 @@ class MY_Model extends Base_Model
     public $text_error='';
     // Model internal datas (for example, from the database, but, for conventios, always it will be a object)
     public $datas=NULL;
+    // Vista principal que se usa para mostrar datos
+    public $_main_view=NULL;
     
     public function __construct()
     {
@@ -54,8 +56,35 @@ class MY_Model extends Base_Model
         
         return FALSE;
     }
+
+    function getFieldsTable($table, $db = 'db')
+    {
+        $fields = $this->$db->list_fields($table);
+        $separador = ",";
+        $cont = 1;
+        $tamfields = count($fields);
+        $fieldslist = "";
+        foreach ($fields as $field)
+        {
+            if ($tamfields == $cont)
+                $fieldslist.=$table . '.' . $field;
+            else
+                $fieldslist.=$table . '.' . $field . $separador;
+            $cont++;
+        }
+        return $fieldslist;
+    }
+
+    function get_by_id($id)
+    {
+        $this->db->where($this->primary_key, $id);
+        $query = $this->db->get($this->table);
+        if ($query->num_rows === 0)
+            return FALSE;
+        return $query->first_row();
+    }
     
-    // Others functions
+    // Otras funciones para simular manejo tipo ORM
     
     public function set_datas_array($array)
     {
@@ -69,15 +98,6 @@ class MY_Model extends Base_Model
     {
         $this->datas=$this->get_by_id($id);
         return $this->datas;
-    }
-
-    function get_by_id($id)
-    {
-        $this->db->where($this->primary_key, $id);
-        $query = $this->db->get($this->table);
-        if ($query->num_rows === 0)
-            return FALSE;
-        return $query->first_row();
     }
     
     function _get_value($field)
@@ -161,24 +181,6 @@ class MY_Model extends Base_Model
     function _remove()
     {        
         return $this->delete($this->get_value($this->primary_key));
-    }
-
-    function getFieldsTable($table, $db = 'db')
-    {
-        $fields = $this->$db->list_fields($table);
-        $separador = ",";
-        $cont = 1;
-        $tamfields = count($fields);
-        $fieldslist = "";
-        foreach ($fields as $field)
-        {
-            if ($tamfields == $cont)
-                $fieldslist.=$table . '.' . $field;
-            else
-                $fieldslist.=$table . '.' . $field . $separador;
-            $cont++;
-        }
-        return $fieldslist;
     }
 
 }

@@ -9,8 +9,7 @@ class Inmueble_model extends MY_Model
     {
         $this->table = 'inmuebles';
         $this->primary_key = 'id';                
-        //$this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'tipo_id', 'model'=>'Inmuebles_model');
-        
+                
         parent::__construct();
     }
     

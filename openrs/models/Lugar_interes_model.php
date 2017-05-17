@@ -2,21 +2,22 @@
 
 require_once APPPATH . '/core/MY_Model.php';
 
-class Tipo_inmueble_model extends MY_Model
+class Lugar_interes_model extends MY_Model
 {
     
     public $idiomas_activos=array();
 
     public function __construct()
     {
-        $this->table = 'tipos_inmueble';
-        $this->primary_key = 'id';    
-        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'tipo_id', 'model'=>'Inmueble_model');
+        $this->table = 'lugares_interes';
+        $this->primary_key = 'id';
+        
+        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'lugar_interes_id', 'model'=>'Inmueble_lugar_interes_model');
                 
         parent::__construct();
         
         // Cargamos modelo de tipos de plantilla
-        $this->load->model('Tipo_inmueble_idiomas_model');
+        $this->load->model('Lugar_interes_idiomas_model');
     }
     
     /************************* SECURITY *************************/
@@ -78,7 +79,7 @@ class Tipo_inmueble_model extends MY_Model
         if($datos)
         {
             // Buscamos los nombre de los idiomas
-            $array_datos_idioma=$this->Tipo_inmueble_idiomas_model->get_info_idiomas_by_tipo_inmueble($datos->id);
+            $array_datos_idioma=$this->Lugar_interes_idiomas_model->get_info_idiomas_by_lugar_interes($datos->id);
         }
         else
         {
@@ -188,7 +189,7 @@ class Tipo_inmueble_model extends MY_Model
         // Parent insert
         $id=$this->insert($formatted_datas);        
         // Insertamos los datos de los idiomas
-        $this->Tipo_inmueble_idiomas_model->save_datos_idiomas($id,$this->get_formatted_datas_idiomas());
+        $this->Lugar_interes_idiomas_model->save_datos_idiomas($id,$this->get_formatted_datas_idiomas());
         // Devolvemos id insertado
         return $id;
     }
@@ -208,13 +209,13 @@ class Tipo_inmueble_model extends MY_Model
         // Parent update
         $affected_rows=$this->update($formatted_datas,$id);
         // Insertamos los datos de los idiomas
-        $this->Tipo_inmueble_idiomas_model->save_datos_idiomas($id,$this->get_formatted_datas_idiomas());
+        $this->Lugar_interes_idiomas_model->save_datos_idiomas($id,$this->get_formatted_datas_idiomas());
         // Devolvemos id insertado
         return $affected_rows;
     }
     
     /**
-     * Lee todas los tipos de inmuebles con el idioma formateado
+     * Lee todas los tipos de lugares de interés con el idioma formateado
      *
      * @return array de datos de plantilla
      */
@@ -222,9 +223,9 @@ class Tipo_inmueble_model extends MY_Model
     function get_all_for_table($id_idioma)
     {
         // Lista de campos
-        $this->db->select($this->table.'.*,tipos_inmueble_idiomas.nombre');
+        $this->db->select($this->table.'.*,'.$this->Lugar_interes_idiomas_model->table.'.nombre');
         $this->db->from($this->table);
-        $this->db->join($this->Tipo_inmueble_idiomas_model->table, $this->Tipo_inmueble_idiomas_model->table.'.tipo_inmueble_id='.$this->table.'.'.$this->primary_key);
+        $this->db->join($this->Lugar_interes_idiomas_model->table, $this->Lugar_interes_idiomas_model->table.'.lugar_interes_id='.$this->table.'.'.$this->primary_key);
         $this->db->where("idioma_id",$id_idioma);
         return $this->db->get()->result();
     }

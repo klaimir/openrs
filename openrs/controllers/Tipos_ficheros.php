@@ -37,11 +37,6 @@ class Tipos_ficheros extends CRUD_Controller
             // Check
             if ($this->{$this->_model}->validation())
             {
-                // do we have a valid request?
-                if ($this->utilities->valid_csrf_nonce() === FALSE)
-                {
-                    show_error(lang('common_error_csrf'));
-                }
                 // Insert
                 $last_id=$this->{$this->_model}->create();
                 // Check
@@ -58,8 +53,6 @@ class Tipos_ficheros extends CRUD_Controller
                 $this->data['message'] = validation_errors();
             }
         }
-        // CSRF
-        $this->data['csrf'] = $this->utilities->get_csrf_nonce();
         
         // Set datas
         $this->_set_datas_html();
@@ -80,11 +73,6 @@ class Tipos_ficheros extends CRUD_Controller
             // Check
             if ($this->{$this->_model}->validation($id))
             {
-                // do we have a valid request?
-                if ($this->utilities->valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
-                {
-                    show_error(lang('common_error_csrf'));
-                }
                 // Edit
                 $updated_rows=$this->{$this->_model}->edit($id);
                 // Check
@@ -101,8 +89,6 @@ class Tipos_ficheros extends CRUD_Controller
                 $this->data['message'] = validation_errors();
             }
         }
-        // CSRF
-        $this->data['csrf'] = $this->utilities->get_csrf_nonce();
         
         // Set datas
         $this->_set_datas_html($this->data['element']);

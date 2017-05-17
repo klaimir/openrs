@@ -31,6 +31,4 @@
     </div>
 </div>
 
-<?php echo form_hidden($csrf); ?>
-
 <?php echo form_close(); ?>

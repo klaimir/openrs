@@ -13,7 +13,7 @@ class Plantilla_documentacion_model extends MY_Model
         parent::__construct();
         
         // Cargamos modelo de tipos de plantilla
-        $this->load->model('Tipo_plantilla_documentacion');
+        $this->load->model('Tipo_plantilla_documentacion_model');
     }
     
     /************************* SECURITY *************************/
@@ -35,7 +35,7 @@ class Plantilla_documentacion_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('nombre', 'Nombre de la plantilla', 'required|is_unique_global[tipos_ficheros.nombre,'.$id.']|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('nombre', 'Nombre de la plantilla', 'required|is_unique_global[plantillas_documentacion.nombre,'.$id.']|max_length[100]|xss_clean');
         $this->form_validation->set_rules('descripcion', 'Descripción de la plantilla', 'xss_clean|max_length[255]');
         $this->form_validation->set_rules('tipo_plantilla_id', 'Tipo de plantilla', 'required');
         $this->form_validation->set_rules('html', 'Texto de la plantilla', 'required');
@@ -68,7 +68,7 @@ class Plantilla_documentacion_model extends MY_Model
     public function set_datas_html($datos=NULL)
     {        
         // Plantillas
-        $data['tipos_plantillas'] = $this->Tipo_plantilla_documentacion->as_dropdown('nombre')->get_all();
+        $data['tipos_plantillas'] = $this->Tipo_plantilla_documentacion_model->as_dropdown('nombre')->get_all();
                 
         // Datos
         $data['nombre'] = array(
@@ -174,8 +174,21 @@ class Plantilla_documentacion_model extends MY_Model
         $fieldslist=$this->utilities->getFieldsTable($this->table); 
         $this->db->select($fieldslist.',tipos_plantilla_documentacion.nombre as nombre_tipo_plantilla');
         $this->db->from($this->table);
-        $this->db->join($this->Tipo_plantilla_documentacion->table, $this->Tipo_plantilla_documentacion->table.'.'.$this->Tipo_plantilla_documentacion->primary_key.'='.$this->table.'.tipo_plantilla_id');
+        $this->db->join($this->Tipo_plantilla_documentacion_model->table, $this->Tipo_plantilla_documentacion_model->table.'.'.$this->Tipo_plantilla_documentacion_model->primary_key.'='.$this->table.'.tipo_plantilla_id');
         return $this->db->get()->result();
+    }
+    
+    /**
+     * Duplica los datos de una plantilla dada
+     *
+     * @return identificador de la plantilla insertada
+     */
+    function duplicar($plantilla) {
+        // Conversión de Datos
+        unset($plantilla->id);
+        $plantilla->descripcion = $plantilla->descripcion." - Copia";
+        // Crear duplicado
+        return $this->insert($plantilla);
     }
 
 }

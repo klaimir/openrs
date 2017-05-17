@@ -72,7 +72,9 @@ class MY_Controller extends CI_controller
         $this->data['session_es_agente'] = $this->Usuario_model->is_agente($this->data['session_user_id']);
         
         // Idioma
-        $this->data['session_user_language'] = $this->Usuario_model->get_lang($this->session->userdata('user_id'));
+        $idioma_usuario = $this->Usuario_model->get_lang($this->session->userdata('user_id'));
+        $this->data['session_user_language'] = $idioma_usuario->carpeta_idioma;
+        $this->data['session_id_idioma'] = $idioma_usuario->id_idioma;
         // Si la sesión se va muestra un warning
         if(empty($this->data['session_user_language']))
         {            

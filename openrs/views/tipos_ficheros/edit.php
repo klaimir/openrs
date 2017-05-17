@@ -27,7 +27,6 @@
     </div>
 </div>
 
-<?php echo form_hidden($csrf); ?>
 <?php echo form_hidden('id',$element->id); ?>
 
 <?php echo form_close(); ?>

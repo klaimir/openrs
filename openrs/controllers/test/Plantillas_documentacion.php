@@ -34,6 +34,38 @@ class Plantillas_documentacion extends MY_Controller
         $this->load->model('Plantilla_documentacion_model');
     }
     
+    function duplicar($id)
+    {
+        $plantilla_original=$this->Plantilla_documentacion_model->get_by_id($id);
+        
+        if($plantilla_original)
+        {
+            $plantilla_duplicada_id=$this->Plantilla_documentacion_model->duplicar($plantilla_original);
+            
+            if($plantilla_duplicada_id)
+            {            
+                $plantilla_duplicada=$this->Plantilla_documentacion_model->get_by_id($plantilla_duplicada_id);
+
+                $this->unit->run($plantilla_duplicada->nombre, $plantilla_original->nombre, 'Test de nombre');
+                $this->unit->run($plantilla_duplicada->tipo_plantilla_id, $plantilla_original->tipo_plantilla_id, 'Test de Tipo de plantilla id');
+                $this->unit->run($plantilla_duplicada->html, $plantilla_original->html, 'Test de html');
+                $this->unit->run($plantilla_duplicada->descripcion, $plantilla_original->descripcion, 'Test de descripción');
+                
+                $this->Plantilla_documentacion_model->delete($plantilla_duplicada_id);
+
+                var_dump($this->unit->result());
+            }
+            else
+            {
+                show_error('Error al duplicar');
+            }
+        }
+        else
+        {
+            show_error('Plantilla no existe');
+        }
+    }
+    
     function drop_down()
     {
         $plantillas=$this->Tipo_plantilla_documentacion->as_dropdown('nombre')->get_all();

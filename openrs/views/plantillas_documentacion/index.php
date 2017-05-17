@@ -52,6 +52,10 @@
                                 <a class="red borrar-elemento" data-id="<?php echo $element->id; ?>" href="#" title="Borrar">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>
+                                
+                                <a class="blue" href="<?php echo site_url($_controller."/duplicar/" . $element->id); ?>" title="Duplicar">
+                                    <i class="ace-icon fa fa-copy bigger-130"></i>
+                                </a>
                             </div>
 
                             <div class="hidden-md hidden-lg">
@@ -73,6 +77,14 @@
                                             <a href="#" class="tooltip-error borrar-elemento" data-id="<?php echo $element->id; ?>" data-rel="tooltip" title="Borrar">
                                                 <span class="red">
                                                     <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        
+                                        <li>
+                                            <a href="<?php echo site_url($_controller."/duplicar/" . $element->id); ?>" class="tooltip-success" data-rel="tooltip" title="Duplicar">
+                                                <span class="blue">
+                                                    <i class="ace-icon fa fa-copy bigger-120"></i>
                                                 </span>
                                             </a>
                                         </li>

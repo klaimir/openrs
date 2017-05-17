@@ -89,8 +89,7 @@ class Usuario_model extends MY_Model
     
     function get_lang($id_usuario){
     	$idioma_usuario=$this->get_usuario_idioma($id_usuario);
-        $idioma=$this->Idioma_model->get_idioma($idioma_usuario->id_idioma);
-        return $idioma->carpeta_idioma;
+        return $this->Idioma_model->get_idioma($idioma_usuario->id_idioma);
     }
 
 }
