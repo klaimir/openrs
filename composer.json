@@ -1,17 +1,15 @@
 {
-	"description": "The CodeIgniter framework",
-	"name": "codeigniter/framework",
+	"description": "OPEN RS - Open Real Estate Software",
+	"name": "klaimir/openrs",
 	"type": "project",
-	"homepage": "https://codeigniter.com",
-	"license": "MIT",
+	"homepage": "https://openrs.org",
+	"license": "GPL",
 	"support": {
-		"forum": "http://forum.codeigniter.com/",
-		"wiki": "https://github.com/bcit-ci/CodeIgniter/wiki",
-		"irc": "irc://irc.freenode.net/codeigniter",
-		"source": "https://github.com/bcit-ci/CodeIgniter"
+		"source": "https://github.com/klaimir/openrs"
 	},
 	"require": {
-		"php": ">=5.2.4"
+		"php": ">=5.3",
+		"libern/qr-code-reader": "^1.0"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
