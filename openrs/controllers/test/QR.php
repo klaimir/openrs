@@ -74,6 +74,48 @@ class QR extends MY_Controller
         $this->ciqrcode->generate($params);
 
         echo '<img src="'.base_url('downloads/prueba.png').'">IMAGEN</img>';
-    }   
+    }  
+    
+    function decode()
+    {
+        require FCPATH . 'vendor/autoload.php';
+
+        $QRCodeReader = new Libern\QRCodeReader\QRCodeReader();
+        $qrcode_text = $QRCodeReader->decode(FCPATH.'downloads/prueba.png');
+        echo $qrcode_text;
+    }  
+    
+    function test()
+    {
+        // GENERACION DE CODIGO QR
+        $this->load->library('ciqrcode');
+
+        $config['cacheable']            = true; //boolean, the default is true
+        //$config['cachedir']		= 'openrs/cache'; //string, the default is application/cache/
+        //$config['errorlog']		= 'openrs/logs'; //string, the default is application/logs/
+        $config['quality']		= true; //boolean, the default is true
+        $config['size']			= ''; //interger, the default is 1024
+        $config['black']		= array(224,255,255); // array, default is array(255,255,255)
+        $config['white']		= array(70,130,180); // array, default is array(0,0,0)
+        $this->ciqrcode->initialize($config);
+
+        $params['data'] = 'http://openrs.com/rota/casa-playa';
+        $params['level'] = 'H';
+        $params['size'] = 10;
+        $params['savename'] = FCPATH.'downloads/prueba.png';
+        $this->ciqrcode->generate($params);
+
+        // CHECK        
+        require FCPATH . 'vendor/autoload.php';
+
+        $QRCodeReader = new Libern\QRCodeReader\QRCodeReader();
+        $qrcode_text = $QRCodeReader->decode(FCPATH.'downloads/prueba.png');
+        
+        // RUN TEST
+        $this->unit->run($params['data'], $qrcode_text, 'Test de Imagen QR');
+        
+        // The report will be formatted in an HTML table for viewing. If you prefer the raw data you can retrieve an array using:
+        var_dump($this->unit->result());
+    } 
     
 }
