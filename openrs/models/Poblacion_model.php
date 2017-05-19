@@ -2,16 +2,23 @@
 
 require_once APPPATH . '/core/MY_Model.php';
 
-class Tipo_fichero_model extends MY_Model
+class Poblacion_model extends MY_Model
 {
 
+    public $provincia_id=NULL;
+    
     public function __construct()
     {
-        $this->table = 'tipos_ficheros';
+        $this->table = 'poblaciones';
         $this->primary_key = 'id';
-        $this->has_many['inmuebles_ficheros'] = array('local_key'=>'id', 'foreign_key'=>'tipo_fichero_id', 'foreign_model'=>'Inmueble_Fichero_model');
+        $this->has_one['provincia'] = array('local_key'=>'id', 'foreign_key'=>'provincia_id', 'foreign_model'=>'Provincia_model');
+        $this->has_many['clientes'] = array('local_key'=>'id', 'foreign_key'=>'poblacion_id', 'foreign_model'=>'Cliente_model');
+        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'poblacion_id', 'foreign_model'=>'Inmueble_model');
         
         parent::__construct();
+        
+        // Carga del modelo
+        $this->load->model('Provincia_model');
     }
     
     /************************* SECURITY *************************/
@@ -33,8 +40,7 @@ class Tipo_fichero_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('nombre', 'Nombre del tipo de fichero adjunto', 'required|is_unique_global[tipos_ficheros.nombre,'.$id.']|max_length[100]|xss_clean');
-        $this->form_validation->set_rules('descripcion', 'Descripción del tipo de fichero adjunto', 'xss_clean|max_length[255]');
+        $this->form_validation->set_rules('poblacion', 'Nombre de la población', 'required|is_unique_global_foreign_key[poblaciones,id,poblacion,'.$id.',provincia_id,'.$this->provincia_id.']|max_length[100]|xss_clean');
     }
     
     /**
@@ -63,18 +69,11 @@ class Tipo_fichero_model extends MY_Model
     
     public function set_datas_html($datos=NULL)
     {        
-        $data['nombre'] = array(
-            'name' => 'nombre',
-            'id' => 'nombre',
+        $data['poblacion'] = array(
+            'name' => 'poblacion',
+            'id' => 'poblacion',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nombre',is_object($datos) ? $datos->nombre : ""),
-        );
-        
-        $data['descripcion'] = array(
-            'name' => 'descripcion',
-            'id' => 'descripcion',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('descripcion',is_object($datos) ? $datos->descripcion : ""),
+            'value' => $this->form_validation->set_value('poblacion',is_object($datos) ? $datos->poblacion : ""),
         );
 
         return $data;
@@ -88,8 +87,8 @@ class Tipo_fichero_model extends MY_Model
     
     public function get_formatted_datas()
     {
-        $datas['nombre'] = $this->input->post('nombre');
-        $datas['descripcion'] = $this->input->post('descripcion');
+        $datas['poblacion'] = $this->input->post('poblacion');
+        $datas['provincia_id'] = $this->provincia_id;
         return $datas;
     }
 
@@ -103,7 +102,8 @@ class Tipo_fichero_model extends MY_Model
     
     function check_delete($id)
     {        
-        if (count($this->with_inmuebles_ficheros()->get($id)->inmuebles_ficheros))
+        $datos_asociados=$this->with_inmuebles()->with_clientes()->get($id);
+        if (count($datos_asociados->inmuebles) || count($datos_asociados->clientes))
         {
             return FALSE;
         }
@@ -141,6 +141,47 @@ class Tipo_fichero_model extends MY_Model
         $formatted_datas=$this->get_formatted_datas();        
         // Parent update
         return $this->update($formatted_datas,$id);
+    }
+    
+    /**
+     * Activa\desactiva todos los municipios asociados a la provincia indicada
+     *
+     * @param [id]                  Indentificador de la provincia
+     * @param [activar]             Acción
+     *
+     * @return void
+     */
+    
+    function activar_all($provincia_id,$activar)
+    {
+        // Datos personales
+        $poblaciones = $this->where('provincia_id',$provincia_id)->get_all();        
+        $datos = array();
+        $cont=0;
+        // Es mejor implementar un batch por eficiencia, debido al número elevado de municipios que hay por provincia
+        foreach ($poblaciones as $poblacion)
+        {
+            $datos[$cont]['id'] = $poblacion->id;
+            $datos[$cont]['activa'] = $activar;
+            $cont++;
+        }
+        // Update Batch
+        return $this->db->update_batch($this->table, $datos, 'id');
+    }
+    
+    /**
+     * Activa\desactiva el municipio indicado
+     *
+     * @param [id]                  Indentificador del municipio
+     * @param [activar]             Acción
+     *
+     * @return void
+     */
+    
+    function activar($id,$activar)
+    {
+        // Activación de provincia
+        return $this->update(array("activa" => $activar),$id);
     }
 
 }

@@ -222,10 +222,10 @@
     <b class="arrow"></b>
 </li>
 
-<li class="<?php echo set_active_menu($_active_section,array("tipos_ficheros","tipos_inmueble","plantillas_documentacion","opciones_extras","lugares_interes")); ?>">
+<li class="<?php echo set_active_menu($_active_section,array("tipos_ficheros","tipos_inmueble","plantillas_documentacion","opciones_extras","lugares_interes","provincias")); ?>">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-building"></i>
-        <span class="menu-text"> Config. Datos </span>
+        <span class="menu-text"> Configuración </span>
 
         <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -277,6 +277,24 @@
 
             <b class="arrow"></b>
         </li>
+        
+        <li class="<?php echo set_active_option($_active_section,'provincias'); ?>">
+            <a href="<?php echo site_url('provincias'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Provincias </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        
+        <li class="<?php echo set_active_option($_active_section,'config'); ?>">
+            <a href="<?php echo site_url('config'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Datos inmobiliaria </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
     </ul>
 </li>
 
@@ -308,43 +326,15 @@
 
             <b class="arrow"></b>
         </li>
+        
+        <li class="<?php echo set_active_option($_active_section,'secciones'); ?>">
+            <a href="<?php echo site_url('Page/listar_secciones'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Secciones </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
     </ul>
-</li>
-<li class="">
-    <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-globe"></i>
-        <span class="menu-text"> Secciones </span>
-
-        <b class="arrow fa fa-angle-down"></b>
-    </a>
-
-    <b class="arrow"></b>
-
-    <ul class="submenu">
-        <li class="">
-        	<a href="<?php echo site_url('Page/listar_secciones'); ?>">
-                <i class="menu-icon fa fa-caret-right"></i>
-                Listado
-            </a>
-
-            <b class="arrow"></b>
-        </li>
-        <li class="">
-        	<a href="<?php echo site_url('Page/ordenar_secciones'); ?>">
-                <i class="menu-icon fa fa-caret-right"></i>
-                Ordenar
-            </a>
-
-            <b class="arrow"></b>
-        </li>
-        <li class="">
-        	<a href="<?php echo site_url('Page/crear_seccion'); ?>">
-                <i class="menu-icon fa fa-caret-right"></i>
-                Nueva
-            </a>
-
-            <b class="arrow"></b>
-        </li>
-	</ul>					
-</li>							
+</li>						
 								

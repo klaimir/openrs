@@ -3497,7 +3497,7 @@ class MY_Form_validation extends CI_Form_validation
     }
 
     /**
-     * Determina si se puede insertar un valor en una determinada tabla
+     * Determina si es único un valor en una determinada tabla
      *
      * @access	public
      * @param	string
@@ -3527,6 +3527,46 @@ class MY_Form_validation extends CI_Form_validation
         else
         {
             $this->set_message('is_unique_global', 'Ya existe otro registro con el mismo valor para el campo %s');
+            return FALSE;
+        }
+        return;
+    }
+    
+    /**
+     * Determina si es único un valor en una determinada tabla
+     *
+     * @access	public
+     * @param	string
+     * @param	field
+     * @return	bool
+     */
+    public function is_unique_global_foreign_key($str, $string)
+    {
+        $explode=explode(',', $string);
+        $table = $explode[0];
+        $id = $explode[1];
+        $field = $explode[2];
+        $foreign_key_field = $explode[3];
+        $foreign_key_value = $explode[4];
+        
+        $this->CI->db->select();
+        $this->CI->db->from($table);  
+        $this->CI->db->where($field,$str);
+        $this->CI->db->where($foreign_key_field,$foreign_key_value);
+        if($id!=0)
+        {
+            $this->CI->db->where($field." <> ".$id);
+        }
+        $query = $this->CI->db->get();
+        
+        // Comprobación
+        if ($query->num_rows() === 0)
+        {
+            return TRUE;
+        }
+        else
+        {
+            $this->set_message('is_unique_global_foreign_key', 'Ya existe otro registro con el mismo valor para el campo %s');
             return FALSE;
         }
         return;

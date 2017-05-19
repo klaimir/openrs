@@ -12,7 +12,7 @@ class Opcion_extra_model extends MY_Model
         $this->table = 'opciones_extras';
         $this->primary_key = 'id';
         
-        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'opcion_extra_id', 'model'=>'Inmueble_opcion_extra_model');
+        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'opcion_extra_id', 'foreign_model'=>'Inmueble_opcion_extra_model');
                 
         parent::__construct();
         

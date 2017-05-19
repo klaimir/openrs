@@ -24,11 +24,8 @@ class Usuarios extends MY_Controller
 
     public function delete_user($id)
     {
-        // Otros usuario no pueden borrar cuentas
-        if (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id))
-        {
-            redirect('auth', 'refresh');
-        }
+        // Comprobación de acceso
+        $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
 
         // Restricciones de existencia
         $this->data['element'] = $this->Usuario_model->get_by_id($id);

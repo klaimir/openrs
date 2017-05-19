@@ -16,6 +16,26 @@ class General extends MY_Controller
 
         $this->load->library('unit_test');
     }
+    
+    function load()
+    {
+        // Carga del modelo
+        $this->load->model('Provincia_model');
+        // Carga del modelo
+        $this->load->model('Poblacion_model');
+        
+        // Carga del modelo
+        $this->load->model('Poblacion_model');
+        
+        // Carga del modelo
+        $this->load->model('Provincia_model');
+        
+        // Por más cargas que hagas el objeto queda en memoria global, da igual donde hagas el load
+        // El resto de cargas se ignoran
+        
+        var_dump($this->Provincia_model);
+        var_dump($this->Poblacion_model);
+    }
 
     function kcfinder()
     {

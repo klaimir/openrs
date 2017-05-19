@@ -9,6 +9,13 @@ class MY_Controller extends CI_controller
     {
         parent::__construct();
         
+        // Mantenimiento        
+        if ($this->config->item('mantenimiento'))
+        {
+            redirect(site_url('auth/mantenimiento'), 'refresh');
+            return;
+        }
+        
         $this->load->database();
         $this->load->library(array('ion_auth', 'form_validation', 'formularios'));
         $this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form', 'html', 'security'));
@@ -40,13 +47,6 @@ class MY_Controller extends CI_controller
 
     protected function _security()
     {
-        // Mantenimiento        
-        if ($this->config->item('mantenimiento'))
-        {
-            redirect(site_url('auth/mantenimiento'), 'refresh');
-            return;
-        }
-
         // logged
         if (!$this->ion_auth->logged_in())
         {
@@ -57,6 +57,7 @@ class MY_Controller extends CI_controller
     // Por si se desea inicializar algo publico
     private function initialize_public()
     {
+        
     }
 
     private function initialize_private()

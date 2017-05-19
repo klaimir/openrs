@@ -11,7 +11,7 @@ class Tipo_inmueble_model extends MY_Model
     {
         $this->table = 'tipos_inmueble';
         $this->primary_key = 'id';    
-        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'tipo_id', 'model'=>'Inmueble_model');
+        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'tipo_id', 'foreign_model'=>'Inmueble_model');
                 
         parent::__construct();
         

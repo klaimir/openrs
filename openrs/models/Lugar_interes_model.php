@@ -12,7 +12,7 @@ class Lugar_interes_model extends MY_Model
         $this->table = 'lugares_interes';
         $this->primary_key = 'id';
         
-        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'lugar_interes_id', 'model'=>'Inmueble_lugar_interes_model');
+        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'lugar_interes_id', 'foreign_model'=>'Inmueble_lugar_interes_model');
                 
         parent::__construct();
         
