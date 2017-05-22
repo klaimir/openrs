@@ -3542,12 +3542,13 @@ class MY_Form_validation extends CI_Form_validation
      */
     public function is_unique_global_foreign_key($str, $string)
     {
-        $explode=explode(',', $string);
+        $explode=explode(';', $string);
         $table = $explode[0];
         $id = $explode[1];
         $field = $explode[2];
-        $foreign_key_field = $explode[3];
-        $foreign_key_value = $explode[4];
+        $primary_key = $explode[3];
+        $foreign_key_field = $explode[4];
+        $foreign_key_value = $explode[5];
         
         $this->CI->db->select();
         $this->CI->db->from($table);  
@@ -3555,7 +3556,7 @@ class MY_Form_validation extends CI_Form_validation
         $this->CI->db->where($foreign_key_field,$foreign_key_value);
         if($id!=0)
         {
-            $this->CI->db->where($field." <> ".$id);
+            $this->CI->db->where($primary_key." <> ".$id);
         }
         $query = $this->CI->db->get();
         

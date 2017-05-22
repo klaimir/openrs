@@ -104,7 +104,7 @@ class Idioma extends MY_Controller_Front
 						$url="http://".$_SERVER['HTTP_HOST'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
 						redirect($url.$idioma->nombre_seo2.'/seccion');
 					}else{
-						$idioma = $this->Idioma_model->get_idioma($this->General_model->get_config('1')->idioma_defecto);
+						$idioma = $this->Idioma_model->get_idioma($this->General_model->get_config()->idioma_defecto);
 						if($dir = opendir(APPPATH."language/".$idioma->carpeta_idioma)){
 							while(($archivo = readdir($dir)) !== false){
 								if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess' && $archivo != '.svn'){
@@ -147,7 +147,7 @@ class Idioma extends MY_Controller_Front
 					$url="http://".$_SERVER['HTTP_HOST'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
 					redirect($url.$idioma->nombre_seo2.'/seccion');
 				}else{
-					$idioma = $this->Idioma_model->get_idioma($this->General_model->get_config('1')->idioma_defecto);
+					$idioma = $this->Idioma_model->get_idioma($this->General_model->get_config()->idioma_defecto);
 					if($dir = opendir(APPPATH."language/".$idioma->carpeta_idioma)){
 						while(($archivo = readdir($dir)) !== false){
 							if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess' && $archivo != '.svn'){

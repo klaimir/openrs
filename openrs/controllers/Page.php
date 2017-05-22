@@ -356,7 +356,7 @@ class Page extends MY_Controller
 		}
 		//$this->crear($inputs,$datos);
 		if($this->input->post()){
-			$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
+			$conf = $this->General_model->get_config();
 			$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
 			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
 			$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));
@@ -842,7 +842,7 @@ class Page extends MY_Controller
 			}
 		}
 		if($this->input->post()){
-			$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
+			$conf = $this->General_model->get_config();
 			$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
 			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
 			$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));
@@ -941,7 +941,7 @@ class Page extends MY_Controller
 		$data['seccion']=$this->Seccion_model->get_seccion_bloque($data['idioma_actual']->id_idioma, $data['carrusel_bloque']->id_bloque);
 		
 		if($this->input->post('submit_imagen')){
-			$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
+			$conf = $this->General_model->get_config();
 			$this->form_validation->set_rules('id_categoria',$this->lang->line('cms_galeria_categoria'),'trim|xss_clean|integer');
 			
 			foreach($data['cargar_idiomas'] as $idioma){
@@ -1142,7 +1142,7 @@ class Page extends MY_Controller
 		$data['dd_categoria']=$this->formularios->dropdown_idioma('categoria_carrusel','id','nombre_cat',$data['idioma_actual']->id_idioma, array('categoria_carrusel.id_carrusel'=>$id_carrusel));
 		
 		if($this->input->post('submit')){
-			$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
+			$conf = $this->General_model->get_config();
 			$this->form_validation->set_rules('id_categoria',$this->lang->line('cms_galeria_categoria'),'trim|xss_clean|integer');
 			
 			foreach($data['cargar_idiomas'] as $idioma){
@@ -1330,7 +1330,7 @@ class Page extends MY_Controller
 				$this->form_validation->set_rules($it['form_group']['name'],$it['label'],$it['form_validation']);
 			}
 			if($this->form_validation->run()){
-				$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
+				$conf = $this->General_model->get_config();
 				$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
 				$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
 				$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));

@@ -55,7 +55,7 @@ class Tipo_inmueble_idiomas_model extends MY_Model
     }
     
     /**
-     * Almacena un dato de un idioma determinado
+     * Consulta los nombres que tiene un determinado inmueble en todos los idiomas
      *
      * @return array de datos de plantilla
      */

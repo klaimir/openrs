@@ -263,7 +263,7 @@
         <li class="<?php echo set_active_option($_active_section,'opciones_extras'); ?>">
             <a href="<?php echo site_url('opciones_extras'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Opciones extras inmuebles </span>
+                <span class="menu-text"> Opciones extras </span>
             </a>
 
             <b class="arrow"></b>
@@ -272,7 +272,7 @@
         <li class="<?php echo set_active_option($_active_section,'lugares_interes'); ?>">
             <a href="<?php echo site_url('lugares_interes'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Lugares Interés inmuebles </span>
+                <span class="menu-text"> Lugares Interés </span>
             </a>
 
             <b class="arrow"></b>
@@ -281,7 +281,7 @@
         <li class="<?php echo set_active_option($_active_section,'provincias'); ?>">
             <a href="<?php echo site_url('provincias'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Provincias </span>
+                <span class="menu-text"> Poblaciones y Zonas </span>
             </a>
 
             <b class="arrow"></b>
@@ -290,7 +290,7 @@
         <li class="<?php echo set_active_option($_active_section,'config'); ?>">
             <a href="<?php echo site_url('config'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Datos inmobiliaria </span>
+                <span class="menu-text"> Preferencias </span>
             </a>
 
             <b class="arrow"></b>

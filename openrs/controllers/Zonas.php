@@ -2,14 +2,14 @@
 
 require_once APPPATH . '/core/CRUD_Controller.php';
 
-class Poblaciones extends CRUD_Controller
+class Zonas extends CRUD_Controller
 {
     
     function __construct()
     {
-        $this->_model = "Poblacion_model";
-        $this->_controller = "poblaciones";
-        $this->_view = "provincias/poblaciones";
+        $this->_model = "Zonas_model";
+        $this->_controller = "zonas";
+        $this->_view = "provincias/poblaciones/zonas";
         
         parent::__construct();
         
@@ -20,63 +20,42 @@ class Poblaciones extends CRUD_Controller
         $this->_security();
         
         // Carga del modelo
-        $this->load->model('Provincia_model');
+        $this->load->model('Poblacion_model');
     }
     
     // index
-    public function index($provincia_id)
+    public function index($poblacion_id)
     {
         // Comprobación de acceso
         $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
         
-        $this->data['provincia'] = $this->Provincia_model->get_by_id($provincia_id);
+        $this->data['poblacion'] = $this->Poblacion_model->get_by_id($poblacion_id);        
         // Permisos acceso
-        $this->Provincia_model->check_access($this->data['provincia']);            
+        $this->Poblacion_model->check_access($this->data['poblacion']);            
+        
+        // Datos de la provincia
+        $this->data['provincia'] = $this->Provincia_model->get_by_id($this->data['poblacion']->provincia_id);
         
         // Elementos
-        $this->data['elements'] = $this->{$this->_model}->where('provincia_id',$provincia_id)->get_all();
+        $this->data['elements'] = $this->{$this->_model}->where('poblacion_id',$poblacion_id)->get_all();
         // Render
         $this->render_private($this->_view.'/index', $this->data);
     }
     
-    public function activar($id,$activar) {
-        // Deshabilitar profiler
-        $this->output->enable_profiler(FALSE);
-        // Comprobación de petición por AJAX
-        if($this->input->is_ajax_request())
-        {
-            // Datos federado
-            $check_activar = $this->Poblacion_model->activar($id,$activar);            
-            // Actualización de datos        
-            if($check_activar)
-            {
-                echo 1;
-            }
-            else
-            {
-                if($activar)
-                {
-                    echo "Error al activar la población. Inténtelo más tarde";
-                }
-                else
-                {
-                    echo "Error al desactivar la población. Inténtelo más tarde";
-                }
-            }
-        }
-    }
-    
     // insert
-    public function insert($provincia_id)
+    public function insert($poblacion_id)
     {        
         // Comprobación de acceso
         $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
         
-        $this->data['provincia'] = $this->Provincia_model->get_by_id($provincia_id);
+        $this->data['poblacion'] = $this->Poblacion_model->get_by_id($poblacion_id);
         // Permisos acceso
-        $this->Provincia_model->check_access($this->data['provincia']);
+        $this->Poblacion_model->check_access($this->data['poblacion']);
         
-        $this->{$this->_model}->provincia_id=$provincia_id;
+        $this->{$this->_model}->poblacion_id=$poblacion_id;
+        
+        // Datos de la provincia
+        $this->data['provincia'] = $this->Provincia_model->get_by_id($this->data['poblacion']->provincia_id);
         
         // Validation
         if ($this->is_post())
@@ -93,7 +72,7 @@ class Poblaciones extends CRUD_Controller
                 } else {
                     $this->session->set_flashdata('message', lang('common_error_insert'));
                 } 
-                redirect("zonas/index/".$last_id, 'refresh');
+                redirect( $this->_controller."/index/".$poblacion_id, 'refresh');
             }
             else
             {
@@ -117,11 +96,14 @@ class Poblaciones extends CRUD_Controller
         // Permisos acceso
         $this->{$this->_model}->check_access($this->data['element']);
         
-        $this->data['provincia'] = $this->Provincia_model->get_by_id($this->data['element']->provincia_id);
+        $this->data['poblacion'] = $this->Poblacion_model->get_by_id($this->data['element']->poblacion_id);
         // Permisos acceso
-        $this->Provincia_model->check_access($this->data['provincia']);
+        $this->Poblacion_model->check_access($this->data['poblacion']);
         
-        $this->{$this->_model}->provincia_id=$this->data['element']->provincia_id;
+        $this->{$this->_model}->poblacion_id=$this->data['element']->poblacion_id;
+        
+        // Datos de la provincia
+        $this->data['provincia'] = $this->Provincia_model->get_by_id($this->data['poblacion']->provincia_id);
         
         // Validation
         if ($this->is_post())
@@ -138,7 +120,7 @@ class Poblaciones extends CRUD_Controller
                 } else {
                     $this->session->set_flashdata('message', lang('common_error_edit'));
                 } 
-                redirect( $this->_controller."/index/".$this->data['element']->provincia_id, 'refresh');
+                redirect( $this->_controller."/index/".$this->data['element']->poblacion_id, 'refresh');
             }
             else
             {
@@ -167,9 +149,9 @@ class Poblaciones extends CRUD_Controller
         // Permisos acceso
         $this->{$this->_model}->check_access($this->data['element']);
         
-        $this->data['provincia'] = $this->Provincia_model->get_by_id($this->data['element']->provincia_id);
+        $this->data['poblacion'] = $this->Poblacion_model->get_by_id($this->data['element']->poblacion_id);
         // Permisos acceso
-        $this->Provincia_model->check_access($this->data['provincia']);
+        $this->Poblacion_model->check_access($this->data['poblacion']);
                 
         if ($this->{$this->_model}->check_delete($id))
         {
@@ -188,7 +170,7 @@ class Poblaciones extends CRUD_Controller
             $this->session->set_flashdata('message', lang('common_error_elemento_asociado_delete'));
         }
 
-        redirect( $this->_controller."/index/".$this->data['element']->provincia_id, 'refresh');
+        redirect( $this->_controller."/index/".$this->data['element']->poblacion_id, 'refresh');
     }
 
 }

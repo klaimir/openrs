@@ -20,10 +20,6 @@
             <i class="ace-icon fa fa-check bigger-110"></i>
             <?php echo lang('common_btn_edit'); ?>
         </button>
-        <button class="btn" type="reset">
-            <i class="ace-icon fa fa-undo bigger-110"></i>
-            Reset
-        </button>
     </div>
 </div>
 

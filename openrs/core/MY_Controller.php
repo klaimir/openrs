@@ -137,7 +137,7 @@ class MY_Controller extends CI_controller
     	$this->data['editando']=$config['editando'];
     	if($elementos)
     		$this->data['elementos']=$elementos;
-    	$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
+    	$conf = $this->General_model->get_config();
     	if($this->input->post()){
     		$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
     		$this->form_validation->set_message('required',$this->lang->line('login_c_required'));

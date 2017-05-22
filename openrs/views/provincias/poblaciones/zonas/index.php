@@ -8,9 +8,12 @@
     <ul class="breadcrumb">
         <li>
             <i class="ace-icon fa fa-home home-icon"></i>
-            <a href="<?php echo site_url('provincias'); ?>">Provincias</a>
+            <a href="<?php echo site_url('poblacions'); ?>">Provincias</a>
         </li>
-        <li class="active"><?php echo $provincia->provincia; ?></li>
+        <li>
+            <a href="<?php echo site_url('poblaciones/index/'.$provincia->id); ?>"><?php echo $provincia->provincia; ?></a>
+        </li>
+        <li class="active"><?php echo $poblacion->poblacion; ?></li>
     </ul><!-- /.breadcrumb -->
 </div>
 
@@ -19,7 +22,7 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                Poblaciones de <?php echo $provincia->provincia; ?>
+                Zonas de <?php echo $poblacion->poblacion; ?>
             </h1>
         </div>
     </div>
@@ -29,7 +32,7 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <a class="btn btn-info pull-right" href="<?php echo site_url($_controller . '/insert/' . $provincia->id); ?>">
+        <a class="btn btn-info pull-right" href="<?php echo site_url($_controller . '/insert/' . $poblacion->id); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
         </a>
@@ -44,33 +47,18 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Activar</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            if($elements)
+            {
                 foreach ($elements as $element)
                 {
                     ?>
                     <tr>
-                        <td>
-                            <?php 
-                            if($element->activa) 
-                            {
-                            ?>
-                                <a class="green" href="<?php echo site_url("zonas/index/" . $element->id); ?>" title="Ver Zonas de <?php echo $element->poblacion; ?>"><?php echo $element->poblacion; ?></a>
-                            <?php
-                            } 
-                            else 
-                            { 
-                                echo $element->poblacion;
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <input type="checkbox" class="activar" name="poblacion_<?php echo $element->id; ?>" <?php if ($element->activa) echo 'checked="checked"'; ?> data-id="<?php echo $element->id; ?>">
-                        </td>
+                        <td><?php echo $element->nombre; ?></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url($_controller . "/edit/" . $element->id); ?>" title="Editar">
@@ -109,7 +97,10 @@
                             </div>                    
                         </td>
                     </tr>
-<?php } ?>
+            <?php 
+                }
+            } 
+            ?>
             </tbody>
         </table>
     </div>
@@ -124,26 +115,6 @@
             bootbox.confirm("¿Estás seguro/a?", function (result) {
                 if (result) {
                     window.location = '<?php echo site_url($_controller); ?>/delete/' + id;
-                }
-            });
-        });
-
-        $('.activar').on('change', function () {
-            var id = $(this).data("id");
-            if ($(this).is(':checked'))
-            {
-                var validar = 1;
-            }
-            else
-            {
-                var validar = 0;
-            }
-            $.ajax({
-                url: '<?php echo site_url(); ?>/poblaciones/activar/' + id + '/' + validar,
-                success: function (e) {
-                    if (e != 1) {
-                        alert(e);
-                    }
                 }
             });
         });

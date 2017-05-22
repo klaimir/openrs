@@ -2,9 +2,7 @@
 
 class General_model extends CI_Model {
 	
-	public function get_config($idproveedor = NULL){
-		if($idproveedor)
-			$this->db->where('user_id', $idproveedor);
+	public function get_config(){
 		return $this->db->get('config')->row();
 	}
 	

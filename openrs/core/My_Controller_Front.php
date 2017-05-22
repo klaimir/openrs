@@ -216,7 +216,7 @@ class MY_Functions extends CI_Controller
 		$data['editando']=$config['editando'];
 		if($elementos)
 			$data['elementos']=$elementos;
-		$conf = $this->general_model->get_config($this->simple_sessions->get_value('id_usuario'));
+		$conf = $this->general_model->get_config();
 		if($this->input->post()){
 			$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
 			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));

@@ -13,6 +13,9 @@
         <li>
             <a href="<?php echo site_url('poblaciones/index/'.$provincia->id); ?>"><?php echo $provincia->provincia; ?></a>
         </li>
+        <li>
+            <a href="<?php echo site_url('zonas/index/'.$poblacion->id); ?>"><?php echo $poblacion->poblacion; ?></a>
+        </li>
         <li class="active"><?php echo lang('common_btn_edit'); ?></li>
     </ul><!-- /.breadcrumb -->
 </div>
@@ -22,7 +25,7 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                Datos de <?php echo $element->poblacion; ?>
+                Datos de <?php echo $poblacion->poblacion; ?>
             </h1>
         </div>
     </div>

@@ -2,23 +2,21 @@
 
 require_once APPPATH . '/core/MY_Model.php';
 
-class Poblacion_model extends MY_Model
+class Zonas_model extends MY_Model
 {
 
-    public $provincia_id=NULL;
+    public $poblacion_id=NULL;
     
     public function __construct()
     {
-        $this->table = 'poblaciones';
+        $this->table = 'poblaciones_zonas';
         $this->primary_key = 'id';
-        $this->has_one['provincia'] = array('local_key'=>'id', 'foreign_key'=>'provincia_id', 'foreign_model'=>'Provincia_model');
-        $this->has_many['clientes'] = array('local_key'=>'id', 'foreign_key'=>'poblacion_id', 'foreign_model'=>'Cliente_model');
-        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'poblacion_id', 'foreign_model'=>'Inmueble_model');
+        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'zona_id', 'foreign_model'=>'Inmueble_model');
         
         parent::__construct();
         
         // Carga del modelo
-        $this->load->model('Provincia_model');
+        $this->load->model('Poblacion_model');
     }
     
     /************************* SECURITY *************************/
@@ -40,7 +38,7 @@ class Poblacion_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('poblacion', 'Nombre de la población', 'required|is_unique_global_foreign_key[poblaciones;'.$id.';poblacion;id;provincia_id;'.$this->provincia_id.']|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('nombre', 'Nombre de la zona', 'required|is_unique_global_foreign_key[poblaciones_zonas;'.$id.';nombre;id;poblacion_id;'.$this->poblacion_id.']|max_length[100]|xss_clean');
     }
     
     /**
@@ -69,11 +67,11 @@ class Poblacion_model extends MY_Model
     
     public function set_datas_html($datos=NULL)
     {        
-        $data['poblacion'] = array(
-            'name' => 'poblacion',
-            'id' => 'poblacion',
+        $data['nombre'] = array(
+            'name' => 'nombre',
+            'id' => 'nombre',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('poblacion',is_object($datos) ? $datos->poblacion : ""),
+            'value' => $this->form_validation->set_value('nombre',is_object($datos) ? $datos->nombre : ""),
         );
 
         return $data;
@@ -87,8 +85,8 @@ class Poblacion_model extends MY_Model
     
     public function get_formatted_datas()
     {
-        $datas['poblacion'] = $this->input->post('poblacion');
-        $datas['provincia_id'] = $this->provincia_id;
+        $datas['nombre'] = $this->input->post('nombre');
+        $datas['poblacion_id'] = $this->poblacion_id;
         return $datas;
     }
 
@@ -102,8 +100,8 @@ class Poblacion_model extends MY_Model
     
     function check_delete($id)
     {        
-        $datos_asociados=$this->with_inmuebles()->with_clientes()->get($id);
-        if (count($datos_asociados->inmuebles) || count($datos_asociados->clientes))
+        $datos_asociados=$this->with_inmuebles()->get($id);
+        if (count($datos_asociados->inmuebles))
         {
             return FALSE;
         }
@@ -142,46 +140,4 @@ class Poblacion_model extends MY_Model
         // Parent update
         return $this->update($formatted_datas,$id);
     }
-    
-    /**
-     * Activa\desactiva todos los municipios asociados a la provincia indicada
-     *
-     * @param [id]                  Indentificador de la provincia
-     * @param [activar]             Acción
-     *
-     * @return void
-     */
-    
-    function activar_all($provincia_id,$activar)
-    {
-        // Datos personales
-        $poblaciones = $this->where('provincia_id',$provincia_id)->get_all();        
-        $datos = array();
-        $cont=0;
-        // Es mejor implementar un batch por eficiencia, debido al número elevado de municipios que hay por provincia
-        foreach ($poblaciones as $poblacion)
-        {
-            $datos[$cont]['id'] = $poblacion->id;
-            $datos[$cont]['activa'] = $activar;
-            $cont++;
-        }
-        // Update Batch
-        return $this->db->update_batch($this->table, $datos, 'id');
-    }
-    
-    /**
-     * Activa\desactiva el municipio indicado
-     *
-     * @param [id]                  Indentificador del municipio
-     * @param [activar]             Acción
-     *
-     * @return void
-     */
-    
-    function activar($id,$activar)
-    {
-        // Activación de provincia
-        return $this->update(array("activa" => $activar),$id);
-    }
-
 }
