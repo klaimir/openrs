@@ -91,5 +91,40 @@ class Usuario_model extends MY_Model
     	$idioma_usuario=$this->get_usuario_idioma($id_usuario);
         return $this->Idioma_model->get_idioma($idioma_usuario->id_idioma);
     }
+    
+    /**
+     * Devuelve un array de agentes en formato dropdown
+     *
+     * @return array de agentes en formato dropdown
+     */
+    
+    function get_agentes_dropdown($default_value="")
+    {
+        // Array de agentes
+        $agentes=$this->db->select($this->ion_auth_model->tables['users'].'.*')
+		                ->join($this->ion_auth_model->tables['users_groups'], $this->ion_auth_model->tables['users_groups'].'.user_id'.'='.$this->ion_auth_model->tables['users'].'.id')
+                                ->where($this->ion_auth_model->tables['users_groups'].'.group_id',2)
+		                ->get($this->ion_auth_model->tables['users'])
+                                ->result();
+        // Drop down
+        $array_agentes=$this->dropdown($agentes);
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione agente -";
+        // Suma de ambos
+        return ($seleccion+$array_agentes);
+    }  
+    
+    function dropdown($object_array) {
+        // Datos necesarios
+        $array_valores=array();        
+        // Eliminamos repetidos de objetos
+        if($object_array)
+        {
+            foreach($object_array as $object) {
+                    $array_valores[$object->id]=$object->last_name.", ".$object->first_name;
+            }
+        }
+        return $array_valores;
+    }
 
 }

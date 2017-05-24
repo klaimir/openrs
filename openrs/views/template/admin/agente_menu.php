@@ -1,15 +1,16 @@
-<!-- <li class="active">
-    <a href="#">
-        -<span class="menu-text"> EMPLEADO </span>-
+<li class="<?php echo set_active_option($_active_section,'inmuebles'); ?>">
+    <a href="<?php echo site_url('inmuebles'); ?>">
+        <i class="menu-icon fa fa-building"></i>
+        <span class="menu-text"> Inmuebles </span>
     </a>
 
     <b class="arrow"></b>
-</li>-->
+</li>
 
-<li>
-    <a href="<?php echo site_url('inmuebles'); ?>">
+<li class="<?php echo set_active_option($_active_section,'clientes'); ?>">
+    <a href="<?php echo site_url('clientes'); ?>">
         <i class="menu-icon fa fa-users"></i>
-        <span class="menu-text"> Inmuebles </span>
+        <span class="menu-text"> Clientes </span>
     </a>
 
     <b class="arrow"></b>

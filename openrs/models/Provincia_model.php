@@ -40,5 +40,32 @@ class Provincia_model extends MY_Model
         $this->update(array("activa" => $activar),$id);          
         // Activación de municipios
         return $this->Poblacion_model->activar_all($id,$activar);
+    }    
+    
+    /**
+     * Devuelve un array de provincias en formato dropdown
+     *
+     * @return array de provincias en formato dropdown
+     */
+    
+    function get_provincias_dropdown($default_value="",$activa=NULL)
+    {
+        // Array de provincias
+        if(is_null($activa))
+        {
+            $provincias=$this->as_dropdown('provincia')->get_all();  
+        }
+        else
+        {
+            $provincias=$this->as_dropdown('provincia')->where('activa',1)->get_all();  
+        }
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione provincia -";
+        // Si devolvemos un merge se pierden las claves numéricas
+        // http://php.net/manual/es/function.array-merge.php
+        // return array_merge($seleccion,$provincias);
+        // Por tanto devolvemos el operador suma para que mantenga las claves numéricas
+        return ($seleccion+$provincias);
     }
+    
 }

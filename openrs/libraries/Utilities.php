@@ -29,7 +29,6 @@ class Utilities {
      */
     function __construct() {
         $this->CI = & get_instance();
-        $this->CI->load->library('image_lib');
     }
 
     /**
@@ -113,9 +112,9 @@ class Utilities {
      *
      * @return TRUE or FALSE
      */
-    function esPaisExtranjero($idpais)
+    function es_pais_extranjero($idpais)
     {
-        if($idpais!=724)
+        if($idpais!=64)
         {
             return TRUE;
         }
@@ -152,32 +151,17 @@ class Utilities {
                 // Formato desconocido o número de identificación de menores
                 else
                 {
-                    return $this->esPaisExtranjero($idpais);
+                    return $this->es_pais_extranjero($idpais);
                 }
             }
         }
         // Si no hay NIF, se determina por el pais
         else
         {
-            return $this->esPaisExtranjero($idpais);
+            return $this->es_pais_extranjero($idpais);
         }
     }
     
-    function esInscritoExtranjeroNoResidente($nif_nie, $idpais)
-    {
-        if($this->esPaisExtranjero($idpais))
-        {
-            if($this->valida_nif($nif_nie) <= 0 && !$this->num_ident_menores_valido($nif_nie))
-            {
-                return TRUE;        
-            }
-            else
-            {               
-                return FALSE;
-            }
-        }
-    }
-
     /**
      *  Determina si un NIF/NIE/CIF es válido. Copyright ©2005-2011 David Vidal Serra. Bajo licencia GNU GPL.
      *  Modificada para aceptar número XENNNNNN como NIEs válidos
@@ -190,17 +174,6 @@ class Utilities {
         $cif = strtoupper($cif);
         for ($i = 0; $i < 9; $i ++) {
             $num[$i] = substr($cif, $i, 1);
-        }
-        
-        // Nuevos formato de extranjeros
-        // Aunque se debería mirar en la BD los diferentes código de las comunidades autónomas, para mejorar la eficiencia de esta función solo se pondrá como reguisito que sean
-        // tres letras
-        if (preg_match('/XE[A-Z]{3}[0-9]{4}$/', $cif)) {            
-            return 3;
-        }
-        
-        if (preg_match('/XE[A-Z0-9]{6}$/', $cif)) {            
-            return 3;
         }
         
         //si no tiene un formato valido devuelve error
@@ -247,43 +220,6 @@ class Utilities {
         }
         //si todavia no se ha verificado devuelve error
         return 0;
-    }
-
-    /**
-     * Valida que un número de identificación de menores sea correcto
-     *
-     * @param [num_identificacion]
-     *
-     * @return TRUE or FALSE
-     */
-    function num_ident_menores_valido($cif) {
-        // Longitud
-        if (strlen($cif) == 8) {
-            // Identificador
-            $identificador = "99";
-            $identificador_cif = substr($cif, 0, 2);
-            if ($identificador_cif == $identificador && is_numeric($identificador_cif)) {
-                // Número de provincia
-                $idprovincia_menor = 1;
-                $idprovincia_mayor = 52;
-                $idprovincia_cif = substr($cif, 2, 2);
-                if ($idprovincia_menor <= $idprovincia_cif && $idprovincia_mayor >= $idprovincia_cif && is_numeric($idprovincia_cif)) {
-                    // Número aleatorio
-                    $num_aletorio_menor = 0;
-                    $num_aletorio_mayor = 9999;
-                    $num_aletorio_cif = substr($cif, 4, 4);
-                    if ($num_aletorio_menor <= $num_aletorio_cif && $num_aletorio_mayor >= $num_aletorio_cif && is_numeric($num_aletorio_cif)) {
-                        return TRUE;
-                    }
-                } else {
-                    return FALSE;
-                }
-            } else {
-                return FALSE;
-            }
-        } else {
-            return FALSE;
-        }
     }
 
     /**
@@ -1247,55 +1183,6 @@ class Utilities {
         return $nombreCampo;
     }
     
-    function convertirNumLicenciaNIF($num_licencia,$idpais)
-    {
-        if(empty($idpais) || $this->esPaisExtranjero($idpais) || $this->num_ident_menores_valido($num_licencia) || 
-                $this->valida_nif($num_licencia)==2 || $this->valida_nif($num_licencia)==3)
-        {
-            $nif=$num_licencia;
-        }
-        // Sólo en caso de NIFs españoles
-        else
-        {            
-            $dnicifras=str_pad($num_licencia,8,"0", STR_PAD_LEFT);
-            $letra_nif=$this->LetraNIF($dnicifras);
-            $nif=$dnicifras.$letra_nif;
-        }
-        // Se devuelve el NIF compuesto
-        return $nif;
-    }
-    
-    function convertirNIFNumLicencia($nif,$idpais)
-    {
-        if(empty($idpais) || $this->esPaisExtranjero($idpais) || $this->num_ident_menores_valido($nif) || 
-                $this->valida_nif($nif)==2 || $this->valida_nif($nif)==3)
-        {
-            $num_licencia=$nif;
-        }
-        // Sólo en caso de NIFs españoles
-        else
-        {
-            $num_licencia=ltrim(substr($nif,0,8),'0');
-        }
-        // Se devuelve el NIF compuesto
-        return $num_licencia;
-    }
-    
-    function convertirNIFNumLicenciaGenerico($nif)
-    {
-        // Sólo en caso de NIFs españoles
-        if($this->valida_nif($nif)==1)
-        {
-            $num_licencia=ltrim(substr($nif,0,8),'0');
-        }
-        else
-        {
-            $num_licencia=$nif;
-        }
-        // Se devuelve el NIF compuesto
-        return $num_licencia;
-    }
-    
     function obtenerOpcionFusion($esclub,$esorganizador)
     {
         // Se calcula la opción de fusión
@@ -1562,6 +1449,19 @@ class Utilities {
         }
     }
     
+    function dropdown($object_array,$key,$field) {
+        // Datos necesarios
+        $array_valores=array();        
+        // Eliminamos repetidos de objetos
+        if($object_array)
+        {
+            foreach($object_array as $object) {
+                    $array_valores[$object->$key]=$object->$field;
+            }
+        }
+        return $array_valores;
+    }
+    
     function eliminarResultadosRepetidos($resultados,$key) {
         // Datos necesarios
         $array_string=array();
@@ -1624,30 +1524,6 @@ class Utilities {
         if($error)
         {
             show_error($mensaje);
-        }
-    }
-    
-    function get_csrf_nonce()
-    {
-        $this->CI->load->helper('string');
-        $key = random_string('alnum', 8);
-        $value = random_string('alnum', 20);
-        $this->CI->session->set_flashdata('csrfkey', $key);
-        $this->CI->session->set_flashdata('csrfvalue', $value);
-
-        return array($key => $value);
-    }
-
-    function valid_csrf_nonce()
-    {
-        if ($this->CI->input->post($this->CI->session->flashdata('csrfkey')) !== FALSE &&
-            $this->CI->input->post($this->CI->session->flashdata('csrfkey')) == $this->CI->session->flashdata('csrfvalue'))
-        {
-            return TRUE;
-        }
-        else
-        {
-            return FALSE;
         }
     }
 }

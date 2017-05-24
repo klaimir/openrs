@@ -11,9 +11,12 @@
         <!-- bootstrap & fontawesome -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/bootstrap.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/font-awesome/4.2.0/css/font-awesome.min.css" />
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/admin.css" />
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/admin.css" />
 		
         <!-- page specific plugin styles -->
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/chosen.min.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/daterangepicker.min.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/datepicker.min.css" />
 
         <!-- text fonts -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/fonts/fonts.googleapis.com.css" />
@@ -597,6 +600,36 @@
                             //	whitelist:'gif|png|jpg|jpeg|pdf|doc|docx',
                             //	blacklist:'exe|php'
                 });
+                
+                if(!ace.vars['touch']) {
+                        $('.chosen-select').chosen({allow_single_deselect:true}); 
+                        //resize the chosen on window resize
+
+                        $(window)
+                        .off('resize.chosen')
+                        .on('resize.chosen', function() {
+                                $('.chosen-select').each(function() {
+                                         var $this = $(this);
+                                         $this.next().css({'width': $this.parent().width()});
+                                })
+                        }).trigger('resize.chosen');
+                        //resize chosen on sidebar collapse/expand
+                        $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                                if(event_name != 'sidebar_collapsed') return;
+                                $('.chosen-select').each(function() {
+                                         var $this = $(this);
+                                         $this.next().css({'width': $this.parent().width()});
+                                })
+                        });
+
+
+                        $('#chosen-multiple-style .btn').on('click', function(e){
+                                var target = $(this).find('input[type=radio]');
+                                var which = parseInt(target.val());
+                                if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
+                                 else $('#form-field-select-4').removeClass('tag-input-style');
+                        });
+                }
 
                 // Generales
                 /*
@@ -629,16 +662,33 @@
                     "iDisplayLength": 100,
                     "oLanguage": {"sUrl": "<?php echo base_url(); ?>assets/admin/js/dataTables.spanish.txt"}
                 });
+                
+                //datepicker plugin
+                //link
+                $('.date-picker').datepicker({
+                        autoclose: true,
+                        todayHighlight: true
+                })
+                //show datepicker when clicking on the icon
+                .next().on(ace.click_event, function(){
+                        $(this).prev().focus();
+                });
+
+                //or change it into a date range picker
+                $('.input-daterange').datepicker({autoclose:true});
 
             });
         </script>
 
         <!-- page specific plugin scripts -->
+        <script src="<?php echo base_url(); ?>assets/admin/js/chosen.jquery.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/js/jquery.dataTables.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/js/jquery.dataTables.bootstrap.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/js/dataTables.tableTools.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/js/dataTables.colVis.min.js"></script>
-        <script src="<?php echo base_url();?>assets/admin/js/bootbox.min.js" type="text/javascript"></script>
+        <script src="<?php echo base_url(); ?>assets/admin/js/bootbox.min.js" type="text/javascript"></script>    
+        <script src="<?php echo base_url(); ?>assets/admin/js/daterangepicker.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/admin/js/bootstrap-datepicker.min.js"></script>
 
         <!--[if lte IE 8]>
           <script src="<?php echo base_url(); ?>assets/admin/js/excanvas.min.js"></script>

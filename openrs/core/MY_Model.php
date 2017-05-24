@@ -11,7 +11,7 @@ class MY_Model extends Base_Model
     // Model internal datas (for example, from the database, but, for conventios, always it will be a object)
     public $datas=NULL;
     // Vista principal que se usa para mostrar datos
-    public $_main_view=NULL;
+    public $view=NULL;
     
     public function __construct()
     {

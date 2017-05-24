@@ -15,24 +15,53 @@ class General extends MY_Controller
         $this->_security();
 
         $this->load->library('unit_test');
+        
+        // Comprobación de acceso
+        $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
     }
     
+    function provincias_buscador()
+    {
+        // Carga del modelo
+        $this->load->model('Provincia_model');
+        $provincias=$this->Provincia_model->get_provincias_buscador();  
+        var_dump($provincias);
+        echo form_dropdown('provincia_id',$provincias,4);
+    }
+    
+    function validar_nif($nif, $idpais = 64, $id = 0)
+    {
+        $data = array('nif' => $nif);
+        $this->form_validation->set_data($data);
+        
+        $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|is_unique_global[clientes.nif,' . $id . ']|is_nif_valido[' . $idpais . ']|max_length[15]|xss_clean');
+        
+        if ($this->form_validation->run())
+        {
+            echo "OK";
+        }
+        else
+        {
+            echo validation_errors();
+        }
+    }
+
     function load()
     {
         // Carga del modelo
         $this->load->model('Provincia_model');
         // Carga del modelo
         $this->load->model('Poblacion_model');
-        
+
         // Carga del modelo
         $this->load->model('Poblacion_model');
-        
+
         // Carga del modelo
         $this->load->model('Provincia_model');
-        
+
         // Por más cargas que hagas el objeto queda en memoria global, da igual donde hagas el load
         // El resto de cargas se ignoran
-        
+
         var_dump($this->Provincia_model);
         var_dump($this->Poblacion_model);
     }
@@ -85,26 +114,26 @@ class General extends MY_Controller
         $this->output->enable_profiler(TRUE);
         $this->load->model('test/user_model');
         $this->load->model('test/article_model');
-  
+
         /*
-        $data['user'] = $this->user_model->get(1);
-        var_dump($data['user']);
-        echo "HOLA";
-        
-        $data['user_with'] = $this->user_model->with_details('fields:first_name,last_name')->get(1);
-        $data['user_with_count'] = $this->user_model->with_details('fields:*count*')->get(1);
-        $data['user_where'] = $this->user_model->where('username', 'avenirer')->get();
-        $data['user_where_pass'] = $this->user_model->where(array('username' => 'administrator', 'password' => 'mypass'))->get();
-        $data['user_as_array'] = $this->user_model->as_array()->get(1);
-        $data['users'] = $this->user_model->get_all();
-        $data['users_with'] = $this->user_model->with_details('fields:first_name,last_name,address')->get_all();
-        $data['users_with_count'] = $this->user_model->with_details('fields:*count*')->get_all();
-        $data['users_with_count_many'] = $this->user_model->with_posts('fields:*count*')->get_all();
-        $data['users_with_and_where'] = $this->user_model->with_details('fields:first_name,last_name,address', 'where:`user_details`.`first_name`=\'Admin\'')->get_all();
-        $data['users_with_and_non_exclusive_where'] = $this->user_model->with_details('fields:first_name,last_name,address|non_exclusive_where:`user_details`.`first_name`=\'Admin\'')->get_all();
-        $data['users_where_pass'] = $this->user_model->where(array('password' => 'nopass'))->get_all();
-        $data['users_as_array'] = $this->user_model->as_array()->get_all();
-        $data['users_as_dropdown'] = $this->user_model->as_dropdown('username')->get_all();
+          $data['user'] = $this->user_model->get(1);
+          var_dump($data['user']);
+          echo "HOLA";
+
+          $data['user_with'] = $this->user_model->with_details('fields:first_name,last_name')->get(1);
+          $data['user_with_count'] = $this->user_model->with_details('fields:*count*')->get(1);
+          $data['user_where'] = $this->user_model->where('username', 'avenirer')->get();
+          $data['user_where_pass'] = $this->user_model->where(array('username' => 'administrator', 'password' => 'mypass'))->get();
+          $data['user_as_array'] = $this->user_model->as_array()->get(1);
+          $data['users'] = $this->user_model->get_all();
+          $data['users_with'] = $this->user_model->with_details('fields:first_name,last_name,address')->get_all();
+          $data['users_with_count'] = $this->user_model->with_details('fields:*count*')->get_all();
+          $data['users_with_count_many'] = $this->user_model->with_posts('fields:*count*')->get_all();
+          $data['users_with_and_where'] = $this->user_model->with_details('fields:first_name,last_name,address', 'where:`user_details`.`first_name`=\'Admin\'')->get_all();
+          $data['users_with_and_non_exclusive_where'] = $this->user_model->with_details('fields:first_name,last_name,address|non_exclusive_where:`user_details`.`first_name`=\'Admin\'')->get_all();
+          $data['users_where_pass'] = $this->user_model->where(array('password' => 'nopass'))->get_all();
+          $data['users_as_array'] = $this->user_model->as_array()->get_all();
+          $data['users_as_dropdown'] = $this->user_model->as_dropdown('username')->get_all();
          * 
          */
         $data['articles_with_authors'] = $this->article_model->with_authors('fields:username')->get_all();
