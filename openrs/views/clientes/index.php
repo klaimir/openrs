@@ -128,6 +128,8 @@
         $('#poblacion_id').val('');
         $('#agente_asignado_id').val('-1');
         $('#interes_id').val('-1');
+        $('#fecha_desde').val('');
+        $('#fecha_hasta').val('');
         return false;
     }    
     

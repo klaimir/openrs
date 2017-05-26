@@ -37,11 +37,11 @@
                 <?php echo label('Fecha alta', 'rango_fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <div class="input-daterange input-group">
-                        <input class="input-sm form-control" name="fecha_desde" value="<?php echo $filtros['fecha_desde']; ?>" type="text">
+                        <input class="input-sm form-control date-picker" name="fecha_desde" id="fecha_desde" value="<?php echo $filtros['fecha_desde']; ?>" data-date-format="dd/mm/yyyy" type="text">
                         <span class="input-group-addon">
                             <i class="fa fa-exchange"></i>
                         </span>
-                        <input class="input-sm form-control" name="fecha_hasta" value="<?php echo $filtros['fecha_hasta']; ?>" type="text">
+                        <input class="input-sm form-control date-picker" name="fecha_hasta" id="fecha_hasta" value="<?php echo $filtros['fecha_hasta']; ?>" data-date-format="dd/mm/yyyy" type="text">
                     </div>
                 </div>
             </div>

@@ -157,7 +157,10 @@ class Cliente_model extends MY_Model
         else
         {
             $data['provincia_id']=$this->form_validation->set_value('provincia_id',"");
-        }        
+        }  
+        
+        // Selector de poblaciones
+        $data['poblaciones'] = $this->get_poblaciones_form($data['provincia_id']);
         
         $data['correo'] = array(
             'name' => 'correo',
@@ -201,19 +204,6 @@ class Cliente_model extends MY_Model
         $datas['pais_id'] = $this->input->post('pais_id');
         $datas['poblacion_id'] = $this->input->post('poblacion_id');
         $datas['agente_asignado_id'] = $this->input->post('agente_asignado_id');
-        // En la edición actualizamos el campo de actualización
-        /*
-        if($id>0)
-        {
-            $datas['fecha_alta'] = date()
-        }
-        // En la inserción el de creación
-        else
-        {
-            
-        }
-         * 
-         */
         
         return $datas;
     }
@@ -342,6 +332,17 @@ class Cliente_model extends MY_Model
         unset($cliente->fecha_actualizacion);
         // Crear duplicado
         return $this->insert($cliente);
+    }
+    
+    /**
+     * Devuelve un array de poblaciones en formato para formularios de clientes
+     *
+     * @return array de poblaciones en formato para formularios de clientes
+     */
+    
+    function get_poblaciones_form($provincia_id)
+    {
+        return $this->Poblacion_model->get_poblaciones_dropdown($provincia_id);
     }
     
     /**

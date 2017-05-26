@@ -58,6 +58,7 @@
                 <div class="form-group">            
                     <?php echo label('Población', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div id="poblaciones" class="col-sm-9">
+                        <?php echo form_dropdown('poblacion_id',$poblaciones,$poblacion_id, 'class="chosen-select form-control" id="poblacion_id""'); ?>
                     </div>
                 </div>
             </div>
@@ -138,10 +139,11 @@
 </div>
 
 <script type="text/javascript">
-    jQuery(function ($) {
-        
+    $(document).ready(function(){
+
         <?php        
-        if(isset($provincia_id) && $provincia_id!="")
+        // Es mejor omitirlo para no tener que poner un retardo que igual tampoco funciona pq por cualquier circunstancia tarda mas la población en cargar
+        /*if(isset($provincia_id) && $provincia_id!="")
         {
             if(isset($poblacion_id) && $poblacion_id!="")
             {
@@ -155,14 +157,15 @@
                 $('#poblaciones').load('<?php echo site_url("common/load_poblaciones/".$provincia_id); ?>');                
         <?php
             }
-        }                
+        }    */            
         ?>
 
         // Comprobamos si hay que mostrar
         check_show_provincias();
         // Debemos introducir un delay cuando se carga el google maps para que de tiempo a que el campo de la población haya sido cargado también
-        setTimeout(check_google_maps, 2000);
-    })
+        //setTimeout(check_google_maps, 2000);
+        check_google_maps();
+    });
     
     function check_show_provincias() {
         var pais_id=$('#pais_id').val();

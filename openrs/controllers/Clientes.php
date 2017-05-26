@@ -36,81 +36,25 @@ class Clientes extends CRUD_Controller
     
     private function _load_filtros_session() {        
         // Filtro provincia_id
-        $get_provincia_id = $this->input->get('provincia_id');
-        $clientes_buscador_provincia_id = $this->session->userdata('clientes_buscador_provincia_id');
-        if($get_provincia_id != "") {
-            $this->session->set_userdata('clientes_buscador_provincia_id', $get_provincia_id);
-        } else {
-            if ($clientes_buscador_provincia_id == '') {
-                $this->session->set_userdata('clientes_buscador_provincia_id', NULL);
-            }
-        }
+        $this->utilities->set_value_session_filter('clientes_buscador', 'provincia_id');
         
         // Filtro poblacion_id
-        $get_poblacion_id = $this->input->get('poblacion_id');
-        $clientes_buscador_poblacion_id = $this->session->userdata('clientes_buscador_poblacion_id');
-        if($get_poblacion_id != "") {
-            $this->session->set_userdata('clientes_buscador_poblacion_id', $get_poblacion_id);
-        } else {
-            if ($clientes_buscador_poblacion_id == '') {
-                $this->session->set_userdata('clientes_buscador_poblacion_id', NULL);
-            }
-        }
+        $this->utilities->set_value_session_filter('clientes_buscador', 'poblacion_id');
         
         // Filtro pais_id
-        $get_pais_id = $this->input->get('pais_id');
-        $clientes_buscador_pais_id = $this->session->userdata('clientes_buscador_pais_id');
-        if($get_pais_id != "") {
-            $this->session->set_userdata('clientes_buscador_pais_id', $get_pais_id);
-        } else {
-            if ($clientes_buscador_pais_id == '') {
-                $this->session->set_userdata('clientes_buscador_pais_id', NULL);
-            }
-        }
+        $this->utilities->set_value_session_filter('clientes_buscador', 'pais_id');
         
         // Filtro agente_asignado_id
-        $get_agente_asignado_id = $this->input->get('agente_asignado_id');
-        $clientes_buscador_agente_asignado_id = $this->session->userdata('clientes_buscador_agente_asignado_id');
-        if($get_agente_asignado_id != "") {
-            $this->session->set_userdata('clientes_buscador_agente_asignado_id', $get_agente_asignado_id);
-        } else {
-            if ($clientes_buscador_agente_asignado_id == '') {
-                $this->session->set_userdata('clientes_buscador_agente_asignado_id', NULL);
-            }
-        }
+        $this->utilities->set_value_session_filter('clientes_buscador', 'agente_asignado_id');
         
         // Filtro interes_id
-        $get_interes_id = $this->input->get('interes_id');
-        $clientes_buscador_interes_id = $this->session->userdata('clientes_buscador_interes_id');
-        if($get_interes_id != "") {
-            $this->session->set_userdata('clientes_buscador_interes_id', $get_interes_id);
-        } else {
-            if ($clientes_buscador_interes_id == '') {
-                $this->session->set_userdata('clientes_buscador_interes_id', NULL);
-            }
-        }
+        $this->utilities->set_value_session_filter('clientes_buscador', 'interes_id');
 
         // Filtro fecha_desde
-        $get_fecha_desde = $this->input->get('fecha_desde');
-        $clientes_buscador_fecha_desde = $this->session->userdata('clientes_buscador_fecha_desde');
-        if($get_fecha_desde != "") {
-            $this->session->set_userdata('clientes_buscador_fecha_desde', $get_fecha_desde);
-        } else {
-            if ($clientes_buscador_fecha_desde == '') {
-                $this->session->set_userdata('clientes_buscador_fecha_desde', NULL);
-            }
-        }
+        $this->utilities->set_value_session_filter('clientes_buscador', 'fecha_desde');
         
         // Filtro fecha_hasta
-        $get_fecha_hasta = $this->input->get('fecha_hasta');
-        $clientes_buscador_fecha_hasta = $this->session->userdata('clientes_buscador_fecha_hasta');
-        if($get_fecha_hasta != "") {
-            $this->session->set_userdata('clientes_buscador_fecha_hasta', $get_fecha_hasta);
-        } else {
-            if ($clientes_buscador_fecha_hasta == '') {
-                $this->session->set_userdata('clientes_buscador_fecha_hasta', NULL);
-            }
-        }
+        $this->utilities->set_value_session_filter('clientes_buscador', 'fecha_hasta');
     }
 
     private function _generar_filtros_busqueda() {
@@ -207,34 +151,6 @@ class Clientes extends CRUD_Controller
         
         // Set datas
         $this->_set_datas_html($this->data['element']);
-        
-        // Google maps
-        // Si se establecieron los valores del contacto
-        $direccion=$this->data['element']->direccion;
-        $poblacion_id=$this->data['poblacion_id'];
-        if(!empty($direccion) && !empty($poblacion_id))
-        {
-            // Load the library
-            $this->load->library('googlemaps');
-
-            $config=array();
-            $config['center']='Cadiz, Cadiz, Spain';
-            $config['zoom']=15;        
-            // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
-            $this->googlemaps->initialize($config);
-
-            /*
-            // Marker
-            $marker=array();
-            $marker['position']='Cadiz, Cadiz, Spain';
-            $this->googlemaps->add_marker($marker);
-             * 
-             */
-
-            // Create the map. This will return the Javascript to be included in our pages <head></head> section and the HTML code to be
-            // placed where we want the map to appear.
-            $this->data['google_map'] = $this->googlemaps->create_map();
-        }
         
         // Render
         $this->render_private($this->_view.'/edit', $this->data);

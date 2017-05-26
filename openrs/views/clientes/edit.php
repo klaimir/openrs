@@ -7,6 +7,14 @@
 
     <div id="sidebar2" class="sidebar h-sidebar navbar-collapse collapse">
         <ul class="nav nav-list">
+            <li class="hover active">
+                <a href="<?php echo site_url('clientes/edit/'.$element->id); ?>">
+                    <i class="menu-icon fa fa-users"></i>
+                    <span class="menu-text"> DATOS DEL CLIENTE </span>
+                </a>
+                <b class="arrow"></b>
+            </li>
+            
             <li class="hover">
                 <a href="#">
                     <i class="menu-icon fa fa-calendar"></i>
@@ -35,8 +43,6 @@
                 <a href="<?php echo site_url('ficheros_cliente'); ?>">
                     <i class="menu-icon fa fa-tag"></i>
                     <span class="menu-text"> FICHEROS ADJUNTOS </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
                 </a>
 
                 <b class="arrow"></b>

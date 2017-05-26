@@ -184,5 +184,36 @@ class Poblacion_model extends MY_Model
         $this->db->order_by('poblacion');
         return $this->db->get()->result();
     }
+    
+    /**
+     * Devuelve un array de poblaciones en formato dropdown
+     *
+     * @return array de poblaciones en formato dropdown
+     */
+    
+    function get_poblaciones_dropdown($provincia_id,$default_value="",$activa=NULL)
+    {
+        // Array de poblaciones
+        // Añadimos esto para que no falle cuando no exista provincia
+        if(empty($provincia_id))
+        {
+            $poblaciones=array();
+        }
+        else
+        {
+            if(is_null($activa))
+            {
+                $poblaciones=$this->as_dropdown('poblacion')->where('provincia_id',$provincia_id)->get_all();  
+            }
+            else
+            {
+                $poblaciones=$this->as_dropdown('poblacion')->where('provincia_id',$provincia_id)->where('activa',1)->get_all();  
+            }
+        }
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione población -";
+        // Por tanto devolvemos el operador suma para que mantenga las claves numéricas
+        return ($seleccion+$poblaciones);
+    }
 
 }

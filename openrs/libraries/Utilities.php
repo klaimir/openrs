@@ -30,6 +30,31 @@ class Utilities {
     function __construct() {
         $this->CI = & get_instance();
     }
+    
+    /**
+     * Establece el valor de sesión en un filtro de búsqueda para un parámetro dado
+     *
+     * @param [error_array]			Array de errores
+     *
+     * @return Devuelve un texto de errores formateado
+     */
+    function set_value_session_filter($prefix, $field, $default_value=NULL, $button='submit') {
+        // Si hay submit se coge el get
+        $get_submit = $this->CI->input->get($button);
+        if(!empty($get_submit))
+        {
+            $this->CI->session->set_userdata($prefix.'_'.$field, $this->CI->input->get($field));
+        }
+        // En caso contrario, si la sesión no tiene valores se aplica uno por defecto
+        else
+        {
+            $clientes_buscador_fecha_hasta = $this->CI->session->userdata($prefix.'_'.$field);
+            if(empty($clientes_buscador_fecha_hasta))
+            {
+                $this->CI->session->set_userdata($prefix.'_'.$field, $default_value);
+            }
+        }
+    }
 
     /**
      * Formatea un array de errores en un string
