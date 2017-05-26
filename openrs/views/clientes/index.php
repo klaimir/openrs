@@ -58,6 +58,7 @@
                         <td><?php echo $element->nif; ?></td>
                         <td><?php echo $element->nombre_provincia; ?></td>
                         <td><?php echo $element->nombre_poblacion; ?></td>
+                        <td><?php echo $element->direccion; ?></td>
                         <td><?php echo $element->telefonos; ?></td>
                         <td><?php echo $element->correo; ?></td>
                         <td>

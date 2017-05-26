@@ -1,4 +1,4 @@
-<select id="poblacion_id" name="poblacion_id" class="form-control">
+<select id="poblacion_id" name="poblacion_id" class="chosen-select form-control">
     <option <?php echo set_select('poblacion_id', ''); ?> value="">- Seleccione población -</option>
     <?php
     foreach ($poblaciones as $poblacion)
@@ -13,3 +13,18 @@
     }
     ?>
 </select>
+
+<script type="text/javascript">
+if(!ace.vars['touch']) {
+    $('#poblacion_id').chosen({allow_single_deselect:true}); 
+    //resize the chosen on window resize
+
+    $(window)
+    .on('resize.chosen', function() {
+            $('#poblacion_id').each(function() {
+                     var $this = $(this);
+                     $this.next().css({'width': $this.parent().width()});
+            })
+    }).trigger('resize.chosen');
+}
+</script>

@@ -41,17 +41,19 @@ class MY_Form_validation extends CI_Form_validation
      * @return	bool
      */
     public function is_unique_global($str, $string)
-    {
-        $explode = explode(',', $string);
-        list($table, $field) = explode('.', $explode[0]);
+    {        
+        $explode = explode(';', $string);
+        $table = $explode[0];
         $id = $explode[1];
+        $field = $explode[2];
+        $primary_key = $explode[3];
 
         $this->CI->db->select();
         $this->CI->db->from($table);
         $this->CI->db->where($field, $str);
         if ($id != 0)
         {
-            $this->CI->db->where($field . " <> " . $id);
+            $this->CI->db->where($primary_key . " <> " . $id);
         }
         $query = $this->CI->db->get();
 

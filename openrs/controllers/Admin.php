@@ -36,7 +36,7 @@ class Admin extends MY_Controller
     			$this->data['texto_footer4'][$idioma->id_idioma] = $this->Admin_model->get_texto_footer($opc_cliente_col4->id, $idioma->id_idioma);
     	}
     	$this->data['idioma_actual'] = $this->Idioma_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
-    	$this->data['config']=$this->Admin_model->datos_config(1);
+    	$this->data['config']=$this->Admin_model->datos_config();
     	$this->data['title']= $titulo.' - '.$this->data['config']->nombre;
     	//$data['secciones'] = $this->seccion_model->get_secciones($data['idioma_actual']->id_idioma);
     	//$this->data['sec'] = $seccion;
@@ -51,7 +51,7 @@ class Admin extends MY_Controller
     public function cabecera(){
     	$this->data = $this->inicializar('0', 'Cabecera');
     	//Cargamos configuración cabecera
-    	//$this->data['config'] = $this->Admin_model->datos_config(1);
+    	//$this->data['config'] = $this->Admin_model->datos_config();
     	// Render
     	$this->data['color'] = $this->session->flashdata('color');
     	$this->data['mensaje'] = $this->session->flashdata('mensaje');
@@ -107,12 +107,12 @@ class Admin extends MY_Controller
     					redirect('admin/cabecera', 'refresh');
     				}else {
     					//Para paneles independientes
-    					//$configuracion = $this->user_model->datos_config($this->simple_sessions->get_value('id_usuario'));
+    					//$configuracion = $this->user_model->datos_config();
     					//if($configuracion && isset($configuracion->imagen) && file_exists('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen)){
     					//unlink('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen);
     					//unlink('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen_thumb);
     					//}
-    					$configuracion = $this->Admin_model->datos_config(1);
+    					$configuracion = $this->Admin_model->datos_config();
     					if($configuracion && isset($configuracion->imagen) && file_exists('assets/admin/img/preferencias/'.$configuracion->imagen)){
     						unlink('assets/admin/img/preferencias/'.$configuracion->imagen);
     						//unlink('img/preferencias/1/'.$configuracion->imagen_thumb);

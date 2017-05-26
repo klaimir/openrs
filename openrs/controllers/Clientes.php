@@ -178,7 +178,7 @@ class Clientes extends CRUD_Controller
     
     public function edit($id)
     {
-        $this->data['element'] = $this->{$this->_model}->get_by_id($id);
+        $this->data['element'] = $this->{$this->_model}->get_info($id);
         // Permisos acceso
         $this->{$this->_model}->check_access($this->data['element']);
         
@@ -208,6 +208,34 @@ class Clientes extends CRUD_Controller
         // Set datas
         $this->_set_datas_html($this->data['element']);
         
+        // Google maps
+        // Si se establecieron los valores del contacto
+        $direccion=$this->data['element']->direccion;
+        $poblacion_id=$this->data['poblacion_id'];
+        if(!empty($direccion) && !empty($poblacion_id))
+        {
+            // Load the library
+            $this->load->library('googlemaps');
+
+            $config=array();
+            $config['center']='Cadiz, Cadiz, Spain';
+            $config['zoom']=15;        
+            // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
+            $this->googlemaps->initialize($config);
+
+            /*
+            // Marker
+            $marker=array();
+            $marker['position']='Cadiz, Cadiz, Spain';
+            $this->googlemaps->add_marker($marker);
+             * 
+             */
+
+            // Create the map. This will return the Javascript to be included in our pages <head></head> section and the HTML code to be
+            // placed where we want the map to appear.
+            $this->data['google_map'] = $this->googlemaps->create_map();
+        }
+        
         // Render
         $this->render_private($this->_view.'/edit', $this->data);
     }
@@ -216,7 +244,7 @@ class Clientes extends CRUD_Controller
     {
         $this->data=array_merge_recursive($this->data,$this->{$this->_model}->set_datas_html($datos));     
         
-        $this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
+        //$this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
     }
     
     public function delete($id)
@@ -250,8 +278,10 @@ class Clientes extends CRUD_Controller
         $this->data['element'] = $this->{$this->_model}->get_by_id($id);
         // Permisos acceso
         $this->{$this->_model}->check_access($this->data['element']);
+        
+        $cliente_id=$this->{$this->_model}->duplicar($this->data['element']);
 
-        if ($this->{$this->_model}->duplicar($this->data['element']))
+        if ($cliente_id)
         {
             $this->session->set_flashdata('message', lang('common_success_duplicate'));
             $this->session->set_flashdata('message_color', 'success');
@@ -261,19 +291,7 @@ class Clientes extends CRUD_Controller
             $this->session->set_flashdata('message', lang('common_error_duplicate'));
         }
 
-        redirect($this->_controller, 'refresh');
-    }
-    
-    public function show_marcas($tipo_plantilla_id) {
-        // Comprobación de petición por AJAX
-        if($this->input->is_ajax_request())
-        {
-            $this->output->enable_profiler(FALSE);
-            // Consultamos las 
-            $this->data['categorias']=$this->Tipo_plantilla_documentacion_model->get_categorias_with_marcas($tipo_plantilla_id);
-            // Cargamos la vista
-            $this->load->view('plantillas_documentacion/marcas', $this->data);
-        }
+        redirect($this->_controller.'/edit/'.$cliente_id, 'refresh');
     }
 
 }

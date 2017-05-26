@@ -74,6 +74,8 @@
         <script src="<?php echo base_url(); ?>assets/admin/js/bootstrap.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/ckeditor/ckeditor.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/js/jquery.dataTables.min.js"></script>
+        
+        <?php /*if(isset($google_map)) { echo $google_map['js']; } */ ?>
     </head>
 
     <body class="no-skin">
@@ -100,13 +102,14 @@
                     <a href="index.html" class="navbar-brand">
                         <small>
                             <i class="fa fa-leaf"></i>
-                            OpenRS
+                            Open RS
                         </small>
                     </a>
                 </div>
 
                 <div class="navbar-buttons navbar-header pull-right" role="navigation">
                     <ul class="nav ace-nav">
+                        
                         <li class="purple">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <i class="ace-icon fa fa-bell icon-animated-bell"></i>
@@ -174,7 +177,8 @@
                                 </li>
                             </ul>
                         </li>
-
+                        
+                        <?php /*
                         <li class="green">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
@@ -284,13 +288,15 @@
                                 </li>
                             </ul>
                         </li>
-
+                        */
+                        ?>
+                        
                         <li class="light-blue">
                             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                                 <img class="nav-user-photo" src="<?php echo base_url(); ?>assets/admin/avatars/user.jpg" alt="Jason's Photo" />
                                 <span class="user-info">
-                                    <small>Welcome,</small>
-                                    <?php echo $session_user_name; ?>
+                                    <small>Bienvenido,</small>
+                                    <?php echo $session_identity; ?>
                                 </span>
 
                                 <i class="ace-icon fa fa-caret-down"></i>
@@ -301,7 +307,7 @@
                                 <li>
                                     <a href="<?php echo site_url("auth/edit_user/$session_user_id"); ?>">
                                         <i class="ace-icon fa fa-user"></i>
-                                        Profile
+                                        Perfil
                                     </a>
                                 </li>
 
@@ -310,7 +316,7 @@
                                 <li>
                                     <a href="<?php echo site_url('auth/logout'); ?>">
                                         <i class="ace-icon fa fa-power-off"></i>
-                                        Logout
+                                        Salir
                                     </a>
                                 </li>
                             </ul>
@@ -336,6 +342,7 @@
                     }
                 </script>
 
+                <?php /*
                 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
                     <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
                         <button class="btn btn-success">
@@ -365,6 +372,9 @@
                         <span class="btn btn-danger"></span>
                     </div>
                 </div><!-- /.sidebar-shortcuts -->
+                 * 
+                 */
+                ?>
                 
                 <ul class="nav nav-list">
                 <?php
@@ -392,7 +402,7 @@
 
             <div class="main-content">
                 <div class="main-content-inner">
-                    <?php if (isset($breadcrumb)) { ?>
+                    <?php /* if (isset($breadcrumb)) { ?>
                         <div class="breadcrumbs" id="breadcrumbs">
                             <script type="text/javascript">
                                 try {
@@ -409,7 +419,7 @@
                                 <li class="active">Dashboard</li>
                             </ul><!-- /.breadcrumb -->
                         </div>
-                    <?php } ?>
+                    <?php } */ ?>
 
                     <div class="page-content">
                         <div class="ace-settings-container" id="ace-settings-container">
@@ -489,7 +499,7 @@
                         <span class="bigger-120">
                             Open RS &copy; 2017
                         </span>
-
+                        <?php /*
                         &nbsp; &nbsp;
                         <span class="action-buttons">
                             <a href="#">
@@ -504,6 +514,9 @@
                                 <i class="ace-icon fa fa-rss-square orange bigger-150"></i>
                             </a>
                         </span>
+                         * 
+                         */
+                        ?>
                     </div>
                 </div>
             </div>

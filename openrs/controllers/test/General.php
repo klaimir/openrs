@@ -34,7 +34,7 @@ class General extends MY_Controller
         $data = array('nif' => $nif);
         $this->form_validation->set_data($data);
         
-        $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|is_unique_global[clientes.nif,' . $id . ']|is_nif_valido[' . $idpais . ']|max_length[15]|xss_clean');
+        $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|is_unique_global[clientes;' . $id . ';nif;id]|is_nif_valido[' . $idpais . ']|max_length[15]|xss_clean');
         
         if ($this->form_validation->run())
         {

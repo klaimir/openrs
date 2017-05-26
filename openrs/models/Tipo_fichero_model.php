@@ -33,7 +33,7 @@ class Tipo_fichero_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('nombre', 'Nombre del tipo de fichero adjunto', 'required|is_unique_global[tipos_ficheros.nombre,'.$id.']|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('nombre', 'Nombre del tipo de fichero adjunto', 'required|is_unique_global[tipos_ficheros;' . $id . ';nombre;id]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('descripcion', 'Descripción del tipo de fichero adjunto', 'xss_clean|max_length[255]');
     }
     

@@ -32,7 +32,7 @@ class Inmueble_Fichero_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('nombre', 'Nombre del tipo del inmueble', 'required|is_unique_global[tipos_inmueble.nombre,'.$id.']|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('nombre', 'Nombre del tipo del inmueble', 'required|is_unique_global[tipos_inmueble;' . $id . ';nombre;id]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('descripcion', 'Descripción del tipo del inmueble', 'xss_clean|max_length[255]');
     }
     

@@ -35,7 +35,7 @@ class Plantilla_documentacion_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('nombre', 'Nombre de la plantilla', 'required|is_unique_global[plantillas_documentacion.nombre,'.$id.']|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('nombre', 'Nombre de la plantilla', 'required|is_unique_global[plantillas_documentacion;' . $id . ';nombre;id]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('descripcion', 'Descripción de la plantilla', 'xss_clean|max_length[255]');
         $this->form_validation->set_rules('tipo_plantilla_id', 'Tipo de plantilla', 'required');
         $this->form_validation->set_rules('html', 'Texto de la plantilla', 'required');

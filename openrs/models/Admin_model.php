@@ -10,12 +10,8 @@ class Admin_model extends MY_Model
         parent::__construct();
     }
     
-    /************************************************/
-    /* Recibe: id usuario                           */
-    /* Devuelve: row datos configuración de usuario */
-    /************************************************/
-    public function datos_config($user){
-    	$this->db->where('user_id',$user);
+    
+    public function datos_config(){
     	return $this->db->get('config')->row();
     }
     

@@ -16,14 +16,16 @@ class MY_Controller extends CI_controller
             return;
         }
         
-        $this->load->database();
-        $this->load->library(array('ion_auth', 'form_validation', 'formularios'));
-        $this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form', 'html', 'security'));
-        $this->load->model('Usuario_model');
-        $this->load->model('Admin_model');
-        $this->load->model('Idioma_model');
-        $this->load->model('Seccion_model');
-        $this->load->model('General_model');
+        //var_dump($this);
+        //$this->load->database();
+        //$this->load->library(array('ion_auth', 'form_validation', 'formularios'));
+        //$this->load->helper(array('url', 'language', 'date_helper', 'file', 'text', 'form', 'html', 'security'));
+        //$this->load->model('Usuario_model');
+        //$this->load->model('Admin_model');
+        //$this->load->model('Idioma_model');
+        //$this->load->model('Seccion_model');
+        //$this->load->model('General_model');
+        
         // Public
         $this->initialize_public();
         // Private
@@ -66,6 +68,7 @@ class MY_Controller extends CI_controller
         $this->data['session_logged_in'] = true;
         $this->data['session_user_id'] = $this->session->userdata('user_id');
         $this->data['session_user_name'] = $this->session->userdata('username');
+        $this->data['session_identity'] = $this->session->userdata('identity');
         //$this->data['session_user_group'] = $this->ion_auth->get_users_groups()->row()->id;
 
         // Permisos
