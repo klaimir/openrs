@@ -82,7 +82,10 @@
                     <?php echo form_input($telefonos, '', 'class="form-control"'); ?>
                 </div>
             </div>
-            <div id="google_maps">
+            <div class="form-group" id="google_maps_div">            
+                <?php echo label('Ubicación Google Maps', 'google_maps_label', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div id="google_maps" class="col-sm-9">
+                </div>
             </div>
         </div>
     </div>
@@ -134,24 +137,32 @@
     </div>    
 </div>
 
-<script>
-    <?php
-    if(isset($provincia_id) && $provincia_id!="")
-    {
-        if(isset($poblacion_id) && $poblacion_id!="")
+<script type="text/javascript">
+    jQuery(function ($) {
+        
+        <?php        
+        if(isset($provincia_id) && $provincia_id!="")
         {
-    ?>
-            $('#poblaciones').load('<?php echo site_url("common/load_poblaciones/".$provincia_id."/".$poblacion_id); ?>');
-    <?php
-        }
-        else
-        {
-    ?>
-            $('#poblaciones').load('<?php echo site_url("common/load_poblaciones/".$provincia_id); ?>');
-    <?php
-        }
-    }                
-    ?>
+            if(isset($poblacion_id) && $poblacion_id!="")
+            {
+        ?>
+                $('#poblaciones').load('<?php echo site_url("common/load_poblaciones/".$provincia_id."/".$poblacion_id); ?>');
+        <?php
+            }
+            else
+            {
+        ?>
+                $('#poblaciones').load('<?php echo site_url("common/load_poblaciones/".$provincia_id); ?>');                
+        <?php
+            }
+        }                
+        ?>
+
+        // Comprobamos si hay que mostrar
+        check_show_provincias();
+        // Debemos introducir un delay cuando se carga el google maps para que de tiempo a que el campo de la población haya sido cargado también
+        setTimeout(check_google_maps, 2000);
+    })
     
     function check_show_provincias() {
         var pais_id=$('#pais_id').val();
@@ -168,26 +179,39 @@
             $('#poblacion_div').hide();
         }
     }
-    
+
     function check_google_maps() {
-        var pais_id=$('#pais_id').val();
+        var pais_id=$('#pais_id').val();      
         var direccion=$('#direccion').val();
-        if(pais_id==64) 
+
+        if(pais_id!='' && direccion!='')
         {
-            $('#google_maps').show();
-            $('#google_maps').load('<?php echo site_url("common/single_google_map?direccion=");?>'+direccion);
+            $('#google_maps_div').show();     
+            
+            var poblacion_id=$('#poblacion_id').val();
+            var provincia_id=$('#provincia_id').val();
+
+            if(poblacion_id!='' && provincia_id!='')
+            {
+                var url='common/single_google_map?direccion='+direccion+'&provincia_id='+provincia_id+'&poblacion_id='+poblacion_id+'&pais_id='+pais_id;
+            }
+            else
+            {
+                var url='common/single_google_map?direccion='+direccion+'&pais_id='+pais_id;
+            }
+            
+            var url_encode = encodeURI(url);
+
+            $('#google_maps').load('<?php echo site_url();?>'+url_encode);
         }
         else
         {
-            $('#google_maps').hide();
+            $('#google_maps_div').hide();
         }
     }
-    
+
     function show_poblaciones() {
         var provincia_id=$('#provincia_id').val();
         $('#poblaciones').load('<?php echo site_url("common/load_poblaciones");?>/'+provincia_id);
     }
-    
-    // Comprobamos si hay que mostrar
-    check_show_provincias();
 </script>
