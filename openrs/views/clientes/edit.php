@@ -40,7 +40,7 @@
             </li>
 
             <li class="hover">
-                <a href="<?php echo site_url('ficheros_cliente'); ?>">
+                <a href="<?php echo site_url('clientes_ficheros/index/'.$element->id); ?>">
                     <i class="menu-icon fa fa-tag"></i>
                     <span class="menu-text"> FICHEROS ADJUNTOS </span>
                 </a>
@@ -61,7 +61,7 @@
 
 <div class="page-header">
     <h1>
-        Plantillas de documentación
+        Datos del cliente
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             <?php echo lang('common_btn_edit'); ?>
