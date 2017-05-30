@@ -13,13 +13,13 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <?php echo form_open($this->uri->uri_string(), 'class="form-horizontal"'); ?>
+        <?php echo form_open_multipart($this->uri->uri_string(), 'class="form-horizontal"'); ?>
 
         <?php $this->load->view($_view.'/form', $this->data); ?>
 
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
-                <button class="btn btn-info" type="submit" name="submit">
+                <button class="btn btn-info" type="submit" name="submit" value="upload">
                     <i class="ace-icon fa fa-check bigger-110"></i>
                     <?php echo lang('common_btn_insert'); ?>
                 </button>

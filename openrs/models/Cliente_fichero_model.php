@@ -39,7 +39,7 @@ class Cliente_fichero_model extends MY_Model
      */
     public function set_rules($id = 0)
     {
-        $this->form_validation->set_rules('fichero', 'Nombre del fichero', 'required|is_unique_global_foreign_key[clientes_ficheros;' . $id . ';fichero;id;cliente_id;' . $this->cliente_id . ']|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('texto_fichero', 'Nombre del fichero', 'required|is_unique_global_foreign_key[clientes_ficheros;' . $id . ';texto_fichero;id;cliente_id;' . $this->cliente_id . ']|max_length[200]|xss_clean');
     }
 
     /**
@@ -66,11 +66,11 @@ class Cliente_fichero_model extends MY_Model
      */
     public function set_datas_html($datos = NULL)
     {
-        $data['fichero'] = array(
-            'name' => 'fichero',
-            'id' => 'fichero',
+        $data['texto_fichero'] = array(
+            'name' => 'texto_fichero',
+            'id' => 'texto_fichero',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('fichero', is_object($datos) ? $datos->fichero : ""),
+            'value' => $this->form_validation->set_value('texto_fichero', is_object($datos) ? $datos->texto_fichero : ""),
         );
 
         return $data;
@@ -81,9 +81,10 @@ class Cliente_fichero_model extends MY_Model
      *
      * @return array con los datos formateado
      */
-    public function get_formatted_datas()
+    public function get_formatted_datas($upload_data)
     {
-        $datas['fichero'] = $this->input->post('fichero');
+        $datas['fichero'] = 'uploads/clientes/'.$this->cliente_id.'/'.$upload_data['file_name'];
+        $datas['texto_fichero'] = $this->input->post('texto_fichero');
         $datas['cliente_id'] = $this->cliente_id;
         return $datas;
     }
@@ -107,28 +108,44 @@ class Cliente_fichero_model extends MY_Model
      */
     function create()
     {
-        // Formatted datas
-        $formatted_datas = $this->get_formatted_datas();
-        // Parent insert
-        return $this->insert($formatted_datas);
-    }
+        $config['upload_path'] = './uploads/clientes/'.$this->cliente_id;
+        $config['allowed_types'] = '*';
+        $config['max_size'] = 2000;   
+        $config['encrypt_name'] = TRUE;     
 
-    /**
-     * Formatea los datos introducidos por el usuario y actualiza un registro en la base de datos
-     *
-     * @param [id]                  Indentificador del elemento
-     *
-     * @return void
-     */
-    function edit($id)
-    {
-        // Formatted datas
-        $formatted_datas = $this->get_formatted_datas();
-        // Parent update
-        return $this->update($formatted_datas, $id);
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('fichero'))
+        {
+            $this->set_error($this->upload->display_errors());
+            return FALSE;
+        }
+        else
+        {
+            // Formatted datas
+            $formatted_datas = $this->get_formatted_datas($this->upload->data());
+            // Parent insert
+            $id=$this->insert($formatted_datas);
+            if($id)
+            {
+                return $id;
+            }
+            else
+            {
+                $this->set_error(lang('common_error_insert'));
+                return FALSE;
+            }
+        }
     }
 
     
+    /**
+     * Devuelve los ficheros adjuntos de un determinado cliente
+     *
+     * @param [cliente_id]                  Indentificador del elemento
+     *
+     * @return void
+     */
     function get_ficheros_cliente($cliente_id)
     {
         $this->db->from($this->table);
@@ -136,5 +153,42 @@ class Cliente_fichero_model extends MY_Model
         $this->db->order_by('fichero');
         return $this->db->get()->result();
     }    
+    
+    /**
+     * Elimina el fichero del sistema de ficheros y de la bd
+     *
+     * @param [fichero_cliente]        Datos del fichero en la base de datos
+     *
+     * @return void
+     */
+    function remove($fichero)
+    {        
+        // Borrado físico del fichero
+        if(file_exists(FCPATH . $fichero->fichero))
+        {
+            if(unlink(FCPATH . $fichero->fichero))
+            {
+                if($this->delete($fichero->id))
+                {
+                    return TRUE;
+                }
+                else
+                {
+                    $this->set_error(lang('common_error_delete'));
+                    return FALSE;
+                }
+            }
+            else
+            {
+                $this->set_error('El fichero está en uso. Inténtelo más tarde');
+                return FALSE;
+            }
+        }
+        else
+        {
+            $this->set_error('El fichero a borrar no existe. Póngase en contacto con el administrador');
+            return FALSE;
+        }
+    }
 
 }

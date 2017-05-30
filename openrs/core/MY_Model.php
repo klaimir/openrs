@@ -5,7 +5,7 @@ require_once APPPATH . '/core/Base_Model.php';
 class MY_Model extends Base_Model
 {
     // Error controls
-    public $error_access=FALSE;
+    public $exists_error=FALSE;
     public $show_errors=TRUE;
     public $text_error='';
     // Model internal datas (for example, from the database, but, for conventios, always it will be a object)
@@ -23,6 +23,15 @@ class MY_Model extends Base_Model
     }
     
     // Security Section    
+    
+    public function set_error($text_error) {
+        $this->text_error=$text_error;
+    }
+    
+    public function get_error() {
+        return $this->text_error;
+    }
+    
     public function _check_security_exist($datos) {
         // Seguridad
         if($datos)
@@ -32,10 +41,10 @@ class MY_Model extends Base_Model
         else
         {
             $this->text_error = "Error al cargar el registro";
-            $this->error_access=TRUE;
+            $this->exists_error=TRUE;
         }
         // Check del error
-        if($this->error_access && $this->show_errors)
+        if($this->exists_error && $this->show_errors)
         {          
             show_error($this->text_error);
         }
@@ -49,7 +58,7 @@ class MY_Model extends Base_Model
         // Definir en la clase hija
         $this->check_access_conditions($datos);
         // Check del error
-        if($this->error_access && $this->show_errors)
+        if($this->exists_error && $this->show_errors)
         {          
             show_error($this->text_error);
         }

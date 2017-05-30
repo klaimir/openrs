@@ -101,14 +101,10 @@
                 ?>
                         <tr>
                             <td>
-                                <?php echo $element->texto_fichero; ?>
+                                <a target="_blank" href="<?php echo base_url($element->fichero); ?>"><?php echo $element->texto_fichero; ?></a>
                             </td>
                             <td>
                                 <div class="hidden-sm hidden-xs action-buttons">
-                                    <a class="green" href="<?php echo site_url($_controller . "/edit/" . $element->id); ?>" title="Editar">
-                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                    </a>
-
                                     <a class="red borrar-elemento" data-id="<?php echo $element->id; ?>" href="#" title="Borrar">
                                         <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                     </a>
@@ -121,14 +117,6 @@
                                         </button>
 
                                         <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                            <li>
-                                                <a href="<?php echo site_url($_controller . "/edit/" . $element->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar">
-                                                    <span class="green">
-                                                        <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                                    </span>
-                                                </a>
-                                            </li>
-
                                             <li>
                                                 <a href="#" class="tooltip-error borrar-elemento" data-id="<?php echo $element->id; ?>" data-rel="tooltip" title="Borrar">
                                                     <span class="red">

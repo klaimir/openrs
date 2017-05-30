@@ -60,10 +60,10 @@ class Clientes_ficheros extends CRUD_Controller
                 if ($last_id) {
                     $this->session->set_flashdata('message', lang('common_success_insert'));
                     $this->session->set_flashdata('message_color', 'success');
+                    redirect($this->_controller."/index/".$cliente_id, 'refresh');
                 } else {
-                    $this->session->set_flashdata('message', lang('common_error_insert'));
-                } 
-                redirect("zonas/index/".$last_id, 'refresh');
+                    $this->data['message'] = $this->{$this->_model}->get_error();
+                }
             }
             else
             {
@@ -76,48 +76,6 @@ class Clientes_ficheros extends CRUD_Controller
         
         // Render
         $this->render_private($this->_view.'/insert', $this->data);
-    }
-    
-    public function edit($id)
-    {        
-        $this->data['element'] = $this->{$this->_model}->get_by_id($id);
-        // Permisos acceso
-        $this->{$this->_model}->check_access($this->data['element']);
-        
-        $this->data['cliente'] = $this->Cliente_model->get_by_id($this->data['element']->cliente_id);
-        // Permisos acceso
-        $this->Cliente_model->check_access($this->data['cliente']);
-        
-        $this->{$this->_model}->cliente_id=$this->data['element']->cliente_id;
-        
-        // Validation
-        if ($this->is_post())
-        {
-            // Check
-            if ($this->{$this->_model}->validation($id))
-            {
-                // Edit
-                $updated_rows=$this->{$this->_model}->edit($id);
-                // Check
-                if ($updated_rows) {
-                    $this->session->set_flashdata('message', lang('common_success_edit'));
-                    $this->session->set_flashdata('message_color', 'success');
-                } else {
-                    $this->session->set_flashdata('message', lang('common_error_edit'));
-                } 
-                redirect( $this->_controller."/index/".$this->data['element']->cliente_id, 'refresh');
-            }
-            else
-            {
-                $this->data['message'] = validation_errors();
-            }
-        }
-        
-        // Set datas
-        $this->_set_datas_html($this->data['element']);
-        
-        // Render
-        $this->render_private($this->_view.'/edit', $this->data);
     }
     
     public function _set_datas_html($datos=NULL)
@@ -137,14 +95,14 @@ class Clientes_ficheros extends CRUD_Controller
                 
         if ($this->{$this->_model}->check_delete($id))
         {
-            if ($this->{$this->_model}->delete($id))
+            if ($this->{$this->_model}->remove($this->data['element']))
             {
                 $this->session->set_flashdata('message', lang('common_success_delete'));
                 $this->session->set_flashdata('message_color', 'success');
             }
             else
             {
-                $this->session->set_flashdata('message', lang('common_error_delete'));
+                $this->session->set_flashdata('message', $this->{$this->_model}->get_error());
             }
         }
         else
