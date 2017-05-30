@@ -53,7 +53,21 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+
+// Aunque las mejores prácticas recomiendan esto, a veces no es posible acceder a estos valores
+//define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+
+switch ($_SERVER['SERVER_NAME'])
+{
+    case 'gesticadiz.es':
+        define('ENVIRONMENT', 'production');
+        break;
+    case 'openrs.es':
+        define('ENVIRONMENT', 'staging');
+        break;
+    default:
+        define('ENVIRONMENT', 'development'); 
+}   
 
 /*
  *---------------------------------------------------------------
@@ -63,14 +77,17 @@
  * Different environments will require different levels of error reporting.
  * By default development will show errors but testing and live will hide them.
  */
+
+// Aunque CI define Testing como un entorno, nosotros lo renombraremos a staging ya que es una puesta en escena lo más parecida a un entorno de producción
+// Aunque para efectos de test es lo mismo denominarlo testing que staging
 switch (ENVIRONMENT)
 {
 	case 'development':
+        case 'staging':
 		error_reporting(-1);
 		ini_set('display_errors', 1);
 	break;
-
-	case 'testing':
+	
 	case 'production':
 		ini_set('display_errors', 0);
 		if (version_compare(PHP_VERSION, '5.3', '>='))
@@ -308,7 +325,7 @@ switch (ENVIRONMENT)
 	}
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
-
+        
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
@@ -317,3 +334,5 @@ switch (ENVIRONMENT)
  * And away we go...
  */
 require_once BASEPATH.'core/CodeIgniter.php';
+
+

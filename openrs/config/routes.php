@@ -742,15 +742,17 @@ class dynamic_route{
 
 }
 
-require('connect.php');
+if(ENVIRONMENT!="development")
+{
+    require(ENVIRONMENT.'/connect.php');
 
-$dynamic_route = new dynamic_route;
-// Give dynamic route database connection
-$dynamic_route->pdo_db = pdo_connect();
-// Get the route data
-$route_data = $dynamic_route->get_routes();
-//Iterate over the routes
-foreach($route_data as $row){
-	$route[$row->route] = $row->url;
+    $dynamic_route = new dynamic_route;
+    // Give dynamic route database connection
+    $dynamic_route->pdo_db = pdo_connect();
+    // Get the route data
+    $route_data = $dynamic_route->get_routes();
+    //Iterate over the routes
+    foreach($route_data as $row){
+            $route[$row->route] = $row->url;
+    }
 }
-

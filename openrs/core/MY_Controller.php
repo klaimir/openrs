@@ -37,8 +37,8 @@ class MY_Controller extends CI_controller
         {
             $this->lang->load('auth');
         }
-        // Enable profiler if ENVIRONMENT is development or testing
-        if(ENVIRONMENT=='development' || ENVIRONMENT=='testing')
+        // Enable profiler if ENVIRONMENT is development or staging
+        if(ENVIRONMENT=='development' || ENVIRONMENT=='staging')
         {
             $this->output->enable_profiler(TRUE);
         }
