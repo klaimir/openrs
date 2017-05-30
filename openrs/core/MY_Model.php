@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . '/core/Base_Model.php';
+require_once APPPATH . 'core/Base_Model.php';
 
 class MY_Model extends Base_Model
 {

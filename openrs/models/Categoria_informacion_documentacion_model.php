@@ -1,13 +1,13 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . '/core/MY_Model.php';
+require_once APPPATH . 'core/MY_Model.php';
 
 class Categoria_informacion_documentacion_model extends MY_Model
 {
 
     public function __construct()
     {
-        $this->table = 'Categorias_informacion_documentacion';
+        $this->table = 'categorias_informacion_documentacion';
         $this->primary_key = 'id';
         $this->has_many['marcas'] = array('local_key'=>'id', 'foreign_key'=>'categoria_inf_id', 'foreign_model'=>'Marca_documentacion_model');
        

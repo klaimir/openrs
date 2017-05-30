@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . '/core/CRUD_Controller.php';
+require_once APPPATH . 'core/CRUD_controller.php';
 
-class Lugares_interes extends CRUD_Controller
+class Lugares_interes extends CRUD_controller
 {
 
     function __construct()

@@ -27,7 +27,7 @@ function __construct($array) {
 	echo $this->basePath ;
 }
  
-class CKEditor
+class Ckeditor
 {
 	/**
 	 * The version of %CKEditor.

@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . '/core/MY_Controller.php';
+require_once APPPATH . 'core/MY_Controller.php';
 
 class Google_maps extends MY_Controller
 {
@@ -29,10 +29,15 @@ class Google_maps extends MY_Controller
         $this->unit->set_template($str);
     }
 
-    function test()
+    function test($use_key=0)
     {
         // Load the library
         $this->load->library('googlemaps');
+        
+        if($use_key)
+        {
+            $this->googlemaps->apiKey='AIzaSyCVeNG5XiGj--htp-gk_7zu2bzgQ44VmvI';
+        }
         
         $config=array();
         $config['center']='Avenida Ana de Viya, 3, Cádiz, Cádiz, Spain';
@@ -59,7 +64,7 @@ class Google_maps extends MY_Controller
         
         // Load our view, passing the map data that has just been created
         $this->load->view('test/google_maps/test', $this->data);
-    }
+    }    
     
     function directions()
     {

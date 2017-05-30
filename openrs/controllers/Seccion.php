@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once APPPATH . '/core/MY_Controller_Front.php';
+require_once APPPATH . 'core/MY_Controller_Front.php';
 
 class Seccion extends MY_Controller_Front
 {

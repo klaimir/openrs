@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . '/core/MY_Controller.php';
+require_once APPPATH . 'core/MY_Controller.php';
 
 /**
  *

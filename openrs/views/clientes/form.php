@@ -196,11 +196,11 @@
 
             if(poblacion_id!='' && provincia_id!='')
             {
-                var url='common/single_google_map?direccion='+direccion+'&provincia_id='+provincia_id+'&poblacion_id='+poblacion_id+'&pais_id='+pais_id;
+                var url='/common/single_google_map?direccion='+direccion+'&provincia_id='+provincia_id+'&poblacion_id='+poblacion_id+'&pais_id='+pais_id;
             }
             else
             {
-                var url='common/single_google_map?direccion='+direccion+'&pais_id='+pais_id;
+                var url='/common/single_google_map?direccion='+direccion+'&pais_id='+pais_id;
             }
             
             var url_encode = encodeURI(url);

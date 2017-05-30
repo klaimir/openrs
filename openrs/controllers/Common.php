@@ -67,6 +67,9 @@ class Common extends MY_Controller
         // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
         $this->googlemaps->initialize($config);
         
+        // Para entornos que no sean development es necesario una API-KEY
+        $this->googlemaps->apiKey='AIzaSyCVeNG5XiGj--htp-gk_7zu2bzgQ44VmvI';
+        
         // Marker
         $marker=array();
         $marker['position']=$direccion_formateada;

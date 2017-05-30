@@ -59,10 +59,10 @@
 
 switch ($_SERVER['SERVER_NAME'])
 {
-    case 'gesticadiz.es':
+    case 'www.gesticadiz.es':
         define('ENVIRONMENT', 'production');
         break;
-    case 'openrs.es':
+    case 'www.openrs.es':
         define('ENVIRONMENT', 'staging');
         break;
     default:
