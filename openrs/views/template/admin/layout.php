@@ -33,6 +33,7 @@
         <![endif]-->
 
         <!-- inline styles related to this page -->
+        <script src="<?php echo base_url(); ?>assets/admin/js/functions.js"></script>
 
         <!-- ace settings handler -->
         <script src="<?php echo base_url(); ?>assets/admin/js/ace-extra.min.js"></script>

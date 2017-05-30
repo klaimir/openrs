@@ -205,7 +205,7 @@
 </li>-->
 
 <li>
-    <a href="<?php echo site_url('auth'); ?>">
+    <a href="<?php echo site_url('auth'); ?>" onClick="return show_confirm_exit_message();">
         <i class="menu-icon fa fa-users"></i>
         <span class="menu-text"> Usuarios </span>
     </a>
@@ -214,7 +214,7 @@
 </li>
 
 <li>
-    <a href="<?php echo site_url('backup'); ?>">
+    <a href="<?php echo site_url('backup'); ?>" onClick="return show_confirm_exit_message();">
         <i class="menu-icon fa fa-database"></i>
         <span class="menu-text"> Copias Seguridad </span>
     </a>
@@ -234,7 +234,7 @@
 
     <ul class="submenu">
         <li class="<?php echo set_active_option($_active_section,'plantillas_documentacion'); ?>">
-            <a href="<?php echo site_url('plantillas_documentacion'); ?>">
+            <a href="<?php echo site_url('plantillas_documentacion'); ?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Plantillas Documentación </span>
             </a>
@@ -242,7 +242,7 @@
             <b class="arrow"></b>
         </li>
         
-        <li class="<?php echo set_active_option($_active_section,'tipos_ficheros'); ?>">
+        <li class="<?php echo set_active_option($_active_section,'tipos_ficheros'); ?>" onClick="return show_confirm_exit_message();">
             <a href="<?php echo site_url('tipos_ficheros'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Tipos ficheros </span>
@@ -251,7 +251,7 @@
             <b class="arrow"></b>
         </li>
 
-        <li class="<?php echo set_active_option($_active_section,'tipos_inmueble'); ?>">
+        <li class="<?php echo set_active_option($_active_section,'tipos_inmueble'); ?>" onClick="return show_confirm_exit_message();">
             <a href="<?php echo site_url('tipos_inmueble'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Tipos inmueble </span>
@@ -260,7 +260,7 @@
             <b class="arrow"></b>
         </li>
         
-        <li class="<?php echo set_active_option($_active_section,'opciones_extras'); ?>">
+        <li class="<?php echo set_active_option($_active_section,'opciones_extras'); ?>" onClick="return show_confirm_exit_message();">
             <a href="<?php echo site_url('opciones_extras'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Opciones extras </span>
@@ -269,7 +269,7 @@
             <b class="arrow"></b>
         </li>
         
-        <li class="<?php echo set_active_option($_active_section,'lugares_interes'); ?>">
+        <li class="<?php echo set_active_option($_active_section,'lugares_interes'); ?>" onClick="return show_confirm_exit_message();">
             <a href="<?php echo site_url('lugares_interes'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Lugares Interés </span>
@@ -278,7 +278,7 @@
             <b class="arrow"></b>
         </li>
         
-        <li class="<?php echo set_active_option($_active_section,'provincias'); ?>">
+        <li class="<?php echo set_active_option($_active_section,'provincias'); ?>" onClick="return show_confirm_exit_message();">
             <a href="<?php echo site_url('provincias'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Poblaciones y Zonas </span>
@@ -287,7 +287,7 @@
             <b class="arrow"></b>
         </li>
         
-        <li class="<?php echo set_active_option($_active_section,'config'); ?>">
+        <li class="<?php echo set_active_option($_active_section,'config'); ?>" onClick="return show_confirm_exit_message();">
             <a href="<?php echo site_url('config'); ?>">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Preferencias </span>
@@ -310,7 +310,7 @@
 
     <ul class="submenu">
         <li class="">
-            <a href="<?php echo site_url('admin/cabecera');?>">
+            <a href="<?php echo site_url('admin/cabecera');?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
                 Cabecera
             </a>
@@ -319,7 +319,7 @@
         </li>
 
         <li class="">
-            <a href="<?php echo site_url('admin/pie');?>">
+            <a href="<?php echo site_url('admin/pie');?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
                 Pie
             </a>
@@ -328,7 +328,7 @@
         </li>
         
         <li class="<?php echo set_active_option($_active_section,'secciones'); ?>">
-            <a href="<?php echo site_url('Page/listar_secciones'); ?>">
+            <a href="<?php echo site_url('Page/listar_secciones'); ?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Secciones </span>
             </a>
