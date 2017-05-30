@@ -1,3 +1,5 @@
+<?php menu_clientes ($cliente->id,"clientes_ficheros"); ?>
+
 <div class="space-4"></div>
 <div class="page-header">
     <div class="row">
@@ -33,3 +35,10 @@
 </div>
 
 <?php echo form_close(); ?>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    jQuery(function ($) {        
+       show_submenu();
+    })
+</script>
