@@ -31,7 +31,33 @@ class MY_Form_validation extends CI_Form_validation
     {
         parent::__construct();
     }
-
+    
+    /**
+     * Devuelve un resultado del array de datos de validación
+     *
+     * @access	public
+     * @param	field       Campo a consultar
+     * @return	field
+     */
+    
+    function get_validation_data($field=NULL) {
+        if(is_null($field))
+        {
+            return $this->validation_data;
+        }
+        else
+        {
+            if(isset($this->validation_data[$field]))
+            {
+                return $this->validation_data[$field];
+            }
+            else
+            {
+                return NULL;
+            }
+        }        
+    }
+    
     /**
      * Determina si es único un valor en una determinada tabla
      *

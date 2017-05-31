@@ -18,7 +18,7 @@
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
         </a>
-        <a class="btn btn-info pull-left" href="<?php echo site_url($_controller.'/importar_csv'); ?>">
+        <a class="btn btn-info pull-left" href="<?php echo site_url($_controller.'/import'); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> Importar CSV </span>
         </a>

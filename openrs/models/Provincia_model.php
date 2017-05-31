@@ -68,4 +68,26 @@ class Provincia_model extends MY_Model
         return ($seleccion+$provincias);
     }
     
+    /**
+     * Devuelve el identificador de un provincia que coincida con el nombre suministrado
+     *
+     * @param	[nombre_provincia]   Nombre del provincia
+     * 
+     * @return identificador del provincia
+     */
+    
+    function get_id_by_nombre($nombre_provincia)
+    {
+        $this->db->select($this->table.'.id');
+        $this->db->from($this->table);
+        $this->db->where('provincia', $nombre_provincia);
+        $query = $this->db->get();
+        $row = $query->row();
+        if ($row) {
+            return $row->id;
+        } else {
+            return NULL;
+        }
+    }
+    
 }

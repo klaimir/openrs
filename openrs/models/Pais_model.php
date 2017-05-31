@@ -28,4 +28,26 @@ class Pais_model extends MY_Model
         // Suma de ambos
         return ($seleccion+$paises);
     }    
+    
+    /**
+     * Devuelve el identificador de un pais que coincida con el nombre suministrado
+     *
+     * @param	[nombre_pais]   Nombre del pais
+     * 
+     * @return identificador del pais
+     */
+    
+    function get_id_by_nombre($nombre_pais)
+    {
+        $this->db->select($this->table.'.id');
+        $this->db->from($this->table);
+        $this->db->where('nombre', $nombre_pais);
+        $query = $this->db->get();
+        $row = $query->row();
+        if ($row) {
+            return $row->id;
+        } else {
+            return NULL;
+        }
+    }
 }

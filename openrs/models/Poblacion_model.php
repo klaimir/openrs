@@ -215,5 +215,27 @@ class Poblacion_model extends MY_Model
         // Por tanto devolvemos el operador suma para que mantenga las claves numéricas
         return ($seleccion+$poblaciones);
     }
+    
+    /**
+     * Devuelve el identificador de un poblacion que coincida con el nombre suministrado
+     *
+     * @param	[nombre_poblacion]   Nombre del poblacion
+     * 
+     * @return identificador del poblacion
+     */
+    
+    function get_id_by_nombre($nombre_poblacion)
+    {
+        $this->db->select($this->table.'.id');
+        $this->db->from($this->table);
+        $this->db->where('poblacion', $nombre_poblacion);
+        $query = $this->db->get();
+        $row = $query->row();
+        if ($row) {
+            return $row->id;
+        } else {
+            return NULL;
+        }
+    }
 
 }

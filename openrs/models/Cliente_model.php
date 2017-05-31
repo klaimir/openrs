@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH . 'core/MY_Model.php';
 
@@ -6,36 +8,36 @@ class Cliente_model extends MY_Model
 {
 
     public function __construct()
-    {  
+    {
         parent::__construct();
-        
+
         $this->table = 'clientes';
         $this->primary_key = 'id';
         $this->view = 'v_clientes';
-        
-        $this->has_many['demandas'] = array('local_key'=>'id', 'foreign_key'=>'cliente_id', 'foreign_model'=>'Demanda_model');
+
+        $this->has_many['demandas'] = array('local_key' => 'id', 'foreign_key' => 'cliente_id', 'foreign_model' => 'Demanda_model');
         $this->has_one['poblacion'] = array('local_key' => 'poblacion_id', 'foreign_key' => 'id', 'foreign_model' => 'Poblacion_model');
-        $this->has_one['pais'] = array('local_key'=>'pais_id', 'foreign_key'=>'id', 'foreign_model'=>'Pais_model');
-        
+        $this->has_one['pais'] = array('local_key' => 'pais_id', 'foreign_key' => 'id', 'foreign_model' => 'Pais_model');
+
         // Guardamos datos
-        $this->timestamps=TRUE;
-        $this->_created_at_field="fecha_alta";
-        $this->_updated_at_field="fecha_actualizacion";
-        
+        $this->timestamps = TRUE;
+        $this->_created_at_field = "fecha_alta";
+        $this->_updated_at_field = "fecha_actualizacion";
+
         // Modelos axiliares
-        $this->load->model('Provincia_model'); 
-        $this->load->model('Pais_model'); 
+        $this->load->model('Provincia_model');
+        $this->load->model('Pais_model');
     }
-    
-    /************************* SECURITY *************************/
-    
+
+    /*     * *********************** SECURITY ************************ */
+
     public function check_access_conditions($datos)
     {
         return TRUE;
     }
-    
-    /************************* FORMS *************************/
-    
+
+    /*     * *********************** FORMS ************************ */
+
     /**
      * Establece las reglas utilizadas para la validación de datos
      * 
@@ -43,25 +45,24 @@ class Cliente_model extends MY_Model
      *
      * @return void
      */
-    
-    public function set_rules($id=0)
+    public function set_rules($id = 0)
     {
-        $pais_id=$this->input->post('pais_id');
-        
-        $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|max_length[11]|is_unique_global[clientes;' . $id . ';nif;id]|is_nif_valido['.$pais_id.']|xss_clean');
+        $pais_id = $this->form_validation->get_validation_data('pais_id');
+
+        $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|max_length[11]|is_unique_global[clientes;' . $id . ';nif;id]|is_nif_valido[' . $pais_id . ']|xss_clean');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required|xss_clean|max_length[100]');
         $this->form_validation->set_rules('apellidos', 'Apellidos', 'required|xss_clean|max_length[150]');
         $this->form_validation->set_rules('direccion', 'Dirección', 'xss_clean|max_length[200]');
         $this->form_validation->set_rules('correo', 'Correo electrónico', 'required|xss_clean|max_length[250]|valid_email|is_unique_global[clientes;' . $id . ';correo;id]');
         $this->form_validation->set_rules('observaciones', 'Observaciones', 'xss_clean|max_length[500]');
         $this->form_validation->set_rules('telefonos', 'Teléfonos', 'xss_clean|max_length[70]');
-        if($this->utilities->es_pais_extranjero($pais_id))
+        if ($this->utilities->es_pais_extranjero($pais_id))
         {
-            $required_poblacion="";
+            $required_poblacion = "";
         }
         else
         {
-            $required_poblacion="required";
+            $required_poblacion = "required";
         }
         $this->form_validation->set_rules('poblacion_id', 'Población', $required_poblacion);
         $this->form_validation->set_rules('provincia_id', 'Provincia', $required_poblacion);
@@ -69,27 +70,26 @@ class Cliente_model extends MY_Model
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('agente_asignado_id', 'Agente Asignado', 'xss_clean');
         /*
-	12	busca_vender	tinyint(4)			No 	0	
-	13	busca_comprar	tinyint(4)			No 	0	
-	14	busca_alquilar	tinyint(4)			No 	0	
-	15	busca_alquiler	tinyint(4)			No 	0	
-	16	estado	varchar(20)	utf8_general_ci		No 	activo	
-	17	estado_civil	varchar(50)	utf8_general_ci		Sí 	NULL	
-	*/
+          12	busca_vender	tinyint(4)			No 	0
+          13	busca_comprar	tinyint(4)			No 	0
+          14	busca_alquilar	tinyint(4)			No 	0
+          15	busca_alquiler	tinyint(4)			No 	0
+          16	estado	varchar(20)	utf8_general_ci		No 	activo
+          17	estado_civil	varchar(50)	utf8_general_ci		Sí 	NULL
+         */
     }
-    
+
     /**
      * Ejecuta las validaciones
      *
      * @return void
      */
-    public function validation($id=0)
-    {    
+    public function validation($id = 0)
+    {
         // Rules
         $this->set_rules($id);
-        
+
         // Other functions validations
-        
         // Run form validation        
         return $this->form_validation->run();
     }
@@ -101,86 +101,85 @@ class Cliente_model extends MY_Model
      *
      * @return array con los datos especificados para utilizarlos en los diferentes helpers
      */
-    
-    public function set_datas_html($datos=NULL)
-    {        
+    public function set_datas_html($datos = NULL)
+    {
         // Selector de provincias
         $data['provincias'] = $this->get_provincias_form();
-        
+
         // Selector de paises
         $data['paises'] = $this->get_paises_form();
-        
+
         // Selector de agentes
         $data['agentes'] = $this->get_agentes_form();
-        
+
         // selector de intereses
-        $data['intereses'] = $this->get_intereses_form();   
-                                
+        $data['intereses'] = $this->get_intereses_form();
+
         // Datos
         $data['nif'] = array(
             'name' => 'nif',
             'id' => 'nif',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nif',is_object($datos) ? $datos->nif : ""),
+            'value' => $this->form_validation->set_value('nif', is_object($datos) ? $datos->nif : ""),
         );
-        
+
         $data['nombre'] = array(
             'name' => 'nombre',
             'id' => 'nombre',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nombre',is_object($datos) ? $datos->nombre : ""),
+            'value' => $this->form_validation->set_value('nombre', is_object($datos) ? $datos->nombre : ""),
         );
-        
+
         $data['apellidos'] = array(
             'name' => 'apellidos',
             'id' => 'apellidos',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('apellidos',is_object($datos) ? $datos->apellidos : ""),
+            'value' => $this->form_validation->set_value('apellidos', is_object($datos) ? $datos->apellidos : ""),
         );
-        
+
         $data['direccion'] = array(
             'name' => 'direccion',
             'id' => 'direccion',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('direccion',is_object($datos) ? $datos->direccion : ""),
+            'value' => $this->form_validation->set_value('direccion', is_object($datos) ? $datos->direccion : ""),
         );
-                
-        $data['pais_id']=$this->form_validation->set_value('pais_id',is_object($datos) ? $datos->pais_id : 64);
-        $data['agente_asignado_id']=$this->form_validation->set_value('agente_asignado_id',is_object($datos) ? $datos->agente_asignado_id : "-1");
-        $data['poblacion_id']=$this->form_validation->set_value('poblacion_id',is_object($datos) ? $datos->poblacion_id : "");
-        
-        if(!empty($data['poblacion_id']))
+
+        $data['pais_id'] = $this->form_validation->set_value('pais_id', is_object($datos) ? $datos->pais_id : 64);
+        $data['agente_asignado_id'] = $this->form_validation->set_value('agente_asignado_id', is_object($datos) ? $datos->agente_asignado_id : "-1");
+        $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
+
+        if (!empty($data['poblacion_id']))
         {
-            $poblacion=$this->Poblacion_model->get_by_id($data['poblacion_id']);
-            $data['provincia_id']=$this->form_validation->set_value('provincia_id',$poblacion->provincia_id);
+            $poblacion = $this->Poblacion_model->get_by_id($data['poblacion_id']);
+            $data['provincia_id'] = $this->form_validation->set_value('provincia_id', $poblacion->provincia_id);
         }
         else
         {
-            $data['provincia_id']=$this->form_validation->set_value('provincia_id',"");
-        }  
-        
+            $data['provincia_id'] = $this->form_validation->set_value('provincia_id', "");
+        }
+
         // Selector de poblaciones
         $data['poblaciones'] = $this->get_poblaciones_form($data['provincia_id']);
-        
+
         $data['correo'] = array(
             'name' => 'correo',
             'id' => 'correo',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('correo',is_object($datos) ? $datos->correo : ""),
+            'value' => $this->form_validation->set_value('correo', is_object($datos) ? $datos->correo : ""),
         );
-        
+
         $data['telefonos'] = array(
             'name' => 'telefonos',
             'id' => 'telefonos',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('telefonos',is_object($datos) ? $datos->telefonos : ""),
+            'value' => $this->form_validation->set_value('telefonos', is_object($datos) ? $datos->telefonos : ""),
         );
 
         $data['observaciones'] = array(
             'name' => 'observaciones',
             'id' => 'observaciones',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('observaciones',is_object($datos) ? $datos->observaciones : ""),
+            'value' => $this->form_validation->set_value('observaciones', is_object($datos) ? $datos->observaciones : ""),
         );
 
         return $data;
@@ -191,8 +190,7 @@ class Cliente_model extends MY_Model
      *
      * @return array con los datos formateado
      */
-    
-    public function get_formatted_datas($id=0)
+    public function get_formatted_datas($id = 0)
     {
         $datas['nif'] = $this->input->post('nif');
         $datas['nombre'] = $this->input->post('nombre');
@@ -204,7 +202,7 @@ class Cliente_model extends MY_Model
         $datas['pais_id'] = $this->input->post('pais_id');
         $datas['poblacion_id'] = $this->input->post('poblacion_id');
         $datas['agente_asignado_id'] = $this->input->post('agente_asignado_id');
-        
+
         return $datas;
     }
 
@@ -215,9 +213,8 @@ class Cliente_model extends MY_Model
      *
      * @return void
      */
-    
     function check_delete($id)
-    {        
+    {
         if (count($this->with_demandas()->get($id)->demandas))
         {
             return FALSE;
@@ -229,19 +226,70 @@ class Cliente_model extends MY_Model
     }
     
     /**
+     * Elimina al cliente del sistema de ficheros y de la bd
+     *
+     * @param [id]        Identificador del cliente en la base de datos
+     *
+     * @return void
+     */
+    function remove($id)
+    {        
+        // Borrado físico de la carpeta de datos
+        if($this->utilities->full_rmdir(FCPATH . 'uploads/clientes/'.$id))
+        {
+            if($this->delete($id))
+            {
+                return TRUE;
+            }
+            else
+            {
+                $this->set_error(lang('common_error_delete'));
+                return FALSE;
+            }
+        }
+        else
+        {
+            $this->set_error('Error al borrar la carpeta de datos. Póngase en contacto con el administrador');
+            return FALSE;
+        }
+    }
+
+    /**
      * Formatea los datos introducidos por el usuario y crea un registro en la base de datos
      *
      * @return void
      */
-    
-    function create()
+    function create($formatted_datas)
     {
-        // Formatted datas
-        $formatted_datas=$this->get_formatted_datas();                
         // Parent insert
-        return $this->insert($formatted_datas);
+        $id = $this->insert($formatted_datas);
+        if ($id)
+        {
+            // Creación de carpeta
+            if (!file_exists(FCPATH . "uploads/clientes/" . $id))
+            {
+                if (!mkdir(FCPATH . "uploads/clientes/" . $id, DIR_READ_MODE, true))
+                {
+                    $this->set_error('Error en la creación de la carpeta de datos. Póngase en contacto con el administrador');
+                    return FALSE;
+                }
+                // Copiamos fichero html de protección
+                if(!copy(FCPATH . "uploads/clientes/index.html", FCPATH . "uploads/clientes/" . $id."/index.html"))
+                {
+                    $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
+                    return FALSE;
+                }
+            }
+            // Devolvemos id
+            return $id;
+        }
+        else
+        {
+            $this->set_error(lang('common_error_insert'));
+            return FALSE;
+        }
     }
-    
+
     /**
      * Formatea los datos introducidos por el usuario y actualiza un registro en la base de datos
      *
@@ -249,21 +297,19 @@ class Cliente_model extends MY_Model
      *
      * @return void
      */
-    
     function edit($id)
     {
         // Formatted datas
-        $formatted_datas=$this->get_formatted_datas($id);        
+        $formatted_datas = $this->get_formatted_datas($id);
         // Parent update
-        return $this->update($formatted_datas,$id);
+        return $this->update($formatted_datas, $id);
     }
-    
+
     /**
      * Lee los clientes en formato vista según los filtros indicados
      *
      * @return array de datos de plantilla
      */
-    
     function get_by_filtros($filtros)
     {
         // Filtro Pais
@@ -317,149 +363,382 @@ class Cliente_model extends MY_Model
         $this->db->from($this->view);
         return $this->db->get()->result();
     }
-    
+
     /**
      * Duplica los datos de un cliente
      *
      * @return datos del cliente
      */
-    function duplicar($cliente) {
+    function duplicar($cliente)
+    {
         // Conversión de Datos
         unset($cliente->id);
-        $cliente->nif='';
-        $cliente->correo='';
+        $cliente->nif = '';
+        $cliente->correo = '';
         unset($cliente->fecha_alta);
         unset($cliente->fecha_actualizacion);
         // Crear duplicado
         return $this->insert($cliente);
     }
-    
+
     /**
      * Devuelve un array de poblaciones en formato para formularios de clientes
      *
      * @return array de poblaciones en formato para formularios de clientes
      */
-    
     function get_poblaciones_form($provincia_id)
     {
         return $this->Poblacion_model->get_poblaciones_dropdown($provincia_id);
     }
-    
+
     /**
      * Devuelve un array de provincias en formato para buscador de clientes
      *
      * @return array de provincias en formato para buscador de clientes
      */
-    
     function get_provincias_buscador()
     {
         return $this->Provincia_model->get_provincias_dropdown(-1);
     }
-    
+
     /**
      * Devuelve un array de provincias en formato para formularios de clientes
      *
      * @return array de provincias en formato para formularios de clientes
      */
-    
     function get_provincias_form()
     {
         return $this->Provincia_model->get_provincias_dropdown();
     }
-    
+
     /**
      * Devuelve un array de paises en formato para buscador de clientes
      *
      * @return array de paises en formato para buscador de clientes
      */
-    
     function get_paises_buscador()
     {
         return $this->Pais_model->get_paises_dropdown(-1);
     }
-    
+
     /**
      * Devuelve un array de paises en formato para formularios de clientes
      *
      * @return array de paises en formato para formularios de clientes
      */
-    
     function get_paises_form()
     {
         return $this->Pais_model->get_paises_dropdown();
     }
-    
+
     /**
      * Devuelve un array de agentes en formato para buscador de clientes
      *
      * @return array de agentes en formato para buscador de clientes
      */
-    
     function get_agentes_buscador()
     {
         return $this->Usuario_model->get_agentes_dropdown(-1);
     }
-    
+
     /**
      * Devuelve un array de agentes en formato para formularios de clientes
      *
      * @return array de agentes en formato para formularios de clientes
      */
-    
     function get_agentes_form()
     {
         return $this->Usuario_model->get_agentes_dropdown();
     }
-    
+
     /**
      * Devuelve un array de intereses en formato para buscador de clientes
      *
      * @return array de intereses en formato para buscador de clientes
      */
-    
     function get_intereses_buscador()
     {
         return $this->get_intereses_dropdown(-1);
     }
-    
+
     /**
      * Devuelve un array de intereses en formato para formulario de clientes
      *
      * @return array de intereses en formato para formulario de clientes
      */
-    
     function get_intereses_form()
     {
         return $this->get_intereses_dropdown();
     }
-    
+
     /**
      * Devuelve un array de intereses en formato dropdown
      *
      * @return array de intereses en formato dropdown
      */
-    
-    function get_intereses_dropdown($default="")
+    function get_intereses_dropdown($default = "")
     {
         $intereses = array();
         $intereses[$default] = '- Seleccione interés -';
         $intereses[1] = 'Busca vender';
         $intereses[2] = 'Busca alquilar';
         $intereses[3] = 'Busca un alquiler';
-        $intereses[4] = 'Busca comprar'; 
+        $intereses[4] = 'Busca comprar';
         return $intereses;
     }
-    
+
     /**
      * Devuelve toda la información de un cliente
      *
      * @return array con toda la información del inmueble
      */
-    
     function get_info($id)
     {
-        $info=$this->with_poblacion()->with_pais()->with_demandas()->get($id);
+        $info = $this->with_poblacion()->with_pais()->with_demandas()->get($id);
         return $info;
+    }
+
+    /**
+     * Realizar el proceso de importación de un cliente
+     *
+     * @return void
+     */
+    function import_csv()
+    {
+        // Opciones de configuración para subida de csv
+        $config['upload_path'] = './uploads/temp';
+        $config['allowed_types'] = 'csv';
+        $config['file_name'] = 'import_clientes.csv';
+        $config['overwrite'] = TRUE;
+        $config['max_size'] = "2000";
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('fichero'))
+        {
+            $this->set_error($this->upload->display_errors());
+            return FALSE;
+        }
+        else
+        {
+            // Realizamos análisis y validación de datos
+            return $this->_get_import_csv();
+        }
+    }
+
+    private function _get_import_csv()
+    {
+        // Fichero a leer
+        $filename = FCPATH . 'uploads/temp/import_clientes.csv';
+        // Comprobación
+        if (file_exists($filename))
+        {
+            // Cargamos librería CSVReader
+            $this->load->library('CSVReader');
+            // Leemos los datos
+            $csv = $this->csvreader->parse_file($filename, FALSE);
+            // Dorsales importados
+            $emails_importados = array();
+            // Dnis importados
+            $nifs_importados = array();
+            // Contador CSV
+            $cont = 0;
+            // Lectura CSV
+            foreach ($csv as $data_csv)
+            {
+                $cont++;
+
+                // Procesar datos
+                $linedata = array();
+
+                // Asignación datos
+                $linedata['nif'] = @$data_csv[0];
+                $linedata['nombre'] = @$data_csv[1];
+                $linedata['apellidos'] = @$data_csv[2];
+                $linedata['direccion'] = @$data_csv[3];
+                $linedata['correo'] = @$data_csv[4];
+                $linedata['telefonos'] = @$data_csv[5];
+                $linedata['nombre_pais'] = @$data_csv[6];
+                $linedata['nombre_provincia'] = @$data_csv[7];
+                $linedata['nombre_poblacion'] = @$data_csv[8];
+                $linedata['observaciones'] = @$data_csv[9];
+
+                // Conversión de todos los elementos del array
+                foreach ($linedata as $key => $value)
+                {
+                    // Con este se puede detectar, pero realmente son caracteres raros que no afectan a la importación
+                    /*
+                      if(iconv('windows-1252','UTF-8//IGNORE',$value)!=@iconv('windows-1252','UTF-8//TRANSLIT',$value))
+                      {
+                      echo $value;
+                      }
+                     * 
+                     */
+                    $linedata[$key] = @iconv('windows-1252', 'UTF-8//IGNORE', $value);
+                }
+
+                // Validación de datos
+                $datos_validados = $this->_validar_datos_cliente($linedata, $nifs_importados, $emails_importados);
+
+                // Se anota como email importado
+                if (!empty($linedata['correo']))
+                {
+                    $emails_importados[] = $linedata['correo'];
+                }
+
+                // Se anota como nif importado
+                if (!empty($linedata['nif']))
+                {
+                    $nifs_importados[] = $linedata['nif'];
+                }
+
+                // Resultados
+                $import[] = $datos_validados;
+            }
+        }
+        else
+        {
+            $this->set_error("El fichero cargado no existe. Por favor, inténtelo de nuevo.");
+            return FALSE;
+        }
+        // Resultado final
+        return $import;
+    }
+
+    private function _validar_datos_cliente($linedata, $nifs_importados, $emails_importados)
+    {
+        // Hay que reconvertir los datos de validación para que puedan pasar el validation
+        $datos_formateados = $this->_format_datos_import_csv($linedata, $nifs_importados, $emails_importados);
+        $datos_formateados['texto_errores'] = NULL;
+        if (!$datos_formateados['error'])
+        {
+            // Reseteamos datos de validación anterior
+            $this->form_validation->reset_validation();
+            // Inicializamos los datos de validación para reutilizar la validación del cliente
+            $this->form_validation->set_data($datos_formateados);
+            // Realizamos validacion
+            if (!$this->validation())
+            {
+                $datos_formateados['error'] = TRUE;
+                $datos_formateados['texto_errores'] = validation_errors('<p><strong>','</strong></p>');
+            }
+        }
+
+        return $datos_formateados;
+    }
+
+    // Detectamos errores de reconversión de datos y los anotamos
+    private function _format_datos_import_csv($linedata, $nifs_importados, $emails_importados)
+    {
+
+        // Procesar datos
+        $error = FALSE;
+
+        // Comprueba que no está repetido
+        if (!is_null($emails_importados))
+        {
+            if (in_array($linedata['correo'], $emails_importados))
+            {
+                $linedata['correo'].=' <span class="label label-warning">Repetido</span>';
+                $error = TRUE;
+            }
+        }
+
+        // Comprueba que no está repetido
+        if (!is_null($nifs_importados))
+        {
+            if (in_array($linedata['nif'], $nifs_importados))
+            {
+                $linedata['nif'].=' <span class="label label-warning">Repetido</span>';
+                $error = TRUE;
+            }
+        }
+
+        // País
+        $linedata['pais_id'] = $this->Pais_model->get_id_by_nombre($linedata['nombre_pais']);
+        if (empty($linedata['pais_id']))
+        {
+            $linedata['nombre_pais'].=' <span class="label label-warning">No existe</span>';
+            $error = TRUE;
+        }
+
+        // Se comprueba la provincia y municipio si procede
+        if (!empty($linedata['pais_id']) && !$this->utilities->es_pais_extranjero($linedata['pais_id']))
+        {
+            // Provincia
+            $linedata['provincia_id'] = $this->Provincia_model->get_id_by_nombre($linedata['nombre_provincia']);
+            if (empty($linedata['provincia_id']))
+            {
+                $linedata['nombre_provincia'].=' <span class="label label-success">No existe</span>';
+                $error = TRUE;
+            }
+
+            // Población
+            $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion']);
+            if (!$linedata['poblacion_id'])
+            {
+                $linedata['nombre_poblacion'].=' <span class="label label-success">No existe</span>';
+                $error = TRUE;
+            }
+        }
+        else
+        {
+            $linedata['nombre_poblacion'] = NULL;
+            $linedata['nombre_provincia'] = NULL;
+            $linedata['provincia_id'] = NULL;
+            $linedata['poblacion_id'] = NULL;
+        }
+
+        // Marcamos si ha habido errores
+        $linedata['error'] = $error;
+
+        // Devolvemos la linea de datos formateada
+        return $linedata;
+    }
+
+    /**
+     * Devuelve los datos formateado desde un CSV
+     *
+     * @return array con los datos formateado
+     */
+    public function get_csv_formatted_datas($data)
+    {
+        $datos=array();
+        
+        $datos['nif'] = $data['nif'];
+        $datos['nombre'] = $data['nombre'];
+        $datos['apellidos'] = $data['apellidos'];
+        $datos['direccion'] = $data['direccion'];
+        $datos['correo'] = $data['correo'];
+        $datos['observaciones'] = $data['observaciones'];
+        $datos['telefonos'] = $data['telefonos'];
+        $datos['pais_id'] = $data['pais_id'];
+        $datos['poblacion_id'] = $data['poblacion_id'];
+
+        return $datos;
+    }
+
+    public function do_import_csv()
+    {
+        // Realizamos la validación nuevamente
+        $importdata = $this->_get_import_csv();
+        // Se procesan los datos
+        foreach ($importdata as $key => $data)
+        {
+            if (!$data['error'])
+            {
+                // Creación
+                $id = $this->create($this->get_csv_formatted_datas($data));
+                //Fin comprobaciones
+                $importdata[$key]['importado'] = ($id) ? TRUE : FALSE;
+            }
+            else
+            {
+                $importdata[$key]['importado'] = FALSE;
+            }
+        }
+        // Devolvemos resultados importados
+        return $importdata;
     }
 
 }
