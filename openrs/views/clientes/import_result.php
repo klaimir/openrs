@@ -39,7 +39,7 @@
             </thead>
             <tbody>
                 <?php
-                if($elements)
+                if(isset($elements) && $elements)
                 {
                     foreach ($elements as $element)
                     {

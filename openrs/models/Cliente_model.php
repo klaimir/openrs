@@ -630,7 +630,6 @@ class Cliente_model extends MY_Model
     // Detectamos errores de reconversión de datos y los anotamos
     private function _format_datos_import_csv($linedata, $nifs_importados, $emails_importados)
     {
-
         // Procesar datos
         $error = FALSE;
 
@@ -723,18 +722,30 @@ class Cliente_model extends MY_Model
         // Realizamos la validación nuevamente
         $importdata = $this->_get_import_csv();
         // Se procesan los datos
-        foreach ($importdata as $key => $data)
+        if($importdata)
         {
-            if (!$data['error'])
+            foreach ($importdata as $key => $data)
             {
-                // Creación
-                $id = $this->create($this->get_csv_formatted_datas($data));
-                //Fin comprobaciones
-                $importdata[$key]['importado'] = ($id) ? TRUE : FALSE;
+                if (!$data['error'])
+                {
+                    // Creación
+                    $id = $this->create($this->get_csv_formatted_datas($data));
+                    //Fin comprobaciones
+                    $importdata[$key]['importado'] = ($id) ? TRUE : FALSE;
+                }
+                else
+                {
+                    $importdata[$key]['importado'] = FALSE;
+                }
             }
-            else
+            
+            if(file_exists(FCPATH . 'uploads/temp/import_clientes.csv'))
             {
-                $importdata[$key]['importado'] = FALSE;
+                if(!unlink(FCPATH . 'uploads/temp/import_clientes.csv'))
+                {
+                    $this->set_error('El fichero de importación no ha podido ser borrado. Inténtelo más tarde');
+                    return FALSE;
+                }
             }
         }
         // Devolvemos resultados importados
