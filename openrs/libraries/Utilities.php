@@ -55,6 +55,31 @@ class Utilities {
             }
         }
     }
+    
+    /**
+     * Encoding un determinado array
+     *
+     * @param [array]			Array de datos a codificar
+     * @param [encoding_in]		Encoding de origen
+     * @param [encoding_out]		Encoding de destino
+     *
+     * @return Devuelve el array codificado en el encoding indicado
+     */
+    function encoding_array($array,$encoding_in='UTF-8', $encoding_out='windows-1252') {
+        foreach ($array as $key => $value)
+        {
+            // Con este se puede detectar, pero realmente son caracteres raros que no afectan a la importación
+            /*
+              if(iconv('windows-1252','UTF-8//IGNORE',$value)!=@iconv('windows-1252','UTF-8//TRANSLIT',$value))
+              {
+              echo $value;
+              }
+             * 
+             */
+            $array[$key] = @iconv($encoding_in, $encoding_out, $value);
+        }
+        return $array;
+    }
 
     /**
      * Formatea un array de errores en un string

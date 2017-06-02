@@ -267,5 +267,51 @@ class Clientes extends CRUD_controller
         // Render
         $this->render_private($this->_view . '/import_result', $this->data);
     }
+    
+    public function export() {
+        // Aplicamos los filtros establecidos en el buscador
+        $elements = $this->{$this->_model}->get_by_filtros($this->_generar_filtros_busqueda());
+        // Creamos array con datos formateados
+        if ($elements)
+        {
+            // Deshabilitar profiler para que no salga anidado al CSV
+            $this->output->enable_profiler(FALSE);
+            
+            $this->load->helper('csv');
+            
+            // Cabecera
+            $cabecera = array('CIF/NIE/NIF','Nombre','Apellidos','Fecha Nac.','Dirección','E-mail','Teléfono','Pais','Provincia','Municipio','Observaciones','Agente Asignado');
+            $array[] = $this->utilities->encoding_array($cabecera);
+             
+            // Resto de datos
+            foreach ($elements as $element)
+            {
+                $datos_formateado = array();
+
+                $datos_formateado[] = $element->nif;
+                $datos_formateado[] = $element->nombre;
+                $datos_formateado[] = $element->apellidos;
+                $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_nac);
+                $datos_formateado[] = $element->direccion;
+                $datos_formateado[] = $element->correo;
+                $datos_formateado[] = $element->telefonos;
+                $datos_formateado[] = $element->nombre_pais;
+                $datos_formateado[] = $element->nombre_provincia;
+                $datos_formateado[] = $element->nombre_poblacion;
+                $datos_formateado[] = $element->observaciones;
+                $datos_formateado[] = $element->nombre_agente_asignado;
+                
+                // Conversión de todos los elementos del array
+                $array[] = $this->utilities->encoding_array($datos_formateado);
+            }
+            
+            array_to_csv_binary($array, "listado_clientes.csv");
+        }
+        else
+        {
+            $this->session->set_flashdata('message', 'No existen datos para exportar con la consulta realizada');
+            redirect($this->_controller, 'refresh');
+        }
+    }
    
 }
