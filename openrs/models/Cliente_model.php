@@ -52,6 +52,7 @@ class Cliente_model extends MY_Model
         $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|max_length[11]|is_unique_global[clientes;' . $id . ';nif;id]|is_nif_valido[' . $pais_id . ']|xss_clean');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required|xss_clean|max_length[100]');
         $this->form_validation->set_rules('apellidos', 'Apellidos', 'required|xss_clean|max_length[150]');
+        $this->form_validation->set_rules('fecha_nac', 'Fecha de nacimiento', 'required|xss_clean|checkDateFormat');
         $this->form_validation->set_rules('direccion', 'Dirección', 'xss_clean|max_length[200]');
         $this->form_validation->set_rules('correo', 'Correo electrónico', 'required|xss_clean|max_length[250]|valid_email|is_unique_global[clientes;' . $id . ';correo;id]');
         $this->form_validation->set_rules('observaciones', 'Observaciones', 'xss_clean|max_length[500]');
@@ -136,6 +137,13 @@ class Cliente_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('apellidos', is_object($datos) ? $datos->apellidos : ""),
         );
+        
+        $data['fecha_nac'] = array(
+            'name' => 'fecha_nac',
+            'id' => 'fecha_nac',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('fecha_nac', is_object($datos) ? $this->utilities->cambiafecha_bd($datos->fecha_nac) : ""),
+        );
 
         $data['direccion'] = array(
             'name' => 'direccion',
@@ -195,13 +203,14 @@ class Cliente_model extends MY_Model
         $datas['nif'] = $this->input->post('nif');
         $datas['nombre'] = $this->input->post('nombre');
         $datas['apellidos'] = $this->input->post('apellidos');
+        $datas['fecha_nac'] = $this->utilities->cambiafecha_form($this->input->post('fecha_nac'));
         $datas['direccion'] = $this->input->post('direccion');
         $datas['correo'] = $this->input->post('correo');
         $datas['observaciones'] = $this->input->post('observaciones');
         $datas['telefonos'] = $this->input->post('telefonos');
         $datas['pais_id'] = $this->input->post('pais_id');
-        $datas['poblacion_id'] = $this->input->post('poblacion_id');
-        $datas['agente_asignado_id'] = $this->input->post('agente_asignado_id');
+        $datas['poblacion_id'] = $this->utilities->get_sql_value_string($this->input->post('poblacion_id'), "int", $this->input->post('poblacion_id'), NULL);
+        $datas['agente_asignado_id'] = $this->utilities->get_sql_value_string($this->input->post('agente_asignado_id'), "int", $this->input->post('agente_asignado_id'), NULL);
 
         return $datas;
     }
@@ -555,13 +564,14 @@ class Cliente_model extends MY_Model
                 $linedata['nif'] = @$data_csv[0];
                 $linedata['nombre'] = @$data_csv[1];
                 $linedata['apellidos'] = @$data_csv[2];
-                $linedata['direccion'] = @$data_csv[3];
-                $linedata['correo'] = @$data_csv[4];
-                $linedata['telefonos'] = @$data_csv[5];
-                $linedata['nombre_pais'] = @$data_csv[6];
-                $linedata['nombre_provincia'] = @$data_csv[7];
-                $linedata['nombre_poblacion'] = @$data_csv[8];
-                $linedata['observaciones'] = @$data_csv[9];
+                $linedata['fecha_nac'] = @$data_csv[3];
+                $linedata['direccion'] = @$data_csv[4];
+                $linedata['correo'] = @$data_csv[5];
+                $linedata['telefonos'] = @$data_csv[6];
+                $linedata['nombre_pais'] = @$data_csv[7];
+                $linedata['nombre_provincia'] = @$data_csv[8];
+                $linedata['nombre_poblacion'] = @$data_csv[9];
+                $linedata['observaciones'] = @$data_csv[10];
 
                 // Conversión de todos los elementos del array
                 foreach ($linedata as $key => $value)
@@ -707,6 +717,7 @@ class Cliente_model extends MY_Model
         $datos['nif'] = $data['nif'];
         $datos['nombre'] = $data['nombre'];
         $datos['apellidos'] = $data['apellidos'];
+        $datos['fecha_nac'] = $this->utilities->cambiafecha_form($data['fecha_nac']);
         $datos['direccion'] = $data['direccion'];
         $datos['correo'] = $data['correo'];
         $datos['observaciones'] = $data['observaciones'];

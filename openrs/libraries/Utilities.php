@@ -524,7 +524,7 @@ class Utilities {
      *
      * @return valor formateado
      */
-    function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") {
+    function get_sql_value_string($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") {
         if ($theType != "array")
             $theValue = (!get_magic_quotes_gpc()) ? addslashes($theValue) : $theValue;
 

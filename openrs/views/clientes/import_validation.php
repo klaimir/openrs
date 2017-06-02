@@ -27,11 +27,12 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
-        <table class="table table-striped table-bordered table-hover" id="tabgrid">
+        <table class="table table-striped table-bordered table-hover" id="tabgrid_import_validation">
             <thead>
                 <tr>
                     <th>Nombre Completo</th>
                     <th>CIF/NIE/NIF</th>
+                    <th>Fecha nac.</th>
                     <th>País Residencia</th>
                     <th>Provincia</th>
                     <th>Municipio</th>
@@ -51,6 +52,7 @@
                     ?>
                     <tr <?php if ($element['error']) echo 'class="danger"'; ?>>
                         <td><?php echo $element['apellidos'].", ".$element['nombre']; ?></td>
+                        <td><?php echo $element['fecha_nac']; ?></td>
                         <td><?php echo $element['nif']; ?></td>
                         <td><?php echo $element['nombre_pais']; ?></td>
                         <td><?php echo $element['nombre_provincia']; ?></td>
@@ -71,3 +73,25 @@
 </div>
 
 <?php echo form_close(); ?>
+
+<script>
+    $(document).ready(function () {
+        $('#tabgrid_import_validation').dataTable({
+            "iDisplayLength": 100,
+            "oLanguage": {"sUrl": "<?php echo base_url(); ?>assets/js/dataTables.spanish.txt"},
+            "aoColumns": [
+                null,
+                {"sType": "date-euro"},
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ]
+        });
+    });
+</script>

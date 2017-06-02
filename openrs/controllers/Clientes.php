@@ -105,7 +105,7 @@ class Clientes extends CRUD_controller
             if ($this->{$this->_model}->validation())
             {
                 // Formatted datas
-                $formatted_datas=$this->get_formatted_datas();                
+                $formatted_datas=$this->{$this->_model}->get_formatted_datas();                
                 // Insert
                 $last_id=$this->{$this->_model}->create($formatted_datas);
                 // Check

@@ -18,11 +18,17 @@
                     <?php echo form_input($nombre, '', 'class="form-control"'); ?>
                 </div>
             </div>
-            <div class="space-4"></div>
             <div class="form-group">            
                 <?php echo label('Apellidos', 'apellidos', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($apellidos, '', 'class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Fecha de nacimiento', 'fecha_nac', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($fecha_nac, '', 'class="form-control"'); ?>
+                    <small class="blue">Introduzca la fecha en formato dd/mm/aaaa (por ejemplo; 19/05/1982)</small>
                 </div>
             </div>
         </div>
