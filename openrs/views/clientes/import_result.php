@@ -46,9 +46,9 @@
                     {
                         ?>
                         <tr <?php if ($element['importado']) echo 'class="success"'; else echo 'class="danger"'; ?>>
-                            <td><?php echo $element['apellidos'] . ", " . $element['nombre']; ?></td>
-                            <td><?php echo $element['fecha_nac']; ?></td>
+                            <td><?php echo $element['apellidos'] . ", " . $element['nombre']; ?></td>                            
                             <td><?php echo $element['nif']; ?></td>
+                            <td><?php echo $element['fecha_nac']; ?></td>
                             <td><?php echo $element['nombre_pais']; ?></td>
                             <td><?php echo $element['nombre_provincia']; ?></td>
                             <td><?php echo $element['nombre_poblacion']; ?></td>
@@ -72,11 +72,11 @@
     $(document).ready(function () {
         $('#tabgrid_import_result').dataTable({
             "iDisplayLength": 100,
-            "oLanguage": {"sUrl": "<?php echo base_url(); ?>assets/js/dataTables.spanish.txt"},
+            "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
             "aoColumns": [
+                null,                
                 null,
                 {"sType": "date-euro"},
-                null,
                 null,
                 null,
                 null,

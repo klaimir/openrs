@@ -52,7 +52,7 @@ class Cliente_model extends MY_Model
         $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|max_length[11]|is_unique_global[clientes;' . $id . ';nif;id]|is_nif_valido[' . $pais_id . ']|xss_clean');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required|xss_clean|max_length[100]');
         $this->form_validation->set_rules('apellidos', 'Apellidos', 'required|xss_clean|max_length[150]');
-        $this->form_validation->set_rules('fecha_nac', 'Fecha de nacimiento', 'required|xss_clean|checkDateFormat');
+        $this->form_validation->set_rules('fecha_nac', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
         $this->form_validation->set_rules('direccion', 'Dirección', 'xss_clean|max_length[200]');
         $this->form_validation->set_rules('correo', 'Correo electrónico', 'required|xss_clean|max_length[250]|valid_email|is_unique_global[clientes;' . $id . ';correo;id]');
         $this->form_validation->set_rules('observaciones', 'Observaciones', 'xss_clean|max_length[500]');
@@ -319,7 +319,7 @@ class Cliente_model extends MY_Model
      *
      * @return array de datos de plantilla
      */
-    function get_by_filtros($filtros)
+    function get_by_filtros($filtros=NULL)
     {
         // Filtro Pais
         if (isset($filtros['pais_id']) && $filtros['pais_id'] >= 0)
@@ -556,54 +556,46 @@ class Cliente_model extends MY_Model
             foreach ($csv as $data_csv)
             {
                 $cont++;
-
-                // Procesar datos
-                $linedata = array();
-
-                // Asignación datos
-                $linedata['nif'] = @$data_csv[0];
-                $linedata['nombre'] = @$data_csv[1];
-                $linedata['apellidos'] = @$data_csv[2];
-                $linedata['fecha_nac'] = @$data_csv[3];
-                $linedata['direccion'] = @$data_csv[4];
-                $linedata['correo'] = @$data_csv[5];
-                $linedata['telefonos'] = @$data_csv[6];
-                $linedata['nombre_pais'] = @$data_csv[7];
-                $linedata['nombre_provincia'] = @$data_csv[8];
-                $linedata['nombre_poblacion'] = @$data_csv[9];
-                $linedata['observaciones'] = @$data_csv[10];
-
-                // Conversión de todos los elementos del array
-                foreach ($linedata as $key => $value)
+                // Ignoramos la cabecera
+                if($cont!=1)
                 {
-                    // Con este se puede detectar, pero realmente son caracteres raros que no afectan a la importación
-                    /*
-                      if(iconv('windows-1252','UTF-8//IGNORE',$value)!=@iconv('windows-1252','UTF-8//TRANSLIT',$value))
-                      {
-                      echo $value;
-                      }
-                     * 
-                     */
-                    $linedata[$key] = @iconv('windows-1252', 'UTF-8//IGNORE', $value);
+                    // Procesar datos
+                    $linedata = array();
+
+                    // Asignación datos
+                    $linedata['nif'] = @$data_csv[0];
+                    $linedata['nombre'] = @$data_csv[1];
+                    $linedata['apellidos'] = @$data_csv[2];
+                    $linedata['fecha_nac'] = @$data_csv[3];
+                    $linedata['direccion'] = @$data_csv[4];
+                    $linedata['correo'] = @$data_csv[5];
+                    $linedata['telefonos'] = @$data_csv[6];
+                    $linedata['nombre_pais'] = @$data_csv[7];
+                    $linedata['nombre_provincia'] = @$data_csv[8];
+                    $linedata['nombre_poblacion'] = @$data_csv[9];
+                    $linedata['observaciones'] = @$data_csv[10];
+
+                    // Conversión de todos los elementos del array                
+                    $linedata=$this->utilities->encoding_array($linedata,'windows-1252','UTF-8//IGNORE');
+
+                    // Validación de datos
+                    $datos_validados = $this->_validar_datos_cliente($linedata, $nifs_importados, $emails_importados);
+
+                    // Se anota como email importado
+                    if (!empty($linedata['correo']))
+                    {
+                        $emails_importados[] = $linedata['correo'];
+                    }
+
+                    // Se anota como nif importado
+                    if (!empty($linedata['nif']))
+                    {
+                        $nifs_importados[] = $linedata['nif'];
+                    }
+
+                    // Resultados
+                    $import[] = $datos_validados;
                 }
-
-                // Validación de datos
-                $datos_validados = $this->_validar_datos_cliente($linedata, $nifs_importados, $emails_importados);
-
-                // Se anota como email importado
-                if (!empty($linedata['correo']))
-                {
-                    $emails_importados[] = $linedata['correo'];
-                }
-
-                // Se anota como nif importado
-                if (!empty($linedata['nif']))
-                {
-                    $nifs_importados[] = $linedata['nif'];
-                }
-
-                // Resultados
-                $import[] = $datos_validados;
             }
         }
         else

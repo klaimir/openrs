@@ -19,8 +19,12 @@
             <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
         </a>
         <a class="btn btn-info pull-left" href="<?php echo site_url($_controller.'/import'); ?>">
-            <i class="menu-icon fa fa-plus-circle"></i>
+            <i class="menu-icon fa fa-upload"></i>
             <span class="menu-text"> Importar CSV </span>
+        </a>
+        <a class="btn btn-info pull-left" href="<?php echo site_url($_controller.'/export'); ?>">
+            <i class="menu-icon fa fa-download"></i>
+            <span class="menu-text"> Exportar CSV </span>
         </a>
         <a class="btn btn-info pull-right" onclick="$('#buscador').toggle('slow');">
             <i class="menu-icon fa fa-search"></i>
