@@ -14,6 +14,21 @@
 
 <?php echo form_open($this->uri->uri_string(), 'class="form-horizontal"'); ?>
 
+<div class="tabbable">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_inmuebles_demandados" data-toggle="tab">INMUEBLES DEMANDADOS</a></li>
+        <li><a href="#tab_propiedades" data-toggle="tab">PROPIEDADES</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_inmuebles_demandados">
+            <?php $this->load->view('clientes/list_demandas', $this->data); ?>
+        </div>
+        <div class="tab-pane" id="tab_propiedades">
+            <?php $this->load->view('clientes/list_propiedades', $this->data); ?>
+        </div>
+    </div>    
+</div>
+
 <?php $this->load->view($_view.'/form', $this->data); ?>
 
 <div class="clearfix form-actions">

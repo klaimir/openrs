@@ -117,31 +117,11 @@
             <div class="form-group">            
                 <?php echo label('Observaciones', 'observaciones', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_textarea($observaciones,'','class="form-control"'); ?>
+                    <?php echo form_textarea($observaciones,'','class="ckeditor"'); ?>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="space-20"></div>
-<div class="tabbable">
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab_datos_generales" data-toggle="tab">DATOS GENERALES</a></li>
-        <li><a href="#tab_contacto" data-toggle="tab">CONTACTO</a></li>
-        <li><a href="#tab_captacion" data-toggle="tab">CAPTACION</a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="tab_datos_generales">
-            
-        </div>
-        <div class="tab-pane" id="tab_contacto">
-            
-        </div> 
-        <div class="tab-pane" id="tab_captacion">
-            
-        </div>
-    </div>    
 </div>
 
 <script type="text/javascript">

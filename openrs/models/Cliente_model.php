@@ -18,6 +18,19 @@ class Cliente_model extends MY_Model
         $this->has_many['demandas'] = array('local_key' => 'id', 'foreign_key' => 'cliente_id', 'foreign_model' => 'Demanda_model');
         $this->has_one['poblacion'] = array('local_key' => 'poblacion_id', 'foreign_key' => 'id', 'foreign_model' => 'Poblacion_model');
         $this->has_one['pais'] = array('local_key' => 'pais_id', 'foreign_key' => 'id', 'foreign_model' => 'Pais_model');
+        
+        $this->has_many_pivot['propiedades'] = array(
+            'foreign_model'=>'Inmueble_model',
+            'pivot_table'=>'clientes_inmuebles',
+            'local_key'=>'id',
+            'pivot_local_key'=>'cliente_id', /* this is the related key in the pivot table to the local key
+                this is an optional key, but if your column name inside the pivot table
+                doesn't respect the format of "singularlocaltable_primarykey", then you must set it. In the next title
+                you will see how a pivot table should be set, if you want to  skip these keys */
+            'pivot_foreign_key'=>'inmueble_id', /* this is also optional, the same as above, but for foreign table's keys */
+            'foreign_key'=>'id',
+            'get_relate'=>TRUE /* another optional setting, which is explained below */
+        );
 
         // Guardamos datos
         $this->timestamps = TRUE;
@@ -105,16 +118,16 @@ class Cliente_model extends MY_Model
     public function set_datas_html($datos = NULL)
     {
         // Selector de provincias
-        $data['provincias'] = $this->get_provincias_form();
+        $data['provincias'] = $this->Provincia_model->get_provincias_dropdown();
 
         // Selector de paises
-        $data['paises'] = $this->get_paises_form();
+        $data['paises'] = $this->Pais_model->get_paises_dropdown();
 
         // Selector de agentes
-        $data['agentes'] = $this->get_agentes_form();
+        $data['agentes'] = $this->Usuario_model->get_agentes_dropdown();
 
         // selector de intereses
-        $data['intereses'] = $this->get_intereses_form();
+        $data['intereses'] = $this->get_intereses_dropdown();
 
         // Datos
         $data['nif'] = array(
@@ -167,7 +180,7 @@ class Cliente_model extends MY_Model
         }
 
         // Selector de poblaciones
-        $data['poblaciones'] = $this->get_poblaciones_form($data['provincia_id']);
+        $data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($data['provincia_id']);
 
         $data['correo'] = array(
             'name' => 'correo',
@@ -391,96 +404,6 @@ class Cliente_model extends MY_Model
     }
 
     /**
-     * Devuelve un array de poblaciones en formato para formularios de clientes
-     *
-     * @return array de poblaciones en formato para formularios de clientes
-     */
-    function get_poblaciones_form($provincia_id)
-    {
-        return $this->Poblacion_model->get_poblaciones_dropdown($provincia_id);
-    }
-
-    /**
-     * Devuelve un array de provincias en formato para buscador de clientes
-     *
-     * @return array de provincias en formato para buscador de clientes
-     */
-    function get_provincias_buscador()
-    {
-        return $this->Provincia_model->get_provincias_dropdown(-1);
-    }
-
-    /**
-     * Devuelve un array de provincias en formato para formularios de clientes
-     *
-     * @return array de provincias en formato para formularios de clientes
-     */
-    function get_provincias_form()
-    {
-        return $this->Provincia_model->get_provincias_dropdown();
-    }
-
-    /**
-     * Devuelve un array de paises en formato para buscador de clientes
-     *
-     * @return array de paises en formato para buscador de clientes
-     */
-    function get_paises_buscador()
-    {
-        return $this->Pais_model->get_paises_dropdown(-1);
-    }
-
-    /**
-     * Devuelve un array de paises en formato para formularios de clientes
-     *
-     * @return array de paises en formato para formularios de clientes
-     */
-    function get_paises_form()
-    {
-        return $this->Pais_model->get_paises_dropdown();
-    }
-
-    /**
-     * Devuelve un array de agentes en formato para buscador de clientes
-     *
-     * @return array de agentes en formato para buscador de clientes
-     */
-    function get_agentes_buscador()
-    {
-        return $this->Usuario_model->get_agentes_dropdown(-1);
-    }
-
-    /**
-     * Devuelve un array de agentes en formato para formularios de clientes
-     *
-     * @return array de agentes en formato para formularios de clientes
-     */
-    function get_agentes_form()
-    {
-        return $this->Usuario_model->get_agentes_dropdown();
-    }
-
-    /**
-     * Devuelve un array de intereses en formato para buscador de clientes
-     *
-     * @return array de intereses en formato para buscador de clientes
-     */
-    function get_intereses_buscador()
-    {
-        return $this->get_intereses_dropdown(-1);
-    }
-
-    /**
-     * Devuelve un array de intereses en formato para formulario de clientes
-     *
-     * @return array de intereses en formato para formulario de clientes
-     */
-    function get_intereses_form()
-    {
-        return $this->get_intereses_dropdown();
-    }
-
-    /**
      * Devuelve un array de intereses en formato dropdown
      *
      * @return array de intereses en formato dropdown
@@ -503,8 +426,25 @@ class Cliente_model extends MY_Model
      */
     function get_info($id)
     {
-        $info = $this->with_poblacion()->with_pais()->with_demandas()->get($id);
-        return $info;
+        // Estos devuelven las informaciones de las tablas pero no de las vistas
+        //$info = $this->with_poblacion()->with_pais()->with_demandas()->with_propiedades()->get($id);
+        //$info = $this->with_demandas()->with_propiedades()->get($id);
+        $info = $this->get_by_id($id);
+        if($info)
+        {
+            // Modelos axiliares
+            $this->load->model('Inmueble_model');
+            $this->load->model('Demanda_model');
+            // Consulta de propiedades
+            $info->propiedades = $this->Inmueble_model->get_propiedades_cliente($id);
+            $info->inmuebles_demandados = $this->Demanda_model->get_inmuebles_demandados($id);
+            // Devolvemos toda la información calculada
+            return $info;
+        }
+        else
+        {
+            return NULL;
+        }
     }
 
     /**

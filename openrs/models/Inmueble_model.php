@@ -112,5 +112,30 @@ class Inmueble_model extends MY_Model
         // Parent update
         return $this->update($formatted_datas,$id);
     }
+    
+    /**
+     * Devuelve los inmuebles que son propiedad de un cliente en un idioma determinado
+     *
+     * @param [$cliente_id]		Identificador del cliente
+     * @param [$id_idioma]		Identificador del idioma
+     * 
+     * @return Array con la información del inmueble
+     */
+    
+    function get_propiedades_cliente($cliente_id,$id_idioma=NULL)
+    {
+        // Si el idioma es NULL, consultamos el de la sesion
+        if(is_null($id_idioma))
+        {
+            $id_idioma = $this->data['session_id_idioma'];
+        }
+        // Consulta
+        $this->db->select('v_inmuebles.*');
+        $this->db->from('v_inmuebles');
+        $this->db->join('clientes_inmuebles', 'clientes_inmuebles.inmueble_id='.'v_inmuebles.id');
+        $this->db->where("idioma_id",$id_idioma);
+        $this->db->where("cliente_id",$cliente_id);
+        return $this->db->get()->result();
+    }
 
 }
