@@ -65,7 +65,7 @@ function menu_clientes($cliente_id,$active_section)
 
                     <b class="arrow"></b>
                 </li>
-
+                <?php /*
                 <li class="hover">
                     <a href="#">
                         <i class="menu-icon fa fa-picture-o"></i>
@@ -74,6 +74,9 @@ function menu_clientes($cliente_id,$active_section)
 
                     <b class="arrow"></b>
                 </li>
+                 * 
+                 */
+                ?>
 
                 <li class="hover <?php echo set_active_option($active_section, "clientes_ficheros"); ?>">
                     <a href="<?php echo site_url('clientes_ficheros/index/'.$cliente_id); ?>">

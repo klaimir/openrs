@@ -25,16 +25,16 @@ class Clientes extends CRUD_controller
     private function _load_filtros()
     {
         // Selector de provincias
-        $this->data['provincias'] = $this->Cliente_model->get_provincias_buscador();
+        $this->data['provincias'] = $this->Provincia_model->get_provincias_dropdown(-1);
 
         // Selector de paises
-        $this->data['paises'] = $this->Cliente_model->get_paises_buscador();
+        $this->data['paises'] = $this->Pais_model->get_paises_dropdown(-1);
 
         // Selector de agentes
-        $this->data['agentes'] = $this->Cliente_model->get_agentes_buscador();
+        $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
 
         // selector de intereses
-        $this->data['intereses'] = $this->Cliente_model->get_intereses_buscador();
+        $this->data['intereses'] = $this->Cliente_model->get_intereses_dropdown(-1);
     }
 
     private function _load_filtros_session()
@@ -131,7 +131,8 @@ class Clientes extends CRUD_controller
 
     public function edit($id)
     {
-        $this->data['element'] = $this->{$this->_model}->get_info($id);
+        $this->data['element'] = $this->{$this->_model}->get_info($id);        
+        
         // Permisos acceso
         $this->{$this->_model}->check_access($this->data['element']);
 
@@ -174,7 +175,7 @@ class Clientes extends CRUD_controller
     {
         $this->data = array_merge_recursive($this->data, $this->{$this->_model}->set_datas_html($datos));
 
-        //$this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
+        $this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
     }
 
     public function delete($id)
