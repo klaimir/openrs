@@ -224,6 +224,70 @@ class Clientes extends CRUD_controller
 
         redirect($this->_controller . '/edit/' . $cliente_id, 'refresh');
     }
+    
+    public function asociar_inmuebles($cliente_id)
+    {
+        $this->data['element'] = $this->{$this->_model}->get_by_id($cliente_id);        
+        
+        // Permisos acceso
+        $this->{$this->_model}->check_access($this->data['element']);
+
+        // Validation
+        if ($this->is_post())
+        {
+            // Rules
+            $this->form_validation->set_rules('inmuebles[]', 'Inmuebles seleccionados', 'xss_clean|required');
+            // Check
+            if ($this->form_validation->run())
+            {
+                // Asociar
+                $result = $this->{$this->_model}->asociar_inmuebles($cliente_id,$this->input->post('inmuebles'));
+                // Check
+                if ($result)
+                {
+                    $this->session->set_flashdata('message', 'Los inmuebles han sido asignados con éxito');
+                    $this->session->set_flashdata('message_color', 'success');
+                }
+                else
+                {
+                    $this->session->set_flashdata('message', 'Error al asignar los inmuebles. Inténtelo más tarde');
+                }
+                redirect($this->_controller. '/edit/' . $cliente_id, 'refresh');
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        
+        // Inmuebles disponibles
+        $this->data['inmuebles_disponibles']=$this->{$this->_model}->get_inmuebles_asociar($cliente_id);
+
+        // Render
+        $this->render_private($this->_view . '/asociar_inmuebles', $this->data);
+    }
+    
+    public function quitar_inmueble($cliente_id, $inmueble_id)
+    {
+        $this->data['element'] = $this->{$this->_model}->get_by_id($cliente_id);        
+        
+        // Permisos acceso
+        $this->{$this->_model}->check_access($this->data['element']);
+
+        // Edit
+        $result = $this->{$this->_model}->quitar_inmueble($cliente_id,$inmueble_id);
+        // Check
+        if ($result)
+        {
+            $this->session->set_flashdata('message', 'Se ha quitado la propiedad del cliente con éxito');
+            $this->session->set_flashdata('message_color', 'success');
+        }
+        else
+        {
+            $this->session->set_flashdata('message', 'No se ha podido quitar la propiedad seleccionada del cliente actual');
+        }
+        redirect($this->_controller. '/edit/' . $cliente_id, 'refresh');
+    }
 
     public function import()
     {

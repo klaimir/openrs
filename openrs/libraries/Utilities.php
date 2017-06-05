@@ -1465,7 +1465,7 @@ class Utilities {
          return str_replace('../../../', base_url(), $html);
     }
     
-    function getKeyObjectArray($object_array,$key) {
+    function get_keys_objects_array($object_array,$key) {
         // Datos necesarios
         $array_valores=array();        
         // Eliminamos repetidos de objetos
@@ -1480,7 +1480,7 @@ class Utilities {
     
     function in_array_object($searched_value,$object_array,$key) {
         // Obtenemos valores de búsqueda de un listado de objetos
-        $array_valores=$this->getKeyObjectArray($object_array,$key); 
+        $array_valores=$this->get_keys_objects_array($object_array,$key); 
         // Si el valor buscado es un array, debe buscarse en el conjunto de valores
         if(is_array($searched_value))
         {

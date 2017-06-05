@@ -2,7 +2,7 @@
 
 require_once APPPATH . 'core/MY_Model.php';
 
-class Tipo_fichero_model extends MY_Model
+class Documento_generado_model extends MY_Model
 {
 
     public function __construct()

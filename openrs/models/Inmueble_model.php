@@ -8,7 +8,9 @@ class Inmueble_model extends MY_Model
     public function __construct()
     {
         $this->table = 'inmuebles';
-        $this->primary_key = 'id';                
+        $this->primary_key = 'id';      
+        
+        $this->view = 'v_inmuebles';
                 
         parent::__construct();
     }
@@ -130,11 +132,35 @@ class Inmueble_model extends MY_Model
             $id_idioma = $this->data['session_id_idioma'];
         }
         // Consulta
-        $this->db->select('v_inmuebles.*');
-        $this->db->from('v_inmuebles');
+        $this->db->select($this->view.'.*');
+        $this->db->from($this->view);
         $this->db->join('clientes_inmuebles', 'clientes_inmuebles.inmueble_id='.'v_inmuebles.id');
         $this->db->where("idioma_id",$id_idioma);
         $this->db->where("cliente_id",$cliente_id);
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Devuelve los inmuebles que no están contenidos en el listado
+     *
+     * @param [$array_exceptions]	Array de identificador de inmuebles que no pueden asociarse
+     * @param [$id_idioma]		Identificador del idioma
+     * 
+     * @return Array con la información del inmueble
+     */
+    
+    function get_inmuebles_excepciones($array_exceptions,$id_idioma=NULL)
+    {
+        // Si el idioma es NULL, consultamos el de la sesion
+        if(is_null($id_idioma))
+        {
+            $id_idioma = $this->data['session_id_idioma'];
+        }
+        // Consulta
+        $this->db->select($this->view.'.*');
+        $this->db->from($this->view);
+        $this->db->where("idioma_id",$id_idioma);
+        $this->db->where_not_in("id",$array_exceptions);
         return $this->db->get()->result();
     }
 

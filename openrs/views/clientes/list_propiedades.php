@@ -4,9 +4,9 @@
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> Crear Inmueble </span>
         </a>
-        <a class="btn btn-info pull-right" href="<?php echo site_url('clientes/asociar_inmueble/'.$element->id); ?>">
+        <a class="btn btn-info pull-right" href="<?php echo site_url('clientes/asociar_inmuebles/'.$element->id); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
-            <span class="menu-text"> Asociar Inmueble </span>
+            <span class="menu-text"> Asociar Inmuebles </span>
         </a>
     </div>
 </div>
@@ -102,7 +102,7 @@
             var inmueble = $(this).data("inmueble");
             bootbox.confirm("¿Estás seguro/a de quitar la propiedad de este cliente?", function (result) {
                 if (result) {
-                    window.location = '<?php echo site_url('inmuebles/quitar_inmueble/'.$element->id); ?>/' + inmueble;
+                    window.location = '<?php echo site_url('clientes/quitar_inmueble/'.$element->id); ?>/' + inmueble;
                 }
             });
         });

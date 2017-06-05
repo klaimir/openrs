@@ -66,24 +66,6 @@ class MY_Model extends Base_Model
         return FALSE;
     }
 
-    function getFieldsTable($table, $db = 'db')
-    {
-        $fields = $this->$db->list_fields($table);
-        $separador = ",";
-        $cont = 1;
-        $tamfields = count($fields);
-        $fieldslist = "";
-        foreach ($fields as $field)
-        {
-            if ($tamfields == $cont)
-                $fieldslist.=$table . '.' . $field;
-            else
-                $fieldslist.=$table . '.' . $field . $separador;
-            $cont++;
-        }
-        return $fieldslist;
-    }
-
     function get_by_id($id)
     {
         $this->db->where($this->primary_key, $id);

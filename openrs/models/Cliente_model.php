@@ -446,9 +446,70 @@ class Cliente_model extends MY_Model
             return NULL;
         }
     }
+    
+    /**
+     * Asigna los inmuebles seleccionados al cliente especificado
+     *
+     * @param [$id]                         Identificador del cliente
+     * @param [$inmuebles_seleccionados]    Array de identificadores de inmuebles seleccionados
+     *
+     * @return TRUE si todo fue bien o exception
+     */
+    function asociar_inmuebles($cliente_id, $inmuebles_seleccionados) {
+        // Modelos axiliares
+        $this->load->model('Cliente_inmueble_model');
+        // Asignación de inmuebles
+        $datos['cliente_id']=$cliente_id;
+        foreach($inmuebles_seleccionados as $inmueble_id)
+        {
+            $datos['inmueble_id']=$inmueble_id;
+            $this->Cliente_inmueble_model->insert($datos);            
+        }
+        return TRUE;
+    }
+    
+    /**
+     * Asigna los inmuebles seleccionados al cliente especificado
+     *
+     * @param [$cliente_id]                 Identificador del cliente
+     * @param [$inmuebles_seleccionados]    Array de identificadores de inmuebles seleccionados
+     *
+     * @return Número de inmuebles borrado para el cliente seleccionado
+     */
+    function quitar_inmueble($cliente_id, $inmueble_id) {
+        // Modelos axiliares
+        $this->load->model('Cliente_inmueble_model');
+        // Borrado de inmueble
+        $datos['cliente_id']=$cliente_id;
+        $datos['inmueble_id']=$inmueble_id;
+        return $this->Cliente_inmueble_model->delete($datos);
+    }
+    
+    /**
+     * Devuelve los inmuebles que se pueden asociar al cliente especificado
+     *
+     * @param [$id]                         Identificador del cliente
+     *
+     * @return array de identificadores de inmuebles que se pueden asociar al cliente especificado
+     */
+    function get_inmuebles_asociar($id) {
+        // Modelos axiliares
+        $this->load->model('Inmueble_model');
+        $this->load->model('Demanda_model');
+        // Consulta de propiedades
+        $propiedades = $this->Inmueble_model->get_propiedades_cliente($id);
+        $inmuebles_demandados = $this->Demanda_model->get_inmuebles_demandados($id);
+        // Calculamos los ids de los inmuebles que no se pueden asignar a partir de los demandados y las propiedades actuales
+        $array_ids_inmuebles_demandados=$this->utilities->get_keys_objects_array($inmuebles_demandados,'id');
+        $array_ids_propiedades=$this->utilities->get_keys_objects_array($propiedades,'id');
+        // Suma de ambos
+        $array_ids_incompatibles = array_merge($array_ids_inmuebles_demandados, $array_ids_propiedades);
+        // Devuelve los inmubles que no estén contenidos en los incompatibles
+        return $this->Inmueble_model->get_inmuebles_excepciones($array_ids_incompatibles);
+    }
 
     /**
-     * Realizar el proceso de importación de un cliente
+     * Realizar el proceso de importación de clientes por CSV
      *
      * @return void
      */
@@ -475,6 +536,11 @@ class Cliente_model extends MY_Model
         }
     }
 
+    /**
+     * Realiza validación de todos los datos del fichero CSV importado
+     * 
+     * @return array con los datos validados y formateados y los errores encontrados
+     */
     private function _get_import_csv()
     {
         // Fichero a leer
@@ -547,6 +613,17 @@ class Cliente_model extends MY_Model
         return $import;
     }
 
+    /**
+     * Realiza validación de los datos de un cliente importado por CSV. Se realiza conversión de datos anotando los errores encontrados, y si todo fue bien, 
+     * se pasa a reutilizar la validación de los datos respecto a lo almacenado en la bd
+     *
+     * @param [$linedata]                         Array con los datos leidos del CSV
+     * @param [$nifs_importados]                  Array de nifs importados previamente
+     * @param [$emails_importados]                Array de emails importados previamente
+     * 
+     * @return array con los datos validados y formateados y los errores encontrados
+     */
+    
     private function _validar_datos_cliente($linedata, $nifs_importados, $emails_importados)
     {
         // Hay que reconvertir los datos de validación para que puedan pasar el validation
@@ -569,7 +646,15 @@ class Cliente_model extends MY_Model
         return $datos_formateados;
     }
 
-    // Detectamos errores de reconversión de datos y los anotamos
+    /**
+     * Detectamos errores de reconversión de datos del CSV a formato de BD y realizamos la conversión
+     *
+     * @param [$linedata]                         Array con los datos leidos del CSV
+     * @param [$nifs_importados]                  Array de nifs importados previamente
+     * @param [$emails_importados]                Array de emails importados previamente
+     * 
+     * @return array con los datos importados y reconvertidos
+     */
     private function _format_datos_import_csv($linedata, $nifs_importados, $emails_importados)
     {
         // Procesar datos
@@ -660,6 +745,11 @@ class Cliente_model extends MY_Model
         return $datos;
     }
 
+    /**
+     * Realiza el proceso de importación volviendo a validar los datos de entrada y borrando el csv introducido
+     *
+     * @return array con los datos importados si todo fue bien o en caso contrario FALSE
+     */
     public function do_import_csv()
     {
         // Realizamos la validación nuevamente

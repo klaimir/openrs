@@ -9,7 +9,7 @@ class Tipo_fichero_model extends MY_Model
     {
         $this->table = 'tipos_ficheros';
         $this->primary_key = 'id';
-        $this->has_many['inmuebles_ficheros'] = array('local_key'=>'id', 'foreign_key'=>'tipo_fichero_id', 'foreign_model'=>'Inmueble_Fichero_model');
+        $this->has_many['inmuebles_ficheros'] = array('local_key'=>'id', 'foreign_key'=>'tipo_fichero_id', 'foreign_model'=>'Inmueble_fichero_model');
         
         parent::__construct();
     }

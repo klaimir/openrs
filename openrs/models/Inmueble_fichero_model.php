@@ -2,7 +2,7 @@
 
 require_once APPPATH . 'core/MY_Model.php';
 
-class Inmueble_Fichero_model extends MY_Model
+class Inmueble_fichero_model extends MY_Model
 {
 
     public function __construct()
