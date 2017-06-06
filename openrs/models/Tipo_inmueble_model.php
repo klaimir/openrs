@@ -211,6 +211,41 @@ class Tipo_inmueble_model extends MY_Model
         $this->Tipo_inmueble_idiomas_model->save_datos_idiomas($id,$this->get_formatted_datas_idiomas());
         // Devolvemos id insertado
         return $affected_rows;
+    }    
+    
+    /**
+     * Devuelve un array de tipos de inmuebles en formato dropdown
+     *
+     * @return array de tipos de inmuebles en formato dropdown
+     */
+    
+    function get_tipos_inmuebles_dropdown($default_value="", $idioma_id=NULL)
+    {
+        // Idioma
+        if (is_null($idioma_id))
+        {
+            $idioma_id=$this->data['session_id_idioma'];
+        }
+        // Array de paises
+        $tipos_inmuebles=$this->Tipo_inmueble_idiomas_model->order_by('nombre')->get_all(array('idioma_id' => $idioma_id));
+        $tipos_inmuebles_dropdown=$this->utilities->dropdown($tipos_inmuebles,'tipo_inmueble_id','nombre');
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione tipo -";
+        // Suma de ambos
+        return ($seleccion+$tipos_inmuebles_dropdown);
+    }    
+    
+    /**
+     * Devuelve el identificador de un tipo de inmueble que coincida con el nombre suministrado
+     *
+     * @param	[nombre_tipo_inmueble]   Nombre del tipo_inmueble
+     * 
+     * @return identificador del tipo_inmueble
+     */
+    
+    function get_id_by_nombre($nombre_tipo_inmueble, $idioma_id=NULL)
+    {
+        return $this->Tipo_inmueble_idiomas_model->get_id_by_nombre($nombre_tipo_inmueble, $idioma_id);
     }
     
     /**

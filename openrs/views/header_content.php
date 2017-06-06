@@ -31,8 +31,10 @@
 	<!--[if lt IE 9]>
 		<script src="<?php echo base_url('dist/html5shiv.js');?>"></script>
 	<![endif]-->
+        
+        <?php include_once(APPPATH.'third_party/analyticstracking.php'); ?>
 </head>
-
+        
 <body>
 	
 	<div id="wrap">

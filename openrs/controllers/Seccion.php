@@ -15,6 +15,11 @@ class Seccion extends MY_Controller_Front
 		$this->load->model('Usuario_model');
 		$this->load->model('General_model');
 		$this->load->model('Idioma_model');
+                
+                // Carga de key de google analytic para seguimiento público
+                $this->load->model('Config_model');
+                $config=$this->Config_model->get_config();
+                $this->session->set_userdata('google_analytics_key',$config->google_analytics_key);
 	}
 	
 	//Método para la portada: diferente en cada tienda, para que la portada sea original

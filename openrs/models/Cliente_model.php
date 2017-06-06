@@ -422,7 +422,7 @@ class Cliente_model extends MY_Model
     /**
      * Devuelve toda la información de un cliente
      *
-     * @return array con toda la información del inmueble
+     * @return array con toda la información del cliente
      */
     function get_info($id)
     {
@@ -469,7 +469,7 @@ class Cliente_model extends MY_Model
     }
     
     /**
-     * Asigna los inmuebles seleccionados al cliente especificado
+     * Quita los inmuebles seleccionados al cliente especificado
      *
      * @param [$cliente_id]                 Identificador del cliente
      * @param [$inmuebles_seleccionados]    Array de identificadores de inmuebles seleccionados
@@ -506,6 +506,55 @@ class Cliente_model extends MY_Model
         $array_ids_incompatibles = array_merge($array_ids_inmuebles_demandados, $array_ids_propiedades);
         // Devuelve los inmubles que no estén contenidos en los incompatibles
         return $this->Inmueble_model->get_inmuebles_excepciones($array_ids_incompatibles);
+    }
+    
+    /**
+     * Devuelve los clientes que son propietarios de un inmueble en un idioma determinado
+     *
+     * @param [$inmueble_id]		Identificador del inmueble
+     * @param [$id_idioma]		Identificador del idioma
+     * 
+     * @return Array con la información de los propietarios
+     */
+    
+    function get_propietarios_inmueble($inmueble_id,$id_idioma=NULL)
+    {
+        // Si el idioma es NULL, consultamos el de la sesion
+        if(is_null($id_idioma))
+        {
+            $id_idioma = $this->data['session_id_idioma'];
+        }
+        // Consulta
+        $this->db->select($this->view.'.*');
+        $this->db->from($this->view);
+        $this->db->join('clientes_inmuebles', 'clientes_inmuebles.cliente_id='.'v_clientes.id');
+        $this->db->where("idioma_id",$id_idioma);
+        $this->db->where("inmueble_id",$inmueble_id);
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Devuelve los clientes que no están contenidos en el listado
+     *
+     * @param [$array_exceptions]	Array de identificador de clientes que no pueden asociarse
+     * @param [$id_idioma]		Identificador del idioma
+     * 
+     * @return Array con la información de los clientes
+     */
+    
+    function get_clientes_excepciones($array_exceptions,$id_idioma=NULL)
+    {
+        // Si el idioma es NULL, consultamos el de la sesion
+        if(is_null($id_idioma))
+        {
+            $id_idioma = $this->data['session_id_idioma'];
+        }
+        // Consulta
+        $this->db->select($this->view.'.*');
+        $this->db->from($this->view);
+        $this->db->where("idioma_id",$id_idioma);
+        $this->db->where_not_in("id",$array_exceptions);
+        return $this->db->get()->result();
     }
 
     /**

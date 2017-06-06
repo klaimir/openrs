@@ -76,5 +76,34 @@ class Tipo_inmueble_idiomas_model extends MY_Model
         }
         return $array;
     }
+    
+    /**
+     * Devuelve el identificador de un tipo de inmueble que coincida con el nombre suministrado
+     *
+     * @param	[nombre_tipo_inmueble]   Nombre del tipo_inmueble
+     * 
+     * @return identificador del tipo_inmueble
+     */
+    
+    function get_id_by_nombre($nombre_tipo_inmueble, $idioma_id=NULL)
+    {
+        // Idioma
+        if (is_null($idioma_id))
+        {
+            $idioma_id=$this->data['session_id_idioma'];
+        }
+        // Consulta
+        $this->db->select($this->table.'.tipo_inmueble_id');
+        $this->db->from($this->table);
+        $this->db->where('nombre', $nombre_tipo_inmueble);
+        $this->db->where('idioma_id', $idioma_id);
+        $query = $this->db->get();
+        $row = $query->row();
+        if ($row) {
+            return $row->tipo_inmueble_id;
+        } else {
+            return NULL;
+        }
+    }
 
 }

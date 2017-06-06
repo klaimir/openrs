@@ -98,5 +98,15 @@ class Config_model extends MY_Model
         // Parent update
         return $this->update($formatted_datas,$id);
     }
+    
+    /**
+     * Devuelve configuración del sistema
+     *
+     * @return void
+     */    
+    function get_config()
+    {
+        return $this->get_by_id(1);
+    }
 
 }

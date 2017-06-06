@@ -4,26 +4,49 @@ require_once APPPATH . 'core/MY_Model.php';
 
 class Inmueble_model extends MY_Model
 {
+    
+    public $idiomas_activos=array();
 
     public function __construct()
-    {
-        $this->table = 'inmuebles';
-        $this->primary_key = 'id';      
-        
-        $this->view = 'v_inmuebles';
-                
+    {        
         parent::__construct();
+
+        $this->table = 'inmuebles';
+        $this->primary_key = 'id';
+        $this->view = 'v_inmuebles';
+
+        $this->has_many['demandas'] = array('local_key' => 'id', 'foreign_key' => 'inmueble_id', 'foreign_model' => 'Inmueble_demanda_model');
+        $this->has_one['poblacion'] = array('local_key' => 'poblacion_id', 'foreign_key' => 'id', 'foreign_model' => 'Poblacion_model');
+        $this->has_one['tipo'] = array('local_key' => 'tipo_id', 'foreign_key' => 'id', 'foreign_model' => 'Tipo_inmueble_model');
+        
+        $this->has_many_pivot['propietarios'] = array(
+            'foreign_model'=>'Cliente_model',
+            'pivot_table'=>'clientes_inmuebles',
+            'local_key'=>'id',
+            'pivot_local_key'=>'inmueble_id',
+            'pivot_foreign_key'=>'cliente_id',
+            'foreign_key'=>'id',
+            'get_relate'=>TRUE
+        );
+
+        // Guardamos datos
+        $this->timestamps = TRUE;
+        $this->_updated_at_field = "fecha_actualizacion";
+
+        // Modelos axiliares
+        $this->load->model('Provincia_model');
+        $this->load->model('Tipo_inmueble_model');
     }
     
-    /************************* SECURITY *************************/
-    
+    /*     * *********************** SECURITY ************************ */
+
     public function check_access_conditions($datos)
     {
         return TRUE;
     }
-    
-    /************************* FORMS *************************/
-    
+
+    /*     * *********************** FORMS ************************ */
+
     /**
      * Establece las reglas utilizadas para la validación de datos
      * 
@@ -31,19 +54,82 @@ class Inmueble_model extends MY_Model
      *
      * @return void
      */
-    
-    public function set_rules($id=0)
+    public function set_rules($id = 0)
     {
-        $this->form_validation->set_rules('nombre_tipo', 'Tipo del inmueble', 'required');
+        $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|max_length[11]|is_unique_global[clientes;' . $id . ';nif;id]|xss_clean');
+        $this->form_validation->set_rules('metros', 'Metros totales', 'required|xss_clean|max_length[4]|is_natural_no_zero');
+        $this->form_validation->set_rules('metros_utiles', 'Metros útiles', 'required|xss_clean|max_length[4]|is_natural_no_zero');
+        $this->form_validation->set_rules('apellidos', 'Apellidos', 'required|xss_clean|max_length[150]');
+        $this->form_validation->set_rules('fecha_nac', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
+        $this->form_validation->set_rules('direccion', 'Dirección', 'xss_clean|max_length[200]');
+        $this->form_validation->set_rules('correo', 'Correo electrónico', 'required|xss_clean|max_length[250]|valid_email|is_unique_global[clientes;' . $id . ';correo;id]');
+        $this->form_validation->set_rules('observaciones', 'Observaciones', 'xss_clean|max_length[500]');
+        $this->form_validation->set_rules('telefonos', 'Teléfonos', 'xss_clean|max_length[70]');
+        $this->form_validation->set_rules('poblacion_id', 'Población', 'required');
+        $this->form_validation->set_rules('provincia_id', 'Provincia', 'required');
+        $this->form_validation->set_rules('tipo_id', 'Tipo', 'required');
+        // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
+        $this->form_validation->set_rules('captador_id', 'Agente Asignado', 'xss_clean');
+        /*
+
+	3	metros_utiles	int(4)			No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
+
+	4	habitaciones	int(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
+
+	5	banios	int(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
+
+	6	precio_compra	double			Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	7	precio_alquiler	double			Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	8	poblacion_id	int(11)		UNSIGNED	No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
+
+	9	zona_id	int(11)		UNSIGNED	Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	10	tipo_id	int(11)		UNSIGNED	No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
+
+	11	observaciones	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	12	direccion	varchar(200)	utf8_general_ci		No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
+
+	13	direccion_aprox	varchar(200)	utf8_general_ci		No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
+
+	14	bloqueado	tinyint(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
+
+	15	estado	varchar(20)	utf8_general_ci		No 	activo		Cambiar Cambiar	Eliminar Eliminar	
+
+	16	antiguedad	varchar(30)	utf8_general_ci		No 	inmueble_usado		Cambiar Cambiar	Eliminar Eliminar	
+
+	17	certificacion_energetica_id	int(11)		UNSIGNED	Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	18	cuota_comunidad	double			Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	19	forma_pago	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+	20	anejos	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	21	cargas_vivienda	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+	22	descripcion_vivienda	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	23	descripcion_edificio	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	24	antiguedad_edificio	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
+
+	25	captador_id
+         */
     }
-    
+
     /**
      * Ejecuta las validaciones
      *
      * @return void
      */
-    public function validation()
-    {    
+    public function validation($id = 0)
+    {
+        // Rules
+        $this->set_rules($id);
+
+        // Other functions validations
+        // Run form validation        
         return $this->form_validation->run();
     }
 
@@ -54,14 +140,92 @@ class Inmueble_model extends MY_Model
      *
      * @return array con los datos especificados para utilizarlos en los diferentes helpers
      */
-    
-    public function set_datas_html($datos=NULL)
-    {        
-        $data['nombre_tipo'] = array(
-            'name' => 'nombre_tipo',
-            'id' => 'nombre_tipo',
+    public function set_datas_html($datos = NULL)
+    {
+        // Selector de provincias
+        $data['provincias'] = $this->Provincia_model->get_provincias_dropdown();
+
+        // Selector de tipos_inmuebles
+        $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown();
+
+        // Selector de agentes
+        $data['agentes'] = $this->Usuario_model->get_agentes_dropdown();
+
+        // selector de intereses
+        $data['intereses'] = $this->get_intereses_dropdown();
+
+        // Datos
+        $data['nif'] = array(
+            'name' => 'nif',
+            'id' => 'nif',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nombre_tipo',isset($datos) ? $datos->nombre : ""),
+            'value' => $this->form_validation->set_value('nif', is_object($datos) ? $datos->nif : ""),
+        );
+
+        $data['metros'] = array(
+            'name' => 'metros',
+            'id' => 'metros',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('metros', is_object($datos) ? $datos->metros : ""),
+        );
+
+        $data['apellidos'] = array(
+            'name' => 'apellidos',
+            'id' => 'apellidos',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('apellidos', is_object($datos) ? $datos->apellidos : ""),
+        );
+        
+        $data['fecha_nac'] = array(
+            'name' => 'fecha_nac',
+            'id' => 'fecha_nac',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('fecha_nac', is_object($datos) ? $this->utilities->cambiafecha_bd($datos->fecha_nac) : ""),
+        );
+
+        $data['direccion'] = array(
+            'name' => 'direccion',
+            'id' => 'direccion',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('direccion', is_object($datos) ? $datos->direccion : ""),
+        );
+
+        $data['tipo_id'] = $this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
+        $data['captador_id'] = $this->form_validation->set_value('captador_id', is_object($datos) ? $datos->captador_id : "-1");
+        $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
+
+        if (!empty($data['poblacion_id']))
+        {
+            $poblacion = $this->Poblacion_model->get_by_id($data['poblacion_id']);
+            $data['provincia_id'] = $this->form_validation->set_value('provincia_id', $poblacion->provincia_id);
+        }
+        else
+        {
+            $data['provincia_id'] = $this->form_validation->set_value('provincia_id', "");
+        }
+
+        // Selector de poblaciones
+        $data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($data['provincia_id']);
+
+        $data['correo'] = array(
+            'name' => 'correo',
+            'id' => 'correo',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('correo', is_object($datos) ? $datos->correo : ""),
+        );
+
+        $data['telefonos'] = array(
+            'name' => 'telefonos',
+            'id' => 'telefonos',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('telefonos', is_object($datos) ? $datos->telefonos : ""),
+        );
+
+        $data['observaciones'] = array(
+            'name' => 'observaciones',
+            'id' => 'observaciones',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('observaciones', is_object($datos) ? $datos->observaciones : ""),
         );
 
         return $data;
@@ -72,10 +236,20 @@ class Inmueble_model extends MY_Model
      *
      * @return array con los datos formateado
      */
-    
-    public function get_formatted_datas()
+    public function get_formatted_datas($id = 0)
     {
-        $datas['nombre'] = $this->input->post('nombre');
+        $datas['nif'] = $this->input->post('nif');
+        $datas['metros'] = $this->input->post('metros');
+        $datas['apellidos'] = $this->input->post('apellidos');
+        $datas['fecha_nac'] = $this->utilities->cambiafecha_form($this->input->post('fecha_nac'));
+        $datas['direccion'] = $this->input->post('direccion');
+        $datas['correo'] = $this->input->post('correo');
+        $datas['observaciones'] = $this->input->post('observaciones');
+        $datas['telefonos'] = $this->input->post('telefonos');
+        $datas['tipo_id'] = $this->input->post('tipo_id');
+        $datas['poblacion_id'] = $this->utilities->get_sql_value_string($this->input->post('poblacion_id'), "int", $this->input->post('poblacion_id'), NULL);
+        $datas['captador_id'] = $this->utilities->get_sql_value_string($this->input->post('captador_id'), "int", $this->input->post('captador_id'), NULL);
+
         return $datas;
     }
 
@@ -86,10 +260,9 @@ class Inmueble_model extends MY_Model
      *
      * @return void
      */
-    
     function check_delete($id)
-    {        
-        if (count($this->with_inmuebles()->get($id)->inmuebles))
+    {
+        if (count($this->with_demandas()->get($id)->demandas))
         {
             return FALSE;
         }
@@ -99,20 +272,546 @@ class Inmueble_model extends MY_Model
         }
     }
     
-    function create()
-    {
-        // Formatted datas
-        $formatted_datas=$this->get_formatted_datas();                
-        // Parent insert
-        return $this->insert($formatted_datas);
+    /**
+     * Elimina al inmueble del sistema de ficheros y de la bd
+     *
+     * @param [id]        Identificador del inmueble en la base de datos
+     *
+     * @return void
+     */
+    function remove($id)
+    {        
+        // Borrado físico de la carpeta de datos
+        if($this->utilities->full_rmdir(FCPATH . 'uploads/inmuebles/'.$id))
+        {
+            if($this->delete($id))
+            {
+                return TRUE;
+            }
+            else
+            {
+                $this->set_error(lang('common_error_delete'));
+                return FALSE;
+            }
+        }
+        else
+        {
+            $this->set_error('Error al borrar la carpeta de datos. Póngase en contacto con el administrador');
+            return FALSE;
+        }
     }
-    
+
+    /**
+     * Formatea los datos introducidos por el usuario y crea un registro en la base de datos
+     *
+     * @return void
+     */
+    function create($formatted_datas)
+    {
+        // Parent insert
+        $id = $this->insert($formatted_datas);
+        if ($id)
+        {
+            // Creación de carpeta
+            if (!file_exists(FCPATH . "uploads/inmuebles/" . $id))
+            {
+                if (!mkdir(FCPATH . "uploads/inmuebles/" . $id, DIR_READ_MODE, true))
+                {
+                    $this->set_error('Error en la creación de la carpeta de datos. Póngase en contacto con el administrador');
+                    return FALSE;
+                }
+                // Copiamos fichero html de protección
+                if(!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $id."/index.html"))
+                {
+                    $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
+                    return FALSE;
+                }
+            }
+            // Devolvemos id
+            return $id;
+        }
+        else
+        {
+            $this->set_error(lang('common_error_insert'));
+            return FALSE;
+        }
+    }
+
+    /**
+     * Formatea los datos introducidos por el usuario y actualiza un registro en la base de datos
+     *
+     * @param [id]                  Indentificador del elemento
+     *
+     * @return void
+     */
     function edit($id)
     {
         // Formatted datas
-        $formatted_datas=$this->get_formatted_datas();        
+        $formatted_datas = $this->get_formatted_datas($id);
         // Parent update
-        return $this->update($formatted_datas,$id);
+        return $this->update($formatted_datas, $id);
+    }
+
+    /**
+     * Lee los inmuebles en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_by_filtros($filtros=NULL)
+    {
+        // Filtro Tipo de inmueble
+        if (isset($filtros['tipo_id']) && $filtros['tipo_id'] >= 0)
+        {
+            $this->db->where('tipo_id', $filtros['tipo_id']);
+        }
+        // Filtro Provincia
+        if (isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0)
+        {
+            $this->db->where('provincia_id', $filtros['provincia_id']);
+        }
+        // Filtro Población
+        if (isset($filtros['poblacion_id']) && !empty($filtros['poblacion_id']) && $filtros['provincia_id'] >= 0)
+        {
+            $this->db->where('poblacion_id', $filtros['poblacion_id']);
+        }
+        // Filtro Agente Asignado
+        if (isset($filtros['captador_id']) && $filtros['captador_id'] >= 0)
+        {
+            $this->db->where('captador_id', $filtros['captador_id']);
+        }
+        // Intereses        
+        switch ($filtros['interes_id'])
+        {
+            case 1:
+                $this->db->where('busca_vender', 1);
+                break;
+            case 2:
+                $this->db->where('busca_alquilar', 1);
+                break;
+            case 3:
+                $this->db->where('busca_alquiler', 1);
+                break;
+            case 4:
+                $this->db->where('busca_comprar', 1);
+                break;
+            default:
+                break;
+        }
+        // Fechas
+        if (isset($filtros['fecha_desde']) && $filtros['fecha_desde'] != "")
+        {
+            $this->db->where('fecha_alta >=', $this->utilities->cambiafecha_form($filtros['fecha_desde']));
+        }
+        if (isset($filtros['fecha_hasta']) && $filtros['fecha_hasta'] != "")
+        {
+            $this->db->where('fecha_alta <=', $this->utilities->cambiafecha_form($filtros['fecha_hasta']));
+        }
+        // Idioma
+        if (isset($filtros['idioma_id']) && $filtros['idioma_id'] != "")
+        {
+            $this->db->where('idioma_id', $filtros['idioma_id']);
+        }
+        else
+        {
+            $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        }
+        // Consulta
+        $this->db->from($this->view);
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Duplica los datos de un inmueble
+     *
+     * @return datos del inmueble
+     */
+    function duplicar($inmueble)
+    {
+        // Conversión de Datos
+        unset($inmueble->id);
+        $inmueble->direccion = '';
+        unset($inmueble->fecha_alta);
+        unset($inmueble->fecha_actualizacion);
+        // Crear duplicado
+        return $this->insert($inmueble);
+    }
+
+    /**
+     * Devuelve un array de intereses en formato dropdown
+     *
+     * @return array de intereses en formato dropdown
+     */
+    function get_intereses_dropdown($default = "")
+    {
+        $intereses = array();
+        $intereses[$default] = '- Seleccione interés -';
+        $intereses[1] = 'Busca vender';
+        $intereses[2] = 'Busca alquilar';
+        $intereses[3] = 'Busca un alquiler';
+        $intereses[4] = 'Busca comprar';
+        return $intereses;
+    }
+
+    /**
+     * Devuelve toda la información de un inmueble
+     *
+     * @return array con toda la información del inmueble
+     */
+    function get_info($id)
+    {
+        $info = $this->get_by_id($id);
+        if($info)
+        {
+            // Modelos axiliares
+            $this->load->model('Cliente_model');
+            $this->load->model('Demanda_model');
+            // Consulta de propiedades
+            $info->propietarios = $this->Cliente_model->get_propietarios_cliente($id);
+            $info->demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
+            // Devolvemos toda la información calculada
+            return $info;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+    
+    /**
+     * Asigna los clientes seleccionados al inmueble especificado
+     *
+     * @param [$inmueble_id]                Identificador del inmueble
+     * @param [$clientes_seleccionados]     Array de identificadores de clientes seleccionados
+     *
+     * @return TRUE si todo fue bien o exception
+     */
+    function asociar_clientes($inmueble_id, $clientes_seleccionados) {
+        // Modelos axiliares
+        $this->load->model('Cliente_inmueble_model');
+        // Asignación de clientes
+        $datos['inmueble_id']=$inmueble_id;
+        foreach($clientes_seleccionados as $cliente_id)
+        {
+            $datos['cliente_id']=$cliente_id;
+            $this->Cliente_inmueble_model->insert($datos);            
+        }
+        return TRUE;
+    }
+    
+    /**
+     * Quita los clientes seleccionados al inmueble especificado
+     *
+     * @param [$inmueble_id]                Identificador del inmueble
+     * @param [$clientes_seleccionados]      Array de identificadores de clientes seleccionados
+     *
+     * @return Número de clientes borrados para el inmueble seleccionado
+     */
+    function quitar_cliente($cliente_id, $inmueble_id) {
+        // Modelos axiliares
+        $this->load->model('Cliente_inmueble_model');
+        // Borrado de cliente
+        $datos['cliente_id']=$cliente_id;
+        $datos['inmueble_id']=$inmueble_id;
+        return $this->Cliente_inmueble_model->delete($datos);
+    }
+    
+    /**
+     * Devuelve los clientes que se pueden asociar al inmueble especificado
+     *
+     * @param [$id]                         Identificador del inmueble
+     *
+     * @return array de identificadores de clientes que se pueden asociar al inmueble especificado
+     */
+    function get_clientes_asociar($id) {
+        // Modelos axiliares
+        $this->load->model('Cliente_model');
+        $this->load->model('Demanda_model');
+        // Consulta de propietarios
+        $propietarios = $this->Cliente_model->get_propietarios_cliente($id);
+        $demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
+        // Calculamos los ids de los clientes que no se pueden asignar a partir de los propietarios y demandantes
+        $array_ids_demandantes=$this->utilities->get_keys_objects_array($demandantes,'id');
+        $array_ids_propietarios=$this->utilities->get_keys_objects_array($propietarios,'id');
+        // Suma de ambos
+        $array_ids_incompatibles = array_merge($array_ids_demandantes, $array_ids_propietarios);
+        // Devuelve los clientes que no estén contenidos en los incompatibles
+        return $this->Cliente_model->get_clientes_excepciones($array_ids_incompatibles);
+    }
+
+    /**
+     * Realizar el proceso de importación de inmuebles por CSV
+     *
+     * @return void
+     */
+    function import_csv()
+    {
+        // Opciones de configuración para subida de csv
+        $config['upload_path'] = './uploads/temp';
+        $config['allowed_types'] = 'csv';
+        $config['file_name'] = 'import_inmuebles.csv';
+        $config['overwrite'] = TRUE;
+        $config['max_size'] = "2000";
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('fichero'))
+        {
+            $this->set_error($this->upload->display_errors());
+            return FALSE;
+        }
+        else
+        {
+            // Realizamos análisis y validación de datos
+            return $this->_get_import_csv();
+        }
+    }
+
+    /**
+     * Realiza validación de todos los datos del fichero CSV importado
+     * 
+     * @return array con los datos validados y formateados y los errores encontrados
+     */
+    private function _get_import_csv()
+    {
+        // Fichero a leer
+        $filename = FCPATH . 'uploads/temp/import_inmuebles.csv';
+        // Comprobación
+        if (file_exists($filename))
+        {
+            // Cargamos librería CSVReader
+            $this->load->library('CSVReader');
+            // Leemos los datos
+            $csv = $this->csvreader->parse_file($filename, FALSE);
+            // Dorsales importados
+            $emails_importados = array();
+            // Dnis importados
+            $nifs_importados = array();
+            // Contador CSV
+            $cont = 0;
+            // Lectura CSV
+            foreach ($csv as $data_csv)
+            {
+                $cont++;
+                // Ignoramos la cabecera
+                if($cont!=1)
+                {
+                    // Procesar datos
+                    $linedata = array();
+
+                    // Asignación datos
+                    $linedata['nombre_tipo'] = @$data_csv[0];
+                    $linedata['nif'] = @$data_csv[0];
+                    $linedata['metros'] = @$data_csv[1];
+                    $linedata['apellidos'] = @$data_csv[2];
+                    $linedata['fecha_nac'] = @$data_csv[3];
+                    $linedata['direccion'] = @$data_csv[4];
+                    $linedata['correo'] = @$data_csv[5];
+                    $linedata['telefonos'] = @$data_csv[6];
+                    
+                    $linedata['nombre_provincia'] = @$data_csv[8];
+                    $linedata['nombre_poblacion'] = @$data_csv[9];
+                    $linedata['observaciones'] = @$data_csv[10];
+                    
+                    //Vivienda piso 	Almería 	Zona	carretera granada 	300.000,00 	0,00 	70 	3 	2
+
+                    // Conversión de todos los elementos del array                
+                    $linedata=$this->utilities->encoding_array($linedata,'windows-1252','UTF-8//IGNORE');
+
+                    // Validación de datos
+                    $datos_validados = $this->_validar_datos_inmueble($linedata, $nifs_importados, $emails_importados);
+
+                    // Se anota como email importado
+                    if (!empty($linedata['correo']))
+                    {
+                        $emails_importados[] = $linedata['correo'];
+                    }
+
+                    // Se anota como nif importado
+                    if (!empty($linedata['nif']))
+                    {
+                        $nifs_importados[] = $linedata['nif'];
+                    }
+
+                    // Resultados
+                    $import[] = $datos_validados;
+                }
+            }
+        }
+        else
+        {
+            $this->set_error("El fichero cargado no existe. Por favor, inténtelo de nuevo.");
+            return FALSE;
+        }
+        // Resultado final
+        return $import;
+    }
+
+    /**
+     * Realiza validación de los datos de un inmueble importado por CSV. Se realiza conversión de datos anotando los errores encontrados, y si todo fue bien, 
+     * se pasa a reutilizar la validación de los datos respecto a lo almacenado en la bd
+     *
+     * @param [$linedata]                         Array con los datos leidos del CSV
+     * @param [$nifs_importados]                  Array de nifs importados previamente
+     * @param [$emails_importados]                Array de emails importados previamente
+     * 
+     * @return array con los datos validados y formateados y los errores encontrados
+     */
+    
+    private function _validar_datos_inmueble($linedata, $nifs_importados, $emails_importados)
+    {
+        // Hay que reconvertir los datos de validación para que puedan pasar el validation
+        $datos_formateados = $this->_format_datos_import_csv($linedata, $nifs_importados, $emails_importados);
+        $datos_formateados['texto_errores'] = NULL;
+        if (!$datos_formateados['error'])
+        {
+            // Reseteamos datos de validación anterior
+            $this->form_validation->reset_validation();
+            // Inicializamos los datos de validación para reutilizar la validación del inmueble
+            $this->form_validation->set_data($datos_formateados);
+            // Realizamos validacion
+            if (!$this->validation())
+            {
+                $datos_formateados['error'] = TRUE;
+                $datos_formateados['texto_errores'] = validation_errors('<p><strong>','</strong></p>');
+            }
+        }
+
+        return $datos_formateados;
+    }
+
+    /**
+     * Detectamos errores de reconversión de datos del CSV a formato de BD y realizamos la conversión
+     *
+     * @param [$linedata]                         Array con los datos leidos del CSV
+     * @param [$nifs_importados]                  Array de nifs importados previamente
+     * @param [$emails_importados]                Array de emails importados previamente
+     * 
+     * @return array con los datos importados y reconvertidos
+     */
+    private function _format_datos_import_csv($linedata, $nifs_importados, $emails_importados)
+    {
+        // Procesar datos
+        $error = FALSE;
+
+        // Comprueba que no está repetido
+        if (!is_null($emails_importados))
+        {
+            if (in_array($linedata['correo'], $emails_importados))
+            {
+                $linedata['correo'].=' <span class="label label-warning">Repetido</span>';
+                $error = TRUE;
+            }
+        }
+
+        // Comprueba que no está repetido
+        if (!is_null($nifs_importados))
+        {
+            if (in_array($linedata['nif'], $nifs_importados))
+            {
+                $linedata['nif'].=' <span class="label label-warning">Repetido</span>';
+                $error = TRUE;
+            }
+        }
+
+        // Tipo
+        $linedata['tipo_id'] = $this->Tipo_inmueble_model->get_id_by_nombre($linedata['nombre_tipo']);
+        if (empty($linedata['tipo_id']))
+        {
+            $linedata['nombre_tipo'].=' <span class="label label-warning">No existe</span>';
+            $error = TRUE;
+        }
+        
+        // Provincia
+        $linedata['provincia_id'] = $this->Provincia_model->get_id_by_nombre($linedata['nombre_provincia']);
+        if (empty($linedata['provincia_id']))
+        {
+            $linedata['nombre_provincia'].=' <span class="label label-success">No existe</span>';
+            $error = TRUE;
+        }
+
+        // Población
+        $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion']);
+        if (!$linedata['poblacion_id'])
+        {
+            $linedata['nombre_poblacion'].=' <span class="label label-success">No existe</span>';
+            $error = TRUE;
+        }
+
+        // Marcamos si ha habido errores
+        $linedata['error'] = $error;
+
+        // Devolvemos la linea de datos formateada
+        return $linedata;
+    }
+
+    /**
+     * Devuelve los datos formateado desde un CSV
+     *
+     * @return array con los datos formateado
+     */
+    public function get_csv_formatted_datas($data)
+    {
+        $datos=array();
+        
+        $datos['nif'] = $data['nif'];
+        $datos['metros'] = $data['metros'];
+        $datos['apellidos'] = $data['apellidos'];
+        $datos['fecha_nac'] = $this->utilities->cambiafecha_form($data['fecha_nac']);
+        $datos['direccion'] = $data['direccion'];
+        $datos['correo'] = $data['correo'];
+        $datos['observaciones'] = $data['observaciones'];
+        $datos['telefonos'] = $data['telefonos'];
+        $datos['tipo_id'] = $data['tipo_id'];
+        $datos['poblacion_id'] = $data['poblacion_id'];
+
+        return $datos;
+    }
+
+    /**
+     * Realiza el proceso de importación volviendo a validar los datos de entrada y borrando el csv introducido
+     *
+     * @return array con los datos importados si todo fue bien o en caso contrario FALSE
+     */
+    public function do_import_csv()
+    {
+        // Realizamos la validación nuevamente
+        $importdata = $this->_get_import_csv();
+        // Se procesan los datos
+        if($importdata)
+        {
+            foreach ($importdata as $key => $data)
+            {
+                if (!$data['error'])
+                {
+                    // Creación
+                    $id = $this->create($this->get_csv_formatted_datas($data));
+                    //Fin comprobaciones
+                    $importdata[$key]['importado'] = ($id) ? TRUE : FALSE;
+                }
+                else
+                {
+                    $importdata[$key]['importado'] = FALSE;
+                }
+            }
+            
+            if(file_exists(FCPATH . 'uploads/temp/import_inmuebles.csv'))
+            {
+                if(!unlink(FCPATH . 'uploads/temp/import_inmuebles.csv'))
+                {
+                    $this->set_error('El fichero de importación no ha podido ser borrado. Inténtelo más tarde');
+                    return FALSE;
+                }
+            }
+        }
+        // Devolvemos resultados importados
+        return $importdata;
+    }
+    
+    public function format_google_map_path($inmueble)
+    {
+        $direccion_formateada="$inmueble->direccion, $inmueble->nombre_poblacion, $inmueble->nombre_provincia, Spain";
+        // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
+        return $this->utilities->cleantext($direccion_formateada);
     }
     
     /**
