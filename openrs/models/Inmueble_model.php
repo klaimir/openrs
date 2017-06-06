@@ -29,10 +29,6 @@ class Inmueble_model extends MY_Model
             'get_relate'=>TRUE
         );
 
-        // Guardamos datos
-        $this->timestamps = TRUE;
-        $this->_updated_at_field = "fecha_actualizacion";
-
         // Modelos axiliares
         $this->load->model('Provincia_model');
         $this->load->model('Tipo_inmueble_model');
@@ -56,41 +52,26 @@ class Inmueble_model extends MY_Model
      */
     public function set_rules($id = 0)
     {
-        $this->form_validation->set_rules('nif', 'NIF/NIE/CIF', 'required|max_length[11]|is_unique_global[clientes;' . $id . ';nif;id]|xss_clean');
+        $this->form_validation->set_rules('referencia', 'Referencia', 'required|max_length[11]|is_unique_global[inmuebles;' . $id . ';referencia;id]|xss_clean');
         $this->form_validation->set_rules('metros', 'Metros totales', 'required|xss_clean|max_length[4]|is_natural_no_zero');
-        $this->form_validation->set_rules('metros_utiles', 'Metros útiles', 'required|xss_clean|max_length[4]|is_natural_no_zero');
-        $this->form_validation->set_rules('apellidos', 'Apellidos', 'required|xss_clean|max_length[150]');
-        $this->form_validation->set_rules('fecha_nac', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
-        $this->form_validation->set_rules('direccion', 'Dirección', 'xss_clean|max_length[200]');
-        $this->form_validation->set_rules('correo', 'Correo electrónico', 'required|xss_clean|max_length[250]|valid_email|is_unique_global[clientes;' . $id . ';correo;id]');
-        $this->form_validation->set_rules('observaciones', 'Observaciones', 'xss_clean|max_length[500]');
-        $this->form_validation->set_rules('telefonos', 'Teléfonos', 'xss_clean|max_length[70]');
+        $this->form_validation->set_rules('metros_utiles', 'Metros útiles', 'required|xss_clean|max_length[4]|is_natural_no_zero|less_than_equal_to['.$this->form_validation->get_validation_data('metros').']');
+        $this->form_validation->set_rules('habitaciones', 'Habitaciones', 'required|is_natural');
+        $this->form_validation->set_rules('banios', 'Baños', 'required|is_natural');
+        $this->form_validation->set_rules('anio_construccion', 'Año Construcción', 'is_natural|exact_length[4]');
+        $this->form_validation->set_rules('fecha_alta', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
+        $this->form_validation->set_rules('direccion', 'Dirección', 'required|xss_clean|max_length[200]');
+        $this->form_validation->set_rules('observaciones', 'Observaciones', 'required');
+        $this->form_validation->set_rules('precio_compra', 'Precio Compra', 'xss_clean|numericLatin');
+        $this->form_validation->set_rules('precio_alquiler', 'Precio Alquiler', 'xss_clean|numericLatin');
         $this->form_validation->set_rules('poblacion_id', 'Población', 'required');
         $this->form_validation->set_rules('provincia_id', 'Provincia', 'required');
         $this->form_validation->set_rules('tipo_id', 'Tipo', 'required');
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
-        $this->form_validation->set_rules('captador_id', 'Agente Asignado', 'xss_clean');
-        /*
+        $this->form_validation->set_rules('captador_id', 'Captador', 'xss_clean');
+        /*	
 
-	3	metros_utiles	int(4)			No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
-
-	4	habitaciones	int(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
-
-	5	banios	int(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
-
-	6	precio_compra	double			Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
-	7	precio_alquiler	double			Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
-	8	poblacion_id	int(11)		UNSIGNED	No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
 
 	9	zona_id	int(11)		UNSIGNED	Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
-	10	tipo_id	int(11)		UNSIGNED	No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
-
-	11	observaciones	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
-	12	direccion	varchar(200)	utf8_general_ci		No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
 
 	13	direccion_aprox	varchar(200)	utf8_general_ci		No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
 
@@ -114,7 +95,6 @@ class Inmueble_model extends MY_Model
 
 	24	antiguedad_edificio	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
 
-	25	captador_id
          */
     }
 
@@ -155,11 +135,11 @@ class Inmueble_model extends MY_Model
         $data['intereses'] = $this->get_intereses_dropdown();
 
         // Datos
-        $data['nif'] = array(
-            'name' => 'nif',
-            'id' => 'nif',
+        $data['referencia'] = array(
+            'name' => 'referencia',
+            'id' => 'referencia',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nif', is_object($datos) ? $datos->nif : ""),
+            'value' => $this->form_validation->set_value('referencia', is_object($datos) ? $datos->referencia : ""),
         );
 
         $data['metros'] = array(
@@ -168,19 +148,40 @@ class Inmueble_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('metros', is_object($datos) ? $datos->metros : ""),
         );
-
-        $data['apellidos'] = array(
-            'name' => 'apellidos',
-            'id' => 'apellidos',
+        
+        $data['metros_utiles'] = array(
+            'name' => 'metros_utiles',
+            'id' => 'metros_utiles',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('apellidos', is_object($datos) ? $datos->apellidos : ""),
+            'value' => $this->form_validation->set_value('metros_utiles', is_object($datos) ? $datos->metros_utiles : ""),
+        );
+
+        $data['habitaciones'] = array(
+            'name' => 'habitaciones',
+            'id' => 'habitaciones',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('habitaciones', is_object($datos) ? $datos->habitaciones : ""),
         );
         
-        $data['fecha_nac'] = array(
-            'name' => 'fecha_nac',
-            'id' => 'fecha_nac',
+        $data['banios'] = array(
+            'name' => 'banios',
+            'id' => 'banios',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('fecha_nac', is_object($datos) ? $this->utilities->cambiafecha_bd($datos->fecha_nac) : ""),
+            'value' => $this->form_validation->set_value('banios', is_object($datos) ? $datos->banios : ""),
+        );
+        
+        $data['anio_construccion'] = array(
+            'name' => 'anio_construccion',
+            'id' => 'anio_construccion',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('anio_construccion', is_object($datos) ? $datos->anio_construccion : ""),
+        );
+        
+        $data['fecha_alta'] = array(
+            'name' => 'fecha_alta',
+            'id' => 'fecha_alta',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('fecha_alta', is_object($datos) ? $this->utilities->cambiafecha_bd($datos->fecha_alta) : date("d/m/Y")),
         );
 
         $data['direccion'] = array(
@@ -207,18 +208,18 @@ class Inmueble_model extends MY_Model
         // Selector de poblaciones
         $data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($data['provincia_id']);
 
-        $data['correo'] = array(
-            'name' => 'correo',
-            'id' => 'correo',
+        $data['precio_compra'] = array(
+            'name' => 'precio_compra',
+            'id' => 'precio_compra',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('correo', is_object($datos) ? $datos->correo : ""),
+            'value' => $this->form_validation->set_value('precio_compra', is_object($datos) ? $datos->precio_compra : ""),
         );
-
-        $data['telefonos'] = array(
-            'name' => 'telefonos',
-            'id' => 'telefonos',
+        
+        $data['precio_alquiler'] = array(
+            'name' => 'precio_alquiler',
+            'id' => 'precio_alquiler',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('telefonos', is_object($datos) ? $datos->telefonos : ""),
+            'value' => $this->form_validation->set_value('precio_alquiler', is_object($datos) ? $datos->precio_alquiler : ""),
         );
 
         $data['observaciones'] = array(
@@ -238,14 +239,17 @@ class Inmueble_model extends MY_Model
      */
     public function get_formatted_datas($id = 0)
     {
-        $datas['nif'] = $this->input->post('nif');
+        $datas['referencia'] = $this->input->post('referencia');
         $datas['metros'] = $this->input->post('metros');
-        $datas['apellidos'] = $this->input->post('apellidos');
-        $datas['fecha_nac'] = $this->utilities->cambiafecha_form($this->input->post('fecha_nac'));
+        $datas['metros_utiles'] = $this->input->post('metros_utiles');
+        $datas['habitaciones'] = $this->input->post('habitaciones');
+        $datas['banios'] = $this->input->post('banios');
+        $datas['anio_construccion'] = $this->utilities->get_sql_value_string($this->input->post('anio_construccion'), "int", $this->input->post('anio_construccion'), NULL);
+        $datas['fecha_alta'] = $this->utilities->cambiafecha_form($this->input->post('fecha_alta'));
         $datas['direccion'] = $this->input->post('direccion');
-        $datas['correo'] = $this->input->post('correo');
         $datas['observaciones'] = $this->input->post('observaciones');
-        $datas['telefonos'] = $this->input->post('telefonos');
+        $datas['precio_compra'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->input->post('precio_compra')), "float", $this->utilities->formatear_numero($this->input->post('precio_compra')), NULL);
+        $datas['precio_alquiler'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->input->post('precio_alquiler')), "float", $this->utilities->formatear_numero($this->input->post('precio_alquiler')), NULL);
         $datas['tipo_id'] = $this->input->post('tipo_id');
         $datas['poblacion_id'] = $this->utilities->get_sql_value_string($this->input->post('poblacion_id'), "int", $this->input->post('poblacion_id'), NULL);
         $datas['captador_id'] = $this->utilities->get_sql_value_string($this->input->post('captador_id'), "int", $this->input->post('captador_id'), NULL);
@@ -585,7 +589,7 @@ class Inmueble_model extends MY_Model
             // Dorsales importados
             $emails_importados = array();
             // Dnis importados
-            $nifs_importados = array();
+            $referencias_importados = array();
             // Contador CSV
             $cont = 0;
             // Lectura CSV
@@ -600,14 +604,16 @@ class Inmueble_model extends MY_Model
 
                     // Asignación datos
                     $linedata['nombre_tipo'] = @$data_csv[0];
-                    $linedata['nif'] = @$data_csv[0];
+                    $linedata['referencia'] = @$data_csv[0];
                     $linedata['metros'] = @$data_csv[1];
-                    $linedata['apellidos'] = @$data_csv[2];
-                    $linedata['fecha_nac'] = @$data_csv[3];
+                    $linedata['metros_utiles'] = @$data_csv[1];
+                    $linedata['habitaciones'] = @$data_csv[2];
+                    $linedata['banios'] = @$data_csv[2];
+                    $linedata['anio_construccion'] = @$data_csv[2];
+                    $linedata['fecha_alta'] = @$data_csv[3];
                     $linedata['direccion'] = @$data_csv[4];
-                    $linedata['correo'] = @$data_csv[5];
-                    $linedata['telefonos'] = @$data_csv[6];
-                    
+                    $linedata['precio_compra'] = @$data_csv[6];
+                    $linedata['precio_alquiler'] = @$data_csv[6];
                     $linedata['nombre_provincia'] = @$data_csv[8];
                     $linedata['nombre_poblacion'] = @$data_csv[9];
                     $linedata['observaciones'] = @$data_csv[10];
@@ -618,7 +624,7 @@ class Inmueble_model extends MY_Model
                     $linedata=$this->utilities->encoding_array($linedata,'windows-1252','UTF-8//IGNORE');
 
                     // Validación de datos
-                    $datos_validados = $this->_validar_datos_inmueble($linedata, $nifs_importados, $emails_importados);
+                    $datos_validados = $this->_validar_datos_inmueble($linedata, $referencias_importados, $emails_importados);
 
                     // Se anota como email importado
                     if (!empty($linedata['correo']))
@@ -626,10 +632,10 @@ class Inmueble_model extends MY_Model
                         $emails_importados[] = $linedata['correo'];
                     }
 
-                    // Se anota como nif importado
-                    if (!empty($linedata['nif']))
+                    // Se anota como referencia importado
+                    if (!empty($linedata['referencia']))
                     {
-                        $nifs_importados[] = $linedata['nif'];
+                        $referencias_importados[] = $linedata['referencia'];
                     }
 
                     // Resultados
@@ -651,16 +657,16 @@ class Inmueble_model extends MY_Model
      * se pasa a reutilizar la validación de los datos respecto a lo almacenado en la bd
      *
      * @param [$linedata]                         Array con los datos leidos del CSV
-     * @param [$nifs_importados]                  Array de nifs importados previamente
+     * @param [$referencias_importados]                  Array de referencias importados previamente
      * @param [$emails_importados]                Array de emails importados previamente
      * 
      * @return array con los datos validados y formateados y los errores encontrados
      */
     
-    private function _validar_datos_inmueble($linedata, $nifs_importados, $emails_importados)
+    private function _validar_datos_inmueble($linedata, $referencias_importados, $emails_importados)
     {
         // Hay que reconvertir los datos de validación para que puedan pasar el validation
-        $datos_formateados = $this->_format_datos_import_csv($linedata, $nifs_importados, $emails_importados);
+        $datos_formateados = $this->_format_datos_import_csv($linedata, $referencias_importados, $emails_importados);
         $datos_formateados['texto_errores'] = NULL;
         if (!$datos_formateados['error'])
         {
@@ -683,12 +689,12 @@ class Inmueble_model extends MY_Model
      * Detectamos errores de reconversión de datos del CSV a formato de BD y realizamos la conversión
      *
      * @param [$linedata]                         Array con los datos leidos del CSV
-     * @param [$nifs_importados]                  Array de nifs importados previamente
+     * @param [$referencias_importados]                  Array de referencias importados previamente
      * @param [$emails_importados]                Array de emails importados previamente
      * 
      * @return array con los datos importados y reconvertidos
      */
-    private function _format_datos_import_csv($linedata, $nifs_importados, $emails_importados)
+    private function _format_datos_import_csv($linedata, $referencias_importados, $emails_importados)
     {
         // Procesar datos
         $error = FALSE;
@@ -704,11 +710,11 @@ class Inmueble_model extends MY_Model
         }
 
         // Comprueba que no está repetido
-        if (!is_null($nifs_importados))
+        if (!is_null($referencias_importados))
         {
-            if (in_array($linedata['nif'], $nifs_importados))
+            if (in_array($linedata['referencia'], $referencias_importados))
             {
-                $linedata['nif'].=' <span class="label label-warning">Repetido</span>';
+                $linedata['referencia'].=' <span class="label label-warning">Repetido</span>';
                 $error = TRUE;
             }
         }
@@ -753,14 +759,18 @@ class Inmueble_model extends MY_Model
     {
         $datos=array();
         
-        $datos['nif'] = $data['nif'];
+        $datos['referencia'] = $data['referencia'];
         $datos['metros'] = $data['metros'];
-        $datos['apellidos'] = $data['apellidos'];
-        $datos['fecha_nac'] = $this->utilities->cambiafecha_form($data['fecha_nac']);
+        $datos['metros_utiles'] = $data['metros_utiles'];
+        $datos['habitaciones'] = $data['habitaciones'];
+        $datos['banios'] = $data['banios'];
+        $datos['anio_construccion'] = $data['anio_construccion'];
+        $datos['fecha_alta'] = $this->utilities->cambiafecha_form($data['fecha_alta']);
         $datos['direccion'] = $data['direccion'];
         $datos['correo'] = $data['correo'];
         $datos['observaciones'] = $data['observaciones'];
-        $datos['telefonos'] = $data['telefonos'];
+        $datos['precio_compra'] = $this->utilities->formatear_numero($data['precio_compra']);
+        $datos['precio_alquiler'] = $this->utilities->formatear_numero($data['precio_alquiler']);
         $datos['tipo_id'] = $data['tipo_id'];
         $datos['poblacion_id'] = $data['poblacion_id'];
 

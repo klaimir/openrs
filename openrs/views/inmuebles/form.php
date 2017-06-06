@@ -7,27 +7,21 @@
     <div class="widget-body">
         <div class="widget-main">
             <div class="form-group">            
-                <?php echo label('NIF/NIE/CIF', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('Referencia', 'referencia', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($nif, '', 'class="form-control"'); ?>
+                    <?php echo form_input($referencia, '', 'class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Nombre', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('Tipo', 'tipo_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($nombre, '', 'class="form-control"'); ?>
+                    <?php echo form_dropdown('tipo_id',$tipos_inmuebles,$tipo_id, 'id="tipo_id" class="chosen-select form-control"'); ?>        
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Apellidos', 'apellidos', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('Fecha de alta', 'fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($apellidos, '', 'class="form-control"'); ?>
-                </div>
-            </div>
-            <div class="form-group">            
-                <?php echo label('Fecha de nacimiento', 'fecha_nac', 'class="col-sm-3 control-label no-padding-right"'); ?>
-                <div class="col-sm-9">
-                    <?php echo form_input($fecha_nac, '', 'class="form-control"'); ?>
+                    <?php echo form_input($fecha_alta, '', 'class="form-control"'); ?>
                     <small class="blue">Introduzca la fecha en formato dd/mm/aaaa (por ejemplo; 19/05/1982)</small>
                 </div>
             </div>
@@ -38,18 +32,11 @@
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">
-            CONTACTO
+            DIRECCION
         </h4>
     </div>
     <div class="widget-body">
-        <div class="widget-main">
-            <div class="space-4"></div>
-            <div class="form-group">            
-                <?php echo label('Tipo', 'tipo_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
-                <div class="col-sm-9">
-                    <?php echo form_dropdown('tipo_id',$tipos_inmuebles,$tipo_id, 'id="tipo_id" class="chosen-select form-control"'); ?>        
-                </div>
-            </div>
+        <div class="widget-main">            
             <div id="provincia_div"> 
                 <div class="space-4"></div>
                 <div class="form-group">            
@@ -68,25 +55,10 @@
                     </div>
                 </div>
             </div>
-            <div class="space-4"></div>
             <div class="form-group">            
                 <?php echo label('Dirección', 'direccion', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($direccion, '', 'class="form-control" onchange="check_google_maps();"'); ?>
-                </div>
-            </div>
-            <div class="space-4"></div>
-            <div class="form-group">            
-                <?php echo label('E-mail', 'correo', 'class="col-sm-3 control-label no-padding-right"'); ?>
-                <div class="col-sm-9">
-                    <?php echo form_input($correo, '', 'class="form-control"'); ?>
-                </div>
-            </div>
-            <div class="space-4"></div>
-            <div class="form-group">            
-                <?php echo label('Teléfonos', 'telefonos', 'class="col-sm-3 control-label no-padding-right"'); ?>
-                <div class="col-sm-9">
-                    <?php echo form_input($telefonos, '', 'class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group" id="google_maps_div">            
@@ -101,7 +73,62 @@
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">
-            CAPTACION
+            DATOS ESPECÍFICOS
+        </h4>
+    </div>
+    <div class="widget-body">
+        <div class="widget-main">
+            <div class="form-group">            
+                <?php echo label('Metros', 'metros', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($metros, '', 'class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Metros útiles', 'metros_utiles', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($metros_utiles, '', 'class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Habitaciones', 'habitaciones', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($habitaciones, '', 'class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Baños', 'banios', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($banios, '', 'class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <?php echo label('Precio Compra', 'precio_compra', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($precio_compra, '', 'class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <?php echo label('Precio Alquiler', 'precio_alquiler', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($precio_alquiler, '', 'class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Año construcción', 'anio_construccion', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($anio_construccion, '', 'class="form-control"'); ?>
+                    <small class="blue">Introduzca el año en formato aaaa (por ejemplo; 1982)</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="widget-box">
+    <div class="widget-header">
+        <h4 class="widget-title">
+            DATOS AUXILIARES
         </h4>
     </div>
     <div class="widget-body">

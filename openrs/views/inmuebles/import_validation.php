@@ -30,15 +30,15 @@
         <table class="table table-striped table-bordered table-hover" id="tabgrid_import_validation">
             <thead>
                 <tr>
-                    <th>Nombre Completo</th>
-                    <th>CIF/NIE/NIF</th>
-                    <th>Fecha nac.</th>
-                    <th>País Residencia</th>
-                    <th>Provincia</th>
+                    <th>Tipo</th>
                     <th>Municipio</th>
+                    <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>E-mail</th>
+                    <th>Precio Compra</th>
+                    <th>Precio Alquiler</th>
+                    <th>Metros</th>
+                    <th>Hab.</th>
+                    <th>Baños</th>
                     <th>Observaciones</th>
                     <th>Otros errores encontrados</th>
                 </tr>
@@ -51,15 +51,15 @@
                     {
                     ?>
                     <tr <?php if ($element['error']) echo 'class="danger"'; ?>>
-                        <td><?php echo $element['apellidos'].", ".$element['nombre']; ?></td>
-                        <td><?php echo $element['nif']; ?></td>
-                        <td><?php echo $element['fecha_nac']; ?></td>                        
-                        <td><?php echo $element['nombre_pais']; ?></td>
-                        <td><?php echo $element['nombre_provincia']; ?></td>
+                        <td><?php echo $element['nombre_tipo']; ?></td>                            
                         <td><?php echo $element['nombre_poblacion']; ?></td>
+                        <td><?php echo $element['nombre_zona']; ?></td>
                         <td><?php echo $element['direccion']; ?></td>
-                        <td><?php echo $element['telefonos']; ?></td>
-                        <td><?php echo $element['correo']; ?></td>
+                        <td><?php echo $element['precio_compra']; ?></td>
+                        <td><?php echo $element['precio_alquiler']; ?></td>
+                        <td><?php echo $element['metros']; ?></td>
+                        <td><?php echo $element['habitaciones']; ?></td>
+                        <td><?php echo $element['banios']; ?></td>
                         <td><?php echo $element['observaciones']; ?></td>
                         <td><?php echo $element['texto_errores']; ?></td>
                     </tr>

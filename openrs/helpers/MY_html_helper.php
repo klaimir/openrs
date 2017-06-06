@@ -99,3 +99,63 @@ function menu_clientes($cliente_id,$active_section)
     </div>
     <?php
 }
+
+function menu_inmuebles($inmueble_id,$active_section)
+{
+    ?>
+    <div class="hidden">
+        <button data-target="#sidebar2" data-toggle="collapse" type="button" class="pull-left navbar-toggle collapsed">
+            <span class="sr-only">Toggle sidebar</span>
+
+            <i class="ace-icon fa fa-dashboard white bigger-125"></i>
+        </button>
+
+        <div id="sidebar2" class="sidebar h-sidebar navbar-collapse collapse">
+            <ul class="nav nav-list">
+                <li class="hover <?php echo set_active_option($active_section, "inmuebles"); ?>">
+                    <a href="<?php echo site_url('inmuebles/edit/'.$inmueble_id); ?>">
+                        <i class="menu-icon fa fa-users"></i>
+                        <span class="menu-text"> DATOS DEL INMUEBLE </span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                
+                <li class="hover <?php echo set_active_option($active_section, "inmuebles_fotos"); ?>">
+                    <a href="<?php echo site_url('inmuebles_fotos/index/'.$inmueble_id); ?>">
+                        <i class="menu-icon fa fa-image"></i>
+                        <span class="menu-text"> FOTOGRAFIAS </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+
+                <li class="hover <?php echo set_active_option($active_section, "inmuebles_ficheros"); ?>">
+                    <a href="<?php echo site_url('inmuebles_ficheros/index/'.$inmueble_id); ?>">
+                        <i class="menu-icon fa fa-tag"></i>
+                        <span class="menu-text"> FICHEROS ADJUNTOS </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+
+                <li class="hover">
+                    <a href="<?php echo site_url('inmuebles_fichas/index/'.$inmueble_id); ?>">
+                        <i class="menu-icon fa fa-file-pdf-o"></i>
+                        <span class="menu-text"> FICHAS DEL INMUEBLE </span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                
+                <li class="hover <?php echo set_active_option($active_section, "inmuebles_carteles"); ?>">
+                    <a href="<?php echo site_url('inmuebles_carteles/index/'.$inmueble_id); ?>">
+                        <i class="menu-icon fa fa-picture-o"></i>
+                        <span class="menu-text"> CARTELES </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+            </ul><!-- /.nav-list -->
+        </div><!-- .sidebar -->
+    </div>
+    <?php
+}

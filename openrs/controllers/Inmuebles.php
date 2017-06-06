@@ -406,7 +406,7 @@ class Inmuebles extends CRUD_controller
             $this->load->helper('csv');
             
             // Cabecera
-            $cabecera = array('Tipo','CIF/NIE/NIF','Nombre','Apellidos','Fecha Nac.','Dirección','E-mail','Teléfono','Provincia','Municipio','Observaciones','Agente Asignado');
+            $cabecera = array('Tipo','Referencia','Nombre','Hab.','Fecha Nac.','Dirección','E-mail','Precio Compra','Precio Alquiler','Provincia','Municipio','Observaciones','Agente Asignado');
             $array[] = $this->utilities->encoding_array($cabecera);
              
             // Resto de datos
@@ -415,16 +415,17 @@ class Inmuebles extends CRUD_controller
                 $datos_formateado = array();
 
                 $datos_formateado[] = $element->nombre_tipo;
-                $datos_formateado[] = $element->nif;
+                $datos_formateado[] = $element->referencia;
                 $datos_formateado[] = $element->nombre;
-                $datos_formateado[] = $element->apellidos;
-                $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_nac);
+                $datos_formateado[] = $element->habitaciones;
+                $datos_formateado[] = $element->banios;
+                $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_alta);
                 $datos_formateado[] = $element->direccion;
-                $datos_formateado[] = $element->correo;
-                $datos_formateado[] = $element->telefonos;
-                
+                $datos_formateado[] = number_format($element->precio_compra, 2, "," , ".");   
+                $datos_formateado[] = number_format($element->precio_alquiler, 2, "," , ".");  
                 $datos_formateado[] = $element->nombre_provincia;
                 $datos_formateado[] = $element->nombre_poblacion;
+                $datos_formateado[] = $element->anio_construccion;
                 $datos_formateado[] = $element->observaciones;
                 $datos_formateado[] = $element->nombre_captador;
                 
