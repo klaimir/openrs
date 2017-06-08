@@ -1,8 +1,12 @@
 <div class="row">
     <div class="col-xs-12">
-        <a class="btn btn-info pull-right" href="<?php echo site_url('demandas/insert/'.$element->id); ?>">
+        <a class="btn btn-info pull-right" href="<?php echo site_url('demandas/insert?inmueble_id='.$element->id); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> Crear Demanda </span>
+        </a>
+        <a class="btn btn-info pull-right" href="<?php echo site_url('inmuebles/asociar_demandas/'.$element->id); ?>">
+            <i class="menu-icon fa fa-plus-circle"></i>
+            <span class="menu-text"> Asociar a demanda existente</span>
         </a>
     </div>
 </div>
@@ -14,15 +18,13 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Tipo</th>
+                    <th>Nombre Completo</th>
+                    <th>CIF/NIE/NIF</th>
+                    <th>Provincia</th>
                     <th>Municipio</th>
-                    <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
-                    <th>Metros</th>
-                    <th>Hab.</th>
-                    <th>Baños</th>
+                    <th>Teléfono</th>
+                    <th>E-mail</th>
                     <th>Ficha visita</th>
                     <th>Opciones</th>
                 </tr>
@@ -31,26 +33,24 @@
                 <?php 
                 if($element->demandantes)
                 {
-                    foreach ($element->demandantes as $inmueble)
+                    foreach ($element->demandantes as $demandante)
                     {
                     ?>
                     <tr>
-                        <td><?php echo $inmueble->nombre_tipo; ?></td>
-                        <td><?php echo $inmueble->nombre_poblacion; ?></td>
-                        <td><?php echo $inmueble->nombre_zona; ?></td>
-                        <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->direccion; ?></a></td>
-                        <td><?php echo number_format($inmueble->precio_compra, 0, ",", "."); ?></td>
-                        <td><?php echo number_format($inmueble->precio_alquiler, 0, ",", "."); ?></td>
-                        <td><?php echo $inmueble->metros; ?></td>
-                        <td><?php echo $inmueble->habitaciones; ?></td>
-                        <td><?php echo $inmueble->banios; ?></td>
+                        <td><?php echo $demandante->apellidos.", ".$demandante->nombre; ?></td>
+                        <td><?php echo $demandante->nif; ?></td>
+                        <td><?php echo $demandante->nombre_provincia; ?></td>
+                        <td><?php echo $demandante->nombre_poblacion; ?></td>
+                        <td><?php echo $demandante->direccion; ?></td>
+                        <td><?php echo $demandante->telefonos; ?></td>
+                        <td><?php echo $demandante->correo; ?></td>
                         <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="<?php echo site_url("demandas/edit/" . $inmueble->demanda_id); ?>" title="Editar demanda">
+                                <a class="green" href="<?php echo site_url("demandas/edit/" . $demandantes->demanda_id); ?>" title="Editar demanda">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
-                                <a class="red borrar-inmueble" data-demanda="<?php echo $inmueble->demanda_id; ?>" data-inmueble="<?php echo $inmueble->id; ?>" href="#" title="Desasignar">
+                                <a class="red borrar-inmueble" data-demanda="<?php echo $demandante->demanda_id; ?>" data-inmueble="<?php echo $demandante->id; ?>" href="#" title="Desasignar">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>
                             </div>
@@ -62,7 +62,7 @@
 
                                     <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                         <li>
-                                            <a href="<?php echo site_url("demandas/edit/" . $inmueble->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar demanda">
+                                            <a href="<?php echo site_url("demandas/edit/" . $demandante->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar demanda">
                                                 <span class="green">
                                                     <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                                 </span>
@@ -70,7 +70,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="#" class="tooltip-error borrar-inmueble" data-demanda="<?php echo $inmueble->demanda_id; ?>" data-inmueble="<?php echo $inmueble->id; ?>" data-rel="tooltip" title="Desasignar">
+                                            <a href="#" class="tooltip-error borrar-inmueble" data-demanda="<?php echo $demandante->demanda_id; ?>" data-inmueble="<?php echo $demandante->id; ?>" data-rel="tooltip" title="Desasignar">
                                                 <span class="red">
                                                     <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                                 </span>

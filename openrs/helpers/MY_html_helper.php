@@ -80,7 +80,7 @@ function menu_clientes($cliente_id,$active_section)
 
                 <li class="hover <?php echo set_active_option($active_section, "clientes_ficheros"); ?>">
                     <a href="<?php echo site_url('clientes_ficheros/index/'.$cliente_id); ?>">
-                        <i class="menu-icon fa fa-tag"></i>
+                        <i class="menu-icon fa fa-paperclip"></i>
                         <span class="menu-text"> FICHEROS ADJUNTOS </span>
                     </a>
 
@@ -114,7 +114,7 @@ function menu_inmuebles($inmueble_id,$active_section)
             <ul class="nav nav-list">
                 <li class="hover <?php echo set_active_option($active_section, "inmuebles"); ?>">
                     <a href="<?php echo site_url('inmuebles/edit/'.$inmueble_id); ?>">
-                        <i class="menu-icon fa fa-users"></i>
+                        <i class="menu-icon fa fa-building"></i>
                         <span class="menu-text"> DATOS DEL INMUEBLE </span>
                     </a>
                     <b class="arrow"></b>
@@ -131,7 +131,7 @@ function menu_inmuebles($inmueble_id,$active_section)
 
                 <li class="hover <?php echo set_active_option($active_section, "inmuebles_ficheros"); ?>">
                     <a href="<?php echo site_url('inmuebles_ficheros/index/'.$inmueble_id); ?>">
-                        <i class="menu-icon fa fa-tag"></i>
+                        <i class="menu-icon fa fa-paperclip"></i>
                         <span class="menu-text"> FICHEROS ADJUNTOS </span>
                     </a>
 
@@ -148,7 +148,7 @@ function menu_inmuebles($inmueble_id,$active_section)
                 
                 <li class="hover <?php echo set_active_option($active_section, "inmuebles_carteles"); ?>">
                     <a href="<?php echo site_url('inmuebles_carteles/index/'.$inmueble_id); ?>">
-                        <i class="menu-icon fa fa-picture-o"></i>
+                        <i class="menu-icon fa fa-qrcode"></i>
                         <span class="menu-text"> CARTELES </span>
                     </a>
 

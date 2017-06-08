@@ -1,8 +1,8 @@
-<?php menu_clientes ($element->id,"clientes"); ?>
+<?php menu_inmuebles ($element->id,"inmuebles"); ?>
 
 <div class="page-header">
     <h1>
-        Datos del cliente
+        Datos del inmueble
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             <?php echo lang('common_btn_edit'); ?>
@@ -16,15 +16,15 @@
 
 <div class="tabbable">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab_inmuebles_demandados" data-toggle="tab">INMUEBLES DEMANDADOS</a></li>
-        <li><a href="#tab_propiedades" data-toggle="tab">PROPIEDADES</a></li>
+        <li class="active"><a href="#tab_demandantes" data-toggle="tab">DEMANDANTES</a></li>
+        <li><a href="#tab_propietarios" data-toggle="tab">PROPIETARIOS</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane active" id="tab_inmuebles_demandados">
-            <?php $this->load->view('clientes/list_demandas', $this->data); ?>
+        <div class="tab-pane active" id="tab_demandantes">
+            <?php $this->load->view('inmuebles/list_demandantes', $this->data); ?>
         </div>
-        <div class="tab-pane" id="tab_propiedades">
-            <?php $this->load->view('clientes/list_propiedades', $this->data); ?>
+        <div class="tab-pane" id="tab_propietarios">
+            <?php $this->load->view('inmuebles/list_propietarios', $this->data); ?>
         </div>
     </div>    
 </div>

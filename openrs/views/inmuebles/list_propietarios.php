@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-xs-12">
-        <a class="btn btn-info pull-right" href="<?php echo site_url('inmuebles/insert/'.$element->id); ?>">
+        <a class="btn btn-info pull-right" href="<?php echo site_url('clientes/insert/'.$element->id); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
-            <span class="menu-text"> Crear Inmueble </span>
+            <span class="menu-text"> Crear Propietario </span>
         </a>
-        <a class="btn btn-info pull-right" href="<?php echo site_url('clientes/asociar_inmuebles/'.$element->id); ?>">
+        <a class="btn btn-info pull-right" href="<?php echo site_url('inmuebles/asociar_clientes/'.$element->id); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
-            <span class="menu-text"> Asociar Inmuebles </span>
+            <span class="menu-text"> Asociar Clientes </span>
         </a>
     </div>
 </div>
@@ -18,15 +18,13 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Tipo</th>
+                    <th>Nombre Completo</th>
+                    <th>CIF/NIE/NIF</th>
+                    <th>Provincia</th>
                     <th>Municipio</th>
-                    <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
-                    <th>Metros</th>
-                    <th>Hab.</th>
-                    <th>Baños</th>
+                    <th>Teléfono</th>
+                    <th>E-mail</th>
                     <th>Ficha encargo</th>
                     <th>Cláusula Cert. Ener.</th>
                     <th>Opciones</th>
@@ -36,27 +34,25 @@
                 <?php 
                 if($element->propietarios)
                 {
-                    foreach ($element->propietarios as $inmueble)
+                    foreach ($element->propietarios as $propietario)
                     {
                     ?>
                     <tr>
-                        <td><?php echo $inmueble->nombre_tipo; ?></td>
-                        <td><?php echo $inmueble->nombre_poblacion; ?></td>
-                        <td><?php echo $inmueble->nombre_zona; ?></td>
-                        <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->direccion; ?></a></td>
-                        <td><?php echo number_format($inmueble->precio_compra, 0, ",", "."); ?></td>
-                        <td><?php echo number_format($inmueble->precio_alquiler, 0, ",", "."); ?></td>
-                        <td><?php echo $inmueble->metros; ?></td>
-                        <td><?php echo $inmueble->habitaciones; ?></td>
-                        <td><?php echo $inmueble->banios; ?></td>
+                        <td><?php echo $propietario->apellidos.", ".$propietario->nombre; ?></td>
+                        <td><?php echo $propietario->nif; ?></td>
+                        <td><?php echo $propietario->nombre_provincia; ?></td>
+                        <td><?php echo $propietario->nombre_poblacion; ?></td>
+                        <td><?php echo $propietario->direccion; ?></td>
+                        <td><?php echo $propietario->telefonos; ?></td>
+                        <td><?php echo $propietario->correo; ?></td>
                         <td>-</td>
                         <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble">
+                                <a class="green" href="<?php echo site_url("inmuebles/edit/" . $propietario->id); ?>" title="Editar inmueble">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
-                                <a class="red borrar-propiedad" data-inmueble="<?php echo $inmueble->id; ?>" href="#" title="Desasignar">
+                                <a class="red borrar-propiedad" data-inmueble="<?php echo $propietario->id; ?>" href="#" title="Desasignar">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>
                             </div>
@@ -68,7 +64,7 @@
 
                                     <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                         <li>
-                                            <a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar inmueble">
+                                            <a href="<?php echo site_url("inmuebles/edit/" . $propietario->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar inmueble">
                                                 <span class="green">
                                                     <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                                 </span>
@@ -76,7 +72,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="#" class="tooltip-error borrar-propiedad" data-inmueble="<?php echo $inmueble->id; ?>" data-rel="tooltip" title="Desasignar">
+                                            <a href="#" class="tooltip-error borrar-propiedad" data-inmueble="<?php echo $propietario->id; ?>" data-rel="tooltip" title="Desasignar">
                                                 <span class="red">
                                                     <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                                 </span>
@@ -99,10 +95,10 @@
 <script type="text/javascript">   
     jQuery(function ($) {
         $('.borrar-propiedad').click(function () {
-            var inmueble = $(this).data("inmueble");
-            bootbox.confirm("¿Estás seguro/a de quitar la propiedad de este cliente?", function (result) {
+            var cliente = $(this).data("cliente");
+            bootbox.confirm("¿Estás seguro/a de quitar al propietario de este inmueble?", function (result) {
                 if (result) {
-                    window.location = '<?php echo site_url('clientes/quitar_inmueble/'.$element->id); ?>/' + inmueble;
+                    window.location = '<?php echo site_url('inmuebles/quitar_cliente/'.$element->id); ?>/' + cliente;
                 }
             });
         });

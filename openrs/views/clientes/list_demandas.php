@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-xs-12">
-        <a class="btn btn-info pull-right" href="<?php echo site_url('demandas/insert/'.$element->id); ?>">
+        <a class="btn btn-info pull-right" href="<?php echo site_url('demandas/insert?cliente_id='.$element->id); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> Crear Demanda </span>
         </a>

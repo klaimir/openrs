@@ -468,7 +468,7 @@ class Inmueble_model extends MY_Model
             // Modelos axiliares
             $this->load->model('Cliente_model');
             $this->load->model('Demanda_model');
-            // Consulta de propiedades
+            // Consulta de datos
             $info->propietarios = $this->Cliente_model->get_propietarios_inmueble($id);
             $info->demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
             // Devolvemos toda la información calculada
