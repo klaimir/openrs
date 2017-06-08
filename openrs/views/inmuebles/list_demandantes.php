@@ -29,9 +29,9 @@
             </thead>
             <tbody>
                 <?php 
-                if($element->inmuebles_demandados)
+                if($element->demandantes)
                 {
-                    foreach ($element->inmuebles_demandados as $inmueble)
+                    foreach ($element->demandantes as $inmueble)
                     {
                     ?>
                     <tr>

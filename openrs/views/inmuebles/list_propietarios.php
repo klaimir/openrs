@@ -34,9 +34,9 @@
             </thead>
             <tbody>
                 <?php 
-                if($element->propiedades)
+                if($element->propietarios)
                 {
-                    foreach ($element->propiedades as $inmueble)
+                    foreach ($element->propietarios as $inmueble)
                     {
                     ?>
                     <tr>

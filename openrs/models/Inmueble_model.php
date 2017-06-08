@@ -70,16 +70,15 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('captador_id', 'Captador', 'xss_clean');
         /*	
 
-
 	9	zona_id	int(11)		UNSIGNED	Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
 
-	13	direccion_aprox	varchar(200)	utf8_general_ci		No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
+	13	direccion_publica	varchar(200)	utf8_general_ci		No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
 
-	14	bloqueado	tinyint(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
+	14	publicado	tinyint(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
 
-	15	estado	varchar(20)	utf8_general_ci		No 	activo		Cambiar Cambiar	Eliminar Eliminar	
+	15	estado` INT(11	utf8_general_ci		No 	activo		Cambiar Cambiar	Eliminar Eliminar	
 
-	16	antiguedad	varchar(30)	utf8_general_ci		No 	inmueble_usado		Cambiar Cambiar	Eliminar Eliminar	
+	16	obra_nueva	varchar(30)	utf8_general_ci		No 	inmueble_usado		Cambiar Cambiar	Eliminar Eliminar	
 
 	17	certificacion_energetica_id	int(11)		UNSIGNED	Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
 
@@ -470,7 +469,7 @@ class Inmueble_model extends MY_Model
             $this->load->model('Cliente_model');
             $this->load->model('Demanda_model');
             // Consulta de propiedades
-            $info->propietarios = $this->Cliente_model->get_propietarios_cliente($id);
+            $info->propietarios = $this->Cliente_model->get_propietarios_inmueble($id);
             $info->demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
             // Devolvemos toda la información calculada
             return $info;

@@ -141,10 +141,10 @@
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     function reset_form() {
-        $('#pais_id').val('-1');
+        $('#tipo_id').val('-1');
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
-        $('#agente_asignado_id').val('-1');
+        $('#captador_id').val('-1');
         $('#interes_id').val('-1');
         $('#fecha_desde').val('');
         $('#fecha_hasta').val('');

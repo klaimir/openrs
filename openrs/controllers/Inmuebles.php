@@ -69,7 +69,7 @@ class Inmuebles extends CRUD_controller
             // Para entornos que no sean development es necesario una API-KEY
             $this->load->model('Config_model');
             $config=$this->Config_model->get_config();
-            $this->googlemaps->apiKey=$config->api_key;
+            $this->googlemaps->apiKey=$config->google_api_key;
 
             // Create the map.
             $this->data['map'] = $this->googlemaps->create_map();

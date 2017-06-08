@@ -39,4 +39,22 @@ class Demanda_model extends MY_Model
         return $this->db->get()->result();
     }
     
+    /**
+     * Devuelve los clientes demandantes de un inmueble
+     *
+     * @param [$inmueble_id]		Identificador del inmueble
+     * 
+     * @return Array con la información del inmueble y la demanda asociada
+     */
+    
+    function get_demandantes_inmueble($inmueble_id)
+    {
+        $this->db->select('v_clientes.*, inmuebles_demandas.demanda_id');
+        $this->db->from('v_clientes');     
+        $this->db->join('demandas', 'demandas.cliente_id='.'v_clientes.id');
+        $this->db->join('inmuebles_demandas', 'inmuebles_demandas.demanda_id='.'demandas.id');        
+        $this->db->where("inmueble_id",$inmueble_id);
+        return $this->db->get()->result();
+    }
+    
 }

@@ -512,23 +512,15 @@ class Cliente_model extends MY_Model
      * Devuelve los clientes que son propietarios de un inmueble en un idioma determinado
      *
      * @param [$inmueble_id]		Identificador del inmueble
-     * @param [$id_idioma]		Identificador del idioma
      * 
      * @return Array con la información de los propietarios
      */
     
-    function get_propietarios_inmueble($inmueble_id,$id_idioma=NULL)
+    function get_propietarios_inmueble($inmueble_id)
     {
-        // Si el idioma es NULL, consultamos el de la sesion
-        if(is_null($id_idioma))
-        {
-            $id_idioma = $this->data['session_id_idioma'];
-        }
-        // Consulta
         $this->db->select($this->view.'.*');
         $this->db->from($this->view);
         $this->db->join('clientes_inmuebles', 'clientes_inmuebles.cliente_id='.'v_clientes.id');
-        $this->db->where("idioma_id",$id_idioma);
         $this->db->where("inmueble_id",$inmueble_id);
         return $this->db->get()->result();
     }
