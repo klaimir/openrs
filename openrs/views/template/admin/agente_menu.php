@@ -1,3 +1,12 @@
+<li>
+    <a href="<?php echo site_url('usuarios/dashboard'); ?>" onClick="return show_confirm_exit_message();">
+        <i class="menu-icon fa fa-home"></i>
+        <span class="menu-text"> Inicio </span>
+    </a>
+
+    <b class="arrow"></b>
+</li>
+
 <li class="<?php echo set_active_option($_active_section,'inmuebles'); ?>">
     <a href="<?php echo site_url('inmuebles'); ?>" onClick="return show_confirm_exit_message();">
         <i class="menu-icon fa fa-building"></i>
