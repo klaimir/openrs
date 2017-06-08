@@ -32,7 +32,9 @@ class Config_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('email_contacto', 'Email de contacto', 'xss_clean|max_length[255]|valid_email');
+        $this->form_validation->set_rules('email_contacto', 'Email de contacto', 'xss_clean|max_length[120]|valid_email');
+        $this->form_validation->set_rules('api_key', 'API-KEY de google', 'xss_clean|max_length[50]');
+        $this->form_validation->set_rules('google_analytics_ID', 'API-KEY de google', 'xss_clean|max_length[20]');
     }
     
     /**
@@ -67,6 +69,20 @@ class Config_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('email_contacto',is_object($datos) ? $datos->email_contacto : ""),
         );
+        
+        $data['google_api_key'] = array(
+            'name' => 'google_api_key',
+            'id' => 'google_api_key',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('google_api_key',is_object($datos) ? $datos->google_api_key : ""),
+        );
+        
+        $data['google_analytics_ID'] = array(
+            'name' => 'google_analytics_ID',
+            'id' => 'google_analytics_ID',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('google_analytics_ID',is_object($datos) ? $datos->google_analytics_ID : ""),
+        );
 
         return $data;
     }
@@ -80,6 +96,8 @@ class Config_model extends MY_Model
     public function get_formatted_datas()
     {
         $datas['email_contacto'] = $this->input->post('email_contacto');
+        $datas['google_api_key'] = $this->input->post('google_api_key');
+        $datas['google_analytics_ID'] = $this->input->post('google_analytics_ID');
         return $datas;
     }
     
