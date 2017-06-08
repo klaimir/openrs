@@ -61,8 +61,8 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('fecha_alta', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
         $this->form_validation->set_rules('direccion', 'Dirección', 'required|xss_clean|max_length[200]');
         $this->form_validation->set_rules('observaciones', 'Observaciones', 'required');
-        $this->form_validation->set_rules('precio_compra', 'Precio Compra', 'xss_clean|numericLatin');
-        $this->form_validation->set_rules('precio_alquiler', 'Precio Alquiler', 'xss_clean|numericLatin');
+        $this->form_validation->set_rules('precio_compra', 'Precio Compra', 'xss_clean|is_natural');
+        $this->form_validation->set_rules('precio_alquiler', 'Precio Alquiler', 'xss_clean|is_natural');
         $this->form_validation->set_rules('poblacion_id', 'Población', 'required');
         $this->form_validation->set_rules('provincia_id', 'Provincia', 'required');
         $this->form_validation->set_rules('tipo_id', 'Tipo', 'required');
@@ -247,8 +247,8 @@ class Inmueble_model extends MY_Model
         $datas['fecha_alta'] = $this->utilities->cambiafecha_form($this->input->post('fecha_alta'));
         $datas['direccion'] = $this->input->post('direccion');
         $datas['observaciones'] = $this->input->post('observaciones');
-        $datas['precio_compra'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->input->post('precio_compra')), "float", $this->utilities->formatear_numero($this->input->post('precio_compra')), NULL);
-        $datas['precio_alquiler'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->input->post('precio_alquiler')), "float", $this->utilities->formatear_numero($this->input->post('precio_alquiler')), NULL);
+        $datas['precio_compra'] = $this->input->post('precio_compra');
+        $datas['precio_alquiler'] = $this->input->post('precio_alquiler');
         $datas['tipo_id'] = $this->input->post('tipo_id');
         $datas['poblacion_id'] = $this->utilities->get_sql_value_string($this->input->post('poblacion_id'), "int", $this->input->post('poblacion_id'), NULL);
         $datas['captador_id'] = $this->utilities->get_sql_value_string($this->input->post('captador_id'), "int", $this->input->post('captador_id'), NULL);

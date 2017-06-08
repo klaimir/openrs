@@ -421,8 +421,8 @@ class Inmuebles extends CRUD_controller
                 $datos_formateado[] = $element->banios;
                 $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_alta);
                 $datos_formateado[] = $element->direccion;
-                $datos_formateado[] = number_format($element->precio_compra, 2, "," , ".");   
-                $datos_formateado[] = number_format($element->precio_alquiler, 2, "," , ".");  
+                $datos_formateado[] = number_format($element->precio_compra, 0, "," , ".");   
+                $datos_formateado[] = number_format($element->precio_alquiler, 0, "," , ".");  
                 $datos_formateado[] = $element->nombre_provincia;
                 $datos_formateado[] = $element->nombre_poblacion;
                 $datos_formateado[] = $element->anio_construccion;

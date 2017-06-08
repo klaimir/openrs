@@ -44,8 +44,8 @@
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>
                         <td><?php echo $inmueble->nombre_zona; ?></td>
                         <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->direccion; ?></a></td>
-                        <td><?php echo number_format($inmueble->precio_compra, 2, ",", "."); ?></td>
-                        <td><?php echo number_format($inmueble->precio_alquiler, 2, ",", "."); ?></td>
+                        <td><?php echo number_format($inmueble->precio_compra, 0, ",", "."); ?></td>
+                        <td><?php echo number_format($inmueble->precio_alquiler, 0, ",", "."); ?></td>
                         <td><?php echo $inmueble->metros; ?></td>
                         <td><?php echo $inmueble->habitaciones; ?></td>
                         <td><?php echo $inmueble->banios; ?></td>
