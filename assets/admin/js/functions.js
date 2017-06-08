@@ -33,3 +33,9 @@ function show_confirm_exit_message()
             return false;
     }
 }
+
+// Funcion para mostrar ventana de configmación para salir de una zona en la que ha introducido datos
+function mark_modified_field()
+{
+    modificado = true;
+}

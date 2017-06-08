@@ -19,7 +19,7 @@ class Seccion extends MY_Controller_Front
                 // Carga de key de google analytic para seguimiento público
                 $this->load->model('Config_model');
                 $config=$this->Config_model->get_config();
-                $this->session->set_userdata('google_analytics_key',$config->google_analytics_key);
+                $this->session->set_userdata('google_analytics_ID',$config->google_analytics_ID);
 	}
 	
 	//Método para la portada: diferente en cada tienda, para que la portada sea original
