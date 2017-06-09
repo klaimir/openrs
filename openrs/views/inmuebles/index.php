@@ -144,10 +144,13 @@
         $('#tipo_id').val('-1');
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
+        $('#zona_id').val('');
         $('#captador_id').val('-1');
         $('#interes_id').val('-1');
         $('#fecha_desde').val('');
         $('#fecha_hasta').val('');
+        // Resetear los valores no es suficiente para los chosen select, hay que hacer esto tb
+        $('.chosen-single').html('<span>- Seleccione -</span><div><b></b></div>');
         return false;
     }    
     
@@ -169,13 +172,30 @@
     }                
     ?>
         
+    <?php
+    if(isset($filtros['poblacion_id']) && $filtros['poblacion_id']!="-1" && $filtros['poblacion_id']!="")
+    {
+        if(isset($filtros['zona_id']) && $filtros['zona_id']!="")
+        {
+    ?>
+            $('#zonas').load('<?php echo site_url("common/load_zonas/".$filtros['poblacion_id']."/".$filtros['zona_id']); ?>');
+    <?php
+        }
+        else
+        {
+    ?>
+            $('#zonas').load('<?php echo site_url("common/load_zonas/".$filtros['poblacion_id']); ?>');
+    <?php
+        }
+    }                
+    ?>
+        
     function check_multiple_google_maps() {
         $('#google_maps_div').toggle('slow');
         $('#google_maps').load('<?php echo site_url('inmuebles/multiple_google_map');?>');
     }
     
     jQuery(function ($) {
-
         $('.borrar-elemento').click(function () {
             var id = $(this).data("id");
             bootbox.confirm("¿Estás seguro/a?", function (result) {
