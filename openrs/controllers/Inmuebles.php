@@ -105,6 +105,9 @@ class Inmuebles extends CRUD_controller
 
         // Filtro poblacion_id
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'poblacion_id');
+        
+        // Filtro zona_id
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'zona_id');
 
         // Filtro tipo_id
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'tipo_id');
@@ -129,6 +132,7 @@ class Inmuebles extends CRUD_controller
         $filtros['tipo_id'] = $this->session->userdata('inmuebles_buscador_tipo_id');
         $filtros['provincia_id'] = $this->session->userdata('inmuebles_buscador_provincia_id');
         $filtros['poblacion_id'] = $this->session->userdata('inmuebles_buscador_poblacion_id');
+        $filtros['zona_id'] = $this->session->userdata('inmuebles_buscador_zona_id');
         $filtros['captador_id'] = $this->session->userdata('inmuebles_buscador_captador_id');
         $filtros['interes_id'] = $this->session->userdata('inmuebles_buscador_interes_id');
 

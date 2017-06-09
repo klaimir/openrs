@@ -739,13 +739,15 @@ class Cliente_model extends MY_Model
                 $linedata['nombre_provincia'].=' <span class="label label-success">No existe</span>';
                 $error = TRUE;
             }
-
-            // Población
-            $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion']);
-            if (!$linedata['poblacion_id'])
+            else
             {
-                $linedata['nombre_poblacion'].=' <span class="label label-success">No existe</span>';
-                $error = TRUE;
+                // Población
+                $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion'],$linedata['provincia_id']);
+                if (!$linedata['poblacion_id'])
+                {
+                    $linedata['nombre_poblacion'].=' <span class="label label-success">No existe</span>';
+                    $error = TRUE;
+                }
             }
         }
         else

@@ -7,7 +7,7 @@ class Zonas extends CRUD_controller
     
     function __construct()
     {
-        $this->_model = "Zonas_model";
+        $this->_model = "Zona_model";
         $this->_controller = "zonas";
         $this->_view = "provincias/poblaciones/zonas";
         

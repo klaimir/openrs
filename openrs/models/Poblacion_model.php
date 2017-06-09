@@ -16,6 +16,7 @@ class Poblacion_model extends MY_Model
         $this->has_one['provincia'] = array('local_key' => 'id', 'foreign_key' => 'provincia_id', 'foreign_model' => 'Provincia_model');
         $this->has_many['clientes'] = array('local_key' => 'id', 'foreign_key' => 'poblacion_id', 'foreign_model' => 'Cliente_model');
         $this->has_many['inmuebles'] = array('local_key' => 'id', 'foreign_key' => 'poblacion_id', 'foreign_model' => 'Inmueble_model');
+        $this->has_many['zonas'] = array('local_key' => 'id', 'foreign_key' => 'poblacion_id', 'foreign_model' => 'Zona_model');
 
         parent::__construct();
 
@@ -176,6 +177,14 @@ class Poblacion_model extends MY_Model
         // Activación de provincia
         return $this->update(array("activa" => $activar), $id);
     }
+    
+    /**
+     * Consulta las poblaciones de una provincia
+     *
+     * @param [$provincia_id]                  Indentificador de provincia
+     *
+     * @return array de poblaciones
+     */
 
     function get_poblaciones_provincia($provincia_id)
     {
@@ -220,15 +229,17 @@ class Poblacion_model extends MY_Model
      * Devuelve el identificador de un poblacion que coincida con el nombre suministrado
      *
      * @param	[nombre_poblacion]   Nombre del poblacion
+     * @param	[provincia_id]   Identificador de la provincia
      * 
      * @return identificador del poblacion
      */
     
-    function get_id_by_nombre($nombre_poblacion)
+    function get_id_by_nombre($nombre_poblacion,$provincia_id)
     {
         $this->db->select($this->table.'.id');
         $this->db->from($this->table);
         $this->db->where('poblacion', $nombre_poblacion);
+        $this->db->where('provincia_id', $provincia_id);
         $query = $this->db->get();
         $row = $query->row();
         if ($row) {

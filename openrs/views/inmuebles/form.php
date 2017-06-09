@@ -42,7 +42,7 @@
                 <div class="form-group">            
                     <?php echo label('Provincia', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div class="col-sm-9">
-                        <?php echo form_dropdown('provincia_id',$provincias,$provincia_id, 'onchange="mark_modified_field();" class="form-control" id="provincia_id" onchange="show_poblaciones();"'); ?>
+                        <?php echo form_dropdown('provincia_id',$provincias,$provincia_id, 'onchange="mark_modified_field(); show_poblaciones();" class="form-control" id="provincia_id"'); ?>
                     </div>
                 </div>
             </div>
@@ -52,6 +52,15 @@
                     <?php echo label('Población', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div id="poblaciones" class="col-sm-9">
                         <?php echo form_dropdown('poblacion_id',$poblaciones,$poblacion_id, 'onchange="mark_modified_field();" class="chosen-select form-control" id="poblacion_id""'); ?>
+                    </div>
+                </div>
+            </div>
+            <div id="zona_div"> 
+                <div class="space-4"></div>
+                <div class="form-group">            
+                    <?php echo label('Zona', 'zona_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                    <div id="zonas" class="col-sm-9">
+                        <?php echo form_dropdown('zona_id',$zonas,$zona_id, 'onchange="mark_modified_field();" class="chosen-select form-control" id="zona_id""'); ?>
                     </div>
                 </div>
             </div>
@@ -154,7 +163,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         // Comprobamos si hay que mostrar mapa google maps
-        check_google_maps();
+        check_google_maps();        
     });
 
     function check_google_maps() {

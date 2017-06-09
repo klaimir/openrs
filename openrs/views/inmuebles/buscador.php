@@ -14,6 +14,11 @@
                 </div>
             </div>
             <div class="form-group">            
+                <?php echo label('Zonas', 'zona_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div id="zonas" class="col-sm-9">
+                </div>
+            </div>
+            <div class="form-group">            
                 <?php echo label('Intereses', 'interes_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('interes_id',$intereses,$filtros['interes_id'], 'class="form-control" id="interes_id"'); ?>

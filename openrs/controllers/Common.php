@@ -16,6 +16,14 @@ class Common extends MY_Controller
         }
     }
     
+    public function load_zonas($poblacion_id=0, $zona_seleccionada = NULL)
+    {
+        $this->load->model('Zona_model');        
+        $this->data['zona_seleccionada'] = $zona_seleccionada;
+        $this->data['zonas'] = $this->Zona_model->get_zonas_poblacion($poblacion_id);
+        $this->load->view('common/zonas', $this->data);
+    }
+    
     public function load_poblaciones($provincia_id=0, $poblacion_seleccionada = NULL)
     {
         $this->load->model('Poblacion_model');        
@@ -68,7 +76,9 @@ class Common extends MY_Controller
         $this->googlemaps->initialize($config);
         
         // Para entornos que no sean development es necesario una API-KEY
-        $this->googlemaps->apiKey='AIzaSyCVeNG5XiGj--htp-gk_7zu2bzgQ44VmvI';
+        $this->load->model('Config_model');
+        $config=$this->Config_model->get_config();
+        $this->googlemaps->apiKey=$config->google_api_key;
         
         // Marker
         $marker=array();

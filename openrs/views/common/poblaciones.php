@@ -1,4 +1,4 @@
-<select id="poblacion_id" name="poblacion_id" class="chosen-select form-control">
+<select id="poblacion_id" name="poblacion_id" class="chosen-select form-control" onchange="show_zonas();" >
     <option <?php echo set_select('poblacion_id', ''); ?> value="">- Seleccione población -</option>
     <?php
     foreach ($poblaciones as $poblacion)
@@ -26,5 +26,10 @@ if(!ace.vars['touch']) {
                      $this.next().css({'width': $this.parent().width()});
             })
     }).trigger('resize.chosen');
+}
+
+function show_zonas() {
+    var poblacion_id = $('#poblacion_id').val();
+    $('#zonas').load('<?php echo site_url("common/load_zonas");?>/'+poblacion_id);
 }
 </script>

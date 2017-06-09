@@ -17,6 +17,7 @@ class Inmueble_model extends MY_Model
 
         $this->has_many['demandas'] = array('local_key' => 'id', 'foreign_key' => 'inmueble_id', 'foreign_model' => 'Inmueble_demanda_model');
         $this->has_one['poblacion'] = array('local_key' => 'poblacion_id', 'foreign_key' => 'id', 'foreign_model' => 'Poblacion_model');
+        $this->has_one['zona'] = array('local_key' => 'zona_id', 'foreign_key' => 'id', 'foreign_model' => 'Zona_model');
         $this->has_one['tipo'] = array('local_key' => 'tipo_id', 'foreign_key' => 'id', 'foreign_model' => 'Tipo_inmueble_model');
         
         $this->has_many_pivot['propietarios'] = array(
@@ -30,7 +31,7 @@ class Inmueble_model extends MY_Model
         );
 
         // Modelos axiliares
-        $this->load->model('Provincia_model');
+        $this->load->model('Zona_model');
         $this->load->model('Tipo_inmueble_model');
     }
     
@@ -52,7 +53,7 @@ class Inmueble_model extends MY_Model
      */
     public function set_rules($id = 0)
     {
-        $this->form_validation->set_rules('referencia', 'Referencia', 'required|max_length[11]|is_unique_global[inmuebles;' . $id . ';referencia;id]|xss_clean');
+        $this->form_validation->set_rules('referencia', 'Referencia', 'required|max_length[40]|is_unique_global[inmuebles;' . $id . ';referencia;id]|xss_clean');
         $this->form_validation->set_rules('metros', 'Metros totales', 'required|xss_clean|max_length[4]|is_natural_no_zero');
         $this->form_validation->set_rules('metros_utiles', 'Metros útiles', 'required|xss_clean|max_length[4]|is_natural_no_zero|less_than_equal_to['.$this->form_validation->get_validation_data('metros').']');
         $this->form_validation->set_rules('habitaciones', 'Habitaciones', 'required|is_natural');
@@ -60,17 +61,16 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('anio_construccion', 'Año Construcción', 'is_natural|exact_length[4]');
         $this->form_validation->set_rules('fecha_alta', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
         $this->form_validation->set_rules('direccion', 'Dirección', 'required|xss_clean|max_length[200]');
-        $this->form_validation->set_rules('observaciones', 'Observaciones', 'required');
+        $this->form_validation->set_rules('observaciones', 'Observaciones', 'trim');
         $this->form_validation->set_rules('precio_compra', 'Precio Compra', 'xss_clean|is_natural');
         $this->form_validation->set_rules('precio_alquiler', 'Precio Alquiler', 'xss_clean|is_natural');
         $this->form_validation->set_rules('poblacion_id', 'Población', 'required');
+        $this->form_validation->set_rules('zona_id', 'Zona', 'xss_clean');
         $this->form_validation->set_rules('provincia_id', 'Provincia', 'required');
         $this->form_validation->set_rules('tipo_id', 'Tipo', 'required');
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('captador_id', 'Captador', 'xss_clean');
         /*	
-
-	9	zona_id	int(11)		UNSIGNED	Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
 
 	13	direccion_publica	varchar(200)	utf8_general_ci		No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
 
@@ -203,9 +203,14 @@ class Inmueble_model extends MY_Model
         {
             $data['provincia_id'] = $this->form_validation->set_value('provincia_id', "");
         }
+        
+        $data['zona_id'] = $this->form_validation->set_value('zona_id', is_object($datos) ? $datos->zona_id : "");
 
         // Selector de poblaciones
         $data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($data['provincia_id']);
+        
+        // Selector de zonas
+        $data['zonas'] = $this->Zona_model->get_zonas_dropdown($data['poblacion_id']);
 
         $data['precio_compra'] = array(
             'name' => 'precio_compra',
@@ -250,7 +255,8 @@ class Inmueble_model extends MY_Model
         $datas['precio_compra'] = $this->input->post('precio_compra');
         $datas['precio_alquiler'] = $this->input->post('precio_alquiler');
         $datas['tipo_id'] = $this->input->post('tipo_id');
-        $datas['poblacion_id'] = $this->utilities->get_sql_value_string($this->input->post('poblacion_id'), "int", $this->input->post('poblacion_id'), NULL);
+        $datas['poblacion_id'] = $this->input->post('poblacion_id');
+        $datas['zona_id'] = $this->utilities->get_sql_value_string($this->input->post('zona_id'), "int", $this->input->post('zona_id'), NULL);
         $datas['captador_id'] = $this->utilities->get_sql_value_string($this->input->post('captador_id'), "int", $this->input->post('captador_id'), NULL);
 
         return $datas;
@@ -376,6 +382,11 @@ class Inmueble_model extends MY_Model
         if (isset($filtros['poblacion_id']) && !empty($filtros['poblacion_id']) && $filtros['provincia_id'] >= 0)
         {
             $this->db->where('poblacion_id', $filtros['poblacion_id']);
+        }
+        // Filtro Zona
+        if (isset($filtros['zona_id']) && !empty($filtros['zona_id']))
+        {
+            $this->db->where('zona_id', $filtros['zona_id']);
         }
         // Filtro Agente Asignado
         if (isset($filtros['captador_id']) && $filtros['captador_id'] >= 0)
@@ -615,6 +626,7 @@ class Inmueble_model extends MY_Model
                     $linedata['precio_alquiler'] = @$data_csv[6];
                     $linedata['nombre_provincia'] = @$data_csv[8];
                     $linedata['nombre_poblacion'] = @$data_csv[9];
+                    $linedata['nombre_zona'] = @$data_csv[9];
                     $linedata['observaciones'] = @$data_csv[10];
                     
                     //Vivienda piso 	Almería 	Zona	carretera granada 	300.000,00 	0,00 	70 	3 	2
@@ -733,13 +745,25 @@ class Inmueble_model extends MY_Model
             $linedata['nombre_provincia'].=' <span class="label label-success">No existe</span>';
             $error = TRUE;
         }
-
-        // Población
-        $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion']);
-        if (!$linedata['poblacion_id'])
+        else
         {
-            $linedata['nombre_poblacion'].=' <span class="label label-success">No existe</span>';
-            $error = TRUE;
+            // Población
+            $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion'],$linedata['provincia_id']);
+            if (!$linedata['poblacion_id'])
+            {
+                $linedata['nombre_poblacion'].=' <span class="label label-success">No existe</span>';
+                $error = TRUE;
+            }
+            else
+            {
+                // Zona
+                $linedata['zona_id'] = $this->Zona_model->get_id_by_nombre($linedata['nombre_zona'],$linedata['poblacion_id']);
+                if (!$linedata['zona_id'])
+                {
+                    $linedata['nombre_zona'].=' <span class="label label-success">No existe</span>';
+                    $error = TRUE;
+                }
+            }
         }
 
         // Marcamos si ha habido errores
@@ -772,6 +796,7 @@ class Inmueble_model extends MY_Model
         $datos['precio_alquiler'] = $this->utilities->formatear_numero($data['precio_alquiler']);
         $datos['tipo_id'] = $data['tipo_id'];
         $datos['poblacion_id'] = $data['poblacion_id'];
+        $datos['zona_id'] = $data['zona_id'];
 
         return $datos;
     }
