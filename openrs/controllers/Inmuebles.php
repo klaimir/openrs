@@ -49,7 +49,8 @@ class Inmuebles extends CRUD_controller
             $this->load->library('googlemaps');
             // Config
             $config['loadAsynchronously'] = TRUE;
-            $config['center']="auto";
+            // Si hay filtros de provincia o población establecidos, los usamos, en caso contrario será nuestra posición actual (auto)
+            $config['center']=$this->{$this->_model}->format_google_map_center($filtros);
             $config['zoom']=12;        
             // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
             $this->googlemaps->initialize($config);

@@ -848,6 +848,30 @@ class Inmueble_model extends MY_Model
         return $this->utilities->cleantext($direccion_formateada);
     }
     
+    public function format_google_map_center($filtros)
+    {
+        if(($filtros['provincia_id']!=-1 && $filtros['provincia_id']!="") || ($filtros['poblacion_id']!=-1 && $filtros['poblacion_id']!=""))
+        {
+            if(($filtros['poblacion_id']==-1 || $filtros['poblacion_id']==""))
+            {
+                $nombre_provincia = $this->Provincia_model->get_by_id($filtros['provincia_id'])->provincia;
+                $direccion_formateada="$nombre_provincia, Spain";
+            }
+            else 
+            {
+                $nombre_poblacion = $this->Poblacion_model->get_by_id($filtros['poblacion_id'])->poblacion;
+                $nombre_provincia = $this->Provincia_model->get_by_id($filtros['provincia_id'])->provincia;
+                $direccion_formateada="$nombre_poblacion, $nombre_provincia, Spain";
+            }
+            // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
+            return $this->utilities->cleantext($direccion_formateada);
+        }
+        else
+        {
+            return "auto";
+        }        
+    }
+    
     /**
      * Devuelve los inmuebles que son propiedad de un cliente en un idioma determinado
      *
