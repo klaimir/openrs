@@ -1246,33 +1246,6 @@ class Utilities {
         }
     }
     
-    function obtenerClasePruebaNavision($clase)
-    {
-        $prefijo=substr($clase, 0, 2);
-        // Si el prefijo contiene las cadenas "1." o "2." se elimina
-        if($prefijo=="1." || $prefijo=="2.")
-        {
-            $clase_navision=substr($clase, 2);
-        }
-        else
-        {
-            $clase_navision=$clase;
-        }
-        return $clase_navision;
-    }
-    
-    function obtenerTipoPruebaNavision($numetapas)
-    {
-        if($numetapas==1)
-        {
-            return 1;
-        }
-        else
-        {
-            return 2;
-        }
-    }
-    
     function getRutaWebFicheroEquipo($ruta_fichero,$guid)
     {
         $fich = substr(strrchr($ruta_fichero, "/"), 1);

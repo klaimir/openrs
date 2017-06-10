@@ -561,7 +561,7 @@ class Cliente_model extends MY_Model
         $config['allowed_types'] = 'csv';
         $config['file_name'] = 'import_clientes.csv';
         $config['overwrite'] = TRUE;
-        $config['max_size'] = "2000";
+        $config['max_size'] = (MEGABYTE*ini_get('post_max_size'));
 
         $this->load->library('upload', $config);
 

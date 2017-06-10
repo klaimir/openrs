@@ -60,7 +60,7 @@ class Inmuebles extends CRUD_controller
             {            
                 $marker=array();
                 $marker['position']=$this->{$this->_model}->format_google_map_path($inmueble);
-                $marker['infowindow_content']='<img class="nav-user-photo" src="'.  base_url('assets/admin/avatars/user.jpg') .'" alt="Foto del inmueble">'                    
+                $marker['infowindow_content']='<img class="nav-user-photo" src="'.  base_url('assets/admin/avatars/user.jpg') .'" alt="Imagen principal del inmueble">'                    
                     . '<br>'. $inmueble->descripcion_vivienda
                     . '<br>'. $inmueble->direccion
                     . '<br><a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';

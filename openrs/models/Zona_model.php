@@ -149,20 +149,28 @@ class Zona_model extends MY_Model
     
     function get_zonas_dropdown($poblacion_id,$default_value="")
     {
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione zona -";
         // Array de zonas
         // Añadimos esto para que no falle cuando no exista poblacion
         if(empty($poblacion_id))
         {
-            $zonas=array();
+            return $seleccion;
         }
         else
         {
             $zonas=$this->as_dropdown('nombre')->where('poblacion_id',$poblacion_id)->get_all(); 
+            // Cuando no hay elementos devueltos hay que convertirlo a un array para poder realizar la suma
+            if($zonas)
+            {
+                // Por tanto devolvemos el operador suma para que mantenga las claves numéricas
+                return ($seleccion+$zonas);
+            }
+            else
+            {
+                return $seleccion;
+            }
         }
-        // Selección inicial
-        $seleccion[$default_value]="- Seleccione zona -";
-        // Por tanto devolvemos el operador suma para que mantenga las claves numéricas
-        return ($seleccion+$zonas);
     }
     
     /**

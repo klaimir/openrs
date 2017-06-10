@@ -17,6 +17,8 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/chosen.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/daterangepicker.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/datepicker.min.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/dropzone.min.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/css/colorbox.min.css" />
 
         <!-- text fonts -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/admin/fonts/fonts.googleapis.com.css" />
@@ -703,6 +705,8 @@
         <script src="<?php echo base_url(); ?>assets/admin/js/bootbox.min.js" type="text/javascript"></script>    
         <script src="<?php echo base_url(); ?>assets/admin/js/daterangepicker.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/js/bootstrap-datepicker.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/admin/js/dropzone.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/admin/js/jquery.colorbox.min.js"></script>
 
         <!--[if lte IE 8]>
           <script src="<?php echo base_url(); ?>assets/admin/js/excanvas.min.js"></script>

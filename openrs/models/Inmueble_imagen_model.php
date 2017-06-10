@@ -4,21 +4,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH . 'core/MY_Model.php';
 
-class Cliente_fichero_model extends MY_Model
+class Inmueble_imagen_model extends MY_Model
 {
 
-    public $cliente_id = NULL;
+    public $inmueble_id = NULL;
 
     public function __construct()
     {
-        $this->table = 'clientes_ficheros';
+        $this->table = 'inmuebles_imagenes';
         $this->primary_key = 'id';
-        $this->has_one['cliente'] = array('local_key' => 'id', 'foreign_key' => 'cliente_id', 'foreign_model' => 'Cliente_model');
+        $this->has_one['inmueble'] = array('local_key' => 'id', 'foreign_key' => 'inmueble_id', 'foreign_model' => 'Inmueble_model');
 
         parent::__construct();
-
-        // Carga del modelo
-        $this->load->model('Cliente_model');
     }
 
     /*     * *********************** SECURITY ************************ */
@@ -39,7 +36,7 @@ class Cliente_fichero_model extends MY_Model
      */
     public function set_rules($id = 0)
     {
-        $this->form_validation->set_rules('texto_fichero', 'Nombre del fichero', 'required|is_unique_global_foreign_key[clientes_ficheros;' . $id . ';texto_fichero;id;cliente_id;' . $this->cliente_id . ']|max_length[200]|xss_clean');
+        return TRUE;
     }
 
     /**
@@ -66,12 +63,7 @@ class Cliente_fichero_model extends MY_Model
      */
     public function set_datas_html($datos = NULL)
     {
-        $data['texto_fichero'] = array(
-            'name' => 'texto_fichero',
-            'id' => 'texto_fichero',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('texto_fichero', is_object($datos) ? $datos->texto_fichero : ""),
-        );
+        $data = array();
 
         return $data;
     }
@@ -83,9 +75,8 @@ class Cliente_fichero_model extends MY_Model
      */
     public function get_formatted_datas($upload_data)
     {
-        $datas['fichero'] = 'uploads/clientes/'.$this->cliente_id.'/'.$upload_data['file_name'];
-        $datas['texto_fichero'] = $this->input->post('texto_fichero');
-        $datas['cliente_id'] = $this->cliente_id;
+        $datas['imagen'] = 'uploads/inmuebles/'.$this->inmueble_id.'/imagenes/'.$upload_data['file_name'];
+        $datas['inmueble_id'] = $this->inmueble_id;
         return $datas;
     }
 
@@ -108,16 +99,15 @@ class Cliente_fichero_model extends MY_Model
      */
     function create()
     {
-        $config['upload_path'] = './uploads/clientes/'.$this->cliente_id;
-        $config['allowed_types'] = '*';
-        $config['max_size'] = (MEGABYTE*ini_get('post_max_size'));   
-        $config['encrypt_name'] = TRUE;     
+        $config['upload_path'] = './uploads/inmuebles/'.$this->inmueble_id.'/imagenes';
+        $config['allowed_types'] = 'png|jpg|jpeg';
+        $config['max_size'] = (MEGABYTE*ini_get('post_max_size'));  
 
         $this->load->library('upload', $config);
 
-        if (!$this->upload->do_upload('fichero'))
+        if (!$this->upload->do_upload('file'))
         {
-            $this->set_error($this->upload->display_errors());
+            $this->set_error($this->upload->display_errors('',''));
             return FALSE;
         }
         else
@@ -140,35 +130,41 @@ class Cliente_fichero_model extends MY_Model
 
     
     /**
-     * Devuelve los ficheros adjuntos de un determinado cliente
+     * Devuelve los imagenes adjuntos de un determinado inmueble
      *
-     * @param [cliente_id]                  Indentificador del elemento
+     * @param [inmueble_id]                  Indentificador del elemento
      *
      * @return void
      */
-    function get_ficheros_cliente($cliente_id)
+    function get_imagenes_inmueble($inmueble_id)
     {
         $this->db->from($this->table);
-        $this->db->where('cliente_id', $cliente_id);
-        $this->db->order_by('fichero');
+        $this->db->where('inmueble_id', $inmueble_id);
+        $this->db->order_by('imagen');
         return $this->db->get()->result();
     }    
     
     /**
-     * Elimina el fichero del sistema de ficheros y de la bd
+     * Elimina el imagen del sistema de imagenes y de la bd
      *
-     * @param [fichero_cliente]        Datos del fichero en la base de datos
+     * @param [imagen]        Datos del imagen en la base de datos
      *
      * @return void
      */
-    function remove($fichero)
-    {        
-        // Borrado físico del fichero
-        if(file_exists(FCPATH . $fichero->fichero))
+    function remove($imagen)
+    {       
+        // No se puede eliminar la imagen de portada
+        if($imagen->portada)
         {
-            if(unlink(FCPATH . $fichero->fichero))
+            $this->set_error('La imagen de portada no puede ser eliminada');
+            return FALSE;
+        }        
+        // Borrado físico del imagen
+        if(file_exists(FCPATH . $imagen->imagen))
+        {
+            if(unlink(FCPATH . $imagen->imagen))
             {
-                if($this->delete($fichero->id))
+                if($this->delete($imagen->id))
                 {
                     return TRUE;
                 }
@@ -180,15 +176,31 @@ class Cliente_fichero_model extends MY_Model
             }
             else
             {
-                $this->set_error('El fichero está en uso. Inténtelo más tarde');
+                $this->set_error('La imagen está en uso. Inténtelo más tarde');
                 return FALSE;
             }
         }
         else
         {
-            $this->set_error('El fichero a borrar no existe. Póngase en contacto con el administrador');
+            $this->set_error('La imagen a borrar no existe. Póngase en contacto con el administrador');
             return FALSE;
         }
+    }
+    
+    /**
+     * Publica o despublica una imagen en función de la opción indicada
+     *
+     * @param [id]                  Indentificador del elemento
+     * @param [publicar]             1 para publicar, 0 para quitar la publicación
+     *
+     * @return void
+     */
+    function publicar($id,$publicar)
+    {
+        // Formatted datas
+        $datas['publicada'] = $publicar;
+        // Parent update
+        return $this->update($datas, $id);
     }
 
 }
