@@ -79,6 +79,49 @@ class Inmuebles_imagenes extends CRUD_controller
         $this->render_private($this->_view.'/insert', $this->data);
     }
     
+    
+    public function set_portada($id)
+    {
+        $this->data['element'] = $this->{$this->_model}->get_by_id($id);
+        // Permisos acceso
+        $this->{$this->_model}->check_access($this->data['element']);
+        
+        $this->data['inmueble'] = $this->Inmueble_model->get_by_id($this->data['element']->inmueble_id);
+        // Permisos acceso
+        $this->Inmueble_model->check_access($this->data['inmueble']);
+        
+        // Set portada
+        $error=FALSE;
+        if(!$this->data['element']->publicada)
+        {
+            $this->session->set_flashdata('message', 'La imagen seleccionada no está publicada');
+            $error=TRUE;
+        }
+        
+        if($this->data['element']->portada)
+        {
+            $this->session->set_flashdata('message', 'La imagen seleccionada ya es portada');
+            $error=TRUE;
+        }
+           
+        // Publicar
+        if(!$error)
+        {
+            if($this->{$this->_model}->set_portada($id,$this->data['element']->inmueble_id))
+            {
+                $this->session->set_flashdata('message', 'La imagen seleccionada ha sido establecida como portada');          
+                $this->session->set_flashdata('message_color', 'success');
+            }
+            else
+            {
+                $this->session->set_flashdata('message', 'Error al establecer la imagen como portada. Póngase en contacto con el administrador');  
+            }
+        }
+        
+        // Redirect
+        redirect( $this->_controller."/index/".$this->data['element']->inmueble_id, 'refresh');
+    }    
+    
     public function publicar($id,$publicar)
     {
         $this->data['element'] = $this->{$this->_model}->get_by_id($id);

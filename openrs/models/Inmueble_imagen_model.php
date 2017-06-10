@@ -197,10 +197,32 @@ class Inmueble_imagen_model extends MY_Model
      */
     function publicar($id,$publicar)
     {
-        // Formatted datas
         $datas['publicada'] = $publicar;
-        // Parent update
         return $this->update($datas, $id);
+    }
+    
+    /**
+     * Publica o despublica una imagen en función de la opción indicada
+     *
+     * @param [id]                  Indentificador del elemento
+     * @param [$inmueble_id]        Indentificador del inmueble
+     *
+     * @return void
+     */
+    function set_portada($id,$inmueble_id)
+    {
+        // Quitamos la portada anterior
+        $datas['portada'] = 0;
+        if($this->update($datas, array("inmueble_id" => $inmueble_id, "portada" => 1)))
+        {
+            // Establecemos la nueva
+            $datas['portada'] = 1;
+            return $this->update($datas, $id);
+        }
+        else
+        {
+            return FALSE;
+        }
     }
 
 }

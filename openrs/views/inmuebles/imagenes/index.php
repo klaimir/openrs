@@ -57,7 +57,12 @@
                         <?php } ?>
                     </div>
 
-                    <div class="tools">                        
+                    <div class="tools">      
+                        <?php if($element->publicada && !$element->portada) { ?>
+                            <a href="<?php echo site_url('inmuebles_imagenes/set_portada/'.$element->id); ?>" title="Poner como portada">
+                                <i class="ace-icon fa fa-pinterest-square"></i>
+                            </a>
+                        <?php } ?>
                         <?php if($element->publicada) { ?>
                             <a href="<?php echo site_url('inmuebles_imagenes/publicar/'.$element->id.'/0'); ?>" title="Quitar publicación">
                                 <i class="ace-icon fa fa-times red"></i>
