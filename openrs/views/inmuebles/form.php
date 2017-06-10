@@ -32,7 +32,7 @@
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">
-            DIRECCION
+            UBICACION
         </h4>
     </div>
     <div class="widget-body">
@@ -122,6 +122,16 @@
                 <div class="col-sm-9">
                     <?php echo form_input($precio_alquiler, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Certificación energética', 'certificacion_energetica_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('certificacion_energetica_id',$tipos_certificacion_energetica,$certificacion_energetica_id, 'id="certificacion_energetica_id" onchange="mark_modified_field();" class="form-control"'); ?>        
+                    <small class="blue">
+                        De acuerdo al RD 235/2013, de 5 de abril, te recordamos que, en función del tipo de inmueble de que se trate y del consumo previsto, debes indicar su nivel de certificación de eficiencia energética en el desplegable de la ficha del anuncio. 
+                        Para más información puede acceder <strong><a target="_blank" href="http://noticias.juridicas.com/base_datos/Admin/503283-real-decreto-235-2013-de-5-de-abril-por-el-que-se-aprueba-el-procedimiento.html"> aquí</a></strong>.
+                    </small>
+                </div>                
             </div>
             <div class="form-group">            
                 <?php echo label('Año construcción', 'anio_construccion', 'class="col-sm-3 control-label no-padding-right"'); ?>

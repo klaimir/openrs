@@ -39,6 +39,12 @@
                 </div>
             </div>
             <div class="form-group">            
+                <?php echo label('Certificación energética', 'certificacion_energetica_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('certificacion_energetica_id',$tipos_certificacion_energetica,$filtros['certificacion_energetica_id'], 'class="form-control" id="certificacion_energetica_id"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
                 <?php echo label('Fecha alta', 'rango_fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <div class="input-daterange input-group">

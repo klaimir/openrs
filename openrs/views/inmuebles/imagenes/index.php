@@ -86,6 +86,14 @@
         </ul>
         <?php
         }
+        else
+        {
+        ?>
+             <p><i class="ace-icon fa fa-info-circle"></i> Actualmente no hay imágenes subidas para el inmueble actual</p>
+        <?php
+        }
+        ?>
+        <?php
         /*
         <table class="table table-striped table-bordered table-hover" id="tabgrid">
             <thead>

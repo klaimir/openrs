@@ -91,6 +91,9 @@ class Inmuebles extends CRUD_controller
 
         // Selector de tipos_inmuebles
         $this->data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown(-1);
+        
+        // Selector de tipos_inmuebles
+        $this->data['tipos_certificacion_energetica'] = $this->Certificacion_energetica_model->get_tipos_certificacion_energetica_dropdown(-1);
 
         // Selector de agentes
         $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
@@ -112,6 +115,9 @@ class Inmuebles extends CRUD_controller
 
         // Filtro tipo_id
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'tipo_id');
+        
+        // Filtro certificacion_energetica_id
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'certificacion_energetica_id');
 
         // Filtro captador_id
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'captador_id');
@@ -131,6 +137,7 @@ class Inmuebles extends CRUD_controller
         $filtros = array();
 
         $filtros['tipo_id'] = $this->session->userdata('inmuebles_buscador_tipo_id');
+        $filtros['certificacion_energetica_id'] = $this->session->userdata('inmuebles_buscador_certificacion_energetica_id');
         $filtros['provincia_id'] = $this->session->userdata('inmuebles_buscador_provincia_id');
         $filtros['poblacion_id'] = $this->session->userdata('inmuebles_buscador_poblacion_id');
         $filtros['zona_id'] = $this->session->userdata('inmuebles_buscador_zona_id');
