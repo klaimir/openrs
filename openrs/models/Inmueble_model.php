@@ -20,6 +20,7 @@ class Inmueble_model extends MY_Model
         $this->has_one['zona'] = array('local_key' => 'zona_id', 'foreign_key' => 'id', 'foreign_model' => 'Zona_model');
         $this->has_one['tipo'] = array('local_key' => 'tipo_id', 'foreign_key' => 'id', 'foreign_model' => 'Tipo_inmueble_model');
         $this->has_one['certificacion_energetica'] = array('local_key' => 'certificacion_energetica_id', 'foreign_key' => 'id', 'foreign_model' => 'Certificacion_energetica_model');
+        $this->has_one['estado'] = array('local_key' => 'estado_id', 'foreign_key' => 'id', 'foreign_model' => 'Estado_model');
         
         $this->has_many_pivot['propietarios'] = array(
             'foreign_model'=>'Cliente_model',
@@ -35,6 +36,7 @@ class Inmueble_model extends MY_Model
         $this->load->model('Zona_model');
         $this->load->model('Tipo_inmueble_model');
         $this->load->model('Certificacion_energetica_model');
+        $this->load->model('Estado_model');
     }
     
     /*     * *********************** SECURITY ************************ */
@@ -71,6 +73,7 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('provincia_id', 'Provincia', 'required');
         $this->form_validation->set_rules('tipo_id', 'Tipo', 'required');
         $this->form_validation->set_rules('certificacion_energetica_id', 'Certificación energética', 'required');
+        $this->form_validation->set_rules('estado_id', 'Estado', 'required');
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('captador_id', 'Captador', 'xss_clean');
         /*	
@@ -79,7 +82,6 @@ class Inmueble_model extends MY_Model
 
 	14	publicado	tinyint(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
 
-	15	estado` INT(11	utf8_general_ci		No 	activo		Cambiar Cambiar	Eliminar Eliminar	
 
 	16	obra_nueva	varchar(30)	utf8_general_ci		No 	inmueble_usado		Cambiar Cambiar	Eliminar Eliminar	
 
@@ -134,6 +136,9 @@ class Inmueble_model extends MY_Model
         
         // Selector de tipos_certificacion_energetica
         $data['tipos_certificacion_energetica'] = $this->Certificacion_energetica_model->get_tipos_certificacion_energetica_dropdown();
+        
+        // Selector de tipos_estado
+        $data['estados'] = $this->Estado_model->get_estados_dropdown(2);
 
         // Selector de agentes
         $data['agentes'] = $this->Usuario_model->get_agentes_dropdown();
@@ -200,6 +205,7 @@ class Inmueble_model extends MY_Model
 
         $data['tipo_id'] = $this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
         $data['certificacion_energetica_id'] = $this->form_validation->set_value('certificacion_energetica_id', is_object($datos) ? $datos->certificacion_energetica_id : "");
+        $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
         $data['captador_id'] = $this->form_validation->set_value('captador_id', is_object($datos) ? $datos->captador_id : "-1");
         $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
 
@@ -265,6 +271,7 @@ class Inmueble_model extends MY_Model
         $datas['precio_alquiler'] = $this->input->post('precio_alquiler');
         $datas['tipo_id'] = $this->input->post('tipo_id');
         $datas['certificacion_energetica_id'] = $this->input->post('certificacion_energetica_id');
+        $datas['estado_id'] = $this->input->post('estado_id');
         $datas['poblacion_id'] = $this->input->post('poblacion_id');
         $datas['zona_id'] = $this->utilities->get_sql_value_string($this->input->post('zona_id'), "int", $this->input->post('zona_id'), NULL);
         $datas['captador_id'] = $this->utilities->get_sql_value_string($this->input->post('captador_id'), "int", $this->input->post('captador_id'), NULL);
@@ -407,6 +414,11 @@ class Inmueble_model extends MY_Model
         if (isset($filtros['certificacion_energetica_id']) && $filtros['certificacion_energetica_id'] >= 0)
         {
             $this->db->where('certificacion_energetica_id', $filtros['certificacion_energetica_id']);
+        }
+        // Filtro estado
+        if (isset($filtros['estado_id']) && $filtros['estado_id'] >= 0)
+        {
+            $this->db->where('estado_id', $filtros['estado_id']);
         }
         // Intereses        
         switch ($filtros['interes_id'])
@@ -761,6 +773,14 @@ class Inmueble_model extends MY_Model
             $error = TRUE;
         }
         
+        // Estado
+        $linedata['estado_id'] = $this->Estado_model->get_id_by_nombre(2,$linedata['nombre_estado']);
+        if (empty($linedata['estado_id']))
+        {
+            $linedata['nombre_estado'].=' <span class="label label-warning">No existe</span>';
+            $error = TRUE;
+        }
+        
         // Provincia
         $linedata['provincia_id'] = $this->Provincia_model->get_id_by_nombre($linedata['nombre_provincia']);
         if (empty($linedata['provincia_id']))
@@ -819,6 +839,7 @@ class Inmueble_model extends MY_Model
         $datos['precio_alquiler'] = $this->utilities->formatear_numero($data['precio_alquiler']);
         $datos['tipo_id'] = $data['tipo_id'];
         $datos['certificacion_energetica_id'] = $data['certificacion_energetica_id'];
+        $datos['estado_id'] = $data['estado_id'];
         $datos['poblacion_id'] = $data['poblacion_id'];
         $datos['zona_id'] = $data['zona_id'];
 

@@ -15,9 +15,9 @@ class Certificacion_energetica_model extends MY_Model
     }
 
     /**
-     * Devuelve un array de tipos de inmuebles en formato dropdown
+     * Devuelve un array de datos en formato dropdown
      *
-     * @return array de tipos de inmuebles en formato dropdown
+     * @return array de datos en formato dropdown
      */
     
     function get_tipos_certificacion_energetica_dropdown($default_value="")
@@ -28,6 +28,28 @@ class Certificacion_energetica_model extends MY_Model
         $seleccion[$default_value]="- Seleccione certificación -";
         // Suma de ambos
         return ($seleccion+$datos_dropdown);
+    }
+    
+    /**
+     * Devuelve el identificador de una certificación energética que coincida con el nombre suministrado
+     *
+     * @param	[nombre_certificacion_energetica]   Nombre del certificacion_energetica
+     * 
+     * @return identificador del certificacion_energetica
+     */
+    
+    function get_id_by_nombre($nombre_certificacion_energetica)
+    {
+        $this->db->select($this->table.'.id');
+        $this->db->from($this->table);
+        $this->db->where('nombre', $nombre_certificacion_energetica);
+        $query = $this->db->get();
+        $row = $query->row();
+        if ($row) {
+            return $row->id;
+        } else {
+            return NULL;
+        }
     }
     
 }

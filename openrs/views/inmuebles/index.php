@@ -143,6 +143,7 @@
     function reset_form() {
         $('#tipo_id').val('-1');
         $('#certificacion_energetica_id').val('-1');
+        $('#estado_id').val('-1');
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
         $('#zona_id').val('');

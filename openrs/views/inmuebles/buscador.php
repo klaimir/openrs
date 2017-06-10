@@ -45,6 +45,12 @@
                 </div>
             </div>
             <div class="form-group">            
+                <?php echo label('Estados', 'estado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('estado_id',$estados,$filtros['estado_id'], 'class="form-control" id="estado_id"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
                 <?php echo label('Fecha alta', 'rango_fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <div class="input-daterange input-group">
