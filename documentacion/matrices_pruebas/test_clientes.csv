@@ -1,0 +1,7 @@
+52357246T;GUILLERMO;LEON SANCHEZ;;Calle benjumeda, 10;guillermo.leon@test.com;956112233;España;Cádiz;Cádiz;Test de importación 1
+52357246V;;;;;erroremail;;Pais;Codiz;Codiz;
+75777802R;Repetido;BD;;Calle benjumeda, 10;guillermo.leon@test.com;956112233;España;Cádiz;Cádiz;Test de importación 3
+75777802V;Error;DNI;;;;;España;Cádiz;Cádiz;Test de importación 4
+75777802V;Repetido;Fichero;;;;;España;Cádiz;Cádiz;Test de importación 5
+46300568G;ULTIMO;Hombre;;Calle Rosa;test@test.com;;España;Cádiz;Cádiz;
+21017477P;Test;Fecha nac;19/05/1982;Avenida marconi, 1;test@fechanac.com;;España;Cádiz;Cádiz;Test fecha nac
