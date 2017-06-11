@@ -1,3 +1,5 @@
+-- Cambios para el estado y otros campos de los clientes
+
 ALTER TABLE `clientes` CHANGE `direccion` `direccion` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `clientes` CHANGE `telefonos` `telefonos` VARCHAR(70) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `clientes` CHANGE `nif` `nif` VARCHAR(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
@@ -26,6 +28,13 @@ VIEW `v_clientes` AS
 		JOIN paises ON clientes.pais_id = paises.id
 		LEFT JOIN users ON clientes.agente_asignado_id = users.id;
 		
+		
+		
+-- Tabla de enlaces
+		
+ALTER TABLE `inmuebles_enlaces` CHANGE `texto_enlace` `titulo` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `inmuebles_enlaces` ADD `publicado` TINYINT(1) NOT NULL DEFAULT '1' ;
+ALTER TABLE `inmuebles_enlaces` ADD `youtube` TINYINT(1) NOT NULL DEFAULT '0' ;		
 
 
 

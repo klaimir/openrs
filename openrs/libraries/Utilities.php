@@ -817,70 +817,6 @@ class Utilities {
         return $letraNif;
     }
 
-    /**
-     *  Genera un identificador de transacción para operaciones bancarias
-     *
-     *
-     * @return Cadena de caracteres con el identificador
-     */
-    function generarIDTrans() {
-        /*
-         * ALGORITMO EN ASP
-         *
-          Dim y As String, ddd As String, hh As String, mm As String, ss As String, an As String, id As String
-
-          'y = Now.Year.ToString.Substring(Len(Now.Year.ToString) - 1, Len(Now.Year.ToString)) 'Año (Último Número)
-          y = Now.Year.ToString.Substring(Len(Now.Year.ToString) - 1, 1) 'Año (Último Número)
-
-
-          ddd = Now.DayOfYear.ToString.PadLeft(3, "0")
-          'If ddd < 10 Then
-          '    ddd = y & "00" 'Añadimos 2 ceros en el caso de ser menos de 10
-          'Else
-          '    If (ddd > 9 And ddd < 100) Then
-          '        ddd = "0" & ddd 'Añadimos un 0 en el caso de ser mayor de 9 y menor de 100
-          '    End If
-          'End If
-          hh = Now.TimeOfDay.Hours.ToString.PadLeft(2, "0") 'Hora Actual
-          mm = Now.TimeOfDay.Minutes.ToString.PadLeft(2, "0") 'Minutos Acutales
-          ss = Now.TimeOfDay.Seconds.ToString.PadLeft(2, "0") 'Segundos Actuales
-          Randomize()
-          an = Int((99 - 10 + 1) * Rnd() + 10) 'Aleatro entre 10 y 99
-
-          Return y & ddd & hh & mm & ss & an
-          'Return ddd & hh & mm & ss & an
-         * 
-         */
-        // Strings
-        $y = '';
-        $ddd = '';
-        $hh = '';
-        $mm = '';
-        $ss = '';
-        $an = '';
-        $id = '';
-        // Año (Último Número)
-        $current_year = date("Y");
-        $y = substr($current_year, 3, 1);
-        // Día del año absoluto
-        $absolut_current_day = date("z");
-        $ddd = str_pad($absolut_current_day, 3, "0", STR_PAD_LEFT);
-        // Hora Actual
-        $absolut_current_hour = date("H");
-        $hh = str_pad($absolut_current_hour, 2, "0", STR_PAD_LEFT);
-        // Minutos Acutales
-        $absolut_current_minutes = date("i");
-        $mm = str_pad($absolut_current_minutes, 2, "0", STR_PAD_LEFT);
-        // Segundos Actuales
-        $absolut_current_seconds = date("s");
-        $ss = str_pad($absolut_current_seconds, 2, "0", STR_PAD_LEFT);
-        // Aleatro entre 10 y 99
-        $an = rand(10, 99);
-        // Id. Transacción
-        $id = $y . $ddd . $hh . $mm . $ss . $an;
-        return $id;
-    }
-
     function desofuscarPalabraSecreta($pal_sec_ofuscada, $clave_xor) {
         $cad1_0 = "0";
         $cad2_0 = "00";
@@ -1232,41 +1168,7 @@ class Utilities {
         
         return $nombreCampo;
     }
-    
-    function obtenerOpcionFusion($esclub,$esorganizador)
-    {
-        // Se calcula la opción de fusión
-        if($esclub==1 || $esorganizador==1)
-        {
-            return 1;
-        }
-        else
-        {
-            return 2;
-        }
-    }
-    
-    function getRutaWebFicheroEquipo($ruta_fichero,$guid)
-    {
-        $fich = substr(strrchr($ruta_fichero, "/"), 1);
-        if ($fich<>"")
-        {
-            $explode_ruta_fichero=explode('/',$ruta_fichero);
-            $posicion_idclub=count($explode_ruta_fichero)-2;
-            $idclub=$explode_ruta_fichero[$posicion_idclub];
-            $fich=str_replace($guid . '_','',$fich);
-            $enlace = base_url(). 'documentos/club/'.$idclub . '/' . $guid .'_'. $fich;
-            // Establecimiento de datos
-            $array_datos['fich']=$fich;
-            $array_datos['enlace']=$enlace;
-            return $array_datos;
-        }
-        else
-        {
-            return NULL;
-        }        
-    }
-    
+        
     function getPrimeraPalabra($palabra,$separador)
     {
         $explode=explode($separador, $palabra);        

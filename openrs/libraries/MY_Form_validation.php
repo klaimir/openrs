@@ -290,5 +290,82 @@ class MY_Form_validation extends CI_Form_validation
             return TRUE;
         }
     }
+    
+    /**
+     *  Determina si un enlace es un recurso de youtube
+     *
+     * @access	public
+     * @param	url         url del enlace
+     * @return	boolean
+     */
+    
+    function is_valid_youtube_url($url)
+    {
+        // Let's check the host first
+        $parse = parse_url($url);
+        $host = $parse['host'];
+        if (!in_array($host, array('youtube.com', 'www.youtube.com')))
+        {
+            $this->set_message('is_valid_youtube_url', 'El enlace indicado no es un recurso de youtube válido');
+            return FALSE;
+        }
+
+        $ch = curl_init();
+        $oembedURL = 'www.youtube.com/oembed?url=' . urlencode($url) . '&format=json';
+        curl_setopt($ch, CURLOPT_URL, $oembedURL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        // Silent CURL execution
+        $output = curl_exec($ch);
+        unset($output);
+
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+
+        if ($info['http_code'] !== 404)
+        {
+            return TRUE;
+        }
+        else
+        {
+            $this->set_message('is_valid_youtube_url', 'El enlace indicado youtube no es accesible');
+            return FALSE;
+        }
+    }
+
+    function is_embeddable_youtube_url($url)
+    {
+        // Let's check the host first
+        $parse = parse_url($url);
+        $host = $parse['host'];
+        if (!in_array($host, array('youtube.com', 'www.youtube.com')))
+        {
+            $this->set_message('is_embeddable_youtube_url', 'El enlace indicado no es un recurso de youtube válido');
+            return FALSE;
+        }
+
+        $ch = curl_init();
+        $oembedURL = 'www.youtube.com/oembed?url=' . urlencode($url) . '&format=json';
+        curl_setopt($ch, CURLOPT_URL, $oembedURL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        $data = json_decode($output);
+
+        if (!$data)
+        {
+            $this->set_message('is_embeddable_youtube_url', 'Acceso no autorizado al video de youtube');
+            return FALSE;
+        }
+            
+        if (!$data->{'html'})
+        {
+            $this->set_message('is_embeddable_youtube_url', 'El video debe tener un HTML asociado');
+            return FALSE;
+        }        
+
+        return TRUE;
+    }
 
 }

@@ -16,15 +16,55 @@ class General extends MY_Controller
 
         $this->load->library('unit_test');
         
+        $str = '
+        <table border="0" cellpadding="4" cellspacing="1">
+        {rows}
+        <tr>
+        <td>{item}</td>
+        <td>{result}</td>
+        </tr>
+        {/rows}
+        </table>';
+
+        $this->unit->set_template($str);
+        
         // Comprobación de acceso
-        $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+        //$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+    }
+    
+    function is_valid_youtube_url()
+    {        
+        $url = 'https://www.youtube.com/watch?v=hnkQNAhSZiU';
+        $result_valid=$this->form_validation->is_valid_youtube_url($url);
+        $this->unit->run(TRUE, $result_valid, "Test de url: $url válida");
+        
+        $url_no_valid = 'https://www.youtube.com/watch?v=asdasd';
+        $result_no_valid=$this->form_validation->is_valid_youtube_url($url_no_valid);
+        $this->unit->run(FALSE, $result_no_valid, "Test de url: $url NO válida");
+        
+        // The report will be formatted in an HTML table for viewing. If you prefer the raw data you can retrieve an array using:
+        var_dump($this->unit->result());
+    }
+    
+    function is_embeddable_youtube_url()
+    {        
+        $url = 'https://www.youtube.com/watch?v=hnkQNAhSZiU';
+        $result_valid=$this->form_validation->is_embeddable_youtube_url($url);
+        $this->unit->run(TRUE, $result_valid, "Test de url: $url válida");
+        
+        $url_no_valid = 'https://www.youtube.com/watch?v=asdasd';
+        $result_no_valid=$this->form_validation->is_embeddable_youtube_url($url_no_valid);
+        $this->unit->run(FALSE, $result_no_valid, "Test de url: $url NO válida");
+        
+        // The report will be formatted in an HTML table for viewing. If you prefer the raw data you can retrieve an array using:
+        var_dump($this->unit->result());
     }
     
     function provincias_buscador()
     {
         // Carga del modelo
         $this->load->model('Provincia_model');
-        $provincias=$this->Provincia_model->get_provincias_buscador();  
+        $provincias=$this->Provincia_model->get_provincias_dropdown();  
         var_dump($provincias);
         echo form_dropdown('provincia_id',$provincias,4);
     }
