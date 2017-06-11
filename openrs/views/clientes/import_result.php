@@ -35,6 +35,7 @@
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>E-mail</th>
+                    <th>Estado</th>
                     <th>Observaciones</th>
                 </tr>
             </thead>
@@ -55,6 +56,7 @@
                             <td><?php echo $element['direccion']; ?></td>
                             <td><?php echo $element['telefonos']; ?></td>
                             <td><?php echo $element['correo']; ?></td>
+                            <td><?php echo $element['nombre_estado']; ?></td>
                             <td><?php echo $element['observaciones']; ?></td>
                         </tr>
                         <?php
@@ -77,6 +79,7 @@
                 null,                
                 null,
                 {"sType": "date-euro"},
+                null,
                 null,
                 null,
                 null,

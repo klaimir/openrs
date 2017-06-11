@@ -9,25 +9,25 @@
             <div class="form-group">            
                 <?php echo label('NIF/NIE/CIF', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($nif, '', 'class="form-control"'); ?>
+                    <?php echo form_input($nif, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
                 <?php echo label('Nombre', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($nombre, '', 'class="form-control"'); ?>
+                    <?php echo form_input($nombre, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
                 <?php echo label('Apellidos', 'apellidos', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($apellidos, '', 'class="form-control"'); ?>
+                    <?php echo form_input($apellidos, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
                 <?php echo label('Fecha de nacimiento', 'fecha_nac', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($fecha_nac, '', 'class="form-control"'); ?>
+                    <?php echo form_input($fecha_nac, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                     <small class="blue">Introduzca la fecha en formato dd/mm/aaaa (por ejemplo; 19/05/1982)</small>
                 </div>
             </div>
@@ -47,7 +47,7 @@
             <div class="form-group">            
                 <?php echo label('País de residencia', 'pais_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('pais_id',$paises,$pais_id, 'id="pais_id" class="chosen-select form-control" onchange="check_show_provincias();"'); ?>        
+                    <?php echo form_dropdown('pais_id',$paises,$pais_id, 'id="pais_id" class="chosen-select form-control" onchange="mark_modified_field(); check_show_provincias();"'); ?>        
                 </div>
             </div>
             <div id="provincia_div"> 
@@ -55,7 +55,7 @@
                 <div class="form-group">            
                     <?php echo label('Provincia', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div class="col-sm-9">
-                        <?php echo form_dropdown('provincia_id',$provincias,$provincia_id, 'class="form-control" id="provincia_id" onchange="show_poblaciones();"'); ?>
+                        <?php echo form_dropdown('provincia_id',$provincias,$provincia_id, 'class="form-control" id="provincia_id" onchange="mark_modified_field(); show_poblaciones();"'); ?>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 <div class="form-group">            
                     <?php echo label('Población', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div id="poblaciones" class="col-sm-9">
-                        <?php echo form_dropdown('poblacion_id',$poblaciones,$poblacion_id, 'class="chosen-select form-control" id="poblacion_id""'); ?>
+                        <?php echo form_dropdown('poblacion_id',$poblaciones,$poblacion_id, 'onchange="mark_modified_field();" class="chosen-select form-control" id="poblacion_id""'); ?>
                     </div>
                 </div>
             </div>
@@ -72,21 +72,21 @@
             <div class="form-group">            
                 <?php echo label('Dirección', 'direccion', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($direccion, '', 'class="form-control" onchange="check_google_maps();"'); ?>
+                    <?php echo form_input($direccion, '', 'class="form-control" onchange="mark_modified_field(); check_google_maps();"'); ?>
                 </div>
             </div>
             <div class="space-4"></div>
             <div class="form-group">            
                 <?php echo label('E-mail', 'correo', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($correo, '', 'class="form-control"'); ?>
+                    <?php echo form_input($correo, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="space-4"></div>
             <div class="form-group">            
                 <?php echo label('Teléfonos', 'telefonos', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($telefonos, '', 'class="form-control"'); ?>
+                    <?php echo form_input($telefonos, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group" id="google_maps_div">            
@@ -106,18 +106,22 @@
     </div>
     <div class="widget-body">
         <div class="widget-main">
-            <div class="space-4"></div>
+            <div class="form-group">            
+                <?php echo label('Estado', 'estado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('estado_id',$estados,$estado_id, 'id="estado_id" onchange="mark_modified_field();" class="form-control"'); ?>        
+                </div>                
+            </div>
             <div class="form-group">            
                 <?php echo label('Agente Asignado', 'agente_asignado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('agente_asignado_id',$agentes,$agente_asignado_id, 'class="form-control" id="agente_asignado_id"'); ?>
+                    <?php echo form_dropdown('agente_asignado_id',$agentes,$agente_asignado_id, 'onchange="mark_modified_field();" class="form-control" id="agente_asignado_id"'); ?>
                 </div>
             </div>
-            <div class="space-4"></div>
             <div class="form-group">            
                 <?php echo label('Observaciones', 'observaciones', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_textarea($observaciones,'','class="ckeditor"'); ?>
+                    <?php echo form_textarea($observaciones,'','onchange="mark_modified_field();" class="ckeditor"'); ?>
                 </div>
             </div>
         </div>

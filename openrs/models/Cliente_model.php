@@ -18,6 +18,7 @@ class Cliente_model extends MY_Model
         $this->has_many['demandas'] = array('local_key' => 'id', 'foreign_key' => 'cliente_id', 'foreign_model' => 'Demanda_model');
         $this->has_one['poblacion'] = array('local_key' => 'poblacion_id', 'foreign_key' => 'id', 'foreign_model' => 'Poblacion_model');
         $this->has_one['pais'] = array('local_key' => 'pais_id', 'foreign_key' => 'id', 'foreign_model' => 'Pais_model');
+        $this->has_one['estado'] = array('local_key' => 'estado_id', 'foreign_key' => 'id', 'foreign_model' => 'Estado_model');
         
         $this->has_many_pivot['propiedades'] = array(
             'foreign_model'=>'Inmueble_model',
@@ -40,6 +41,7 @@ class Cliente_model extends MY_Model
         // Modelos axiliares
         $this->load->model('Provincia_model');
         $this->load->model('Pais_model');
+        $this->load->model('Estado_model');
     }
 
     /*     * *********************** SECURITY ************************ */
@@ -83,12 +85,12 @@ class Cliente_model extends MY_Model
         $this->form_validation->set_rules('pais_id', 'País de residencia', 'required');
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('agente_asignado_id', 'Agente Asignado', 'xss_clean');
+        $this->form_validation->set_rules('estado_id', 'Estado', 'required');
         /*
           12	busca_vender	tinyint(4)			No 	0
           13	busca_comprar	tinyint(4)			No 	0
           14	busca_alquilar	tinyint(4)			No 	0
           15	busca_alquiler	tinyint(4)			No 	0
-          16	estado	varchar(20)	utf8_general_ci		No 	activo
           17	estado_civil	varchar(50)	utf8_general_ci		Sí 	NULL
          */
     }
@@ -128,6 +130,9 @@ class Cliente_model extends MY_Model
 
         // selector de intereses
         $data['intereses'] = $this->get_intereses_dropdown();
+        
+        // Selector de estados
+        $data['estados'] = $this->Estado_model->get_estados_dropdown(1);
 
         // Datos
         $data['nif'] = array(
@@ -166,6 +171,7 @@ class Cliente_model extends MY_Model
         );
 
         $data['pais_id'] = $this->form_validation->set_value('pais_id', is_object($datos) ? $datos->pais_id : 64);
+        $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
         $data['agente_asignado_id'] = $this->form_validation->set_value('agente_asignado_id', is_object($datos) ? $datos->agente_asignado_id : "-1");
         $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
 
@@ -222,6 +228,7 @@ class Cliente_model extends MY_Model
         $datas['observaciones'] = $this->input->post('observaciones');
         $datas['telefonos'] = $this->input->post('telefonos');
         $datas['pais_id'] = $this->input->post('pais_id');
+        $datas['estado_id'] = $this->input->post('estado_id');
         $datas['poblacion_id'] = $this->utilities->get_sql_value_string($this->input->post('poblacion_id'), "int", $this->input->post('poblacion_id'), NULL);
         $datas['agente_asignado_id'] = $this->utilities->get_sql_value_string($this->input->post('agente_asignado_id'), "int", $this->input->post('agente_asignado_id'), NULL);
 
@@ -353,6 +360,11 @@ class Cliente_model extends MY_Model
         if (isset($filtros['agente_asignado_id']) && $filtros['agente_asignado_id'] >= 0)
         {
             $this->db->where('agente_asignado_id', $filtros['agente_asignado_id']);
+        }
+        // Filtro estado
+        if (isset($filtros['estado_id']) && $filtros['estado_id'] >= 0)
+        {
+            $this->db->where('estado_id', $filtros['estado_id']);
         }
         // Intereses        
         switch ($filtros['interes_id'])
@@ -620,7 +632,8 @@ class Cliente_model extends MY_Model
                     $linedata['nombre_pais'] = @$data_csv[7];
                     $linedata['nombre_provincia'] = @$data_csv[8];
                     $linedata['nombre_poblacion'] = @$data_csv[9];
-                    $linedata['observaciones'] = @$data_csv[10];
+                    $linedata['nombre_estado'] = @$data_csv[10];
+                    $linedata['observaciones'] = @$data_csv[11];
 
                     // Conversión de todos los elementos del array                
                     $linedata=$this->utilities->encoding_array($linedata,'windows-1252','UTF-8//IGNORE');
@@ -721,6 +734,14 @@ class Cliente_model extends MY_Model
             }
         }
 
+        // Estado
+        $linedata['estado_id'] = $this->Estado_model->get_id_by_nombre(1,$linedata['nombre_estado']);
+        if (empty($linedata['estado_id']))
+        {
+            $linedata['nombre_estado'].=' <span class="label label-warning">No existe</span>';
+            $error = TRUE;
+        }
+        
         // País
         $linedata['pais_id'] = $this->Pais_model->get_id_by_nombre($linedata['nombre_pais']);
         if (empty($linedata['pais_id']))
@@ -783,6 +804,7 @@ class Cliente_model extends MY_Model
         $datos['observaciones'] = $data['observaciones'];
         $datos['telefonos'] = $data['telefonos'];
         $datos['pais_id'] = $data['pais_id'];
+        $datos['estado_id'] = $data['estado_id'];
         $datos['poblacion_id'] = $data['poblacion_id'];
 
         return $datos;

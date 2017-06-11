@@ -137,7 +137,7 @@ class Inmueble_model extends MY_Model
         // Selector de tipos_certificacion_energetica
         $data['tipos_certificacion_energetica'] = $this->Certificacion_energetica_model->get_tipos_certificacion_energetica_dropdown();
         
-        // Selector de tipos_estado
+        // Selector de estados
         $data['estados'] = $this->Estado_model->get_estados_dropdown(2);
 
         // Selector de agentes

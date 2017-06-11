@@ -28,6 +28,12 @@
                 </div>
             </div>
             <div class="form-group">            
+                <?php echo label('Estados', 'estado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('estado_id',$estados,$filtros['estado_id'], 'class="form-control" id="estado_id"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
                 <?php echo label('Agentes', 'agente_asignado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('agente_asignado_id',$agentes,$filtros['agente_asignado_id'], 'class="form-control" id="agente_asignado_id"'); ?>

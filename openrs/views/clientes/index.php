@@ -14,22 +14,22 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <a class="btn btn-info pull-left" href="<?php echo site_url($_controller.'/insert'); ?>">
-            <i class="menu-icon fa fa-plus-circle"></i>
-            <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
-        </a>
-        <a class="btn btn-info pull-left" href="<?php echo site_url($_controller.'/import'); ?>">
-            <i class="menu-icon fa fa-upload"></i>
-            <span class="menu-text"> Importar CSV </span>
-        </a>
-        <a class="btn btn-info pull-left" href="<?php echo site_url($_controller.'/export'); ?>">
-            <i class="menu-icon fa fa-download"></i>
-            <span class="menu-text"> Exportar CSV </span>
-        </a>
         <a class="btn btn-info pull-right" onclick="$('#buscador').toggle('slow');">
             <i class="menu-icon fa fa-search"></i>
             <span class="menu-text"> Buscador </span>
         </a>
+        <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/insert'); ?>">
+            <i class="menu-icon fa fa-plus-circle"></i>
+            <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
+        </a>
+        <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/import'); ?>">
+            <i class="menu-icon fa fa-upload"></i>
+            <span class="menu-text"> Importar CSV </span>
+        </a>
+        <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/export'); ?>">
+            <i class="menu-icon fa fa-download"></i>
+            <span class="menu-text"> Exportar CSV </span>
+        </a>        
     </div>
 </div>
 
@@ -128,6 +128,7 @@
 <script type="text/javascript">
     function reset_form() {
         $('#pais_id').val('-1');
+        $('#estado_id').val('-1');
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
         $('#agente_asignado_id').val('-1');

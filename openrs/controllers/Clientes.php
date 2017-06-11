@@ -29,6 +29,9 @@ class Clientes extends CRUD_controller
 
         // Selector de paises
         $this->data['paises'] = $this->Pais_model->get_paises_dropdown(-1);
+        
+        // Selector de estados
+        $this->data['estados'] = $this->Estado_model->get_estados_dropdown(1,-1);
 
         // Selector de agentes
         $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
@@ -47,6 +50,9 @@ class Clientes extends CRUD_controller
 
         // Filtro pais_id
         $this->utilities->set_value_session_filter('clientes_buscador', 'pais_id');
+        
+        // Filtro estado_id
+        $this->utilities->set_value_session_filter('clientes_buscador', 'estado_id');
 
         // Filtro agente_asignado_id
         $this->utilities->set_value_session_filter('clientes_buscador', 'agente_asignado_id');
@@ -66,6 +72,7 @@ class Clientes extends CRUD_controller
         $filtros = array();
 
         $filtros['pais_id'] = $this->session->userdata('clientes_buscador_pais_id');
+        $filtros['estado_id'] = $this->session->userdata('clientes_buscador_estado_id');
         $filtros['provincia_id'] = $this->session->userdata('clientes_buscador_provincia_id');
         $filtros['poblacion_id'] = $this->session->userdata('clientes_buscador_poblacion_id');
         $filtros['agente_asignado_id'] = $this->session->userdata('clientes_buscador_agente_asignado_id');
@@ -345,7 +352,7 @@ class Clientes extends CRUD_controller
             $this->load->helper('csv');
             
             // Cabecera
-            $cabecera = array('CIF/NIE/NIF','Nombre','Apellidos','Fecha Nac.','Dirección','E-mail','Teléfono','Pais','Provincia','Municipio','Observaciones','Agente Asignado');
+            $cabecera = array('CIF/NIE/NIF','Nombre','Apellidos','Fecha Nac.','Dirección','E-mail','Teléfono','Pais','Provincia','Municipio','Estado','Observaciones','Agente Asignado');
             $array[] = $this->utilities->encoding_array($cabecera);
              
             // Resto de datos
@@ -363,6 +370,7 @@ class Clientes extends CRUD_controller
                 $datos_formateado[] = $element->nombre_pais;
                 $datos_formateado[] = $element->nombre_provincia;
                 $datos_formateado[] = $element->nombre_poblacion;
+                $datos_formateado[] = $element->nombre_estado;
                 $datos_formateado[] = $element->observaciones;
                 $datos_formateado[] = $element->nombre_agente_asignado;
                 

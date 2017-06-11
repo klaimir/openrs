@@ -16,6 +16,8 @@ class Estado_model extends MY_Model
 
     /**
      * Devuelve un array de datos en formato dropdown
+     * 
+     * @param	[ambito]            Ambito al que afecta el estado
      *
      * @return array de datos en formato dropdown
      */
@@ -33,16 +35,18 @@ class Estado_model extends MY_Model
     /**
      * Devuelve el identificador de un estado que coincida con el nombre suministrado
      *
-     * @param	[nombre_estado]   Nombre del estado
+     * @param	[ambito]            Ambito al que afecta el estado
+     * @param	[nombre_estado]     Nombre del estado
      * 
      * @return identificador del estado
      */
     
-    function get_id_by_nombre($nombre_estado)
+    function get_id_by_nombre($ambito,$nombre_estado)
     {
         $this->db->select($this->table.'.id');
         $this->db->from($this->table);
         $this->db->where('nombre', $nombre_estado);
+        $this->db->where('ambito', $ambito);
         $query = $this->db->get();
         $row = $query->row();
         if ($row) {

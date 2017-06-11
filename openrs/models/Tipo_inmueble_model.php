@@ -226,7 +226,7 @@ class Tipo_inmueble_model extends MY_Model
         {
             $idioma_id=$this->data['session_id_idioma'];
         }
-        // Array de paises
+        // Array de tipos de inmuebles
         $tipos_inmuebles=$this->Tipo_inmueble_idiomas_model->order_by('nombre')->get_all(array('idioma_id' => $idioma_id));
         $tipos_inmuebles_dropdown=$this->utilities->dropdown($tipos_inmuebles,'tipo_inmueble_id','nombre');
         // Selección inicial
