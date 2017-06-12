@@ -18,6 +18,7 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="#tab_demandantes" data-toggle="tab">DEMANDANTES</a></li>
         <li><a href="#tab_propietarios" data-toggle="tab">PROPIETARIOS</a></li>
+        <li><a href="#tab_opciones_extras" data-toggle="tab">CARACTERISTICAS</a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="tab_demandantes">
@@ -25,6 +26,9 @@
         </div>
         <div class="tab-pane" id="tab_propietarios">
             <?php $this->load->view('inmuebles/list_propietarios', $this->data); ?>
+        </div>
+        <div class="tab-pane" id="tab_opciones_extras">
+            <?php $this->load->view('inmuebles/list_opciones_extras', $this->data); ?>
         </div>
     </div>    
 </div>

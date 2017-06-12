@@ -230,4 +230,33 @@ class Opcion_extra_model extends MY_Model
         return $this->db->get()->result();
     }
     
+    /**
+     * Devuelve un array de opciones extras en formato dropdown de un determinado idioma
+     *
+     * @return array de opciones extras en formato dropdown
+     */
+    
+    function get_opciones_extras_dropdown($show_default_value=FALSE,$default_value="", $idioma_id=NULL)
+    {
+        // Idioma
+        if (is_null($idioma_id))
+        {
+            $idioma_id=$this->data['session_id_idioma'];
+        }
+        // Array de datos
+        $opciones_extras=$this->Opcion_extra_idiomas_model->order_by('nombre')->get_all(array('idioma_id' => $idioma_id));
+        $opciones_extras_dropdown=$this->utilities->dropdown($opciones_extras,'opcion_extra_id','nombre');
+        // Selección inicial
+        if($show_default_value)
+        {
+            $seleccion[$default_value]="- Seleccione opción extra -";
+            // Suma de ambos
+            return ($seleccion+$opciones_extras_dropdown);
+        }
+        else
+        {
+            return $opciones_extras_dropdown;
+        }        
+    }
+    
 }

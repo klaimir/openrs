@@ -31,12 +31,23 @@ class Inmueble_model extends MY_Model
             'foreign_key'=>'id',
             'get_relate'=>TRUE
         );
+        
+        $this->has_many_pivot['opciones_extras'] = array(
+            'foreign_model'=>'Opcion_extra_model',
+            'pivot_table'=>'inmuebles_opciones_extras',
+            'local_key'=>'id',
+            'pivot_local_key'=>'inmueble_id',
+            'pivot_foreign_key'=>'opcion_extra_id',
+            'foreign_key'=>'id',
+            'get_relate'=>FALSE
+        );
 
         // Modelos axiliares
         $this->load->model('Zona_model');
         $this->load->model('Tipo_inmueble_model');
         $this->load->model('Certificacion_energetica_model');
         $this->load->model('Estado_model');
+        $this->load->model('Opcion_extra_model');        
     }
     
     /*     * *********************** SECURITY ************************ */
@@ -134,6 +145,9 @@ class Inmueble_model extends MY_Model
         // Selector de tipos_inmuebles
         $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown();
         
+        // Selector de opciones_extras
+        $data['opciones_extras'] = $this->Opcion_extra_model->get_opciones_extras_dropdown();
+        
         // Selector de tipos_certificacion_energetica
         $data['tipos_certificacion_energetica'] = $this->Certificacion_energetica_model->get_tipos_certificacion_energetica_dropdown();
         
@@ -203,6 +217,9 @@ class Inmueble_model extends MY_Model
             'value' => $this->form_validation->set_value('direccion', is_object($datos) ? $datos->direccion : ""),
         );
 
+        // Las opciones extras vendrán del info
+        $data['opciones_extras_seleccionadas'] = is_object($datos) ? $datos->opciones_extras : array();
+        
         $data['tipo_id'] = $this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
         $data['certificacion_energetica_id'] = $this->form_validation->set_value('certificacion_energetica_id', is_object($datos) ? $datos->certificacion_energetica_id : "");
         $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
@@ -500,15 +517,17 @@ class Inmueble_model extends MY_Model
      */
     function get_info($id)
     {
-        $info = $this->get_by_id($id);
+        $info = $this->get($id);//$this->get_by_id($id); 
         if($info)
         {
             // Modelos axiliares
             $this->load->model('Cliente_model');
             $this->load->model('Demanda_model');
+            $this->load->model('Inmueble_opcion_extra_model'); 
             // Consulta de datos
             $info->propietarios = $this->Cliente_model->get_propietarios_inmueble($id);
             $info->demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
+            $info->opciones_extras = $this->Inmueble_opcion_extra_model->get_opciones_extras_inmueble($id);
             // Devolvemos toda la información calculada
             return $info;
         }
@@ -964,6 +983,24 @@ class Inmueble_model extends MY_Model
         $this->db->where("idioma_id",$id_idioma);
         $this->db->where_not_in("id",$array_exceptions);
         return $this->db->get()->result();
+    }
+    
+    /**
+     * Marca o desmarca una opción extra para un inmueble en concreto
+     *
+     * @param [inmueble_id]             Indentificador del inmueble
+     * @param [opcion_extra_id]         Indentificador de la opción extra
+     * @param [marcar]                  1 si tiene que marcar la opción en el inmueble, 0 en caso contrario
+     *
+     * @return void
+     */
+    
+    function marcar_opcion_extra($inmueble_id,$opcion_extra_id,$marcar)
+    {
+        // Carga del modelo
+        $this->load->model('Inmueble_opcion_extra_model');
+        // Datos de marcado
+        return $this->Inmueble_opcion_extra_model->marcar($inmueble_id,$opcion_extra_id,$marcar); 
     }
 
 }
