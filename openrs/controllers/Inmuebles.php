@@ -329,6 +329,33 @@ class Inmuebles extends CRUD_controller
         }
     }
     
+    public function marcar_lugar_interes($inmueble_id,$lugar_interes_id,$marcar) {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if($this->input->is_ajax_request())
+        {
+            // Datos federado
+            $check_marcar = $this->Inmueble_model->marcar_lugar_interes($inmueble_id,$lugar_interes_id,$marcar);            
+            // Actualización de datos        
+            if($check_marcar)
+            {
+                echo 1;
+            }
+            else
+            {
+                if($marcar)
+                {
+                    echo "Error al marcar el lugar de interés. Inténtelo más tarde";
+                }
+                else
+                {
+                    echo "Error al desmarcar el lugar de interés. Inténtelo más tarde";
+                }
+            }
+        }
+    }
+    
     public function asociar_inmuebles($inmueble_id)
     {
         $this->data['element'] = $this->{$this->_model}->get_by_id($inmueble_id);        

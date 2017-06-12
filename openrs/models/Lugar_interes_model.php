@@ -230,4 +230,33 @@ class Lugar_interes_model extends MY_Model
         return $this->db->get()->result();
     }
     
+    /**
+     * Devuelve un array de lugares de interés en formato dropdown de un determinado idioma
+     *
+     * @return array de lugares de interés en formato dropdown
+     */
+    
+    function get_lugares_interes_dropdown($show_default_value=FALSE,$default_value="", $idioma_id=NULL)
+    {
+        // Idioma
+        if (is_null($idioma_id))
+        {
+            $idioma_id=$this->data['session_id_idioma'];
+        }
+        // Array de datos
+        $lugares_interes=$this->Lugar_interes_idiomas_model->order_by('nombre')->get_all(array('idioma_id' => $idioma_id));
+        $lugares_interes_dropdown=$this->utilities->dropdown($lugares_interes,'lugar_interes_id','nombre');
+        // Selección inicial
+        if($show_default_value)
+        {
+            $seleccion[$default_value]="- Seleccione lugar -";
+            // Suma de ambos
+            return ($seleccion+$lugares_interes_dropdown);
+        }
+        else
+        {
+            return $lugares_interes_dropdown;
+        }        
+    }
+    
 }
