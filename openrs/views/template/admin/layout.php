@@ -380,15 +380,23 @@
                 ?>
                 
                 <ul class="nav nav-list">
-                <?php
-                if($session_es_agente) {
-                    $this->load->view('template/admin/agente_menu', $this->data);
-                }
-                
-                if($session_es_admin) {
-                    $this->load->view('template/admin/admin_menu', $this->data);
-                }
-                ?>
+                    <li>
+                        <a href="<?php echo site_url('usuarios/dashboard'); ?>" onClick="return show_confirm_exit_message();">
+                            <i class="menu-icon fa fa-home"></i>
+                            <span class="menu-text"> Inicio </span>
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <?php
+                    if($session_es_agente) {
+                        $this->load->view('template/admin/agente_menu', $this->data);
+                    }
+
+                    if($session_es_admin) {
+                        $this->load->view('template/admin/admin_menu', $this->data);
+                    }
+                    ?>
                 </ul><!-- /.nav-list -->
                 
                 <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">

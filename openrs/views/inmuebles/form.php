@@ -144,6 +144,95 @@
     </div>
 </div>
 
+<?php if(isset($element)) { ?>
+<div class="widget-box">
+    <div class="widget-header">
+        <h4 class="widget-title">
+            DATOS ZONA PUBLICA
+        </h4>
+    </div>
+    <div class="widget-body">
+        <div class="widget-main">
+            <div class="form-group">            
+                <?php echo label('Publicado', 'publicado', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_checkbox('publicado', '1', $publicado_checked, 'class="checkbox" onchange="mark_modified_field();"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Destacado', 'destacado', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_checkbox('destacado', '1', $destacado_checked, 'class="checkbox" onchange="mark_modified_field();"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Oportunidad', 'oportunidad', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_checkbox('oportunidad', '1', $oportunidad_checked, 'class="checkbox" onchange="mark_modified_field();"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Dirección pública', 'direccion_publica', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($direccion_publica, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                </div>
+            </div>            
+            <div class="form-group"> 
+                <ul class="nav nav-tabs">
+                        <?php foreach($idiomas_activos as $idioma) { ?>
+                                <?php if($idioma->id_idioma == $this->data['session_id_idioma']){?>
+                                        <li class="active"><a href="#tab_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+                                <?php }else{?>
+                                        <li><a href="#tab_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+                                <?php }?>
+                        <?php }?>
+                </ul>
+                <div class="tab-content">
+                    <?php foreach($idiomas_activos as $idioma) { ?>
+                        <?php if($idioma->id_idioma == $this->data['session_id_idioma']){?>
+                                <div class="tab-pane active" id="tab_<?php echo $idioma->id_idioma;?>">
+                        <?php }else{?>
+                                <div class="tab-pane" id="tab_<?php echo $idioma->id_idioma;?>">
+                        <?php }?>
+                                    <div class="form-group">            
+                                        <?php echo label('Título', 'titulo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <div class="col-sm-9">
+                                            <?php echo form_input($datos_idioma[$idioma->id_idioma]['titulo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">            
+                                        <?php echo label('Descripción', 'descripcion_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <div class="col-sm-9">
+                                            <?php echo form_textarea($datos_idioma[$idioma->id_idioma]['descripcion'],'','onchange="mark_modified_field();" class="ckeditor"'); ?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">            
+                                        <?php echo label('URL SEO', 'url_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <div class="col-sm-9">
+                                            <?php echo form_input($datos_idioma[$idioma->id_idioma]['url_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">            
+                                        <?php echo label('Descripción SEO', 'descripcion_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <div class="col-sm-9">
+                                            <?php echo form_input($datos_idioma[$idioma->id_idioma]['descripcion_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">            
+                                        <?php echo label('Palabras clave SEO', 'keywords_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <div class="col-sm-9">
+                                            <?php echo form_input($datos_idioma[$idioma->id_idioma]['keywords_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+<?php } ?>
+
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">
@@ -167,7 +256,7 @@
             <div class="form-group">            
                 <?php echo label('Observaciones', 'observaciones', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_textarea($observaciones,'','onchange="mark_modified_field();" class="ckeditor"'); ?>
+                    <?php echo form_textarea($observaciones,'','onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
         </div>

@@ -31,7 +31,7 @@ class MY_Form_validation extends CI_Form_validation
     {
         parent::__construct();
     }
-    
+
     /**
      * Devuelve un resultado del array de datos de validación
      *
@@ -39,15 +39,15 @@ class MY_Form_validation extends CI_Form_validation
      * @param	field       Campo a consultar
      * @return	field
      */
-    
-    function get_validation_data($field=NULL) {
-        if(is_null($field))
+    function get_validation_data($field = NULL)
+    {
+        if (is_null($field))
         {
             return $this->validation_data;
         }
         else
         {
-            if(isset($this->validation_data[$field]))
+            if (isset($this->validation_data[$field]))
             {
                 return $this->validation_data[$field];
             }
@@ -55,9 +55,9 @@ class MY_Form_validation extends CI_Form_validation
             {
                 return NULL;
             }
-        }        
+        }
     }
-    
+
     /**
      * Determina si es único un valor en una determinada tabla
      *
@@ -67,7 +67,7 @@ class MY_Form_validation extends CI_Form_validation
      * @return	bool
      */
     public function is_unique_global($str, $string)
-    {        
+    {
         $explode = explode(';', $string);
         $table = $explode[0];
         $id = $explode[1];
@@ -290,7 +290,7 @@ class MY_Form_validation extends CI_Form_validation
             return TRUE;
         }
     }
-    
+
     /**
      *  Determina si un enlace es un recurso de youtube
      *
@@ -298,7 +298,6 @@ class MY_Form_validation extends CI_Form_validation
      * @param	url         url del enlace
      * @return	boolean
      */
-    
     function is_valid_youtube_url($url)
     {
         // Let's check the host first
@@ -358,14 +357,29 @@ class MY_Form_validation extends CI_Form_validation
             $this->set_message('is_embeddable_youtube_url', 'Acceso no autorizado al video de youtube');
             return FALSE;
         }
-            
+
         if (!$data->{'html'})
         {
             $this->set_message('is_embeddable_youtube_url', 'El video debe tener un HTML asociado');
             return FALSE;
-        }        
+        }
 
         return TRUE;
+    }
+
+    /**
+     * Esta función es como set_data pero para un campo determinado
+     *
+     * @param	string	$field
+     * @param	array	$data
+     * @return	CI_Form_validation
+     */
+    public function set_data_field($field,$data)
+    {
+        if (!empty($data))
+        {
+            $this->validation_data[$field] = $data;
+        }
     }
 
 }

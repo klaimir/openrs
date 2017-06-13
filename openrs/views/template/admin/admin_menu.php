@@ -1,13 +1,4 @@
 <li>
-    <a href="<?php echo site_url('usuarios/dashboard'); ?>" onClick="return show_confirm_exit_message();">
-        <i class="menu-icon fa fa-home"></i>
-        <span class="menu-text"> Inicio </span>
-    </a>
-
-    <b class="arrow"></b>
-</li>
-
-<li>
     <a href="<?php echo site_url('auth'); ?>" onClick="return show_confirm_exit_message();">
         <i class="menu-icon fa fa-users"></i>
         <span class="menu-text"> Usuarios </span>

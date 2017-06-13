@@ -128,6 +128,20 @@ class Inmueble_imagen_model extends MY_Model
         }
     }
 
+    /**
+     * Devuelve la imagen de portada de determinado inmueble
+     *
+     * @param [inmueble_id]                  Indentificador del elemento
+     *
+     * @return void
+     */
+    function get_portada($inmueble_id)
+    {
+        $this->db->from($this->table);
+        $this->db->where('inmueble_id', $inmueble_id);
+        $this->db->where('portada', 1);
+        return $this->db->get()->row();
+    }
     
     /**
      * Devuelve los imagenes adjuntos de un determinado inmueble
@@ -213,7 +227,7 @@ class Inmueble_imagen_model extends MY_Model
     {
         // Quitamos la portada anterior
         $datas['portada'] = 0;
-        if($this->update($datas, array("inmueble_id" => $inmueble_id, "portada" => 1)))
+        if($this->update($datas, array("inmueble_id" => $inmueble_id, "portada" => 1))>=0)
         {
             // Establecemos la nueva
             $datas['portada'] = 1;

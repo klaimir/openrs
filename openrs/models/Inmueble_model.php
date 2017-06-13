@@ -1,14 +1,16 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH . 'core/MY_Model.php';
 
 class Inmueble_model extends MY_Model
 {
-    
-    public $idiomas_activos=array();
+
+    public $idiomas_activos = array();
 
     public function __construct()
-    {        
+    {
         parent::__construct();
 
         $this->table = 'inmuebles';
@@ -21,35 +23,35 @@ class Inmueble_model extends MY_Model
         $this->has_one['tipo'] = array('local_key' => 'tipo_id', 'foreign_key' => 'id', 'foreign_model' => 'Tipo_inmueble_model');
         $this->has_one['certificacion_energetica'] = array('local_key' => 'certificacion_energetica_id', 'foreign_key' => 'id', 'foreign_model' => 'Certificacion_energetica_model');
         $this->has_one['estado'] = array('local_key' => 'estado_id', 'foreign_key' => 'id', 'foreign_model' => 'Estado_model');
-        
+
         $this->has_many_pivot['propietarios'] = array(
-            'foreign_model'=>'Cliente_model',
-            'pivot_table'=>'clientes_inmuebles',
-            'local_key'=>'id',
-            'pivot_local_key'=>'inmueble_id',
-            'pivot_foreign_key'=>'cliente_id',
-            'foreign_key'=>'id',
-            'get_relate'=>TRUE
+            'foreign_model' => 'Cliente_model',
+            'pivot_table' => 'clientes_inmuebles',
+            'local_key' => 'id',
+            'pivot_local_key' => 'inmueble_id',
+            'pivot_foreign_key' => 'cliente_id',
+            'foreign_key' => 'id',
+            'get_relate' => TRUE
         );
-        
+
         $this->has_many_pivot['opciones_extras'] = array(
-            'foreign_model'=>'Opcion_extra_model',
-            'pivot_table'=>'inmuebles_opciones_extras',
-            'local_key'=>'id',
-            'pivot_local_key'=>'inmueble_id',
-            'pivot_foreign_key'=>'opcion_extra_id',
-            'foreign_key'=>'id',
-            'get_relate'=>FALSE
+            'foreign_model' => 'Opcion_extra_model',
+            'pivot_table' => 'inmuebles_opciones_extras',
+            'local_key' => 'id',
+            'pivot_local_key' => 'inmueble_id',
+            'pivot_foreign_key' => 'opcion_extra_id',
+            'foreign_key' => 'id',
+            'get_relate' => FALSE
         );
-        
+
         $this->has_many_pivot['lugares_interes'] = array(
-            'foreign_model'=>'Lugar_interes_model',
-            'pivot_table'=>'inmuebles_lugares_interes',
-            'local_key'=>'id',
-            'pivot_local_key'=>'inmueble_id',
-            'pivot_foreign_key'=>'lugar_interes_id',
-            'foreign_key'=>'id',
-            'get_relate'=>FALSE
+            'foreign_model' => 'Lugar_interes_model',
+            'pivot_table' => 'inmuebles_lugares_interes',
+            'local_key' => 'id',
+            'pivot_local_key' => 'inmueble_id',
+            'pivot_foreign_key' => 'lugar_interes_id',
+            'foreign_key' => 'id',
+            'get_relate' => FALSE
         );
 
         // Modelos axiliares
@@ -57,10 +59,11 @@ class Inmueble_model extends MY_Model
         $this->load->model('Tipo_inmueble_model');
         $this->load->model('Certificacion_energetica_model');
         $this->load->model('Estado_model');
-        $this->load->model('Opcion_extra_model'); 
-        $this->load->model('Lugar_interes_model'); 
+        $this->load->model('Opcion_extra_model');
+        $this->load->model('Lugar_interes_model');
+        $this->load->model('Inmueble_idiomas_model');
     }
-    
+
     /*     * *********************** SECURITY ************************ */
 
     public function check_access_conditions($datos)
@@ -81,7 +84,7 @@ class Inmueble_model extends MY_Model
     {
         $this->form_validation->set_rules('referencia', 'Referencia', 'required|max_length[40]|is_unique_global[inmuebles;' . $id . ';referencia;id]|xss_clean');
         $this->form_validation->set_rules('metros', 'Metros totales', 'required|xss_clean|max_length[4]|is_natural_no_zero');
-        $this->form_validation->set_rules('metros_utiles', 'Metros útiles', 'required|xss_clean|max_length[4]|is_natural_no_zero|less_than_equal_to['.$this->form_validation->get_validation_data('metros').']');
+        $this->form_validation->set_rules('metros_utiles', 'Metros útiles', 'required|xss_clean|max_length[4]|is_natural_no_zero|less_than_equal_to[' . $this->form_validation->get_validation_data('metros') . ']');
         $this->form_validation->set_rules('habitaciones', 'Habitaciones', 'required|is_natural');
         $this->form_validation->set_rules('banios', 'Baños', 'required|is_natural');
         $this->form_validation->set_rules('anio_construccion', 'Año Construcción', 'is_natural|exact_length[4]');
@@ -98,32 +101,88 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('estado_id', 'Estado', 'required');
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('captador_id', 'Captador', 'xss_clean');
-        /*	
 
-	13	direccion_publica	varchar(200)	utf8_general_ci		No 	Ninguna		Cambiar Cambiar	Eliminar Eliminar	
+        // Datos de la zona pública   
+        if ($id)
+        {
+            $this->form_validation->set_rules('publicado', 'Publicado', 'xss_clean');
+            $this->form_validation->set_rules('oportunidad', 'Oportunidad', 'xss_clean');
+            $this->form_validation->set_rules('destacado', 'Destacado', 'xss_clean');
+            // Reglas sólo para publicados
+            $required_rules = "";
+            if ($this->form_validation->get_validation_data('publicado'))
+            {
+                $required_rules.="required|";
+            }
+            // Leemos los idiomas para la edición
+            $array_datos_idioma = $this->Inmueble_idiomas_model->get_info_idiomas_by_inmueble($id);
+            // Para cada idioma creamos su regla para los campos dependientes del idioma
+            foreach ($this->idiomas_activos as $idioma)
+            {
+                // Según si viene con datos o no hay que mirar en toda la tabla 
+                $titulo_rules = "";
+                if (isset($array_datos_idioma[$idioma->id_idioma]))
+                {
+                    $id_inmuebles_idiomas = $array_datos_idioma[$idioma->id_idioma]->id;
+                }
+                else
+                {
+                    $id_inmuebles_idiomas = 0;
+                }
+                // Si el SEO está vacío entonces se generará uno a partir de su nombre
+                if (!empty($this->form_validation->get_validation_data('titulo_' . $idioma->id_idioma)) && empty($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma)))
+                {
+                    $this->form_validation->set_data_field('url_seo_' . $idioma->id_idioma, $this->utilities->slugify($this->form_validation->get_validation_data('titulo_' . $idioma->id_idioma)));
+                }
+                // Si no está publicado aún ningun campo
+                if (empty($public_rules) && (!empty($this->form_validation->get_validation_data('titulo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('descripcion_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('descripcion_seo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('keywords_seo_' . $idioma->id_idioma))))
+                {
+                    $required_rules.="required|";
+                }
+                // Reglas
+                $titulo_rules = 'is_unique_global[inmuebles_idiomas;' . $id_inmuebles_idiomas . ';titulo;id]|';
+                $this->form_validation->set_rules('titulo_' . $idioma->id_idioma, 'Título en ' . $idioma->nombre, $required_rules . $titulo_rules . 'max_length[70]|xss_clean');
+                $this->form_validation->set_rules('descripcion_' . $idioma->id_idioma, 'Descripción del inmueble en ' . $idioma->nombre, $required_rules . 'trim');
+                $url_seo_rules = 'is_unique_global[inmuebles_idiomas;' . $id_inmuebles_idiomas . ';url_seo;id]|';
+                $this->form_validation->set_rules('url_seo_' . $idioma->id_idioma, 'URL SEO en ' . $idioma->nombre, $url_seo_rules . 'max_length[50]|xss_clean');
+                $this->form_validation->set_rules('descripcion_seo_' . $idioma->id_idioma, 'Descripción SEO en ' . $idioma->nombre, $required_rules . 'max_length[150]|xss_clean');
+                $this->form_validation->set_rules('keywords_seo_' . $idioma->id_idioma, 'Palabras clave SEO en ' . $idioma->nombre, $required_rules . 'max_length[255]|xss_clean');
+            }
+            // Campos públicos no dependientes del idioma
+            $this->form_validation->set_rules('direccion_publica', 'Dirección Pública', $required_rules . 'xss_clean|max_length[100]');
+            // Recordar que hay que tener una regla para que funcionen los set_checkbox
+            $this->form_validation->set_rules('publicado', 'Publicado', 'xss_clean');
+            $this->form_validation->set_rules('oportunidad', 'Oportunidad', 'xss_clean');
+            $this->form_validation->set_rules('destacado', 'Destacado', 'xss_clean');
+        }
 
-	14	publicado	tinyint(2)			No 	0		Cambiar Cambiar	Eliminar Eliminar	
-
-
-	16	obra_nueva	varchar(30)	utf8_general_ci		No 	inmueble_usado		Cambiar Cambiar	Eliminar Eliminar	
-
-         * 
-         * 
+        /* 	
+          16	obra_nueva	varchar(30)	utf8_general_ci		No 	inmueble_usado		Cambiar Cambiar	Eliminar Eliminar
          * 	
 
-	18	cuota_comunidad	double			Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
-	19	forma_pago	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-	20	anejos	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
-	21	cargas_vivienda	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-	22	descripcion_vivienda	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
-	23	descripcion_edificio	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
-	24	antiguedad_edificio	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar	
-
+          18	cuota_comunidad	double			Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
+          19	forma_pago	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
+          20	anejos	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
+          21	cargas_vivienda	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
+          22	descripcion_vivienda	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
+          23	descripcion_edificio	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
+          24	antiguedad_edificio	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
          */
+    }
+
+    public function check_exists_portada($id,$publicado)
+    {
+        if ($id && $publicado)
+        {
+            $this->load->model('Inmueble_imagen_model');
+            if(!$this->Inmueble_imagen_model->get_portada($id))
+            {
+                $this->set_error('No puede publicar un inmueble sin haber establecido una imagen como portada');
+                return FALSE;
+            }
+        }
+        
+        return TRUE;
     }
 
     /**
@@ -137,8 +196,25 @@ class Inmueble_model extends MY_Model
         $this->set_rules($id);
 
         // Other functions validations
-        // Run form validation        
-        return $this->form_validation->run();
+        if($id)
+        {
+            // En la edición al tener una comprobación especial, hacemos la comprobación si se pasaron el resto de validaciones
+            if($this->form_validation->run())
+            {
+                return $this->check_exists_portada($id,$this->form_validation->get_validation_data('publicado'));
+            }
+            // En caso contrario, los errores son los de las reglas definidas
+            else
+            {
+                $this->set_error(validation_errors());
+                return FALSE;
+            }
+        }
+        else
+        {
+            // Run form validation        
+            return $this->form_validation->run();
+        }
     }
 
     /**
@@ -155,16 +231,16 @@ class Inmueble_model extends MY_Model
 
         // Selector de tipos_inmuebles
         $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown();
-        
+
         // Selector de opciones_extras
         $data['opciones_extras'] = $this->Opcion_extra_model->get_opciones_extras_dropdown();
-        
+
         // Selector de lugares_interes
         $data['lugares_interes'] = $this->Lugar_interes_model->get_lugares_interes_dropdown();
-        
+
         // Selector de tipos_certificacion_energetica
         $data['tipos_certificacion_energetica'] = $this->Certificacion_energetica_model->get_tipos_certificacion_energetica_dropdown();
-        
+
         // Selector de estados
         $data['estados'] = $this->Estado_model->get_estados_dropdown(2);
 
@@ -188,7 +264,7 @@ class Inmueble_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('metros', is_object($datos) ? $datos->metros : ""),
         );
-        
+
         $data['metros_utiles'] = array(
             'name' => 'metros_utiles',
             'id' => 'metros_utiles',
@@ -202,21 +278,21 @@ class Inmueble_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('habitaciones', is_object($datos) ? $datos->habitaciones : ""),
         );
-        
+
         $data['banios'] = array(
             'name' => 'banios',
             'id' => 'banios',
             'type' => 'text',
             'value' => $this->form_validation->set_value('banios', is_object($datos) ? $datos->banios : ""),
         );
-        
+
         $data['anio_construccion'] = array(
             'name' => 'anio_construccion',
             'id' => 'anio_construccion',
             'type' => 'text',
             'value' => $this->form_validation->set_value('anio_construccion', is_object($datos) ? $datos->anio_construccion : ""),
         );
-        
+
         $data['fecha_alta'] = array(
             'name' => 'fecha_alta',
             'id' => 'fecha_alta',
@@ -233,10 +309,10 @@ class Inmueble_model extends MY_Model
 
         // Las opciones extras vendrán del info
         $data['opciones_extras_seleccionadas'] = is_object($datos) ? $datos->opciones_extras : array();
-        
+
         // Los lugares de interés vendrán del info
         $data['lugares_interes_seleccionados'] = is_object($datos) ? $datos->lugares_interes : array();
-        
+
         $data['tipo_id'] = $this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
         $data['certificacion_energetica_id'] = $this->form_validation->set_value('certificacion_energetica_id', is_object($datos) ? $datos->certificacion_energetica_id : "");
         $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
@@ -252,12 +328,12 @@ class Inmueble_model extends MY_Model
         {
             $data['provincia_id'] = $this->form_validation->set_value('provincia_id', "");
         }
-        
+
         $data['zona_id'] = $this->form_validation->set_value('zona_id', is_object($datos) ? $datos->zona_id : "");
 
         // Selector de poblaciones
         $data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($data['provincia_id']);
-        
+
         // Selector de zonas
         $data['zonas'] = $this->Zona_model->get_zonas_dropdown($data['poblacion_id']);
 
@@ -267,7 +343,7 @@ class Inmueble_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('precio_compra', is_object($datos) ? $datos->precio_compra : ""),
         );
-        
+
         $data['precio_alquiler'] = array(
             'name' => 'precio_alquiler',
             'id' => 'precio_alquiler',
@@ -281,6 +357,81 @@ class Inmueble_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('observaciones', is_object($datos) ? $datos->observaciones : ""),
         );
+
+        // Sólo para la edición (Datos de la zona pública)
+        if ($datos)
+        {
+            // Datos no dependientes del idioma
+            $data['direccion_publica'] = array(
+                'name' => 'direccion_publica',
+                'id' => 'direccion_publica',
+                'type' => 'text',
+                'value' => $this->form_validation->set_value('direccion_publica', is_object($datos) ? $datos->direccion_publica : ""),
+            );
+
+            $data['publicado_checked'] = is_object($datos) ? $datos->publicado : $this->form_validation->set_checkbox('publicado', '1');
+            $data['publicado'] = is_object($datos) ? $datos->publicado : 0;
+
+            $data['oportunidad_checked'] = is_object($datos) ? $datos->oportunidad : $this->form_validation->set_checkbox('oportunidad', '1');
+            $data['oportunidad'] = is_object($datos) ? $datos->oportunidad : 0;
+
+            $data['destacado_checked'] = is_object($datos) ? $datos->destacado : $this->form_validation->set_checkbox('destacado', '1');
+            $data['destacado'] = is_object($datos) ? $datos->destacado : 0;
+
+            // Idiomas
+            $data['idiomas_activos'] = $this->idiomas_activos;
+            // Leemos los idiomas para la edición
+            $array_datos_idioma = $this->Inmueble_idiomas_model->get_info_idiomas_by_inmueble($datos->id);
+            // Datos de idiomas
+            $data['datos_idioma'] = array();
+            foreach ($data['idiomas_activos'] as $idioma)
+            {
+                // Leemos datos de idiomas de la entrada
+                if (isset($array_datos_idioma) && isset($array_datos_idioma[$idioma->id_idioma]))
+                {
+                    $datos_idioma = $array_datos_idioma[$idioma->id_idioma];
+                }
+                else
+                {
+                    $datos_idioma = NULL;
+                }
+                // Titulo
+                $data['datos_idioma'][$idioma->id_idioma]['titulo'] = array(
+                    'name' => 'titulo_' . $idioma->id_idioma,
+                    'id' => 'titulo_' . $idioma->id_idioma,
+                    'type' => 'text',
+                    'value' => $this->form_validation->set_value('titulo', is_object($datos_idioma) ? $datos_idioma->titulo : ""),
+                );
+                // Descripcion
+                $data['datos_idioma'][$idioma->id_idioma]['descripcion'] = array(
+                    'name' => 'descripcion_' . $idioma->id_idioma,
+                    'id' => 'descripcion_' . $idioma->id_idioma,
+                    'type' => 'text',
+                    'value' => $this->form_validation->set_value('descripcion', is_object($datos_idioma) ? $datos_idioma->descripcion : ""),
+                );
+                // URl SEO
+                $data['datos_idioma'][$idioma->id_idioma]['url_seo'] = array(
+                    'name' => 'url_seo_' . $idioma->id_idioma,
+                    'id' => 'url_seo_' . $idioma->id_idioma,
+                    'type' => 'text',
+                    'value' => $this->form_validation->set_value('url_seo', is_object($datos_idioma) ? $datos_idioma->url_seo : ""),
+                );
+                // Descripción SEO
+                $data['datos_idioma'][$idioma->id_idioma]['descripcion_seo'] = array(
+                    'name' => 'descripcion_seo_' . $idioma->id_idioma,
+                    'id' => 'descripcion_seo_' . $idioma->id_idioma,
+                    'type' => 'text',
+                    'value' => $this->form_validation->set_value('descripcion_seo', is_object($datos_idioma) ? $datos_idioma->descripcion_seo : ""),
+                );
+                // Palabras clave SEO
+                $data['datos_idioma'][$idioma->id_idioma]['keywords_seo'] = array(
+                    'name' => 'keywords_seo_' . $idioma->id_idioma,
+                    'id' => 'keywords_seo_' . $idioma->id_idioma,
+                    'type' => 'text',
+                    'value' => $this->form_validation->set_value('keywords_seo', is_object($datos_idioma) ? $datos_idioma->keywords_seo : ""),
+                );
+            }
+        }
 
         return $data;
     }
@@ -309,8 +460,64 @@ class Inmueble_model extends MY_Model
         $datas['poblacion_id'] = $this->input->post('poblacion_id');
         $datas['zona_id'] = $this->utilities->get_sql_value_string($this->input->post('zona_id'), "int", $this->input->post('zona_id'), NULL);
         $datas['captador_id'] = $this->utilities->get_sql_value_string($this->input->post('captador_id'), "int", $this->input->post('captador_id'), NULL);
+        // Transformaciones sólo para le edición
+        if ($id)
+        {
+            $datas['direccion_publica'] = $this->input->post('direccion_publica');
+            $datas['publicado'] = $this->utilities->get_sql_value_string($this->input->post('publicado'), 'defined', $this->input->post('publicado'), 0);
+            $datas['oportunidad'] = $this->utilities->get_sql_value_string($this->input->post('oportunidad'), 'defined', $this->input->post('oportunidad'), 0);
+            $datas['destacado'] = $this->utilities->get_sql_value_string($this->input->post('destacado'), 'defined', $this->input->post('destacado'), 0);
+        }
 
         return $datas;
+    }
+
+    /**
+     * Devuelve los datos formateado de la interfaz de todos los idiomas
+     *
+     * @return array con los datos formateado
+     */
+    public function get_formatted_datas_idiomas()
+    {
+        $datos_idiomas = array();
+        foreach ($this->idiomas_activos as $idioma)
+        {
+            $datos_idiomas[$idioma->id_idioma] = $this->get_formatted_datas_idioma($idioma->id_idioma);
+        }
+        return $datos_idiomas;
+    }
+
+    /**
+     * Devuelve los datos formateado de la interfaz de un idioma en concreto
+     *
+     * @return array con los datos formateado
+     */
+    public function get_formatted_datas_idioma($id)
+    {
+        $datos["titulo"] = $this->input->post('titulo_' . $id);
+        // Si introducimos el titulo entonces metemos el resto
+        if (empty($datos["titulo"]))
+        {
+            return FALSE;
+        }
+        else
+        {
+            $datos["descripcion"] = $this->input->post('descripcion_' . $id);
+            // Utilizar url_title da problemas con los acentos
+            // Si el SEO está vacío entonces se generará uno a partir de su nombre
+            if (empty($datos["url_seo"]))
+            {
+                $datos["url_seo"] = $this->utilities->slugify($datos["titulo"]);
+            }
+            // En caso contrario formatearemos el campo introducido por el usuario
+            else
+            {
+                $datos["url_seo"] = $this->utilities->slugify($this->input->post('url_seo_' . $id));
+            }
+            $datos["descripcion_seo"] = $this->input->post('descripcion_seo_' . $id);
+            $datos["keywords_seo"] = $this->input->post('keywords_seo_' . $id);
+            return $datos;
+        }
     }
 
     /**
@@ -331,7 +538,7 @@ class Inmueble_model extends MY_Model
             return TRUE;
         }
     }
-    
+
     /**
      * Elimina al inmueble del sistema de ficheros y de la bd
      *
@@ -340,11 +547,11 @@ class Inmueble_model extends MY_Model
      * @return void
      */
     function remove($id)
-    {        
+    {
         // Borrado físico de la carpeta de datos
-        if($this->utilities->full_rmdir(FCPATH . 'uploads/inmuebles/'.$id))
+        if ($this->utilities->full_rmdir(FCPATH . 'uploads/inmuebles/' . $id))
         {
-            if($this->delete($id))
+            if ($this->delete($id))
             {
                 return TRUE;
             }
@@ -381,7 +588,7 @@ class Inmueble_model extends MY_Model
                     return FALSE;
                 }
                 // Copiamos fichero html de protección
-                if(!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $id."/index.html"))
+                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $id . "/index.html"))
                 {
                     $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
                     return FALSE;
@@ -409,7 +616,20 @@ class Inmueble_model extends MY_Model
         // Formatted datas
         $formatted_datas = $this->get_formatted_datas($id);
         // Parent update
-        return $this->update($formatted_datas, $id);
+        $affected_rows = $this->update($formatted_datas, $id);
+        // Testear resultado devuelo por update
+        // var_dump($affected_rows); die();
+        // Insertamos los datos de los idiomas
+        if ($affected_rows >= 0)
+        {
+            $result_idiomas = $this->Inmueble_idiomas_model->save_datos_idiomas($id, $this->get_formatted_datas_idiomas());
+            // Testear resultado devuelto por save_datos_idiomas
+            //var_dump($result_idiomas); die();
+            // Devolverá TRUE OR FALSE;
+            return $result_idiomas;
+        }
+        // Devolvemos error
+        return FALSE;
     }
 
     /**
@@ -417,7 +637,7 @@ class Inmueble_model extends MY_Model
      *
      * @return array de datos de plantilla
      */
-    function get_by_filtros($filtros=NULL)
+    function get_by_filtros($filtros = NULL)
     {
         // Filtro Tipo de inmueble
         if (isset($filtros['tipo_id']) && $filtros['tipo_id'] >= 0)
@@ -534,14 +754,14 @@ class Inmueble_model extends MY_Model
      */
     function get_info($id)
     {
-        $info = $this->get($id);//$this->get_by_id($id); 
-        if($info)
+        $info = $this->get($id); //$this->get_by_id($id); 
+        if ($info)
         {
             // Modelos axiliares
             $this->load->model('Cliente_model');
             $this->load->model('Demanda_model');
-            $this->load->model('Inmueble_opcion_extra_model'); 
-            $this->load->model('Inmueble_lugar_interes_model'); 
+            $this->load->model('Inmueble_opcion_extra_model');
+            $this->load->model('Inmueble_lugar_interes_model');
             // Consulta de datos
             $info->propietarios = $this->Cliente_model->get_propietarios_inmueble($id);
             $info->demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
@@ -555,7 +775,7 @@ class Inmueble_model extends MY_Model
             return NULL;
         }
     }
-    
+
     /**
      * Asigna los clientes seleccionados al inmueble especificado
      *
@@ -564,19 +784,20 @@ class Inmueble_model extends MY_Model
      *
      * @return TRUE si todo fue bien o exception
      */
-    function asociar_clientes($inmueble_id, $clientes_seleccionados) {
+    function asociar_clientes($inmueble_id, $clientes_seleccionados)
+    {
         // Modelos axiliares
         $this->load->model('Cliente_inmueble_model');
         // Asignación de clientes
-        $datos['inmueble_id']=$inmueble_id;
-        foreach($clientes_seleccionados as $cliente_id)
+        $datos['inmueble_id'] = $inmueble_id;
+        foreach ($clientes_seleccionados as $cliente_id)
         {
-            $datos['cliente_id']=$cliente_id;
-            $this->Cliente_inmueble_model->insert($datos);            
+            $datos['cliente_id'] = $cliente_id;
+            $this->Cliente_inmueble_model->insert($datos);
         }
         return TRUE;
     }
-    
+
     /**
      * Quita los clientes seleccionados al inmueble especificado
      *
@@ -585,15 +806,16 @@ class Inmueble_model extends MY_Model
      *
      * @return Número de clientes borrados para el inmueble seleccionado
      */
-    function quitar_cliente($cliente_id, $inmueble_id) {
+    function quitar_cliente($cliente_id, $inmueble_id)
+    {
         // Modelos axiliares
         $this->load->model('Cliente_inmueble_model');
         // Borrado de cliente
-        $datos['cliente_id']=$cliente_id;
-        $datos['inmueble_id']=$inmueble_id;
+        $datos['cliente_id'] = $cliente_id;
+        $datos['inmueble_id'] = $inmueble_id;
         return $this->Cliente_inmueble_model->delete($datos);
     }
-    
+
     /**
      * Devuelve los clientes que se pueden asociar al inmueble especificado
      *
@@ -601,7 +823,8 @@ class Inmueble_model extends MY_Model
      *
      * @return array de identificadores de clientes que se pueden asociar al inmueble especificado
      */
-    function get_clientes_asociar($id) {
+    function get_clientes_asociar($id)
+    {
         // Modelos axiliares
         $this->load->model('Cliente_model');
         $this->load->model('Demanda_model');
@@ -609,8 +832,8 @@ class Inmueble_model extends MY_Model
         $propietarios = $this->Cliente_model->get_propietarios_cliente($id);
         $demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
         // Calculamos los ids de los clientes que no se pueden asignar a partir de los propietarios y demandantes
-        $array_ids_demandantes=$this->utilities->get_keys_objects_array($demandantes,'id');
-        $array_ids_propietarios=$this->utilities->get_keys_objects_array($propietarios,'id');
+        $array_ids_demandantes = $this->utilities->get_keys_objects_array($demandantes, 'id');
+        $array_ids_propietarios = $this->utilities->get_keys_objects_array($propietarios, 'id');
         // Suma de ambos
         $array_ids_incompatibles = array_merge($array_ids_demandantes, $array_ids_propietarios);
         // Devuelve los clientes que no estén contenidos en los incompatibles
@@ -629,7 +852,7 @@ class Inmueble_model extends MY_Model
         $config['allowed_types'] = 'csv';
         $config['file_name'] = 'import_inmuebles.csv';
         $config['overwrite'] = TRUE;
-        $config['max_size'] = (MEGABYTE*ini_get('post_max_size'));
+        $config['max_size'] = (MEGABYTE * ini_get('post_max_size'));
 
         $this->load->library('upload', $config);
 
@@ -672,7 +895,7 @@ class Inmueble_model extends MY_Model
             {
                 $cont++;
                 // Ignoramos la cabecera
-                if($cont!=1)
+                if ($cont != 1)
                 {
                     // Procesar datos
                     $linedata = array();
@@ -693,11 +916,10 @@ class Inmueble_model extends MY_Model
                     $linedata['nombre_poblacion'] = @$data_csv[9];
                     $linedata['nombre_zona'] = @$data_csv[9];
                     $linedata['observaciones'] = @$data_csv[10];
-                    
-                    //Vivienda piso 	Almería 	Zona	carretera granada 	300.000,00 	0,00 	70 	3 	2
 
+                    //Vivienda piso 	Almería 	Zona	carretera granada 	300.000,00 	0,00 	70 	3 	2
                     // Conversión de todos los elementos del array                
-                    $linedata=$this->utilities->encoding_array($linedata,'windows-1252','UTF-8//IGNORE');
+                    $linedata = $this->utilities->encoding_array($linedata, 'windows-1252', 'UTF-8//IGNORE');
 
                     // Validación de datos
                     $datos_validados = $this->_validar_datos_inmueble($linedata, $referencias_importados, $emails_importados);
@@ -738,7 +960,6 @@ class Inmueble_model extends MY_Model
      * 
      * @return array con los datos validados y formateados y los errores encontrados
      */
-    
     private function _validar_datos_inmueble($linedata, $referencias_importados, $emails_importados)
     {
         // Hay que reconvertir los datos de validación para que puedan pasar el validation
@@ -754,7 +975,7 @@ class Inmueble_model extends MY_Model
             if (!$this->validation())
             {
                 $datos_formateados['error'] = TRUE;
-                $datos_formateados['texto_errores'] = validation_errors('<p><strong>','</strong></p>');
+                $datos_formateados['texto_errores'] = validation_errors('<p><strong>', '</strong></p>');
             }
         }
 
@@ -802,7 +1023,7 @@ class Inmueble_model extends MY_Model
             $linedata['nombre_tipo'].=' <span class="label label-warning">No existe</span>';
             $error = TRUE;
         }
-        
+
         // Certificación energética
         $linedata['certificacion_energetica_id'] = $this->Certificacion_energetica_model->get_id_by_nombre($linedata['nombre_certificacion_energetica']);
         if (empty($linedata['certificacion_energetica_id']))
@@ -810,15 +1031,15 @@ class Inmueble_model extends MY_Model
             $linedata['nombre_certificacion_energetica'].=' <span class="label label-warning">No existe</span>';
             $error = TRUE;
         }
-        
+
         // Estado
-        $linedata['estado_id'] = $this->Estado_model->get_id_by_nombre(2,$linedata['nombre_estado']);
+        $linedata['estado_id'] = $this->Estado_model->get_id_by_nombre(2, $linedata['nombre_estado']);
         if (empty($linedata['estado_id']))
         {
             $linedata['nombre_estado'].=' <span class="label label-warning">No existe</span>';
             $error = TRUE;
         }
-        
+
         // Provincia
         $linedata['provincia_id'] = $this->Provincia_model->get_id_by_nombre($linedata['nombre_provincia']);
         if (empty($linedata['provincia_id']))
@@ -829,7 +1050,7 @@ class Inmueble_model extends MY_Model
         else
         {
             // Población
-            $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion'],$linedata['provincia_id']);
+            $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion'], $linedata['provincia_id']);
             if (!$linedata['poblacion_id'])
             {
                 $linedata['nombre_poblacion'].=' <span class="label label-success">No existe</span>';
@@ -838,7 +1059,7 @@ class Inmueble_model extends MY_Model
             else
             {
                 // Zona
-                $linedata['zona_id'] = $this->Zona_model->get_id_by_nombre($linedata['nombre_zona'],$linedata['poblacion_id']);
+                $linedata['zona_id'] = $this->Zona_model->get_id_by_nombre($linedata['nombre_zona'], $linedata['poblacion_id']);
                 if (!$linedata['zona_id'])
                 {
                     $linedata['nombre_zona'].=' <span class="label label-success">No existe</span>';
@@ -861,8 +1082,8 @@ class Inmueble_model extends MY_Model
      */
     public function get_csv_formatted_datas($data)
     {
-        $datos=array();
-        
+        $datos = array();
+
         $datos['referencia'] = $data['referencia'];
         $datos['metros'] = $data['metros'];
         $datos['metros_utiles'] = $data['metros_utiles'];
@@ -894,7 +1115,7 @@ class Inmueble_model extends MY_Model
         // Realizamos la validación nuevamente
         $importdata = $this->_get_import_csv();
         // Se procesan los datos
-        if($importdata)
+        if ($importdata)
         {
             foreach ($importdata as $key => $data)
             {
@@ -910,10 +1131,10 @@ class Inmueble_model extends MY_Model
                     $importdata[$key]['importado'] = FALSE;
                 }
             }
-            
-            if(file_exists(FCPATH . 'uploads/temp/import_inmuebles.csv'))
+
+            if (file_exists(FCPATH . 'uploads/temp/import_inmuebles.csv'))
             {
-                if(!unlink(FCPATH . 'uploads/temp/import_inmuebles.csv'))
+                if (!unlink(FCPATH . 'uploads/temp/import_inmuebles.csv'))
                 {
                     $this->set_error('El fichero de importación no ha podido ser borrado. Inténtelo más tarde');
                     return FALSE;
@@ -923,28 +1144,28 @@ class Inmueble_model extends MY_Model
         // Devolvemos resultados importados
         return $importdata;
     }
-    
+
     public function format_google_map_path($inmueble)
     {
-        $direccion_formateada="$inmueble->direccion, $inmueble->nombre_poblacion, $inmueble->nombre_provincia, Spain";
+        $direccion_formateada = "$inmueble->direccion, $inmueble->nombre_poblacion, $inmueble->nombre_provincia, Spain";
         // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
         return $this->utilities->cleantext($direccion_formateada);
     }
-    
+
     public function format_google_map_center($filtros)
     {
-        if(($filtros['provincia_id']!=-1 && $filtros['provincia_id']!="") || ($filtros['poblacion_id']!=-1 && $filtros['poblacion_id']!=""))
+        if (($filtros['provincia_id'] != -1 && $filtros['provincia_id'] != "") || ($filtros['poblacion_id'] != -1 && $filtros['poblacion_id'] != ""))
         {
-            if(($filtros['poblacion_id']==-1 || $filtros['poblacion_id']==""))
+            if (($filtros['poblacion_id'] == -1 || $filtros['poblacion_id'] == ""))
             {
                 $nombre_provincia = $this->Provincia_model->get_by_id($filtros['provincia_id'])->provincia;
-                $direccion_formateada="$nombre_provincia, Spain";
+                $direccion_formateada = "$nombre_provincia, Spain";
             }
-            else 
+            else
             {
                 $nombre_poblacion = $this->Poblacion_model->get_by_id($filtros['poblacion_id'])->poblacion;
                 $nombre_provincia = $this->Provincia_model->get_by_id($filtros['provincia_id'])->provincia;
-                $direccion_formateada="$nombre_poblacion, $nombre_provincia, Spain";
+                $direccion_formateada = "$nombre_poblacion, $nombre_provincia, Spain";
             }
             // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
             return $this->utilities->cleantext($direccion_formateada);
@@ -952,9 +1173,9 @@ class Inmueble_model extends MY_Model
         else
         {
             return "auto";
-        }        
+        }
     }
-    
+
     /**
      * Devuelve los inmuebles que son propiedad de un cliente en un idioma determinado
      *
@@ -963,23 +1184,22 @@ class Inmueble_model extends MY_Model
      * 
      * @return Array con la información del inmueble
      */
-    
-    function get_propiedades_cliente($cliente_id,$id_idioma=NULL)
+    function get_propiedades_cliente($cliente_id, $id_idioma = NULL)
     {
         // Si el idioma es NULL, consultamos el de la sesion
-        if(is_null($id_idioma))
+        if (is_null($id_idioma))
         {
             $id_idioma = $this->data['session_id_idioma'];
         }
         // Consulta
-        $this->db->select($this->view.'.*');
+        $this->db->select($this->view . '.*');
         $this->db->from($this->view);
-        $this->db->join('clientes_inmuebles', 'clientes_inmuebles.inmueble_id='.'v_inmuebles.id');
-        $this->db->where("idioma_id",$id_idioma);
-        $this->db->where("cliente_id",$cliente_id);
+        $this->db->join('clientes_inmuebles', 'clientes_inmuebles.inmueble_id=' . 'v_inmuebles.id');
+        $this->db->where("idioma_id", $id_idioma);
+        $this->db->where("cliente_id", $cliente_id);
         return $this->db->get()->result();
     }
-    
+
     /**
      * Devuelve los inmuebles que no están contenidos en el listado
      *
@@ -988,22 +1208,21 @@ class Inmueble_model extends MY_Model
      * 
      * @return Array con la información del inmueble
      */
-    
-    function get_inmuebles_excepciones($array_exceptions,$id_idioma=NULL)
+    function get_inmuebles_excepciones($array_exceptions, $id_idioma = NULL)
     {
         // Si el idioma es NULL, consultamos el de la sesion
-        if(is_null($id_idioma))
+        if (is_null($id_idioma))
         {
             $id_idioma = $this->data['session_id_idioma'];
         }
         // Consulta
-        $this->db->select($this->view.'.*');
+        $this->db->select($this->view . '.*');
         $this->db->from($this->view);
-        $this->db->where("idioma_id",$id_idioma);
-        $this->db->where_not_in("id",$array_exceptions);
+        $this->db->where("idioma_id", $id_idioma);
+        $this->db->where_not_in("id", $array_exceptions);
         return $this->db->get()->result();
     }
-    
+
     /**
      * Marca o desmarca una opción extra para un inmueble en concreto
      *
@@ -1013,15 +1232,14 @@ class Inmueble_model extends MY_Model
      *
      * @return void
      */
-    
-    function marcar_opcion_extra($inmueble_id,$opcion_extra_id,$marcar)
+    function marcar_opcion_extra($inmueble_id, $opcion_extra_id, $marcar)
     {
         // Carga del modelo
         $this->load->model('Inmueble_opcion_extra_model');
         // Datos de marcado
-        return $this->Inmueble_opcion_extra_model->marcar($inmueble_id,$opcion_extra_id,$marcar); 
+        return $this->Inmueble_opcion_extra_model->marcar($inmueble_id, $opcion_extra_id, $marcar);
     }
-    
+
     /**
      * Marca o desmarca un lugar de interés para un inmueble en concreto
      *
@@ -1031,13 +1249,12 @@ class Inmueble_model extends MY_Model
      *
      * @return void
      */
-    
-    function marcar_lugar_interes($inmueble_id,$lugar_interes_id,$marcar)
+    function marcar_lugar_interes($inmueble_id, $lugar_interes_id, $marcar)
     {
         // Carga del modelo
         $this->load->model('Inmueble_lugar_interes_model');
         // Datos de marcado
-        return $this->Inmueble_lugar_interes_model->marcar($inmueble_id,$lugar_interes_id,$marcar); 
+        return $this->Inmueble_lugar_interes_model->marcar($inmueble_id, $lugar_interes_id, $marcar);
     }
 
 }
