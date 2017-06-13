@@ -114,7 +114,7 @@ class Zonas extends CRUD_controller
                 // Edit
                 $updated_rows=$this->{$this->_model}->edit($id);
                 // Check
-                if ($updated_rows) {
+                if ($updated_rows>=0) {
                     $this->session->set_flashdata('message', lang('common_success_edit'));
                     $this->session->set_flashdata('message_color', 'success');
                 } else {
