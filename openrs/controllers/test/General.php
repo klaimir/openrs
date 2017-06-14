@@ -260,16 +260,42 @@ class General extends MY_Controller
             'smtp_user' => 'angel.berasuain@gmail.com',
             'smtp_pass' => 'BreakbeaT',
             'mailtype' => 'html',
-            'charset' => 'UTF-8'
+            'charset' => 'UTF-8',
+            'newline' => "\r\n"
         );
         $this->email->initialize($config);
-        $this->email->set_newline("\r\n");
+        //$this->email->set_newline("\r\n");
 
 
         //$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
-        $message = "HOLA";
+        $message = "email";
         $this->email->clear();
-        $this->email->from('angel.berasuain@gmail.com', 'OPENRS');
+        $this->email->from('angel.berasuain@gmail.com', 'OPENRS - email');
+        $this->email->to('angel.berasuain@gmail.com');
+        $this->email->subject('Correo');
+        $this->email->message($message);
+
+        $this->email->send();
+        echo $this->email->print_debugger();
+    }
+    
+    public function sendmail()
+    {
+        $this->load->library('email');
+        $config = Array(
+            'protocol' => 'sendmail',
+            'mailpath' => '/usr/sbin/sendmail',
+            'wordwrap' => TRUE,
+            'newline' => "\r\n",
+            'mailtype' => 'html',
+            'charset' => 'UTF-8'
+        );
+        $this->email->initialize($config);
+
+        //$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
+        $message = "SENDMAIL";
+        $this->email->clear();
+        $this->email->from('angel.berasuain@gmail.com', 'OPENRS - sendmail');
         $this->email->to('angel.berasuain@gmail.com');
         $this->email->subject('Correo');
         $this->email->message($message);

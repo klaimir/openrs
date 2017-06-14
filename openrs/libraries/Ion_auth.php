@@ -81,8 +81,9 @@ class Ion_auth
 		if ($this->config->item('use_ci_email', 'ion_auth') && isset($email_config) && is_array($email_config))
 		{
 			$this->email->initialize($email_config);
-            // See http://stackoverflow.com/questions/28024117/sending-email-codeigniter-error
-            $this->email->set_newline("\r\n");
+                        // See http://stackoverflow.com/questions/28024117/sending-email-codeigniter-error
+                        // Añadiendolo al config el newline ya no es necesario
+                        //$this->email->set_newline("\r\n");
 		}
 
 		$this->ion_auth_model->trigger_events('library_constructor');

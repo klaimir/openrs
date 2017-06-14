@@ -120,15 +120,16 @@ $config['identity_cookie_name'] = 'identity';
  | 	  array  = Manually set your email config settings
  */
 $config['use_ci_email'] = TRUE; // Send Email using the builtin CI email class, if false it will return the code and the identity
-$config['email_config'] = array(
-	'mailtype' => 'html',
-    'protocol' => 'smtp',
-    'smtp_host' => 'smtp.googlemail.com',
-    'smtp_port' => 465,
-    'smtp_user' => 'angel.berasuain@gmail.com',
-    'smtp_pass' => 'BreakbeaT',
-    'smtp_crypto' => 'ssl'
-);
+$config['email_config'] = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'angel.berasuain@gmail.com',
+            'smtp_pass' => 'BreakbeaT',
+            'mailtype' => 'html',
+            'charset' => 'UTF-8',
+            'newline' => "\r\n"
+        );
 
 /*
  | -------------------------------------------------------------------------

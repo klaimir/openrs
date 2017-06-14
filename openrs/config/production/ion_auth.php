@@ -122,12 +122,12 @@ $config['identity_cookie_name'] = 'identity';
 $config['use_ci_email'] = TRUE; // Send Email using the builtin CI email class, if false it will return the code and the identity
 $config['email_config'] = array(
 	'mailtype' => 'html',
-    'protocol' => 'smtp',
-    'smtp_host' => 'smtp.googlemail.com',
-    'smtp_port' => 465,
-    'smtp_user' => 'angel.berasuain@gmail.com',
-    'smtp_pass' => 'BreakbeaT',
-    'smtp_crypto' => 'ssl'
+        'protocol' => 'sendmail',
+        'mailpath' => '/usr/sbin/sendmail',
+        'wordwrap' => TRUE,
+        'newline' => "\r\n",
+        'mailtype' => 'html',
+        'charset' => 'UTF-8'
 );
 
 /*
