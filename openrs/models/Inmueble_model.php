@@ -129,13 +129,27 @@ class Inmueble_model extends MY_Model
                 {
                     $id_inmuebles_idiomas = 0;
                 }
-                // Si el SEO está vacío entonces se generará uno a partir de su nombre
+                
+                // Testing
+                //var_dump($this->form_validation->get_validation_data('titulo_' . $idioma->id_idioma));
+                //var_dump($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma));
+                //var_dump($this->utilities->slugify($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma)));
+                
+                // Si el SEO está vacío entonces se generará uno a partir de su nombre   
                 if (!empty($this->form_validation->get_validation_data('titulo_' . $idioma->id_idioma)) && empty($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma)))
                 {
+                    // Testing
+                    //var_dump('Ejecuta set_data_field '.$idioma->id_idioma);
                     $this->form_validation->set_data_field('url_seo_' . $idioma->id_idioma, $this->utilities->slugify($this->form_validation->get_validation_data('titulo_' . $idioma->id_idioma)));
                 }
+                // También hay que comprobarlo cuando esté rellena
+                else if(!empty($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma)))
+                {
+                    $this->form_validation->set_data_field('url_seo_' . $idioma->id_idioma, $this->utilities->slugify($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma)));
+                }
+                
                 // Si no está publicado aún ningun campo
-                if (empty($public_rules) && (!empty($this->form_validation->get_validation_data('titulo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('descripcion_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('descripcion_seo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('keywords_seo_' . $idioma->id_idioma))))
+                if (empty($required_rules) && (!empty($this->form_validation->get_validation_data('titulo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('descripcion_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('url_seo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('descripcion_seo_' . $idioma->id_idioma)) || !empty($this->form_validation->get_validation_data('keywords_seo_' . $idioma->id_idioma))))
                 {
                     $required_rules.="required|";
                 }
@@ -148,6 +162,10 @@ class Inmueble_model extends MY_Model
                 $this->form_validation->set_rules('descripcion_seo_' . $idioma->id_idioma, 'Descripción SEO en ' . $idioma->nombre, $required_rules . 'max_length[150]|xss_clean');
                 $this->form_validation->set_rules('keywords_seo_' . $idioma->id_idioma, 'Palabras clave SEO en ' . $idioma->nombre, $required_rules . 'max_length[255]|xss_clean');
             }
+            
+            // Testing
+            //die();            
+            
             // Campos públicos no dependientes del idioma
             $this->form_validation->set_rules('direccion_publica', 'Dirección Pública', $required_rules . 'xss_clean|max_length[100]');
             // Recordar que hay que tener una regla para que funcionen los set_checkbox
@@ -170,6 +188,48 @@ class Inmueble_model extends MY_Model
          */
     }
 
+    /**
+     * Calcula los datos necesarios para imprimir un inmueble en un mapa de google maps en un determinado idioma
+     *
+     * @param [id]                  Indentificador del elemento
+     * @param [$id_idioma]          Identificador del idioma
+     *
+     * @return array con los datos de un inmueble en un mapa de google maps
+     */
+    public function get_datos_google_maps($id, $id_idioma = NULL)
+    {
+        // Si el idioma es NULL, consultamos el de la sesion
+        if (is_null($id_idioma))
+        {
+            $id_idioma = $this->data['session_id_idioma'];
+        }
+        // Array datos
+        $datos['image_path']=NULL;
+        $datos['description']='Sin descripción';
+        // Calculamos descripción
+        $info=$this->Inmueble_idiomas_model->get_info_idiomas_by_inmueble($id);
+        if(isset($info[$id_idioma]))
+        {
+            $datos['description']=$info[$id_idioma]->descripcion_seo;
+        }
+        // Calculamos foto
+        $this->load->model('Inmueble_imagen_model');
+        $foto_portada=$this->Inmueble_imagen_model->get_portada($id);
+        if($foto_portada)
+        {
+            $datos['image_path']=base_url($foto_portada->imagen);
+        }
+        return $datos;
+    }
+        
+    /**
+     * Comprueba que un inmueble puede ser publicado
+     *
+     * @param [id]                 Indentificador del elemento
+     * @param [publicado]          1 si está publicado, 0 en caso contrario
+     *
+     * @return TRUE OR FALSE
+     */            
     public function check_exists_portada($id,$publicado)
     {
         if ($id && $publicado)
@@ -400,35 +460,35 @@ class Inmueble_model extends MY_Model
                     'name' => 'titulo_' . $idioma->id_idioma,
                     'id' => 'titulo_' . $idioma->id_idioma,
                     'type' => 'text',
-                    'value' => $this->form_validation->set_value('titulo', is_object($datos_idioma) ? $datos_idioma->titulo : ""),
+                    'value' => $this->form_validation->set_value('titulo_' . $idioma->id_idioma, is_object($datos_idioma) ? $datos_idioma->titulo : ""),
                 );
                 // Descripcion
                 $data['datos_idioma'][$idioma->id_idioma]['descripcion'] = array(
                     'name' => 'descripcion_' . $idioma->id_idioma,
                     'id' => 'descripcion_' . $idioma->id_idioma,
                     'type' => 'text',
-                    'value' => $this->form_validation->set_value('descripcion', is_object($datos_idioma) ? $datos_idioma->descripcion : ""),
+                    'value' => $this->form_validation->set_value('descripcion_' . $idioma->id_idioma, is_object($datos_idioma) ? $datos_idioma->descripcion : ""),
                 );
                 // URl SEO
                 $data['datos_idioma'][$idioma->id_idioma]['url_seo'] = array(
                     'name' => 'url_seo_' . $idioma->id_idioma,
                     'id' => 'url_seo_' . $idioma->id_idioma,
                     'type' => 'text',
-                    'value' => $this->form_validation->set_value('url_seo', is_object($datos_idioma) ? $datos_idioma->url_seo : ""),
+                    'value' => $this->form_validation->set_value('url_seo_' . $idioma->id_idioma, is_object($datos_idioma) ? $datos_idioma->url_seo : ""),
                 );
                 // Descripción SEO
                 $data['datos_idioma'][$idioma->id_idioma]['descripcion_seo'] = array(
                     'name' => 'descripcion_seo_' . $idioma->id_idioma,
                     'id' => 'descripcion_seo_' . $idioma->id_idioma,
                     'type' => 'text',
-                    'value' => $this->form_validation->set_value('descripcion_seo', is_object($datos_idioma) ? $datos_idioma->descripcion_seo : ""),
+                    'value' => $this->form_validation->set_value('descripcion_seo_' . $idioma->id_idioma, is_object($datos_idioma) ? $datos_idioma->descripcion_seo : ""),
                 );
                 // Palabras clave SEO
                 $data['datos_idioma'][$idioma->id_idioma]['keywords_seo'] = array(
                     'name' => 'keywords_seo_' . $idioma->id_idioma,
                     'id' => 'keywords_seo_' . $idioma->id_idioma,
                     'type' => 'text',
-                    'value' => $this->form_validation->set_value('keywords_seo', is_object($datos_idioma) ? $datos_idioma->keywords_seo : ""),
+                    'value' => $this->form_validation->set_value('keywords_seo_' . $idioma->id_idioma, is_object($datos_idioma) ? $datos_idioma->keywords_seo : ""),
                 );
             }
         }
@@ -503,6 +563,7 @@ class Inmueble_model extends MY_Model
         else
         {
             $datos["descripcion"] = $this->input->post('descripcion_' . $id);
+            /* No hace falta ya que se hace en el set_rules para comprobar el url_seo
             // Utilizar url_title da problemas con los acentos
             // Si el SEO está vacío entonces se generará uno a partir de su nombre
             if (empty($datos["url_seo"]))
@@ -514,6 +575,9 @@ class Inmueble_model extends MY_Model
             {
                 $datos["url_seo"] = $this->utilities->slugify($this->input->post('url_seo_' . $id));
             }
+             * 
+             */
+            $datos["url_seo"] = $this->form_validation->get_validation_data('url_seo_' . $id);
             $datos["descripcion_seo"] = $this->input->post('descripcion_seo_' . $id);
             $datos["keywords_seo"] = $this->input->post('keywords_seo_' . $id);
             return $datos;

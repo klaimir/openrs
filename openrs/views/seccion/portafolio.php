@@ -61,7 +61,7 @@
 						<?php foreach($it->carrusel as $car):?>
 							<div id="<?php echo $car->prioridad; ?>" class="<?php echo $col_md; ?> text-center img-galeria <?php echo 'cat-'.$car->id_categoria;?> <?php echo ($contador>=$it->carrusel_general->por_pagina  || $contador >= $maximo)?' oculto':'';?> <?php echo 'pagina-'.$num_pagina; ?>" >
 								<?php if($it->carrusel_general->tipo_carrusel == 3):?>
-									<?php $segments = array( 'evento', url_title( $car->titulo_seo, 'dash', true ));?>
+									<?php $segments = array( 'evento', url_title( $car->titulo_seo, '-', true ));?>
 									<a href="<?php echo site_url($segments);?>" class="text-center">
 										<div class="tit-portafolio"><?php echo $car->titulo_carrusel;?></div>
 										<img src="<?php echo base_url('img/carruselmini/'.$idioma_actual->id_idioma.'/'.$car->imagen_mini);?>" title="<?php echo $car->titulo_carrusel;?>" alt="<?php echo $car->titulo_carrusel;?>" class="img-responsive img-resp-gal"/>

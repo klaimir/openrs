@@ -1141,8 +1141,7 @@ class Utilities
     }
 
     function slugify($string, $separador = '-')
-    {
-        
+    {        
         $table = array(
             'Š' => 'S', 'š' => 's', 'Đ' => 'Dj', 'đ' => 'dj', 'Ž' => 'Z', 'ž' => 'z', 'Č' => 'C', 'č' => 'c', 'Ć' => 'C', 'ć' => 'c',
             'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'A', 'Ç' => 'C', 'È' => 'E', 'É' => 'E',
@@ -1156,7 +1155,19 @@ class Utilities
 
         $stripped = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $string);
 
-        return strtolower(strtr($string, $table));
+        $replaced_string=strtolower(strtr($string, $table));
+        
+        $url_title=url_title( $replaced_string, '-', TRUE );
+        // Ver test general
+        // Parece que cuando hay carácteres raros queda en blanco la cadena, por tanto, mejor el formato de url_title
+        if(empty($url_title))
+        {
+            return url_title( $string, '-', TRUE );
+        }
+        else
+        {
+            return $url_title;
+        }
     }
 
     function navegadorIncompatible()

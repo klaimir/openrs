@@ -29,7 +29,21 @@ class General extends MY_Controller
         $this->unit->set_template($str);
         
         // Comprobación de acceso
-        //$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+        $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+    }
+    
+    function slugify()
+    {        
+        $test="Casa grande en pleno centro de Cádiz";
+        var_dump($this->utilities->slugify($test));        
+        $test2="i'm glad pep´s or ``sds";
+        var_dump($this->utilities->slugify($test2));
+        $test3="O´donnell bar I'm glad";
+        var_dump($this->utilities->slugify($test3));
+        
+        var_dump(url_title( $test, '-', TRUE ));
+        var_dump(url_title( $test2, '-', TRUE ));
+        var_dump(url_title( $test3, '-', TRUE ));
     }
     
     function is_valid_youtube_url()

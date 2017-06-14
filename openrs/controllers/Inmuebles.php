@@ -59,11 +59,24 @@ class Inmuebles extends CRUD_controller
             foreach ($inmuebles as $inmueble)
             {            
                 $marker=array();
+                // Formateamos la posición
                 $marker['position']=$this->{$this->_model}->format_google_map_path($inmueble);
-                $marker['infowindow_content']='<img class="nav-user-photo" src="'.  base_url('assets/admin/avatars/user.jpg') .'" alt="Imagen principal del inmueble">'                    
-                    . '<br>'. $inmueble->descripcion_vivienda
+                // Calculamos datos
+                $datos=$this->{$this->_model}->get_datos_google_maps($inmueble->id);
+                // Incluimos los datos en un infowindow
+                if($datos['image_path'])
+                {
+                    $html_image='<img width="225" height="150" class="nav-user-photo" src="'.  $datos['image_path'] .'" alt="Imagen principal del inmueble">';
+                }
+                else
+                {
+                    $html_image='Portada sin especificar';
+                }
+                $marker['infowindow_content']= $html_image                  
+                    . '<br>'. $datos['description']
                     . '<br>'. $inmueble->direccion
                     . '<br><a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
+                // Añadimos el marker
                 $this->googlemaps->add_marker($marker);
             } 
             
