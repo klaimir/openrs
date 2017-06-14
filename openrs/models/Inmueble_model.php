@@ -839,6 +839,31 @@ class Inmueble_model extends MY_Model
             return NULL;
         }
     }
+    
+    /**
+     * Comprueba que ningún cliente ya está asociado como propietario
+     *
+     * @param [$inmueble_id]                Identificador del inmueble
+     * @param [$clientes_seleccionados]     Array de identificadores de clientes seleccionados
+     *
+     * @return TRUE OR FALSE
+     */
+    function check_asociar_clientes($inmueble_id,$clientes)
+    {
+        $this->load->model('Cliente_Inmueble_model');
+        // Consulta
+        $exists=$this->Cliente_Inmueble_model->check_exists_clientes_inmueble($inmueble_id,$clientes);
+         // Si existen
+        if ($exists)
+        {
+            $this->set_error('Algunos de los clientes seleccionados están asignados al inmueble actual');
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
 
     /**
      * Asigna los clientes seleccionados al inmueble especificado
@@ -893,7 +918,7 @@ class Inmueble_model extends MY_Model
         $this->load->model('Cliente_model');
         $this->load->model('Demanda_model');
         // Consulta de propietarios
-        $propietarios = $this->Cliente_model->get_propietarios_cliente($id);
+        $propietarios = $this->Cliente_model->get_propietarios_inmueble($id);
         $demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
         // Calculamos los ids de los clientes que no se pueden asignar a partir de los propietarios y demandantes
         $array_ids_demandantes = $this->utilities->get_keys_objects_array($demandantes, 'id');
@@ -1283,7 +1308,10 @@ class Inmueble_model extends MY_Model
         $this->db->select($this->view . '.*');
         $this->db->from($this->view);
         $this->db->where("idioma_id", $id_idioma);
-        $this->db->where_not_in("id", $array_exceptions);
+        if(is_array($array_exceptions) && count($array_exceptions)>0)
+        {
+            $this->db->where_not_in("id",$array_exceptions);
+        }
         return $this->db->get()->result();
     }
 

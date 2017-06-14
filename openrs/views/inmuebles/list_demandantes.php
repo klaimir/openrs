@@ -15,6 +15,10 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
+        <?php
+        if($element->demandantes)
+        {
+        ?>
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
@@ -30,9 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                if($element->demandantes)
-                {
+                <?php
                     foreach ($element->demandantes as $demandante)
                     {
                     ?>
@@ -47,10 +49,10 @@
                         <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="<?php echo site_url("demandas/edit/" . $demandantes->demanda_id); ?>" title="Editar demanda">
+                                <a class="green" href="<?php echo site_url("demandas/edit/" . $demandante->demanda_id); ?>" title="Editar demanda">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
-                                <a class="red borrar-inmueble" data-demanda="<?php echo $demandante->demanda_id; ?>" data-inmueble="<?php echo $demandante->id; ?>" href="#" title="Desasignar">
+                                <a class="red borrar-demanda" data-demanda="<?php echo $demandante->demanda_id; ?>" data-inmueble="<?php echo $demandante->id; ?>" href="#" title="Desasignar">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>
                             </div>
@@ -70,7 +72,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="#" class="tooltip-error borrar-inmueble" data-demanda="<?php echo $demandante->demanda_id; ?>" data-inmueble="<?php echo $demandante->id; ?>" data-rel="tooltip" title="Desasignar">
+                                            <a href="#" class="tooltip-error borrar-demanda" data-demanda="<?php echo $demandante->demanda_id; ?>" data-demanda="<?php echo $demandante->id; ?>" data-rel="tooltip" title="Desasignar">
                                                 <span class="red">
                                                     <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                                 </span>
@@ -83,16 +85,22 @@
                     </tr>
                 <?php 
                     }
-                }
                 ?>
             </tbody>
         </table>
+        <?php 
+        } else {
+        ?>
+            <p><i class="ace-icon fa fa-info-circle"></i> Actualmente no hay demandantes para el inmueble actual</p>
+        <?php 
+        }
+        ?>
     </div>
 </div>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">   
     jQuery(function ($) {
-        $('.borrar-inmueble').click(function () {
+        $('.borrar-demanda').click(function () {
             var demanda = $(this).data("demanda");
             var inmueble = $(this).data("inmueble");
             bootbox.confirm("¿Estás seguro/a de quitar la demanda de este inmueble?", function (result) {

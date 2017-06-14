@@ -521,6 +521,31 @@ class Cliente_model extends MY_Model
     }
     
     /**
+     * Comprueba que ningún inmueble ya está asociado al cliente
+     *
+     * @param [$cliente_id]                 Identificador del inmueble
+     * @param [$inmuebles]                  Array de identificadores de clientes seleccionados
+     *
+     * @return TRUE OR FALSE
+     */
+    function check_asociar_inmuebles($cliente_id,$inmuebles)
+    {
+        $this->load->model('Cliente_Inmueble_model');
+        // Consulta
+        $exists=$this->Cliente_Inmueble_model->check_exists_inmuebles_cliente($cliente_id,$inmuebles);
+         // Si existen
+        if ($exists)
+        {
+            $this->set_error('Algunos de los inmuebles seleccionados están asignados al cliente actual');
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+    
+    /**
      * Devuelve los clientes que son propietarios de un inmueble en un idioma determinado
      *
      * @param [$inmueble_id]		Identificador del inmueble
@@ -541,23 +566,19 @@ class Cliente_model extends MY_Model
      * Devuelve los clientes que no están contenidos en el listado
      *
      * @param [$array_exceptions]	Array de identificador de clientes que no pueden asociarse
-     * @param [$id_idioma]		Identificador del idioma
      * 
      * @return Array con la información de los clientes
      */
     
-    function get_clientes_excepciones($array_exceptions,$id_idioma=NULL)
+    function get_clientes_excepciones($array_exceptions)
     {
-        // Si el idioma es NULL, consultamos el de la sesion
-        if(is_null($id_idioma))
-        {
-            $id_idioma = $this->data['session_id_idioma'];
-        }
         // Consulta
         $this->db->select($this->view.'.*');
         $this->db->from($this->view);
-        $this->db->where("idioma_id",$id_idioma);
-        $this->db->where_not_in("id",$array_exceptions);
+        if(is_array($array_exceptions) && count($array_exceptions)>0)
+        {
+            $this->db->where_not_in("id",$array_exceptions);
+        }
         return $this->db->get()->result();
     }
 

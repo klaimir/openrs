@@ -15,6 +15,10 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
+        <?php
+        if($element->propietarios)
+        {
+        ?>
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
@@ -31,9 +35,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                if($element->propietarios)
-                {
+                <?php
                     foreach ($element->propietarios as $propietario)
                     {
                     ?>
@@ -49,10 +51,10 @@
                         <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="<?php echo site_url("inmuebles/edit/" . $propietario->id); ?>" title="Editar inmueble">
+                                <a class="green" href="<?php echo site_url("clientes/edit/" . $propietario->id); ?>" title="Editar cliente">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
-                                <a class="red borrar-propiedad" data-inmueble="<?php echo $propietario->id; ?>" href="#" title="Desasignar">
+                                <a class="red borrar-propiedad" data-cliente="<?php echo $propietario->id; ?>" href="#" title="Desasignar">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>
                             </div>
@@ -64,7 +66,7 @@
 
                                     <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                         <li>
-                                            <a href="<?php echo site_url("inmuebles/edit/" . $propietario->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar inmueble">
+                                            <a href="<?php echo site_url("clientes/edit/" . $propietario->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar cliente">
                                                 <span class="green">
                                                     <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                                 </span>
@@ -72,7 +74,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="#" class="tooltip-error borrar-propiedad" data-inmueble="<?php echo $propietario->id; ?>" data-rel="tooltip" title="Desasignar">
+                                            <a href="#" class="tooltip-error borrar-propiedad" data-cliente="<?php echo $propietario->id; ?>" data-rel="tooltip" title="Desasignar">
                                                 <span class="red">
                                                     <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                                 </span>
@@ -85,10 +87,16 @@
                     </tr>
                 <?php 
                     }
-                }
                 ?>
             </tbody>
         </table>
+        <?php 
+        } else {
+        ?>
+            <p><i class="ace-icon fa fa-info-circle"></i> Actualmente no hay propietarios asignados al inmueble actual</p>
+        <?php 
+        }
+        ?>
     </div>
 </div>
 <!-- inline scripts related to this page -->

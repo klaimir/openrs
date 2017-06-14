@@ -11,6 +11,10 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
+        <?php
+        if($element->inmuebles_demandados)
+        {
+        ?>
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
@@ -28,9 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                if($element->inmuebles_demandados)
-                {
+                <?php
                     foreach ($element->inmuebles_demandados as $inmueble)
                     {
                     ?>
@@ -83,10 +85,16 @@
                     </tr>
                 <?php 
                     }
-                }
                 ?>
             </tbody>
         </table>
+        <?php 
+        } else {
+        ?>
+            <p><i class="ace-icon fa fa-info-circle"></i> Actualmente no hay inmuebles demandados por el cliente actual</p>
+        <?php 
+        }
+        ?>
     </div>
 </div>
 <!-- inline scripts related to this page -->

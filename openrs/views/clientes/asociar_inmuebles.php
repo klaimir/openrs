@@ -16,7 +16,7 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-striped table-bordered table-hover" id="tabgrid">
             <thead>
                 <tr>
                     <th>

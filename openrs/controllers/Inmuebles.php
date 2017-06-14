@@ -369,7 +369,7 @@ class Inmuebles extends CRUD_controller
         }
     }
     
-    public function asociar_inmuebles($inmueble_id)
+    public function asociar_clientes($inmueble_id)
     {
         $this->data['element'] = $this->{$this->_model}->get_by_id($inmueble_id);        
         
@@ -380,23 +380,31 @@ class Inmuebles extends CRUD_controller
         if ($this->is_post())
         {
             // Rules
-            $this->form_validation->set_rules('inmuebles[]', 'Inmuebles seleccionados', 'xss_clean|required');
+            $this->form_validation->set_rules('clientes[]', 'Clientes seleccionados', 'xss_clean|required');
             // Check
             if ($this->form_validation->run())
             {
-                // Asociar
-                $result = $this->{$this->_model}->asociar_inmuebles($inmueble_id,$this->input->post('inmuebles'));
-                // Check
-                if ($result)
+                // Comprobar que algunos de los clientes están asociados con el inmueble
+                if($this->{$this->_model}->check_asociar_clientes($inmueble_id,$this->input->post('clientes')))
                 {
-                    $this->session->set_flashdata('message', 'Los inmuebles han sido asignados con éxito');
-                    $this->session->set_flashdata('message_color', 'success');
+                    // Asociar
+                    $result = $this->{$this->_model}->asociar_clientes($inmueble_id,$this->input->post('clientes'));
+                    // Check
+                    if ($result)
+                    {
+                        $this->session->set_flashdata('message', 'Los clientes han sido asignados con éxito');
+                        $this->session->set_flashdata('message_color', 'success');
+                    }
+                    else
+                    {
+                        $this->session->set_flashdata('message', 'Error al asignar los clientes. Inténtelo más tarde');
+                    }
+                    redirect($this->_controller. '/edit/' . $inmueble_id, 'refresh');
                 }
                 else
                 {
-                    $this->session->set_flashdata('message', 'Error al asignar los inmuebles. Inténtelo más tarde');
+                    $this->data['message'] = $this->{$this->_model}->get_error();
                 }
-                redirect($this->_controller. '/edit/' . $inmueble_id, 'refresh');
             }
             else
             {
@@ -404,14 +412,14 @@ class Inmuebles extends CRUD_controller
             }
         }
         
-        // Inmuebles disponibles
-        $this->data['inmuebles_disponibles']=$this->{$this->_model}->get_inmuebles_asociar($inmueble_id);
+        // clientes disponibles
+        $this->data['clientes_disponibles']=$this->{$this->_model}->get_clientes_asociar($inmueble_id);
 
         // Render
-        $this->render_private($this->_view . '/asociar_inmuebles', $this->data);
+        $this->render_private($this->_view . '/asociar_clientes', $this->data);
     }
     
-    public function quitar_inmueble($cliente_id, $inmueble_id)
+    public function quitar_cliente($inmueble_id, $cliente_id)
     {
         $this->data['element'] = $this->{$this->_model}->get_by_id($inmueble_id);        
         
@@ -419,7 +427,7 @@ class Inmuebles extends CRUD_controller
         $this->{$this->_model}->check_access($this->data['element']);
 
         // Edit
-        $result = $this->{$this->_model}->quitar_inmueble($cliente_id,$inmueble_id);
+        $result = $this->{$this->_model}->quitar_cliente($cliente_id,$inmueble_id);
         // Check
         if ($result)
         {

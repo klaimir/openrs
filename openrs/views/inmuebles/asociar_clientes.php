@@ -1,11 +1,11 @@
-<?php menu_clientes ($element->id,"clientes"); ?>
+<?php menu_inmuebles ($element->id,"inmuebles"); ?>
 
 <div class="page-header">
     <h1>
-        Datos del cliente
+        Datos del inmueble
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            Asociar Inmuebles
+            Asociar clientes
         </small>
     </h1>
 </div>
@@ -16,7 +16,7 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-striped table-bordered table-hover" id="tabgrid">
             <thead>
                 <tr>
                     <th>
@@ -25,40 +25,36 @@
                             <span class="lbl"></span>
                         </label>
                     </th>
-                    <th>Tipo</th>
+                    <th>Nombre Completo</th>
+                    <th>CIF/NIE/NIF</th>
+                    <th>Provincia</th>
                     <th>Municipio</th>
-                    <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
-                    <th>Metros</th>
-                    <th>Hab.</th>
-                    <th>Baños</th>
+                    <th>Teléfono</th>
+                    <th>E-mail</th>
                 </tr>
             </thead>
             <tbody>
                 <?php 
-                if($inmuebles_disponibles)
+                if($clientes_disponibles)
                 {
-                    foreach ($inmuebles_disponibles as $inmueble)
+                    foreach ($clientes_disponibles as $cliente)
                     {
                     ?>
                     <tr>
                         <td>                        
                             <label>
-                                <input class="ace" type="checkbox" value="<?php echo $inmueble->id;?>"  name="inmuebles[]"/>
+                                <input class="ace" type="checkbox" value="<?php echo $cliente->id;?>"  name="clientes[]"/>
                                 <span class="lbl"></span>
                             </label>
                         </td>
-                        <td><?php echo $inmueble->nombre_tipo; ?></td>
-                        <td><?php echo $inmueble->nombre_poblacion; ?></td>
-                        <td><?php echo $inmueble->nombre_zona; ?></td>
-                        <td><?php echo $inmueble->direccion; ?></td>
-                        <td><?php echo number_format($inmueble->precio_compra, 0, ",", "."); ?></td>
-                        <td><?php echo number_format($inmueble->precio_alquiler, 0, ",", "."); ?></td>
-                        <td><?php echo $inmueble->metros; ?></td>
-                        <td><?php echo $inmueble->habitaciones; ?></td>
-                        <td><?php echo $inmueble->banios; ?></td>                        
+                        <td><?php echo $cliente->apellidos.", ".$cliente->nombre; ?></td>
+                        <td><?php echo $cliente->nif; ?></td>
+                        <td><?php echo $cliente->nombre_provincia; ?></td>
+                        <td><?php echo $cliente->nombre_poblacion; ?></td>
+                        <td><?php echo $cliente->direccion; ?></td>
+                        <td><?php echo $cliente->telefonos; ?></td>
+                        <td><?php echo $cliente->correo; ?></td>                      
                     </tr>
                 <?php 
                     }
@@ -73,7 +69,7 @@
     <div class="col-md-offset-3 col-md-9">
         <button class="btn btn-info" type="submit" name="submit">
             <i class="ace-icon fa fa-check bigger-110"></i>
-            Asociar Inmuebles
+            Asociar clientes
         </button>
     </div>
 </div>

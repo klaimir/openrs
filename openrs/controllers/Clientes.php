@@ -247,24 +247,31 @@ class Clientes extends CRUD_controller
             // Check
             if ($this->form_validation->run())
             {
-                // Asociar
-                $result = $this->{$this->_model}->asociar_inmuebles($cliente_id,$this->input->post('inmuebles'));
-                // Check
-                if ($result)
+                if($this->{$this->_model}->check_asociar_inmuebles($cliente_id,$this->input->post('inmuebles')))
                 {
-                    $this->session->set_flashdata('message', 'Los inmuebles han sido asignados con éxito');
-                    $this->session->set_flashdata('message_color', 'success');
+                    // Asociar
+                    $result = $this->{$this->_model}->asociar_inmuebles($cliente_id,$this->input->post('inmuebles'));
+                    // Check
+                    if ($result)
+                    {
+                        $this->session->set_flashdata('message', 'Los inmuebles han sido asignados con éxito');
+                        $this->session->set_flashdata('message_color', 'success');
+                    }
+                    else
+                    {
+                        $this->session->set_flashdata('message', 'Error al asignar los inmuebles. Inténtelo más tarde');
+                    }
+                    redirect($this->_controller. '/edit/' . $cliente_id, 'refresh');
                 }
                 else
                 {
-                    $this->session->set_flashdata('message', 'Error al asignar los inmuebles. Inténtelo más tarde');
+                    $this->data['message'] = $this->{$this->_model}->get_error();
                 }
-                redirect($this->_controller. '/edit/' . $cliente_id, 'refresh');
             }
             else
             {
                 $this->data['message'] = validation_errors();
-            }
+            }            
         }
         
         // Inmuebles disponibles
