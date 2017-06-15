@@ -508,7 +508,7 @@ class Inmueble_model extends MY_Model
         $datas['metros_utiles'] = $this->input->post('metros_utiles');
         $datas['habitaciones'] = $this->input->post('habitaciones');
         $datas['banios'] = $this->input->post('banios');
-        $datas['anio_construccion'] = $this->utilities->get_sql_value_string($this->input->post('anio_construccion'), "int", $this->input->post('anio_construccion'), NULL);
+        $datas['anio_construccion'] = $this->utilities->get_sql_value_string($this->input->post('anio_construccion'), "defined", $this->input->post('anio_construccion'), '');
         $datas['fecha_alta'] = $this->utilities->cambiafecha_form($this->input->post('fecha_alta'));
         $datas['direccion'] = $this->input->post('direccion');
         $datas['observaciones'] = $this->input->post('observaciones');
@@ -518,8 +518,8 @@ class Inmueble_model extends MY_Model
         $datas['certificacion_energetica_id'] = $this->input->post('certificacion_energetica_id');
         $datas['estado_id'] = $this->input->post('estado_id');
         $datas['poblacion_id'] = $this->input->post('poblacion_id');
-        $datas['zona_id'] = $this->utilities->get_sql_value_string($this->input->post('zona_id'), "int", $this->input->post('zona_id'), NULL);
-        $datas['captador_id'] = $this->utilities->get_sql_value_string($this->input->post('captador_id'), "int", $this->input->post('captador_id'), NULL);
+        $datas['zona_id'] = $this->utilities->get_sql_value_string($this->input->post('zona_id'), "defined", $this->input->post('zona_id'), NULL);
+        $datas['captador_id'] = $this->utilities->get_sql_value_string($this->input->post('captador_id'), "defined", $this->input->post('captador_id'), NULL);
         // Transformaciones sólo para le edición
         if ($id)
         {
@@ -644,15 +644,37 @@ class Inmueble_model extends MY_Model
         if ($id)
         {
             // Creación de carpeta
-            if (!file_exists(FCPATH . "uploads/inmuebles/" . $id))
+            if (!file_exists(FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia']))
             {
-                if (!mkdir(FCPATH . "uploads/inmuebles/" . $id, DIR_READ_MODE, true))
+                if (!mkdir(FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'], DIR_READ_MODE, true))
                 {
                     $this->set_error('Error en la creación de la carpeta de datos. Póngase en contacto con el administrador');
                     return FALSE;
                 }
                 // Copiamos fichero html de protección
-                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $id . "/index.html"))
+                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/index.html"))
+                {
+                    $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
+                    return FALSE;
+                }
+                // Datos adjuntos
+                if (!mkdir(FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/adjuntos", DIR_READ_MODE, true))
+                {
+                    $this->set_error('Error en la creación de la carpeta de adjuntos. Póngase en contacto con el administrador');
+                    return FALSE;
+                }
+                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/adjuntos/index.html"))
+                {
+                    $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
+                    return FALSE;
+                }
+                // Datos imagenes                
+                if (!mkdir(FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/imagenes", DIR_READ_MODE, true))
+                {
+                    $this->set_error('Error en la creación de la carpeta de adjuntos. Póngase en contacto con el administrador');
+                    return FALSE;
+                }
+                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/imagenes/index.html"))
                 {
                     $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
                     return FALSE;
@@ -973,8 +995,6 @@ class Inmueble_model extends MY_Model
             $this->load->library('CSVReader');
             // Leemos los datos
             $csv = $this->csvreader->parse_file($filename, FALSE);
-            // Dorsales importados
-            $emails_importados = array();
             // Dnis importados
             $referencias_importados = array();
             // Contador CSV
@@ -989,35 +1009,35 @@ class Inmueble_model extends MY_Model
                     // Procesar datos
                     $linedata = array();
 
+                    $cont_columnas=0;
+                    
                     // Asignación datos
-                    $linedata['nombre_tipo'] = @$data_csv[0];
-                    $linedata['referencia'] = @$data_csv[0];
-                    $linedata['metros'] = @$data_csv[1];
-                    $linedata['metros_utiles'] = @$data_csv[1];
-                    $linedata['habitaciones'] = @$data_csv[2];
-                    $linedata['banios'] = @$data_csv[2];
-                    $linedata['anio_construccion'] = @$data_csv[2];
-                    $linedata['fecha_alta'] = @$data_csv[3];
-                    $linedata['direccion'] = @$data_csv[4];
-                    $linedata['precio_compra'] = @$data_csv[6];
-                    $linedata['precio_alquiler'] = @$data_csv[6];
-                    $linedata['nombre_provincia'] = @$data_csv[8];
-                    $linedata['nombre_poblacion'] = @$data_csv[9];
-                    $linedata['nombre_zona'] = @$data_csv[9];
-                    $linedata['observaciones'] = @$data_csv[10];
+                    $linedata['referencia'] = @$data_csv[$cont_columnas++];
+                    $linedata['nombre_tipo'] = @$data_csv[$cont_columnas++];
+                    $linedata['fecha_alta'] = @$data_csv[$cont_columnas++];
+                    $linedata['nombre_provincia'] = @$data_csv[$cont_columnas++];
+                    $linedata['nombre_poblacion'] = @$data_csv[$cont_columnas++];
+                    $linedata['nombre_zona'] = @$data_csv[$cont_columnas++];
+                    $linedata['direccion'] = @$data_csv[$cont_columnas++];
+                    $linedata['metros'] = @$data_csv[$cont_columnas++];
+                    $linedata['metros_utiles'] = @$data_csv[$cont_columnas++];
+                    $linedata['habitaciones'] = @$data_csv[$cont_columnas++];
+                    $linedata['banios'] = @$data_csv[$cont_columnas++];
+                    $linedata['precio_compra'] = @$data_csv[$cont_columnas++];
+                    $linedata['precio_alquiler'] = @$data_csv[$cont_columnas++];
+                    $linedata['nombre_certificacion_energetica'] = @$data_csv[$cont_columnas++];
+                    $linedata['anio_construccion'] = @$data_csv[$cont_columnas++];
+                    $linedata['nombre_estado'] = @$data_csv[$cont_columnas++];
+                    $linedata['observaciones'] = @$data_csv[$cont_columnas++];
 
-                    //Vivienda piso 	Almería 	Zona	carretera granada 	300.000,00 	0,00 	70 	3 	2
                     // Conversión de todos los elementos del array                
                     $linedata = $this->utilities->encoding_array($linedata, 'windows-1252', 'UTF-8//IGNORE');
+                    
+                    // For testing
+                    //var_dump($linedata);
 
                     // Validación de datos
-                    $datos_validados = $this->_validar_datos_inmueble($linedata, $referencias_importados, $emails_importados);
-
-                    // Se anota como email importado
-                    if (!empty($linedata['correo']))
-                    {
-                        $emails_importados[] = $linedata['correo'];
-                    }
+                    $datos_validados = $this->_validar_datos_inmueble($linedata, $referencias_importados);
 
                     // Se anota como referencia importado
                     if (!empty($linedata['referencia']))
@@ -1029,6 +1049,8 @@ class Inmueble_model extends MY_Model
                     $import[] = $datos_validados;
                 }
             }
+            // For testing
+            //die();
         }
         else
         {
@@ -1044,15 +1066,14 @@ class Inmueble_model extends MY_Model
      * se pasa a reutilizar la validación de los datos respecto a lo almacenado en la bd
      *
      * @param [$linedata]                         Array con los datos leidos del CSV
-     * @param [$referencias_importados]                  Array de referencias importados previamente
-     * @param [$emails_importados]                Array de emails importados previamente
+     * @param [$referencias_importados]           Array de referencias importados previamente
      * 
      * @return array con los datos validados y formateados y los errores encontrados
      */
-    private function _validar_datos_inmueble($linedata, $referencias_importados, $emails_importados)
+    private function _validar_datos_inmueble($linedata, $referencias_importados)
     {
         // Hay que reconvertir los datos de validación para que puedan pasar el validation
-        $datos_formateados = $this->_format_datos_import_csv($linedata, $referencias_importados, $emails_importados);
+        $datos_formateados = $this->_format_datos_import_csv($linedata, $referencias_importados);
         $datos_formateados['texto_errores'] = NULL;
         if (!$datos_formateados['error'])
         {
@@ -1075,25 +1096,14 @@ class Inmueble_model extends MY_Model
      * Detectamos errores de reconversión de datos del CSV a formato de BD y realizamos la conversión
      *
      * @param [$linedata]                         Array con los datos leidos del CSV
-     * @param [$referencias_importados]                  Array de referencias importados previamente
-     * @param [$emails_importados]                Array de emails importados previamente
+     * @param [$referencias_importados]           Array de referencias importados previamente
      * 
      * @return array con los datos importados y reconvertidos
      */
-    private function _format_datos_import_csv($linedata, $referencias_importados, $emails_importados)
+    private function _format_datos_import_csv($linedata, $referencias_importados)
     {
         // Procesar datos
         $error = FALSE;
-
-        // Comprueba que no está repetido
-        if (!is_null($emails_importados))
-        {
-            if (in_array($linedata['correo'], $emails_importados))
-            {
-                $linedata['correo'].=' <span class="label label-warning">Repetido</span>';
-                $error = TRUE;
-            }
-        }
 
         // Comprueba que no está repetido
         if (!is_null($referencias_importados))
@@ -1152,7 +1162,6 @@ class Inmueble_model extends MY_Model
                 if (!$linedata['zona_id'])
                 {
                     $linedata['nombre_zona'].=' <span class="label label-success">No existe</span>';
-                    $error = TRUE;
                 }
             }
         }
@@ -1172,7 +1181,7 @@ class Inmueble_model extends MY_Model
     public function get_csv_formatted_datas($data)
     {
         $datos = array();
-
+                    
         $datos['referencia'] = $data['referencia'];
         $datos['metros'] = $data['metros'];
         $datos['metros_utiles'] = $data['metros_utiles'];
@@ -1181,15 +1190,14 @@ class Inmueble_model extends MY_Model
         $datos['anio_construccion'] = $data['anio_construccion'];
         $datos['fecha_alta'] = $this->utilities->cambiafecha_form($data['fecha_alta']);
         $datos['direccion'] = $data['direccion'];
-        $datos['correo'] = $data['correo'];
         $datos['observaciones'] = $data['observaciones'];
-        $datos['precio_compra'] = $this->utilities->formatear_numero($data['precio_compra']);
-        $datos['precio_alquiler'] = $this->utilities->formatear_numero($data['precio_alquiler']);
+        $datos['precio_compra'] = $data['precio_compra'];
+        $datos['precio_alquiler'] = $data['precio_alquiler'];
         $datos['tipo_id'] = $data['tipo_id'];
         $datos['certificacion_energetica_id'] = $data['certificacion_energetica_id'];
         $datos['estado_id'] = $data['estado_id'];
         $datos['poblacion_id'] = $data['poblacion_id'];
-        $datos['zona_id'] = $data['zona_id'];
+        $datos['zona_id'] = $this->utilities->get_sql_value_string($data['zona_id'], "defined", $data['zona_id'], NULL);
 
         return $datos;
     }

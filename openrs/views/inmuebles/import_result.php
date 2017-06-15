@@ -1,6 +1,6 @@
 <div class="page-header">
     <h1>
-        Clientes
+        Inmuebles
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             Resultado Importación CSV
@@ -26,15 +26,22 @@
         <table class="table table-striped table-bordered table-hover" id="tabgrid_import_result">
             <thead>
                 <tr>
+                    <th>Referencia</th>
                     <th>Tipo</th>
+                    <th>Fecha Alta</th>
+                    <th>Provincia</th>
                     <th>Municipio</th>
                     <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
                     <th>Metros</th>
+                    <th>Metros útiles</th>
                     <th>Hab.</th>
                     <th>Baños</th>
+                    <th>Precio Compra</th>
+                    <th>Precio Alquiler</th>
+                    <th>Cert. Energ.</th>
+                    <th>Año Construcción</th>
+                    <th>Estado</th>
                     <th>Observaciones</th>
                 </tr>
             </thead>
@@ -46,15 +53,22 @@
                     {
                         ?>
                         <tr <?php if ($element['importado']) echo 'class="success"'; else echo 'class="danger"'; ?>>
-                            <td><?php echo $element['nombre_tipo']; ?></td>                            
+                            <td><?php echo $element['referencia']; ?></td>  
+                            <td><?php echo $element['nombre_tipo']; ?></td>    
+                            <td><?php echo $element['fecha_alta']; ?></td>
+                            <td><?php echo $element['nombre_provincia']; ?></td>
                             <td><?php echo $element['nombre_poblacion']; ?></td>
                             <td><?php echo $element['nombre_zona']; ?></td>
                             <td><?php echo $element['direccion']; ?></td>
-                            <td><?php echo $element['precio_compra']; ?></td>
-                            <td><?php echo $element['precio_alquiler']; ?></td>
                             <td><?php echo $element['metros']; ?></td>
+                            <td><?php echo $element['metros_utiles']; ?></td>
                             <td><?php echo $element['habitaciones']; ?></td>
                             <td><?php echo $element['banios']; ?></td>
+                            <td><?php echo $element['precio_compra']; ?></td>
+                            <td><?php echo $element['precio_alquiler']; ?></td>
+                            <td><?php echo $element['nombre_certificacion_energetica']; ?></td>
+                            <td><?php echo $element['anio_construccion']; ?></td>
+                            <td><?php echo $element['nombre_estado']; ?></td>
                             <td><?php echo $element['observaciones']; ?></td>
                         </tr>
                         <?php
@@ -77,6 +91,13 @@
                 null,                
                 null,
                 {"sType": "date-euro"},
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

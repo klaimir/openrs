@@ -50,6 +50,7 @@
         <table class="table table-striped table-bordered table-hover" id="tabgrid">
             <thead>
                 <tr>
+                    <th>Ref.</th>
                     <th>Tipo</th>
                     <th>Municipio</th>
                     <th>Zona</th>
@@ -70,6 +71,7 @@
                     {
                     ?>
                     <tr>
+                        <td><?php echo $element->referencia; ?></td>
                         <td><?php echo $element->nombre_tipo; ?></td>
                         <td><?php echo $element->nombre_poblacion; ?></td>
                         <td><?php echo $element->nombre_zona; ?></td>

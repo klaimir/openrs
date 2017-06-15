@@ -202,7 +202,7 @@ class Zona_model extends MY_Model
     {
         $this->db->select($this->table.'.id');
         $this->db->from($this->table);
-        $this->db->where('zona', $nombre_zona);
+        $this->db->where('nombre', $nombre_zona);
         $this->db->where('poblacion_id', $poblacion_id);
         $query = $this->db->get();
         $row = $query->row();
