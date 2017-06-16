@@ -32,7 +32,7 @@
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">
-            UBICACION
+            UBICACIÓN
         </h4>
     </div>
     <div class="widget-body">
@@ -148,7 +148,7 @@
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">
-            DATOS ZONA PUBLICA
+            DATOS ZONA PÚBLICA
         </h4>
     </div>
     <div class="widget-body">

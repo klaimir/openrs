@@ -24,6 +24,9 @@ class Inmuebles extends CRUD_controller
         // Idiomas activos
         // Inicializamos para que el modelo sepa sobre qué idiomas debe de realizar sus validaciones
         $this->{$this->_model}->idiomas_activos=$this->Idioma_model->get_idiomas_subidos_activos();
+        
+        // Fichero de lenguaje
+        $this->lang->load('inmuebles');
     }
     
     function multiple_google_map()
@@ -114,8 +117,17 @@ class Inmuebles extends CRUD_controller
         // Selector de agentes
         $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
 
-        // selector de intereses
-        $this->data['intereses'] = $this->Inmueble_model->get_intereses_dropdown(-1);
+        // selector de ofertas
+        $this->data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1);
+        
+        // selector de publicado
+        $this->data['publicado'] = $this->Inmueble_model->get_publicado_dropdown(-1);
+        
+        // selector de destacado
+        $this->data['destacado'] = $this->Inmueble_model->get_destacado_dropdown(-1);
+        
+        // selector de oportunidad
+        $this->data['oportunidad'] = $this->Inmueble_model->get_oportunidad_dropdown(-1);
     }
 
     private function _load_filtros_session()
@@ -140,12 +152,48 @@ class Inmuebles extends CRUD_controller
 
         // Filtro interes_id
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'interes_id');
+        
+        // Filtro oferta_id
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'oferta_id');
+        
+        // Filtro publicado_id
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'publicado_id');
+        
+        // Filtro destacado_id
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'destacado_id');
+        
+        // Filtro oportunidad_id
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'oportunidad_id');
 
         // Filtro fecha_desde
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'fecha_desde');
 
         // Filtro fecha_hasta
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'fecha_hasta');
+        
+        // Filtro banios_desde
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'banios_desde');
+        
+        // Filtro banios_hasta
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'banios_hasta');
+        
+        // Filtro habitaciones_desde
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'habitaciones_desde');
+        
+        // Filtro habitaciones_hasta
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'habitaciones_hasta');
+        
+        // Filtro metros_desde
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'metros_desde');
+        
+        // Filtro metros_hasta
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'metros_hasta');
+        
+        // Filtro precios_desde
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'precios_desde');
+        
+        // Filtro precios_hasta
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'precios_hasta');
     }
 
     private function _generar_filtros_busqueda()
@@ -160,10 +208,23 @@ class Inmuebles extends CRUD_controller
         $filtros['zona_id'] = $this->session->userdata('inmuebles_buscador_zona_id');
         $filtros['captador_id'] = $this->session->userdata('inmuebles_buscador_captador_id');
         $filtros['interes_id'] = $this->session->userdata('inmuebles_buscador_interes_id');
+        $filtros['oferta_id'] = $this->session->userdata('inmuebles_buscador_oferta_id');
+        $filtros['publicado_id'] = $this->session->userdata('inmuebles_buscador_publicado_id');
+        $filtros['destacado_id'] = $this->session->userdata('inmuebles_buscador_destacado_id');
+        $filtros['oportunidad_id'] = $this->session->userdata('inmuebles_buscador_oportunidad_id');
 
-        // Búsqueda por rango de fechas
+        // Búsqueda por rangos de búsqueda
         $filtros['fecha_desde'] = $this->session->userdata('inmuebles_buscador_fecha_desde');
         $filtros['fecha_hasta'] = $this->session->userdata('inmuebles_buscador_fecha_hasta');
+        $filtros['banios_desde'] = $this->session->userdata('inmuebles_buscador_banios_desde');
+        $filtros['banios_hasta'] = $this->session->userdata('inmuebles_buscador_banios_hasta');
+        $filtros['habitaciones_desde'] = $this->session->userdata('inmuebles_buscador_habitaciones_desde');
+        $filtros['habitaciones_hasta'] = $this->session->userdata('inmuebles_buscador_habitaciones_hasta');
+        $filtros['metros_desde'] = $this->session->userdata('inmuebles_buscador_metros_desde');
+        $filtros['metros_hasta'] = $this->session->userdata('inmuebles_buscador_metros_hasta');
+        // Precios es especial por el tipo de consulta que se hace   
+        $filtros['precios_desde'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->session->userdata('inmuebles_buscador_precios_desde')), "int");
+        $filtros['precios_hasta'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->session->userdata('inmuebles_buscador_precios_hasta')), "int");
 
         return $filtros;
     }

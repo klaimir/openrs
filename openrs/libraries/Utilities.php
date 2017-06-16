@@ -859,36 +859,17 @@ class Utilities
     }
 
     /**
-     * Cambia un n�mero en formato eee.eee.eee,dd a formato anglosaj�n para almecenarse en la BD
+     * Cambia un número en formato eee.eee.eee,dd a formato anglosajón para almecenarse en la BD
      *
-     * @param [num]			n�mero en formato eee.eee.eee,dd
+     * @param [num]			número en formato eee.eee.eee,dd
      *
-     * @return N�mero formateado
+     * @return Número formateado
      */
     function formatear_numero($num)
-    {
-        $num_original = (string) $num;
-        $num_formateado = "";
-
-        for ($cont = 0; $cont < strlen($num_original); $cont++)
-        {
-
-            if ($num_original[$cont] == ".")
-            {
-                $num_original[$cont] = ",";
-            }
-            else
-            {
-                if ($num_original[$cont] == ",")
-                {
-                    $num_original[$cont] = ".";
-                }
-            }
-
-            $num_formateado.=$num_original[$cont];
-        }
-
-        return $num_formateado;
+    {        
+        $num=str_replace('.', '', $num);
+        $num=str_replace(',', '.', $num);
+        return $num;
     }
 
     /**

@@ -307,9 +307,6 @@ class Inmueble_model extends MY_Model
         // Selector de agentes
         $data['agentes'] = $this->Usuario_model->get_agentes_dropdown();
 
-        // selector de intereses
-        $data['intereses'] = $this->get_intereses_dropdown();
-
         // Datos
         $data['referencia'] = array(
             'name' => 'referencia',
@@ -760,23 +757,36 @@ class Inmueble_model extends MY_Model
         {
             $this->db->where('estado_id', $filtros['estado_id']);
         }
-        // Intereses        
-        switch ($filtros['interes_id'])
+        // Ofertas        
+        switch ($filtros['oferta_id'])
         {
             case 1:
-                $this->db->where('busca_vender', 1);
+                $this->db->where('precio_compra > 0');
                 break;
             case 2:
-                $this->db->where('busca_alquilar', 1);
+                $this->db->where('precio_alquiler > 0');
                 break;
             case 3:
-                $this->db->where('busca_alquiler', 1);
-                break;
-            case 4:
-                $this->db->where('busca_comprar', 1);
+                $this->db->where('precio_compra > 0');
+                $this->db->where('precio_alquiler > 0');
                 break;
             default:
                 break;
+        }
+        // Datos de publicado
+        if (isset($filtros['publicado_id']) && $filtros['publicado_id'] >= 0)
+        {
+            $this->db->where('publicado', $filtros['publicado_id']);
+        }
+        // Datos de destacado
+        if (isset($filtros['destacado_id']) && $filtros['destacado_id'] >= 0)
+        {
+            $this->db->where('destacado', $filtros['destacado_id']);
+        }
+        // Datos de oportunidad
+        if (isset($filtros['oportunidad_id']) && $filtros['oportunidad_id'] >= 0)
+        {
+            $this->db->where('oportunidad', $filtros['oportunidad_id']);
         }
         // Fechas
         if (isset($filtros['fecha_desde']) && $filtros['fecha_desde'] != "")
@@ -786,6 +796,44 @@ class Inmueble_model extends MY_Model
         if (isset($filtros['fecha_hasta']) && $filtros['fecha_hasta'] != "")
         {
             $this->db->where('fecha_alta <=', $this->utilities->cambiafecha_form($filtros['fecha_hasta']));
+        }
+        // Baños
+        if (isset($filtros['banios_desde']) && $filtros['banios_desde'] != "")
+        {
+            $this->db->where('banios >=', $filtros['banios_desde']);
+        }
+        if (isset($filtros['banios_hasta']) && $filtros['banios_hasta'] != "")
+        {
+            $this->db->where('banios <=', $filtros['banios_hasta']);
+        }
+        // Habitaciones
+        if (isset($filtros['habitaciones_desde']) && $filtros['habitaciones_desde'] != "")
+        {
+            $this->db->where('habitaciones >=', $filtros['habitaciones_desde']);
+        }
+        if (isset($filtros['habitaciones_hasta']) && $filtros['habitaciones_hasta'] != "")
+        {
+            $this->db->where('habitaciones <=', $filtros['habitaciones_hasta']);
+        }
+        // Metros
+        if (isset($filtros['metros_desde']) && $filtros['metros_desde'] != "")
+        {
+            $this->db->where('metros >=', $filtros['metros_desde']);
+        }
+        if (isset($filtros['metros_hasta']) && $filtros['metros_hasta'] != "")
+        {
+            $this->db->where('metros <=', $filtros['metros_hasta']);
+        }
+        // Precios
+        if (isset($filtros['precios_desde']) && $filtros['precios_desde'] != "")
+        {
+            $precio_desde=$filtros['precios_desde'];
+            $this->db->where("((precio_compra <> 0 AND precio_compra >= '$precio_desde') OR (precio_alquiler <> 0 AND precio_alquiler >= '$precio_desde'))");
+        }
+        if (isset($filtros['precios_hasta']) && $filtros['precios_hasta'] != "")
+        {
+            $precio_hasta=$filtros['precios_hasta'];
+            $this->db->where("((precio_compra <> 0 AND precio_compra <= '$precio_hasta') OR (precio_alquiler <> 0 AND precio_alquiler <= '$precio_hasta'))");
         }
         // Idioma
         if (isset($filtros['idioma_id']) && $filtros['idioma_id'] != "")
@@ -810,7 +858,7 @@ class Inmueble_model extends MY_Model
     {
         // Conversión de Datos
         unset($inmueble->id);
-        $inmueble->direccion = '';
+        $inmueble->referencia = uniqid();
         unset($inmueble->fecha_alta);
         unset($inmueble->fecha_actualizacion);
         // Crear duplicado
@@ -818,19 +866,60 @@ class Inmueble_model extends MY_Model
     }
 
     /**
-     * Devuelve un array de intereses en formato dropdown
+     * Devuelve un array de ofertas en formato dropdown
      *
-     * @return array de intereses en formato dropdown
+     * @return array de ofertas en formato dropdown
      */
-    function get_intereses_dropdown($default = "")
+    function get_ofertas_dropdown($default = "")
     {
-        $intereses = array();
-        $intereses[$default] = '- Seleccione interés -';
-        $intereses[1] = 'Busca vender';
-        $intereses[2] = 'Busca alquilar';
-        $intereses[3] = 'Busca un alquiler';
-        $intereses[4] = 'Busca comprar';
-        return $intereses;
+        $ofertas = array();
+        $ofertas[$default] = '- Seleccione oferta -';
+        $ofertas[1] = lang('inmuebles_ofertas_vender');
+        $ofertas[2] = lang('inmuebles_ofertas_alquilar');
+        $ofertas[3] = lang('inmuebles_ofertas_ambos');
+        return $ofertas;
+    }
+    
+    /**
+     * Devuelve un array de publicados en formato dropdown
+     *
+     * @return array de publicados en formato dropdown
+     */
+    function get_publicado_dropdown($default = "")
+    {
+        $publicados = array();
+        $publicados[$default] = '- Indiferente -';
+        $publicados[1] = 'Publicado';
+        $publicados[0] = 'No Publicado';        
+        return $publicados;
+    }
+    
+    /**
+     * Devuelve un array de oportunidads en formato dropdown
+     *
+     * @return array de oportunidads en formato dropdown
+     */
+    function get_oportunidad_dropdown($default = "")
+    {
+        $oportunidads = array();
+        $oportunidads[$default] = '- Indiferente -';
+        $oportunidads[1] = 'Oportunidad';
+        $oportunidads[0] = 'No Oportunidad';        
+        return $oportunidads;
+    }
+    
+    /**
+     * Devuelve un array de destacados en formato dropdown
+     *
+     * @return array de destacados en formato dropdown
+     */
+    function get_destacado_dropdown($default = "")
+    {
+        $destacados = array();
+        $destacados[$default] = '- Indiferente -';
+        $destacados[1] = 'Destacado';
+        $destacados[0] = 'No Destacado';        
+        return $destacados;
     }
 
     /**

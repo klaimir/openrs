@@ -101,7 +101,7 @@
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">
-            CAPTACION
+            DATOS AUXILIARES
         </h4>
     </div>
     <div class="widget-body">

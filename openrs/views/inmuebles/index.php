@@ -151,8 +151,20 @@
         $('#zona_id').val('');
         $('#captador_id').val('-1');
         $('#interes_id').val('-1');
+        $('#oferta_id').val('-1');
+        $('#publicado_id').val('-1');
+        $('#destacado_id').val('-1');
+        $('#oportunidad_id').val('-1');
         $('#fecha_desde').val('');
         $('#fecha_hasta').val('');
+        $('#banios_desde').val('');
+        $('#banios_hasta').val('');
+        $('#habitaciones_desde').val('');
+        $('#habitaciones_hasta').val('');
+        $('#metros_desde').val('');
+        $('#metros_hasta').val('');
+        $('#precios_desde').val('');
+        $('#precios_hasta').val('');
         // Resetear los valores no es suficiente para los chosen select, hay que hacer esto tb
         $('.chosen-single').html('<span>- Seleccione -</span><div><b></b></div>');
         return false;
