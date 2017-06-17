@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                Imágenes del inmueble
+                Imágenes del inmueble <?php echo $inmueble->referencia; ?>
                 <small>
                     <i class="ace-icon fa fa-angle-double-right"></i>
                     Subir imágenes

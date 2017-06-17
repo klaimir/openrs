@@ -263,7 +263,7 @@ class Inmuebles extends CRUD_controller
                 if ($last_id) {
                     $this->session->set_flashdata('message', lang('common_success_insert'));
                     $this->session->set_flashdata('message_color', 'success');
-                    redirect($this->_controller, 'refresh');
+                    redirect($this->_controller.'/edit/'.$last_id, 'refresh');
                 } else {
                     $this->data['message'] = $this->{$this->_model}->get_error();
                 }
@@ -370,7 +370,7 @@ class Inmuebles extends CRUD_controller
         }
         else
         {
-            $this->session->set_flashdata('message', lang('common_error_duplicate'));
+            $this->session->set_flashdata('message', $this->{$this->_model}->get_error());
         }
 
         redirect($this->_controller . '/edit/' . $inmueble_id, 'refresh');

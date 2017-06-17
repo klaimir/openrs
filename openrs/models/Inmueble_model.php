@@ -82,6 +82,19 @@ class Inmueble_model extends MY_Model
      */
     public function set_rules($id = 0)
     {
+        /* Si quisieramos ponerlo solo para insertar tendríamos que ponerlo asi
+        if(empty($id))
+        {
+            $ref_slugify=$this->utilities->slugify($this->form_validation->get_validation_data('referencia'));
+            if(empty($ref_slugify))
+            {
+                $ref_slugify=uniqid();
+            }
+            $this->form_validation->set_data_field('referencia', $ref_slugify);
+            $this->form_validation->set_rules('referencia', 'Referencia', 'required|max_length[40]|is_unique_global[inmuebles;' . $id . ';referencia;id]|xss_clean');
+        }
+         * 
+         */
         $this->form_validation->set_rules('referencia', 'Referencia', 'required|max_length[40]|is_unique_global[inmuebles;' . $id . ';referencia;id]|xss_clean');
         $this->form_validation->set_rules('metros', 'Metros totales', 'required|xss_clean|max_length[4]|is_natural_no_zero');
         $this->form_validation->set_rules('metros_utiles', 'Metros útiles', 'required|xss_clean|max_length[4]|is_natural_no_zero|less_than_equal_to[' . $this->form_validation->get_validation_data('metros') . ']');
@@ -641,37 +654,37 @@ class Inmueble_model extends MY_Model
         if ($id)
         {
             // Creación de carpeta
-            if (!file_exists(FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia']))
+            if (!file_exists(FCPATH . "uploads/inmuebles/" . $id))
             {
-                if (!mkdir(FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'], DIR_READ_MODE, true))
+                if (!mkdir(FCPATH . "uploads/inmuebles/" . $id, DIR_READ_MODE, true))
                 {
                     $this->set_error('Error en la creación de la carpeta de datos. Póngase en contacto con el administrador');
                     return FALSE;
                 }
                 // Copiamos fichero html de protección
-                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/index.html"))
+                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $id . "/index.html"))
                 {
                     $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
                     return FALSE;
                 }
                 // Datos adjuntos
-                if (!mkdir(FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/adjuntos", DIR_READ_MODE, true))
+                if (!mkdir(FCPATH . "uploads/inmuebles/" . $id . "/adjuntos", DIR_READ_MODE, true))
                 {
                     $this->set_error('Error en la creación de la carpeta de adjuntos. Póngase en contacto con el administrador');
                     return FALSE;
                 }
-                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/adjuntos/index.html"))
+                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $id . "/adjuntos/index.html"))
                 {
                     $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
                     return FALSE;
                 }
                 // Datos imagenes                
-                if (!mkdir(FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/imagenes", DIR_READ_MODE, true))
+                if (!mkdir(FCPATH . "uploads/inmuebles/" . $id . "/imagenes", DIR_READ_MODE, true))
                 {
                     $this->set_error('Error en la creación de la carpeta de adjuntos. Póngase en contacto con el administrador');
                     return FALSE;
                 }
-                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $formatted_datas['referencia'] . "/imagenes/index.html"))
+                if (!copy(FCPATH . "uploads/inmuebles/index.html", FCPATH . "uploads/inmuebles/" . $id . "/imagenes/index.html"))
                 {
                     $this->set_error('Error al escribir en la carpeta de datos. Póngase en contacto con el administrador');
                     return FALSE;
@@ -859,10 +872,10 @@ class Inmueble_model extends MY_Model
         // Conversión de Datos
         unset($inmueble->id);
         $inmueble->referencia = uniqid();
-        unset($inmueble->fecha_alta);
+        $inmueble->fecha_alta = date("Y-m-d");
         unset($inmueble->fecha_actualizacion);
         // Crear duplicado
-        return $this->insert($inmueble);
+        return $this->create($inmueble);
     }
 
     /**

@@ -768,7 +768,7 @@ class Utilities
 
                 if (is_dir($file))
                 {
-                    if (!full_rmdir($file))
+                    if (!$this->full_rmdir($file))
                         return false;
                 }
                 else
