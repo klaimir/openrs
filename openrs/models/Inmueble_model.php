@@ -121,12 +121,15 @@ class Inmueble_model extends MY_Model
             $this->form_validation->set_rules('publicado', 'Publicado', 'xss_clean');
             $this->form_validation->set_rules('oportunidad', 'Oportunidad', 'xss_clean');
             $this->form_validation->set_rules('destacado', 'Destacado', 'xss_clean');
+            
             // Reglas sólo para publicados
             $required_rules = "";
             if ($this->form_validation->get_validation_data('publicado'))
             {
                 $required_rules.="required|";
             }
+            // Campos públicos no dependientes del idioma
+            $this->form_validation->set_rules('direccion_publica', 'Dirección Pública', $required_rules . 'xss_clean|max_length[100]');
             // Leemos los idiomas para la edición
             $array_datos_idioma = $this->Inmueble_idiomas_model->get_info_idiomas_by_inmueble($id);
             // Para cada idioma creamos su regla para los campos dependientes del idioma
@@ -177,14 +180,7 @@ class Inmueble_model extends MY_Model
             }
             
             // Testing
-            //die();            
-            
-            // Campos públicos no dependientes del idioma
-            $this->form_validation->set_rules('direccion_publica', 'Dirección Pública', $required_rules . 'xss_clean|max_length[100]');
-            // Recordar que hay que tener una regla para que funcionen los set_checkbox
-            $this->form_validation->set_rules('publicado', 'Publicado', 'xss_clean');
-            $this->form_validation->set_rules('oportunidad', 'Oportunidad', 'xss_clean');
-            $this->form_validation->set_rules('destacado', 'Destacado', 'xss_clean');
+            //die();
         }
 
         /* 	

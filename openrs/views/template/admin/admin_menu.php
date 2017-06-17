@@ -16,7 +16,7 @@
     <b class="arrow"></b>
 </li>
 
-<li class="<?php echo set_active_menu($_active_section,array("tipos_ficheros","tipos_inmueble","plantillas_documentacion","opciones_extras","lugares_interes","provincias")); ?>">
+<li class="<?php echo set_active_menu($_active_section,array("estados","tipos_ficheros","tipos_inmueble","plantillas_documentacion","opciones_extras","lugares_interes","provincias")); ?>">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-building"></i>
         <span class="menu-text"> Configuración </span>
@@ -27,6 +27,15 @@
     <b class="arrow"></b>
 
     <ul class="submenu">
+        <li class="<?php echo set_active_option($_active_section,'estados'); ?>">
+            <a href="<?php echo site_url('estados'); ?>" onClick="return show_confirm_exit_message();">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Estados </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+        
         <li class="<?php echo set_active_option($_active_section,'plantillas_documentacion'); ?>">
             <a href="<?php echo site_url('plantillas_documentacion'); ?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>

@@ -23,4 +23,31 @@ VIEW `v_inmuebles` AS
 		LEFT JOIN tipos_certificacion_energetica ON inmuebles.certificacion_energetica_id = tipos_certificacion_energetica.id
 		LEFT JOIN users ON inmuebles.captador_id = users.id;
 
+
+-- Eliminamos restricción para que no de problemas al insertar usuario
+ALTER TABLE `users` DROP FOREIGN KEY `FK_users_id_idioma`;
+
+-- Corrección de rutas de imágenes
+UPDATE `openrs`.`inmuebles_imagenes` SET `imagen` = replace(imagen,'uploads/inmuebles/REF0005','uploads/inmuebles/5');
+
+-- Estados
+ALTER TABLE `estados` CHANGE `ambito` `ambito_id` TINYINT(1) NOT NULL COMMENT '1 para clientes, 2 para inmuebles y 3 para demandas';
+ALTER TABLE `estados` ADD `historico` TINYINT(1) NOT NULL DEFAULT 0;
+
+
+CREATE 
+    OR REPLACE
+VIEW `v_estados` AS
+    SELECT 
+ 		estados.*,
+        CASE ambito_id
+		  WHEN 1 THEN 'Clientes'
+		  WHEN 2 THEN 'Inmuebles'
+		  WHEN 3 THEN 'Demandas'
+		END as 'nombre_ambito'
+    FROM
+        estados;
 		
+-- Crear estado en la demandas (aunque luego cambiaremos la tabla)
+
+ALTER TABLE `demandas` ADD `estado_id` INT(11) UNSIGNED NOT NULL DEFAULT '1';
