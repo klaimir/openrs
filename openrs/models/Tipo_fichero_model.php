@@ -167,7 +167,7 @@ class Tipo_fichero_model extends MY_Model
     /**
      * Lee todas los tipos de fichero con el ámbito formateado
      *
-     * @return array de datos de estado
+     * @return array de datos de tipo_fichero
      */
     
     function get_all_for_table()
@@ -197,7 +197,7 @@ class Tipo_fichero_model extends MY_Model
     /**
      * Devuelve un array de datos en formato dropdown
      * 
-     * @param	[ambito_id]            Ambito al que afecta el estado
+     * @param	[ambito_id]            Ambito al que afecta el tipo_fichero
      *
      * @return array de datos en formato dropdown
      */

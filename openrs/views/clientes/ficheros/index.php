@@ -30,6 +30,7 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
+                    <th>Tipo</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -43,6 +44,9 @@
                         <tr>
                             <td>
                                 <a target="_blank" href="<?php echo base_url($element->fichero); ?>"><?php echo $element->texto_fichero; ?></a>
+                            </td>
+                            <td>
+                                <?php echo $element->nombre_tipo; ?>
                             </td>
                             <td>
                                 <div class="hidden-sm hidden-xs action-buttons">

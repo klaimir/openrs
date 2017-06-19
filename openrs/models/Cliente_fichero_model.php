@@ -11,14 +11,18 @@ class Cliente_fichero_model extends MY_Model
 
     public function __construct()
     {
-        $this->table = 'clientes_ficheros';
-        $this->primary_key = 'id';
-        $this->has_one['cliente'] = array('local_key' => 'id', 'foreign_key' => 'cliente_id', 'foreign_model' => 'Cliente_model');
-
         parent::__construct();
+        
+        $this->table = 'clientes_ficheros';
+        $this->view = 'v_clientes_ficheros';
+        $this->primary_key = 'id';
+        
+        $this->has_one['cliente'] = array('local_key' => 'id', 'foreign_key' => 'cliente_id', 'foreign_model' => 'Cliente_model');
+        $this->has_one['tipo_fichero'] = array('local_key' => 'tipo_fichero_id', 'foreign_key' => 'id', 'foreign_model' => 'Tipo_fichero_model');
 
-        // Carga del modelo
+        // Carga de modelos
         $this->load->model('Cliente_model');
+        $this->load->model('Tipo_fichero_model');
     }
 
     /*     * *********************** SECURITY ************************ */
@@ -40,6 +44,7 @@ class Cliente_fichero_model extends MY_Model
     public function set_rules($id = 0)
     {
         $this->form_validation->set_rules('texto_fichero', 'Nombre del fichero', 'required|is_unique_global_foreign_key[clientes_ficheros;' . $id . ';texto_fichero;id;cliente_id;' . $this->cliente_id . ']|max_length[200]|xss_clean');
+        $this->form_validation->set_rules('tipo_fichero_id', 'tipo_fichero', 'required');
     }
 
     /**
@@ -66,12 +71,17 @@ class Cliente_fichero_model extends MY_Model
      */
     public function set_datas_html($datos = NULL)
     {
+        // Selector de tipos_ficheros
+        $data['tipos_ficheros'] = $this->Tipo_fichero_model->get_tipos_ficheros_dropdown(1);
+        
         $data['texto_fichero'] = array(
             'name' => 'texto_fichero',
             'id' => 'texto_fichero',
             'type' => 'text',
             'value' => $this->form_validation->set_value('texto_fichero', is_object($datos) ? $datos->texto_fichero : ""),
         );
+        
+        $data['tipo_fichero_id'] = $this->form_validation->set_value('tipo_fichero_id', is_object($datos) ? $datos->tipo_fichero_id : "");
 
         return $data;
     }
@@ -85,6 +95,7 @@ class Cliente_fichero_model extends MY_Model
     {
         $datas['fichero'] = 'uploads/clientes/'.$this->cliente_id.'/'.$upload_data['file_name'];
         $datas['texto_fichero'] = $this->input->post('texto_fichero');
+        $datas['tipo_fichero_id'] = $this->input->post('tipo_fichero_id');
         $datas['cliente_id'] = $this->cliente_id;
         return $datas;
     }
@@ -148,7 +159,7 @@ class Cliente_fichero_model extends MY_Model
      */
     function get_ficheros_cliente($cliente_id)
     {
-        $this->db->from($this->table);
+        $this->db->from($this->view);
         $this->db->where('cliente_id', $cliente_id);
         $this->db->order_by('fichero');
         return $this->db->get()->result();

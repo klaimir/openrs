@@ -34,7 +34,7 @@ class Clientes_ficheros extends CRUD_controller
         $this->Cliente_model->check_access($this->data['cliente']);            
         
         // Elementos
-        $this->data['elements'] = $this->{$this->_model}->where('cliente_id',$cliente_id)->get_all();
+        $this->data['elements'] = $this->{$this->_model}->get_ficheros_cliente($cliente_id);
         // Render
         $this->render_private($this->_view.'/index', $this->data);
     }
