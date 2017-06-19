@@ -40,6 +40,7 @@
     <div class="col-xs-12">
         <div id="google_maps">
         </div>
+        <small class="blue">El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en su posición actual. Esta opción sólo funcionará si tiene habilitado en su dispositivo la geolocalización y no está bloqueado para el navegador web actual.</small>
     </div>
 </div>
 
