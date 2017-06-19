@@ -107,3 +107,31 @@ CREATE TABLE IF NOT EXISTS `demandas_ficheros` (
 --
 ALTER TABLE `demandas_ficheros`
   ADD CONSTRAINT `FK_demandas_ficheros_tipo_fichero_id` FOREIGN KEY (`tipo_fichero_id`) REFERENCES `tipos_ficheros` (`id`) ON UPDATE CASCADE;
+  
+  
+-- Vista para ficheros de los Clientes
+CREATE 
+    OR REPLACE
+VIEW `v_clientes_ficheros` AS
+    SELECT 
+ 		clientes_ficheros.*, tipos_ficheros.nombre as nombre_tipo        
+    FROM clientes_ficheros
+	join tipos_ficheros on clientes_ficheros.tipo_fichero_id=tipos_ficheros.id	;
+	
+-- Vista para ficheros de los inmuebles
+CREATE 
+    OR REPLACE
+VIEW `v_inmuebles_ficheros` AS
+    SELECT 
+ 		inmuebles_ficheros.*, tipos_ficheros.nombre as nombre_tipo        
+    FROM inmuebles_ficheros
+	join tipos_ficheros on inmuebles_ficheros.tipo_fichero_id=tipos_ficheros.id	;
+	
+-- Vista para ficheros de los demandas
+CREATE 
+    OR REPLACE
+VIEW `v_demandas_ficheros` AS
+    SELECT 
+ 		demandas_ficheros.*, tipos_ficheros.nombre as nombre_tipo        
+    FROM demandas_ficheros
+	join tipos_ficheros on demandas_ficheros.tipo_fichero_id=tipos_ficheros.id	;
