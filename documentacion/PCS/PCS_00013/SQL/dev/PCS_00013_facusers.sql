@@ -51,3 +51,59 @@ VIEW `v_estados` AS
 -- Crear estado en la demandas (aunque luego cambiaremos la tabla)
 
 ALTER TABLE `demandas` ADD `estado_id` INT(11) UNSIGNED NOT NULL DEFAULT '1';
+
+
+
+-- Ficheros
+ALTER TABLE `tipos_ficheros` ADD `ambito_id` TINYINT(1) NOT NULL COMMENT '1 para clientes, 2 para inmuebles y 3 para demandas';
+
+
+CREATE 
+    OR REPLACE
+VIEW `v_tipos_ficheros` AS
+    SELECT 
+ 		tipos_ficheros.*,
+        CASE ambito_id
+		  WHEN 1 THEN 'Clientes'
+		  WHEN 2 THEN 'Inmuebles'
+		  WHEN 3 THEN 'Demandas'
+		END as 'nombre_ambito'
+    FROM
+        tipos_ficheros;
+				
+		
+-- Crear estado en los ficheros
+
+ALTER TABLE `clientes_ficheros` ADD `tipo_fichero_id` INT(11) UNSIGNED NOT NULL DEFAULT '5';
+
+CREATE INDEX FK_clientes_ficheros_tipo_fichero_id ON clientes_ficheros (tipo_fichero_id);
+
+--
+-- Filtros para la tabla `clientes_ficheros`
+--
+ALTER TABLE `clientes_ficheros`
+  ADD CONSTRAINT `FK_clientes_ficheros_tipo_fichero_id` FOREIGN KEY (`tipo_fichero_id`) REFERENCES `tipos_ficheros` (`id`) ON UPDATE CASCADE;
+  
+
+  
+--
+-- Estructura de tabla para la tabla `demandas_ficheros`
+--
+
+CREATE TABLE IF NOT EXISTS `demandas_ficheros` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `demanda_id` int(11) unsigned NOT NULL,
+  `texto_fichero` text,
+  `fichero` varchar(255) NOT NULL,
+  `tipo_fichero_id` int(11) unsigned NOT NULL DEFAULT '7',
+  PRIMARY KEY (`id`),
+  KEY `FK_demandas_ficheros_demanda_id` (`demanda_id`),
+  KEY `FK_demandas_ficheros_tipo_fichero_id` (`tipo_fichero_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+
+--
+-- Filtros para la tabla `demandas_ficheros`
+--
+ALTER TABLE `demandas_ficheros`
+  ADD CONSTRAINT `FK_demandas_ficheros_tipo_fichero_id` FOREIGN KEY (`tipo_fichero_id`) REFERENCES `tipos_ficheros` (`id`) ON UPDATE CASCADE;

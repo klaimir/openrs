@@ -23,7 +23,7 @@ class Tipos_ficheros extends CRUD_controller
     // index
     public function index()
     {
-        $this->data['elements'] = $this->{$this->_model}->get_all();
+        $this->data['elements'] = $this->{$this->_model}->get_all_for_table();
         // Render
         $this->render_private($this->_view.'/index', $this->data);
     }

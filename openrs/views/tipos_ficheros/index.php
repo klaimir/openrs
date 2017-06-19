@@ -26,6 +26,7 @@
         <table class="table table-striped table-bordered table-hover" id="tabgrid">
             <thead>
                 <tr>
+                    <th>Ámbito</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Opciones</th>
@@ -37,6 +38,7 @@
                 {
                 ?>
                 <tr>
+                    <td><?php echo $element->nombre_ambito; ?></td>
                     <td><?php echo $element->nombre; ?></td>
                     <td><?php echo $element->descripcion; ?></td>
                     <td>
