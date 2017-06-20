@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                Inmuebles
+                Demandas
             </h1>
         </div>
     </div>
@@ -10,20 +10,15 @@
 
 <?php $this->load->view('common/message', $this->data); ?>
 
-<?php $this->load->view('inmuebles/buscador', $this->data); ?>
+<?php $this->load->view('demandas/buscador', $this->data); ?>
 
 <div class="row">
     <div class="col-xs-12">
-        <?php if($elements) { ?>
-            <a class="btn btn-info pull-right" onclick="check_multiple_google_maps();">
-                <i class="menu-icon fa fa-map-marker"></i>
-                <span class="menu-text"> Ver en mapa </span>
-            </a>
-        <?php } ?>
         <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/insert'); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
         </a>
+        <?php /*
         <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/import'); ?>">
             <i class="menu-icon fa fa-upload"></i>
             <span class="menu-text"> Importar CSV </span>
@@ -31,16 +26,10 @@
         <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/export'); ?>">
             <i class="menu-icon fa fa-download"></i>
             <span class="menu-text"> Exportar CSV </span>
-        </a>        
-    </div>
-</div>
-
-<div class="row" id="google_maps_div" style="display:none;">      
-    <div class="space-10"></div>
-    <div class="col-xs-12">
-        <div id="google_maps">
-        </div>
-        <small class="blue">El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en su posición actual. Esta opción sólo funcionará si tiene habilitado en su dispositivo la geolocalización y no está bloqueado para el navegador web actual.</small>
+        </a>    
+         * 
+         */    
+        ?>
     </div>
 </div>
 
@@ -48,19 +37,19 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
-        <table class="table table-striped table-bordered table-hover" id="tabgrid">
+        <table class="table table-striped table-bordered table-hover" id="tabgrid_demandas">
             <thead>
                 <tr>
                     <th>Ref.</th>
-                    <th>Tipo</th>
-                    <th>Municipio</th>
-                    <th>Zona</th>
-                    <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
+                    <th>Cliente</th>
+                    <th>Lugar</th>
+                    <th>Precios</th>
                     <th>Metros</th>
                     <th>Hab.</th>
                     <th>Baños</th>
+                    <th>Observaciones</th>
+                    <th>Fecha alta</th>
+                    <th>Inmuebles</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -73,15 +62,19 @@
                     ?>
                     <tr>
                         <td><?php echo $element->referencia; ?></td>
-                        <td><?php echo $element->nombre_tipo; ?></td>
-                        <td><?php echo $element->nombre_poblacion; ?></td>
-                        <td><?php echo $element->nombre_zona; ?></td>
-                        <td><?php echo $element->direccion; ?></td>
-                        <td><?php echo number_format($element->precio_compra, 0, ",", "."); ?></td>
-                        <td><?php echo number_format($element->precio_alquiler, 0, ",", "."); ?></td>
-                        <td><?php echo $element->metros; ?></td>
-                        <td><?php echo $element->habitaciones; ?></td>
-                        <td><?php echo $element->banios; ?></td>
+                        <td>
+                            <a href="<?php echo site_url("clientes/edit/" . $element->id); ?>" class="blue" title="Ver datos del cliente">
+                                <?php echo $element->nombre_cliente; ?>
+                            </a>              
+                        </td>
+                        <td><?php echo $element->nombre_provincia; ?><?php if(!empty($element->nombre_poblacion)) echo "<br>".$element->nombre_poblacion; ?></td>
+                        <td>De <?php echo number_format($element->precio_desde, 0, ",", "."); ?> a <?php echo number_format($element->precio_hasta, 0, ",", "."); ?></td>
+                        <td>De <?php echo $element->metros_desde; ?> a <?php echo $element->metros_hasta; ?></td>
+                        <td>De <?php echo $element->habitaciones_desde; ?> a <?php echo $element->habitaciones_hasta; ?></td>
+                        <td>De <?php echo $element->banios_desde; ?> a <?php echo $element->banios_hasta; ?></td>
+                        <td>De <?php echo $this->utilities->cortar_texto($element->observaciones,30); ?></td>
+                        <td>De <?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
+                        <td><?php echo count($element->inmuebles); ?></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url($_controller."/edit/" . $element->id); ?>" title="Editar">
@@ -150,11 +143,9 @@
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
         $('#zona_id').val('');
-        $('#captador_id').val('-1');
-        $('#oferta_id').val('-1');
-        $('#publicado_id').val('-1');
-        $('#destacado_id').val('-1');
-        $('#oportunidad_id').val('-1');
+        $('#agente_asignado_id').val('-1');
+        $('#cliente_id').val('-1');
+        $('#oferta_id').val('-1');        
         $('#fecha_desde').val('');
         $('#fecha_hasta').val('');
         $('#banios_desde').val('');
@@ -205,11 +196,6 @@
         }
     }                
     ?>
-        
-    function check_multiple_google_maps() {
-        $('#google_maps_div').toggle('slow');
-        $('#google_maps').load('<?php echo site_url('inmuebles/multiple_google_map');?>');
-    }
     
     jQuery(function ($) {
         $('.borrar-elemento').click(function () {
@@ -219,6 +205,23 @@
                     window.location = '<?php echo site_url($_controller); ?>/delete/' + id;
                 }
             });
+        });
+        
+        $('#tabgrid_demandas').dataTable({
+            "iDisplayLength": 100,
+            "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
+            "aoColumns": [
+                null,                
+                null,                
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {"sType": "date-euro"},
+                null
+            ]
         });
     })
 </script>

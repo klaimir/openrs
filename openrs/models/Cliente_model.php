@@ -460,6 +460,37 @@ class Cliente_model extends MY_Model
     }
     
     /**
+     * Devuelve un array de clientes en formato dropdown
+     *
+     * @return array de clientes en formato dropdown
+     */
+    
+    function get_clientes_dropdown($default_value="")
+    {
+        // Array de clientes
+        $clientes=$this->order_by('apellidos')->get_all();
+        // Drop down
+        $array_clientes=$this->dropdown($clientes);
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione cliente -";
+        // Suma de ambos
+        return ($seleccion+$array_clientes);
+    }  
+    
+    function dropdown($object_array) {
+        // Datos necesarios
+        $array_valores=array();        
+        // Eliminamos repetidos de objetos
+        if($object_array)
+        {
+            foreach($object_array as $object) {
+                    $array_valores[$object->id]=$object->apellidos.", ".$object->nombre;
+            }
+        }
+        return $array_valores;
+    }
+    
+    /**
      * Asigna los inmuebles seleccionados al cliente especificado
      *
      * @param [$id]                         Identificador del cliente

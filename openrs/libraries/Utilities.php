@@ -515,17 +515,17 @@ class Utilities
      * Devuelve una subcadena de un string
      *
      * @param [texto]			Cadena a recortar
-     * @param [texto]			Longitud m�xima de la cadena recortada
+     * @param [marcador]		Longitud máxima de la cadena recortada
      *
      * @return subcadena de un string
      */
-    function cortarTexto($texto, $marcador)
+    function cortar_texto($texto, $marcador)
     {
         if (strlen($texto) < $marcador - 1)
         {
             return $texto;
         }
-        return substr($texto, 0, $marcador + 1);
+        return substr($texto, 0, $marcador + 1)."...";
     }
 
     /**

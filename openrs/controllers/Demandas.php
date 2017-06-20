@@ -4,14 +4,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH . 'core/CRUD_controller.php';
 
-class Inmuebles extends CRUD_controller
+class Demandas extends CRUD_controller
 {
 
     function __construct()
     {
-        $this->_model = "Inmueble_model";
-        $this->_controller = "inmuebles";
-        $this->_view = "inmuebles";
+        $this->_model = "Demanda_model";
+        $this->_controller = "demandas";
+        $this->_view = "demandas";
 
         parent::__construct();
 
@@ -20,11 +20,7 @@ class Inmuebles extends CRUD_controller
 
         // Comprobación de acceso
         $this->utilities->check_security_access_perfiles_or(array("session_es_agente"));
-        
-        // Idiomas activos
-        // Inicializamos para que el modelo sepa sobre qué idiomas debe de realizar sus validaciones
-        $this->{$this->_model}->idiomas_activos=$this->Idioma_model->get_idiomas_subidos_activos();
-        
+                
         // Fichero de lenguaje
         $this->lang->load('inmuebles');
     }
@@ -38,8 +34,7 @@ class Inmuebles extends CRUD_controller
         {
             echo 'Petición no realizada a través de AJAX';
             return;
-        }
-        
+        }        
         // Valores de los filtros de búsqueda
         $filtros = $this->_generar_filtros_busqueda();
         // Búsqueda                
@@ -48,51 +43,7 @@ class Inmuebles extends CRUD_controller
         // Check
         if($inmuebles)
         {
-            // Load the library
-            $this->load->library('googlemaps');
-            // Config
-            $config['loadAsynchronously'] = TRUE;
-            // Si hay filtros de provincia o población establecidos, los usamos, en caso contrario será nuestra posición actual (auto)
-            $config['center']=$this->{$this->_model}->format_google_map_center($filtros);
-            $config['zoom']=12;        
-            // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
-            $this->googlemaps->initialize($config);
-
-            // Añadir markers con rutas formateados
-            foreach ($inmuebles as $inmueble)
-            {            
-                $marker=array();
-                // Formateamos la posición
-                $marker['position']=$this->{$this->_model}->format_google_map_path($inmueble);
-                // Calculamos datos
-                $datos=$this->{$this->_model}->get_datos_google_maps($inmueble->id);
-                // Incluimos los datos en un infowindow
-                if($datos['image_path'])
-                {
-                    $html_image='<img width="225" height="150" class="nav-user-photo" src="'.  $datos['image_path'] .'" alt="Imagen principal del inmueble">';
-                }
-                else
-                {
-                    $html_image='Portada sin especificar';
-                }
-                $marker['infowindow_content']= $html_image                  
-                    . '<br>'. $datos['description']
-                    . '<br>'. $inmueble->direccion
-                    . '<br><a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
-                // Añadimos el marker
-                $this->googlemaps->add_marker($marker);
-            } 
-            
-            // Para entornos que no sean development es necesario una API-KEY
-            $this->load->model('Config_model');
-            $config=$this->Config_model->get_config();
-            $this->googlemaps->apiKey=$config->google_api_key;
-
-            // Create the map.
-            $this->data['map'] = $this->googlemaps->create_map();
-
-            // Load our view, passing the map data that has just been created
-            $this->load->view('common/google_maps', $this->data);
+            // Código de inmuebles
         }
         else
         {
@@ -102,6 +53,10 @@ class Inmuebles extends CRUD_controller
 
     private function _load_filtros()
     {
+        // Modelos auxiliares
+        $this->load->model('Inmueble_model');
+        $this->load->model('Cliente_model');
+        
         // Selector de provincias
         $this->data['provincias'] = $this->Provincia_model->get_provincias_dropdown(-1);
 
@@ -112,7 +67,7 @@ class Inmuebles extends CRUD_controller
         $this->data['tipos_certificacion_energetica'] = $this->Certificacion_energetica_model->get_tipos_certificacion_energetica_dropdown(-1);
         
         // Selector de estados
-        $this->data['estados'] = $this->Estado_model->get_estados_dropdown(2,-1);
+        $this->data['estados'] = $this->Estado_model->get_estados_dropdown(3,-1);
 
         // Selector de agentes
         $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
@@ -120,110 +75,96 @@ class Inmuebles extends CRUD_controller
         // selector de ofertas
         $this->data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1);
         
-        // selector de publicado
-        $this->data['publicado'] = $this->Inmueble_model->get_publicado_dropdown(-1);
-        
-        // selector de destacado
-        $this->data['destacado'] = $this->Inmueble_model->get_destacado_dropdown(-1);
-        
-        // selector de oportunidad
-        $this->data['oportunidad'] = $this->Inmueble_model->get_oportunidad_dropdown(-1);
+        // Selector de clientes
+        $this->data['clientes'] = $this->Cliente_model->get_clientes_dropdown(-1);
     }
 
     private function _load_filtros_session()
     {
         // Filtro certificacion_energetica_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'certificacion_energetica_id');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'certificacion_energetica_id');
         
         // Filtro provincia_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'provincia_id');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'provincia_id');
 
         // Filtro poblacion_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'poblacion_id');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'poblacion_id');
         
         // Filtro zona_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'zona_id');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'zona_id');
 
         // Filtro tipo_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'tipo_id');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'tipo_id');
         
         // Filtro estado_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'estado_id');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'estado_id');
 
-        // Filtro captador_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'captador_id');
+        // Filtro agente_asignado_id
+        $this->utilities->set_value_session_filter('demandas_buscador', 'agente_asignado_id');
+        
+         // Filtro cliente_id
+        $this->utilities->set_value_session_filter('demandas_buscador', 'cliente_id');
         
         // Filtro oferta_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'oferta_id');
-        
-        // Filtro publicado_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'publicado_id');
-        
-        // Filtro destacado_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'destacado_id');
-        
-        // Filtro oportunidad_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'oportunidad_id');
-
+        $this->utilities->set_value_session_filter('demandas_buscador', 'oferta_id');
+     
         // Filtro fecha_desde
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'fecha_desde');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'fecha_desde');
 
         // Filtro fecha_hasta
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'fecha_hasta');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'fecha_hasta');
         
         // Filtro banios_desde
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'banios_desde');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'banios_desde');
         
         // Filtro banios_hasta
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'banios_hasta');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'banios_hasta');
         
         // Filtro habitaciones_desde
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'habitaciones_desde');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'habitaciones_desde');
         
         // Filtro habitaciones_hasta
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'habitaciones_hasta');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'habitaciones_hasta');
         
         // Filtro metros_desde
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'metros_desde');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'metros_desde');
         
         // Filtro metros_hasta
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'metros_hasta');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'metros_hasta');
         
         // Filtro precios_desde
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'precios_desde');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'precios_desde');
         
         // Filtro precios_hasta
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'precios_hasta');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'precios_hasta');
     }
 
     private function _generar_filtros_busqueda()
     {
         $filtros = array();
 
-        $filtros['tipo_id'] = $this->session->userdata('inmuebles_buscador_tipo_id');
-        $filtros['certificacion_energetica_id'] = $this->session->userdata('inmuebles_buscador_certificacion_energetica_id');
-        $filtros['estado_id'] = $this->session->userdata('inmuebles_buscador_estado_id');
-        $filtros['provincia_id'] = $this->session->userdata('inmuebles_buscador_provincia_id');
-        $filtros['poblacion_id'] = $this->session->userdata('inmuebles_buscador_poblacion_id');
-        $filtros['zona_id'] = $this->session->userdata('inmuebles_buscador_zona_id');
-        $filtros['captador_id'] = $this->session->userdata('inmuebles_buscador_captador_id');
-        $filtros['oferta_id'] = $this->session->userdata('inmuebles_buscador_oferta_id');
-        $filtros['publicado_id'] = $this->session->userdata('inmuebles_buscador_publicado_id');
-        $filtros['destacado_id'] = $this->session->userdata('inmuebles_buscador_destacado_id');
-        $filtros['oportunidad_id'] = $this->session->userdata('inmuebles_buscador_oportunidad_id');
+        $filtros['tipo_id'] = $this->session->userdata('demandas_buscador_tipo_id');
+        $filtros['certificacion_energetica_id'] = $this->session->userdata('demandas_buscador_certificacion_energetica_id');
+        $filtros['estado_id'] = $this->session->userdata('demandas_buscador_estado_id');
+        $filtros['provincia_id'] = $this->session->userdata('demandas_buscador_provincia_id');
+        $filtros['poblacion_id'] = $this->session->userdata('demandas_buscador_poblacion_id');
+        $filtros['zona_id'] = $this->session->userdata('demandas_buscador_zona_id');
+        $filtros['agente_asignado_id'] = $this->session->userdata('demandas_buscador_agente_asignado_id');
+        $filtros['cliente_id'] = $this->session->userdata('demandas_buscador_cliente_id');
+        $filtros['oferta_id'] = $this->session->userdata('demandas_buscador_oferta_id');
 
         // Búsqueda por rangos de búsqueda
-        $filtros['fecha_desde'] = $this->session->userdata('inmuebles_buscador_fecha_desde');
-        $filtros['fecha_hasta'] = $this->session->userdata('inmuebles_buscador_fecha_hasta');
-        $filtros['banios_desde'] = $this->session->userdata('inmuebles_buscador_banios_desde');
-        $filtros['banios_hasta'] = $this->session->userdata('inmuebles_buscador_banios_hasta');
-        $filtros['habitaciones_desde'] = $this->session->userdata('inmuebles_buscador_habitaciones_desde');
-        $filtros['habitaciones_hasta'] = $this->session->userdata('inmuebles_buscador_habitaciones_hasta');
-        $filtros['metros_desde'] = $this->session->userdata('inmuebles_buscador_metros_desde');
-        $filtros['metros_hasta'] = $this->session->userdata('inmuebles_buscador_metros_hasta');
+        $filtros['fecha_desde'] = $this->session->userdata('demandas_buscador_fecha_desde');
+        $filtros['fecha_hasta'] = $this->session->userdata('demandas_buscador_fecha_hasta');
+        $filtros['banios_desde'] = $this->session->userdata('demandas_buscador_banios_desde');
+        $filtros['banios_hasta'] = $this->session->userdata('demandas_buscador_banios_hasta');
+        $filtros['habitaciones_desde'] = $this->session->userdata('demandas_buscador_habitaciones_desde');
+        $filtros['habitaciones_hasta'] = $this->session->userdata('demandas_buscador_habitaciones_hasta');
+        $filtros['metros_desde'] = $this->session->userdata('demandas_buscador_metros_desde');
+        $filtros['metros_hasta'] = $this->session->userdata('demandas_buscador_metros_hasta');
         // Precios es especial por el tipo de consulta que se hace   
-        $filtros['precios_desde'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->session->userdata('inmuebles_buscador_precios_desde')), "int");
-        $filtros['precios_hasta'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->session->userdata('inmuebles_buscador_precios_hasta')), "int");
+        $filtros['precios_desde'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->session->userdata('demandas_buscador_precios_desde')), "int");
+        $filtros['precios_hasta'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->session->userdata('demandas_buscador_precios_hasta')), "int");
 
         return $filtros;
     }
@@ -249,7 +190,7 @@ class Inmuebles extends CRUD_controller
         // Validation
         if ($this->is_post())
         {
-            // Inicializamos los datos de validación para reutilizar la validación del inmueble
+            // Inicializamos los datos de validación para reutilizar la validación del demanda
             $this->form_validation->set_data($this->input->post()); 
             // Check
             if ($this->{$this->_model}->validation())
@@ -289,7 +230,7 @@ class Inmuebles extends CRUD_controller
         // Validation
         if ($this->is_post())
         {
-            // Inicializamos los datos de validación para reutilizar la validación del inmueble
+            // Inicializamos los datos de validación para reutilizar la validación del demanda
             $this->form_validation->set_data($this->input->post()); 
             // Check
             if ($this->{$this->_model}->validation($id))
@@ -360,9 +301,9 @@ class Inmuebles extends CRUD_controller
         // Permisos acceso
         $this->{$this->_model}->check_access($this->data['element']);
 
-        $inmueble_id = $this->{$this->_model}->duplicar($this->data['element']);
+        $demanda_id = $this->{$this->_model}->duplicar($this->data['element']);
 
-        if ($inmueble_id)
+        if ($demanda_id)
         {
             $this->session->set_flashdata('message', lang('common_success_duplicate'));
             $this->session->set_flashdata('message_color', 'success');
@@ -372,17 +313,17 @@ class Inmuebles extends CRUD_controller
             $this->session->set_flashdata('message', $this->{$this->_model}->get_error());
         }
 
-        redirect($this->_controller . '/edit/' . $inmueble_id, 'refresh');
+        redirect($this->_controller . '/edit/' . $demanda_id, 'refresh');
     }
     
-    public function marcar_opcion_extra($inmueble_id,$opcion_extra_id,$marcar) {
+    public function marcar_opcion_extra($demanda_id,$opcion_extra_id,$marcar) {
         // Deshabilitar profiler
         $this->output->enable_profiler(FALSE);
         // Comprobación de petición por AJAX
         if($this->input->is_ajax_request())
         {
             // Datos federado
-            $check_marcar = $this->Inmueble_model->marcar_opcion_extra($inmueble_id,$opcion_extra_id,$marcar);            
+            $check_marcar = $this->Demanda_model->marcar_opcion_extra($demanda_id,$opcion_extra_id,$marcar);            
             // Actualización de datos        
             if($check_marcar)
             {
@@ -402,14 +343,14 @@ class Inmuebles extends CRUD_controller
         }
     }
     
-    public function marcar_lugar_interes($inmueble_id,$lugar_interes_id,$marcar) {
+    public function marcar_lugar_interes($demanda_id,$lugar_interes_id,$marcar) {
         // Deshabilitar profiler
         $this->output->enable_profiler(FALSE);
         // Comprobación de petición por AJAX
         if($this->input->is_ajax_request())
         {
             // Datos federado
-            $check_marcar = $this->Inmueble_model->marcar_lugar_interes($inmueble_id,$lugar_interes_id,$marcar);            
+            $check_marcar = $this->Demanda_model->marcar_lugar_interes($demanda_id,$lugar_interes_id,$marcar);            
             // Actualización de datos        
             if($check_marcar)
             {
@@ -427,11 +368,11 @@ class Inmuebles extends CRUD_controller
                 }
             }
         }
-    }
+    }    
     
-    public function asociar_clientes($inmueble_id)
+    public function asociar_inmuebles($demanda_id)
     {
-        $this->data['element'] = $this->{$this->_model}->get_by_id($inmueble_id);        
+        $this->data['element'] = $this->{$this->_model}->get_by_id($demanda_id);        
         
         // Permisos acceso
         $this->{$this->_model}->check_access($this->data['element']);
@@ -440,26 +381,25 @@ class Inmuebles extends CRUD_controller
         if ($this->is_post())
         {
             // Rules
-            $this->form_validation->set_rules('clientes[]', 'Clientes seleccionados', 'xss_clean|required');
+            $this->form_validation->set_rules('inmuebles[]', 'Inmuebles seleccionados', 'xss_clean|required');
             // Check
             if ($this->form_validation->run())
             {
-                // Comprobar que algunos de los clientes están asociados con el inmueble
-                if($this->{$this->_model}->check_asociar_clientes($inmueble_id,$this->input->post('clientes')))
+                if($this->{$this->_model}->check_asociar_inmuebles($demanda_id,$this->input->post('inmuebles')))
                 {
                     // Asociar
-                    $result = $this->{$this->_model}->asociar_clientes($inmueble_id,$this->input->post('clientes'));
+                    $result = $this->{$this->_model}->asociar_inmuebles($demanda_id,$this->input->post('inmuebles'));
                     // Check
                     if ($result)
                     {
-                        $this->session->set_flashdata('message', 'Los clientes han sido asignados con éxito');
+                        $this->session->set_flashdata('message', 'Los inmuebles han sido asignados con éxito');
                         $this->session->set_flashdata('message_color', 'success');
                     }
                     else
                     {
-                        $this->session->set_flashdata('message', 'Error al asignar los clientes. Inténtelo más tarde');
+                        $this->session->set_flashdata('message', 'Error al asignar los inmuebles. Inténtelo más tarde');
                     }
-                    redirect($this->_controller. '/edit/' . $inmueble_id, 'refresh');
+                    redirect($this->_controller. '/edit/' . $demanda_id, 'refresh');
                 }
                 else
                 {
@@ -469,36 +409,36 @@ class Inmuebles extends CRUD_controller
             else
             {
                 $this->data['message'] = validation_errors();
-            }
+            }            
         }
         
-        // clientes disponibles
-        $this->data['clientes_disponibles']=$this->{$this->_model}->get_clientes_asociar($inmueble_id);
+        // Inmuebles disponibles
+        $this->data['inmuebles_disponibles']=$this->{$this->_model}->get_inmuebles_asociar($demanda_id);
 
         // Render
-        $this->render_private($this->_view . '/asociar_clientes', $this->data);
+        $this->render_private($this->_view . '/asociar_inmuebles', $this->data);
     }
     
-    public function quitar_cliente($inmueble_id, $cliente_id)
+    public function quitar_inmueble($demanda_id, $inmueble_id)
     {
-        $this->data['element'] = $this->{$this->_model}->get_by_id($inmueble_id);        
+        $this->data['element'] = $this->{$this->_model}->get_by_id($demanda_id);        
         
         // Permisos acceso
         $this->{$this->_model}->check_access($this->data['element']);
 
         // Edit
-        $result = $this->{$this->_model}->quitar_cliente($cliente_id,$inmueble_id);
+        $result = $this->{$this->_model}->quitar_inmueble($demanda_id,$inmueble_id);
         // Check
         if ($result)
         {
-            $this->session->set_flashdata('message', 'Se ha quitado al propietario del inmueble con éxito');
+            $this->session->set_flashdata('message', 'Se ha quitado la propiedad de la demanda con éxito');
             $this->session->set_flashdata('message_color', 'success');
         }
         else
         {
-            $this->session->set_flashdata('message', 'No se ha podido quitar al propietario seleccionado del inmueble actual');
+            $this->session->set_flashdata('message', 'No se ha podido quitar la propiedad seleccionada de la demanda actual');
         }
-        redirect($this->_controller. '/edit/' . $inmueble_id, 'refresh');
+        redirect($this->_controller. '/edit/' . $demanda_id, 'refresh');
     }
 
     public function import()
@@ -583,13 +523,13 @@ class Inmuebles extends CRUD_controller
                 $datos_formateado[] = $element->anio_construccion;
                 $datos_formateado[] = $element->nombre_estado;
                 $datos_formateado[] = $element->observaciones;
-                $datos_formateado[] = $element->nombre_captador;
+                $datos_formateado[] = $element->nombre_agente_asignado;
                 
                 // Conversión de todos los elementos del array
                 $array[] = $this->utilities->encoding_array($datos_formateado);
             }
             
-            array_to_csv_binary($array, "listado_inmuebles.csv");
+            array_to_csv_binary($array, "listado_demandas.csv");
         }
         else
         {
