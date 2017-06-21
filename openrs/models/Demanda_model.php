@@ -87,16 +87,16 @@ class Demanda_model extends MY_Model
         $this->form_validation->set_rules('habitaciones_hasta', 'Habitaciones (hasta)', 'xss_clean|is_natural');
         $this->form_validation->set_rules('banios_desde', 'Baños (desde)', 'xss_clean|is_natural|less_than_equal_to[' . $this->form_validation->get_validation_data('banios_hasta') . ']');
         $this->form_validation->set_rules('banios_hasta', 'Baños (hasta)', 'xss_clean|is_natural');
-        $this->form_validation->set_rules('anio_construccion_desde', 'Año construcción (desde)', 'xss_clean|is_natural|exact_length[4]|less_than_equal_to[' . $this->form_validation->get_validation_data('anio_construccion_hasta') . ']');
-        $this->form_validation->set_rules('anio_construccion_hasta', 'Año construcción (hasta)', 'xss_clean|is_natural|exact_length[4]');
+        $this->form_validation->set_rules('anio_construccion_desde', 'Año construcción (desde)', 'xss_clean|is_natural|less_than_equal_to[' . $this->form_validation->get_validation_data('anio_construccion_hasta') . ']');
+        $this->form_validation->set_rules('anio_construccion_hasta', 'Año construcción (hasta)', 'xss_clean|is_natural');
         $this->form_validation->set_rules('precio_desde', 'Precio (desde)', 'xss_clean|is_natural|less_than_equal_to[' . $this->form_validation->get_validation_data('precio_hasta') . ']');
         $this->form_validation->set_rules('precio_hasta', 'Precio (hasta)', 'xss_clean|is_natural');
         $this->form_validation->set_rules('fecha_alta', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
         $this->form_validation->set_rules('observaciones', 'Observaciones', 'required|trim');
         $this->form_validation->set_rules('poblacion_id', 'Población', 'xss_clean');
-        $this->form_validation->set_rules('zona_id', 'Zona', 'xss_clean');
+        $this->form_validation->set_rules('zonas_id[]', 'Zonas', 'xss_clean');
         $this->form_validation->set_rules('provincia_id', 'Provincia', 'xss_clean');
-        $this->form_validation->set_rules('tipo_id', 'Tipo', 'xss_clean');
+        $this->form_validation->set_rules('tipos_id[]', 'Tipos de inmuebles', 'xss_clean');
         $this->form_validation->set_rules('certificacion_energetica_id', 'Certificación energética', 'xss_clean');
         $this->form_validation->set_rules('estado_id', 'Estado', 'required');
         $this->form_validation->set_rules('agente_asignado_id', 'Agente asignado', 'xss_clean');
@@ -138,7 +138,7 @@ class Demanda_model extends MY_Model
         $data['provincias'] = $this->Provincia_model->get_provincias_dropdown();
 
         // Selector de tipos_inmuebles
-        $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown();
+        $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown("",NULL,FALSE);
 
         // Selector de opciones_extras
         $data['opciones_extras'] = $this->Opcion_extra_model->get_opciones_extras_dropdown();
@@ -254,14 +254,32 @@ class Demanda_model extends MY_Model
 
         // Los lugares de interés vendrán del info
         //$data['lugares_interes_seleccionados'] = is_object($datos) ? $datos->lugares_interes : array();
+        
+        // Las tipos_inmuebles vendrán del info
+        if($this->input->post())
+        {
+            $data['tipos_inmuebles_seleccionados'] = $this->input->post('tipos_id');
+        }
+        else
+        {
+            $data['tipos_inmuebles_seleccionados'] = is_object($datos) ? $datos->tipos_inmuebles : array();
+        }
+        
+        // Las zonas vendrán del info
+        if($this->input->post())
+        {
+            $data['zonas_seleccionadas'] = $this->input->post('zonas_id');
+        }
+        else
+        {
+            $data['zonas_seleccionadas'] = is_object($datos) ? $datos->zonas : array();
+        }
 
-        $data['tipo_id'] = "";//$this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
         $data['certificacion_energetica_id'] = $this->form_validation->set_value('certificacion_energetica_id', is_object($datos) ? $datos->certificacion_energetica_id : "");
         $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
         $data['agente_asignado_id'] = $this->form_validation->set_value('agente_asignado_id', is_object($datos) ? $datos->agente_asignado_id : $this->data['session_user_id']);
         $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
         $data['provincia_id'] = $this->form_validation->set_value('provincia_id', is_object($datos) ? $datos->provincia_id : "");
-        $data['zona_id'] = "";//$this->form_validation->set_value('zona_id', is_object($datos) ? $datos->zona_id : "");
         $data['cliente_id'] = $this->form_validation->set_value('cliente_id', is_object($datos) ? $datos->cliente_id : "");
         $data['oferta_id'] = $this->form_validation->set_value('oferta_id', is_object($datos) ? $datos->oferta_id : "");
         $data['tipo_demanda_id'] = $this->form_validation->set_value('tipo_demanda_id', is_object($datos) ? $datos->tipo_demanda_id : "");
@@ -270,7 +288,7 @@ class Demanda_model extends MY_Model
         $data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($data['provincia_id']);
 
         // Selector de zonas
-        $data['zonas'] = $this->Zona_model->get_zonas_dropdown($data['poblacion_id']);
+        $data['zonas'] = $this->Zona_model->get_zonas_dropdown($data['poblacion_id'],"",FALSE);
         
         $data['observaciones'] = array(
             'name' => 'observaciones',
@@ -280,6 +298,146 @@ class Demanda_model extends MY_Model
         );
 
         return $data;
+    }   
+    
+    /**
+     * Asigna los elementos indicados a la demanda, borra el resto
+     *
+     * @param [$demanda_id]                         Indentificador de la demanda
+     *
+     * @return array con los tipos de inmuebles seleccionados
+     */
+    public function get_zonas_asignadas($demanda_id)
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_zona_model');
+        
+        return $this->Demanda_zona_model->get_zonas_demanda($demanda_id);
+    }
+    
+    /**
+     * Asigna los elementos indicados a la demanda, borra el resto
+     *
+     * @param [$demanda_id]                         Indentificador de la demanda
+     *
+     * @return array con los tipos de inmuebles seleccionados
+     */
+    public function get_tipos_inmuebles_asignados($demanda_id)
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_tipo_inmueble_model');
+        
+        return $this->Demanda_tipo_inmueble_model->get_tipos_inmuebles_demanda($demanda_id);
+    }
+	
+    /*
+    public function asignar_tipos_inmuebles($demanda_id,$tipos_inmuebles_seleccionados)
+    {
+        // For testing
+        //var_dump($tipos_inmuebles_seleccionados); die();
+        // Modelos axiliares
+        $this->load->model('Demanda_tipo_inmueble_model');
+        
+        // Tipos para asignar
+        if(!is_array($tipos_inmuebles_seleccionados))
+        {
+            $tipos_inmuebles_seleccionados=array();
+        }
+        // Tipos para borrar
+        $tipos_inmuebles_asignados=$this->Demanda_tipo_inmueble_model->get_tipos_inmuebles_demanda($demanda_id);
+        if(!is_array($tipos_inmuebles_asignados))
+        {
+            $tipos_inmuebles_asignados=array();
+        }
+        
+        // Datos de demanda
+        $datos['demanda_id']=$demanda_id;
+        
+        // Asignación
+        if(count($tipos_inmuebles_seleccionados))
+        {
+            foreach ($tipos_inmuebles_seleccionados as $tipo_inmueble_id)
+            {
+                if(!in_array($tipo_inmueble_id, $tipos_inmuebles_asignados))
+                {
+                    $datos['tipo_id']=$tipo_inmueble_id;
+                    $this->Demanda_tipo_inmueble_model->insert($datos); 
+                }
+            }
+        }
+        
+        // Borrado
+        if(count($tipos_inmuebles_asignados))
+        {
+            foreach ($tipos_inmuebles_asignados as $tipo_inmueble_id)
+            {
+                if(!in_array($tipo_inmueble_id, $tipos_inmuebles_seleccionados))
+                {
+                    $datos['tipo_id']=$tipo_inmueble_id;
+                    $this->Demanda_tipo_inmueble_model->delete($datos); 
+                }
+            }
+        }
+        
+        return TRUE;
+    }
+     * 
+     */
+        
+    /**
+     * Asigna los elementos indicados a la demanda, borra el resto
+     *
+     * @param [$demanda_id]                  Indentificador de la demanda
+     * @param [$tipos_inmuebles]             Array con los tipos de inmuebles
+     *
+     * @return array con los datos formateado
+     */
+    public function asignar_tipos_inmuebles($demanda_id,$tipos_inmuebles)
+    {
+        // For testing
+        //var_dump($tipos_inmuebles); die();
+        // Modelos axiliares
+        $this->load->model('Demanda_tipo_inmueble_model');
+        
+        $this->Demanda_tipo_inmueble_model->delete(array("demanda_id" => $demanda_id)); 
+        
+        if($tipos_inmuebles)
+        {
+            $datos['demanda_id']=$demanda_id;
+            foreach ($tipos_inmuebles as $tipo_inmueble_id)
+            {
+                $datos['tipo_id']=$tipo_inmueble_id;
+                $this->Demanda_tipo_inmueble_model->insert($datos); 
+            }
+        }
+        return TRUE;
+    }
+    
+    /**
+     * Asigna los elementos indicados a la demanda, borra el resto
+     *
+     * @param [$demanda_id]                  Indentificador de la demanda
+     * @param [$zonas]             Array con los tipos de inmuebles
+     *
+     * @return array con los datos formateado
+     */
+    public function asignar_zonas($demanda_id,$zonas)
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_zona_model');
+        
+        $this->Demanda_zona_model->delete(array("demanda_id" => $demanda_id)); 
+        
+        if($zonas)
+        {
+            $datos['demanda_id']=$demanda_id;
+            foreach ($zonas as $zona_id)
+            {
+                $datos['zona_id']=$zona_id;
+                $this->Demanda_zona_model->insert($datos); 
+            }
+        }
+        return TRUE;
     }
 
     /**
@@ -301,8 +459,7 @@ class Demanda_model extends MY_Model
         $datas['precio_desde'] = $this->input->post('precio_desde');
         $datas['precio_hasta'] = $this->input->post('precio_hasta');
         $datas['fecha_alta'] = $this->utilities->cambiafecha_form($this->input->post('fecha_alta'));
-        $datas['observaciones'] = $this->input->post('observaciones');        
-        //$datas['tipo_id'] = $this->input->post('tipo_id');
+        $datas['observaciones'] = $this->input->post('observaciones');
         $datas['certificacion_energetica_id'] = $this->utilities->get_sql_value_string($this->input->post('certificacion_energetica_id'), "defined",$this->input->post('certificacion_energetica_id'),NULL);
         $datas['estado_id'] = $this->input->post('estado_id');
         $datas['provincia_id'] = $this->utilities->get_sql_value_string($this->input->post('provincia_id'), "defined",$this->input->post('provincia_id'),NULL);
@@ -313,7 +470,29 @@ class Demanda_model extends MY_Model
         $datas['oferta_id'] = $this->input->post('oferta_id');
         $datas['tipo_demanda_id'] = $this->input->post('tipo_demanda_id');
 
-        return $datas;
+        $datos_formateados['demanda']=$datas;
+        
+        // Datos de tipos de inmuebles
+        if(count($this->input->post('tipos_id')))
+        {
+            $datos_formateados['tipos_inmuebles_seleccionados']=$this->input->post('tipos_id');
+        }
+        else
+        {
+            $datos_formateados['tipos_inmuebles_seleccionados']=NULL;
+        }
+        
+        // Datos de zonas
+        if(count($this->input->post('zonas_id')))
+        {
+            $datos_formateados['zonas_seleccionadas']=$this->input->post('zonas_id');
+        }
+        else
+        {
+            $datos_formateados['zonas_seleccionadas']=NULL;
+        }
+        
+        return $datos_formateados;
     }
 
     /**
@@ -372,7 +551,7 @@ class Demanda_model extends MY_Model
     function create($formatted_datas)
     {
         // Parent insert
-        $id = $this->insert($formatted_datas);
+        $id = $this->insert($formatted_datas['demanda']);
         if ($id)
         {
             // Creación de carpeta
@@ -390,6 +569,10 @@ class Demanda_model extends MY_Model
                     return FALSE;
                 }
             }
+            // Asignación de tipos de inmuebles seleccionados
+            $this->asignar_tipos_inmuebles($id,$formatted_datas['tipos_inmuebles_seleccionados']);
+            // Asignación de zonas seleccionados
+            $this->asignar_zonas($id,$formatted_datas['zonas_seleccionadas']);
             // Devolvemos id
             return $id;
         }
@@ -398,7 +581,7 @@ class Demanda_model extends MY_Model
             $this->set_error(lang('common_error_insert'));
             return FALSE;
         }
-    }
+    }    
 
     /**
      * Formatea los datos introducidos por el usuario y actualiza un registro en la base de datos
@@ -412,11 +595,14 @@ class Demanda_model extends MY_Model
         // Formatted datas
         $formatted_datas = $this->get_formatted_datas($id);
         // Parent update
-        $affected_rows = $this->update($formatted_datas, $id);
-        // Insertamos datos adicionales
+        $affected_rows = $this->update($formatted_datas['demanda'], $id);
+        // Asignamos datos adicionales
         if ($affected_rows >= 0)
         {
-            return TRUE;
+            if($this->asignar_tipos_inmuebles($id,$formatted_datas['tipos_inmuebles_seleccionados']));
+            {
+                return $this->asignar_zonas($id,$formatted_datas['zonas_seleccionadas']);
+            }
         }
         // Devolvemos error
         return FALSE;
@@ -572,7 +758,11 @@ class Demanda_model extends MY_Model
             // Modelos axiliares
             //$this->load->model('Demanda_opcion_extra_model');
             //$this->load->model('Demanda_lugar_interes_model');
+            
             // Consulta de datos
+            $info->tipos_inmuebles = $this->get_tipos_inmuebles_asignados($id);
+            $info->zonas = $this->get_zonas_asignadas($id);            
+            
             //$info->inmuebles_coincidentes = $this->get_inmuebles_coincidentes($id);
             //$info->inmuebles_propuestos = $this->get_inmuebles_propuestos($id);
             //$info->opciones_extras = $this->Demanda_opcion_extra_model->get_opciones_extras_inmueble($id);

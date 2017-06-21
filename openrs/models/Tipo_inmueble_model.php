@@ -219,7 +219,7 @@ class Tipo_inmueble_model extends MY_Model
      * @return array de tipos de inmuebles en formato dropdown
      */
     
-    function get_tipos_inmuebles_dropdown($default_value="", $idioma_id=NULL)
+    function get_tipos_inmuebles_dropdown($default_value="", $idioma_id=NULL, $show_default_value=TRUE)
     {
         // Idioma
         if (is_null($idioma_id))
@@ -230,9 +230,16 @@ class Tipo_inmueble_model extends MY_Model
         $tipos_inmuebles=$this->Tipo_inmueble_idiomas_model->order_by('nombre')->get_all(array('idioma_id' => $idioma_id));
         $tipos_inmuebles_dropdown=$this->utilities->dropdown($tipos_inmuebles,'tipo_inmueble_id','nombre');
         // Selección inicial
-        $seleccion[$default_value]="- Seleccione tipo -";
-        // Suma de ambos
-        return ($seleccion+$tipos_inmuebles_dropdown);
+        if($show_default_value)
+        {
+            $seleccion[$default_value]="- Seleccione tipo -";
+            // Suma de ambos
+            return ($seleccion+$tipos_inmuebles_dropdown);
+        }
+        else
+        {
+            return $tipos_inmuebles_dropdown;
+        }
     }    
     
     /**

@@ -258,7 +258,7 @@ class Demandas extends CRUD_controller
             }
             else
             {
-                $this->data['message'] = $this->{$this->_model}->get_error();
+                $this->data['message'] = validation_errors();
             }
         }
 
@@ -446,6 +446,37 @@ class Demandas extends CRUD_controller
             $this->session->set_flashdata('message', 'No se ha podido quitar la propiedad seleccionada de la demanda actual');
         }
         redirect($this->_controller. '/edit/' . $demanda_id, 'refresh');
+    }
+    
+    public function load_zonas($poblacion_id=0)
+    {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if(!$this->input->is_ajax_request())
+        {
+            show_error('Petición no realizada a través de AJAX');
+        }
+        
+        $this->load->model('Zona_model');
+        $this->data['zonas'] = $this->Zona_model->get_zonas_poblacion($poblacion_id);
+        $this->load->view('demandas/zonas', $this->data);
+    }
+    
+    public function load_poblaciones($provincia_id=0, $poblacion_seleccionada = NULL)
+    {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if(!$this->input->is_ajax_request())
+        {
+            show_error('Petición no realizada a través de AJAX');
+        }
+        
+        $this->load->model('Poblacion_model');        
+        $this->data['poblacion_seleccionada'] = $poblacion_seleccionada;
+        $this->data['poblaciones'] = $this->Poblacion_model->get_poblaciones_provincia($provincia_id);
+        $this->load->view('demandas/poblaciones', $this->data);
     }
 
     public function import()

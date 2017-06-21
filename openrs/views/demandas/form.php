@@ -72,7 +72,16 @@
                 <div class="form-group">            
                     <?php echo label('Zona', 'zona_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div id="zonas" class="col-sm-9">
-                        <?php echo form_dropdown('zona_id',$zonas,$zona_id, 'onchange="mark_modified_field();" class="chosen-select form-control" id="zona_id""'); ?>
+                        <?php 
+                        if(count($zonas))
+                        {
+                            echo form_multiselect('zonas_id[]',$zonas,$zonas_seleccionadas, 'onchange="mark_modified_field();" class="form-control" id="zonas_id""'); 
+                        }
+                        else
+                        {
+                            echo '<p class="form-control"><i class="ace-icon fa fa-info-circle"></i> Actualmente no existen zonas registradas para la población seleccionada</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -91,7 +100,7 @@
             <div class="form-group">            
                 <?php echo label('Tipo inmueble', 'tipo_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('tipo_id',$tipos_inmuebles,$tipo_id, 'id="tipo_id" onchange="mark_modified_field();" class="chosen-select form-control"'); ?>        
+                    <?php echo form_multiselect('tipos_id[]',$tipos_inmuebles,$tipos_inmuebles_seleccionados, 'id="tipos_id" onchange="mark_modified_field();" class="form-control"'); ?>        
                 </div>
             </div>
             <div class="form-group">
@@ -239,6 +248,6 @@
 
     function show_poblaciones() {
         var provincia_id=$('#provincia_id').val();
-        $('#poblaciones').load('<?php echo site_url("common/load_poblaciones");?>/'+provincia_id);
+        $('#poblaciones').load('<?php echo site_url("demandas/load_poblaciones");?>/'+provincia_id);
     }
 </script>

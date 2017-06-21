@@ -164,9 +164,16 @@ ALTER TABLE `demandas` ADD `fecha_alta` date NOT NULL;
 ALTER TABLE `demandas` ADD `fecha_actualizacion` datetime default null;
 
 
-ALTER TABLE `inmuebles_demandas` ADD `origen` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1 para automáticos, aquellos asignados a través de un filtro de búsqueda, 2 para los propuestos por el agente' ;
+ALTER TABLE `inmuebles_demandas` ADD `origen_id` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1 para automáticos, aquellos asignados a través de un filtro de búsqueda, 2 para los propuestos por el agente' ;
+ALTER TABLE `inmuebles_demandas` ADD `evaluacion_id` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1 para pendientes de evaluar, estas se eliminarán si hay una nueva búsqueda, 2 para aquellas que interesan y 0 para las que no' ;
+ALTER TABLE `inmuebles_demandas` ADD `observaciones` varchar(255) NOT NULL ;
 ALTER TABLE `inmuebles_demandas` ADD `fecha_asignacion` DATE NOT NULL ;
 
+
+`origen_id` int(2) unsigned NOT NULL '',
+  origen`
+  evaluacion_id
+  observaciones
 
 
   
