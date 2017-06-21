@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                Ficheros del demanda <?php echo $demanda->referencia; ?>
+                Ficheros de la demanda <?php echo $demanda->referencia; ?>
             </h1>
         </div>
     </div>
