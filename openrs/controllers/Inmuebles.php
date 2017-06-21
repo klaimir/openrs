@@ -343,7 +343,7 @@ class Inmuebles extends CRUD_controller
             }
             else
             {
-                $this->session->set_flashdata('message', lang('common_error_delete'));
+                $this->session->set_flashdata('message', $this->{$this->_model}->get_error());
             }
         }
         else

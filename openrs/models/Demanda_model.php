@@ -13,7 +13,8 @@ class Demanda_model extends MY_Model
         $this->primary_key = 'id';
         $this->view = 'v_demandas';
 
-        $this->has_many['inmuebles'] = array('local_key' => 'id', 'foreign_key' => 'inmueble_id', 'foreign_model' => 'Inmueble_demanda_model');
+        $this->has_many['inmuebles'] = array('local_key' => 'id', 'foreign_key' => 'demanda_id', 'foreign_model' => 'Inmueble_demanda_model');
+        $this->has_many['fichas_visita'] = array('local_key' => 'id', 'foreign_key' => 'demanda_id', 'foreign_model' => 'Ficha_visita_model');
         $this->has_one['poblacion'] = array('local_key' => 'poblacion_id', 'foreign_key' => 'id', 'foreign_model' => 'Poblacion_model');
         $this->has_one['cliente'] = array('local_key' => 'cliente_id', 'foreign_key' => 'id', 'foreign_model' => 'Cliente_model');
         $this->has_one['certificacion_energetica'] = array('local_key' => 'certificacion_energetica_id', 'foreign_key' => 'id', 'foreign_model' => 'Certificacion_energetica_model');
@@ -91,16 +92,17 @@ class Demanda_model extends MY_Model
         $this->form_validation->set_rules('precio_desde', 'Precio (desde)', 'xss_clean|is_natural|less_than_equal_to[' . $this->form_validation->get_validation_data('precio_hasta') . ']');
         $this->form_validation->set_rules('precio_hasta', 'Precio (hasta)', 'xss_clean|is_natural');
         $this->form_validation->set_rules('fecha_alta', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
-        $this->form_validation->set_rules('observaciones', 'Observaciones', 'trim');
-        $this->form_validation->set_rules('poblacion_id', 'Población', 'required');
+        $this->form_validation->set_rules('observaciones', 'Observaciones', 'required|trim');
+        $this->form_validation->set_rules('poblacion_id', 'Población', 'xss_clean');
         $this->form_validation->set_rules('zona_id', 'Zona', 'xss_clean');
-        $this->form_validation->set_rules('provincia_id', 'Provincia', 'required');
+        $this->form_validation->set_rules('provincia_id', 'Provincia', 'xss_clean');
         $this->form_validation->set_rules('tipo_id', 'Tipo', 'xss_clean');
-        $this->form_validation->set_rules('certificacion_energetica_id', 'Certificación energética', 'required');
+        $this->form_validation->set_rules('certificacion_energetica_id', 'Certificación energética', 'xss_clean');
         $this->form_validation->set_rules('estado_id', 'Estado', 'required');
-        // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('agente_asignado_id', 'Agente asignado', 'xss_clean');
         $this->form_validation->set_rules('cliente_id', 'Cliente', 'required|xss_clean');
+        $this->form_validation->set_rules('oferta_id', 'Oferta', 'required|xss_clean');
+        $this->form_validation->set_rules('tipo_demanda_id', 'Tipo demanda', 'required|xss_clean');
     }
       
     /**
@@ -128,6 +130,10 @@ class Demanda_model extends MY_Model
      */
     public function set_datas_html($datos = NULL)
     {
+        // Modelos auxiliares
+        $this->load->model('Cliente_model');
+        $this->load->model('Inmueble_model');
+        
         // Selector de provincias
         $data['provincias'] = $this->Provincia_model->get_provincias_dropdown();
 
@@ -151,6 +157,12 @@ class Demanda_model extends MY_Model
         
         // Selector de clientes
         $data['clientes'] = $this->Cliente_model->get_clientes_dropdown();
+        
+        // selector de ofertas
+        $data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown();
+        
+        // selector de tipo_demandas
+        $data['tipos_demandas'] = $this->get_tipos_demandas_dropdown();
 
         // Datos
         $data['referencia'] = array(
@@ -238,19 +250,21 @@ class Demanda_model extends MY_Model
         );
 
         // Las opciones extras vendrán del info
-        $data['opciones_extras_seleccionadas'] = is_object($datos) ? $datos->opciones_extras : array();
+        //$data['opciones_extras_seleccionadas'] = is_object($datos) ? $datos->opciones_extras : array();
 
         // Los lugares de interés vendrán del info
-        $data['lugares_interes_seleccionados'] = is_object($datos) ? $datos->lugares_interes : array();
+        //$data['lugares_interes_seleccionados'] = is_object($datos) ? $datos->lugares_interes : array();
 
-        $data['tipo_id'] = $this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
+        $data['tipo_id'] = "";//$this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
         $data['certificacion_energetica_id'] = $this->form_validation->set_value('certificacion_energetica_id', is_object($datos) ? $datos->certificacion_energetica_id : "");
         $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
         $data['agente_asignado_id'] = $this->form_validation->set_value('agente_asignado_id', is_object($datos) ? $datos->agente_asignado_id : $this->data['session_user_id']);
         $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
         $data['provincia_id'] = $this->form_validation->set_value('provincia_id', is_object($datos) ? $datos->provincia_id : "");
-        $data['zona_id'] = $this->form_validation->set_value('zona_id', is_object($datos) ? $datos->zona_id : "");
+        $data['zona_id'] = "";//$this->form_validation->set_value('zona_id', is_object($datos) ? $datos->zona_id : "");
         $data['cliente_id'] = $this->form_validation->set_value('cliente_id', is_object($datos) ? $datos->cliente_id : "");
+        $data['oferta_id'] = $this->form_validation->set_value('oferta_id', is_object($datos) ? $datos->oferta_id : "");
+        $data['tipo_demanda_id'] = $this->form_validation->set_value('tipo_demanda_id', is_object($datos) ? $datos->tipo_demanda_id : "");
 
         // Selector de poblaciones
         $data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($data['provincia_id']);
@@ -289,12 +303,15 @@ class Demanda_model extends MY_Model
         $datas['fecha_alta'] = $this->utilities->cambiafecha_form($this->input->post('fecha_alta'));
         $datas['observaciones'] = $this->input->post('observaciones');        
         //$datas['tipo_id'] = $this->input->post('tipo_id');
-        $datas['certificacion_energetica_id'] = $this->input->post('certificacion_energetica_id');
+        $datas['certificacion_energetica_id'] = $this->utilities->get_sql_value_string($this->input->post('certificacion_energetica_id'), "defined",$this->input->post('certificacion_energetica_id'),NULL);
         $datas['estado_id'] = $this->input->post('estado_id');
-        $datas['poblacion_id'] = $this->input->post('poblacion_id');
+        $datas['provincia_id'] = $this->utilities->get_sql_value_string($this->input->post('provincia_id'), "defined",$this->input->post('provincia_id'),NULL);
+        $datas['poblacion_id'] = $this->utilities->get_sql_value_string($this->input->post('poblacion_id'), "defined",$this->input->post('poblacion_id'),NULL);
         //$datas['zona_id'] = $this->utilities->get_sql_value_string($this->input->post('zona_id'), "defined", $this->input->post('zona_id'), NULL);
         $datas['agente_asignado_id'] = $this->utilities->get_sql_value_string($this->input->post('agente_asignado_id'), "defined", $this->input->post('agente_asignado_id'), NULL);
         $datas['cliente_id'] = $this->input->post('cliente_id');
+        $datas['oferta_id'] = $this->input->post('oferta_id');
+        $datas['tipo_demanda_id'] = $this->input->post('tipo_demanda_id');
 
         return $datas;
     }
@@ -308,7 +325,7 @@ class Demanda_model extends MY_Model
      */
     function check_delete($id)
     {
-        if (count($this->with_demandas()->get($id)->demandas))
+        if (count($this->with_fichas_visita()->get($id)->fichas_visita))
         {
             return FALSE;
         }
@@ -451,7 +468,12 @@ class Demanda_model extends MY_Model
         if (isset($filtros['oferta_id']) && $filtros['oferta_id'] >= 0)
         {
             $this->db->where('oferta_id', $filtros['oferta_id']);
-        }     
+        }   
+        // Filtro tipo_demanda
+        if (isset($filtros['tipo_demanda_id']) && $filtros['tipo_demanda_id'] >= 0)
+        {
+            $this->db->where('tipo_demanda_id', $filtros['tipo_demanda_id']);
+        }
         // Filtro cliente
         if (isset($filtros['cliente_id']) && $filtros['cliente_id'] >= 0)
         {
@@ -506,6 +528,20 @@ class Demanda_model extends MY_Model
         $this->db->from($this->view);
         return $this->db->get()->result();
     }
+    
+    /**
+     * Devuelve un array de tipos_demandas en formato dropdown
+     *
+     * @return array de tipos_demandas en formato dropdown
+     */
+    function get_tipos_demandas_dropdown($default = "")
+    {
+        $tipo_demandas = array();
+        $tipo_demandas[$default] = '- Seleccione tipo demanda -';
+        $tipo_demandas[1] = 'Sin filtros de búsqueda';
+        $tipo_demandas[2] = 'Con filtros de búsqueda';
+        return $tipo_demandas;
+    }
 
     /**
      * Duplica los datos de un demanda
@@ -522,48 +558,6 @@ class Demanda_model extends MY_Model
         // Crear duplicado
         return $this->create($demanda);
     }
-    
-    /**
-     * Devuelve un array de publicados en formato dropdown
-     *
-     * @return array de publicados en formato dropdown
-     */
-    function get_publicado_dropdown($default = "")
-    {
-        $publicados = array();
-        $publicados[$default] = '- Indiferente -';
-        $publicados[1] = 'Publicado';
-        $publicados[0] = 'No Publicado';        
-        return $publicados;
-    }
-    
-    /**
-     * Devuelve un array de oportunidads en formato dropdown
-     *
-     * @return array de oportunidads en formato dropdown
-     */
-    function get_oportunidad_dropdown($default = "")
-    {
-        $oportunidads = array();
-        $oportunidads[$default] = '- Indiferente -';
-        $oportunidads[1] = 'Oportunidad';
-        $oportunidads[0] = 'No Oportunidad';        
-        return $oportunidads;
-    }
-    
-    /**
-     * Devuelve un array de destacados en formato dropdown
-     *
-     * @return array de destacados en formato dropdown
-     */
-    function get_destacado_dropdown($default = "")
-    {
-        $destacados = array();
-        $destacados[$default] = '- Indiferente -';
-        $destacados[1] = 'Destacado';
-        $destacados[0] = 'No Destacado';        
-        return $destacados;
-    }
 
     /**
      * Devuelve toda la información de un demanda
@@ -579,8 +573,8 @@ class Demanda_model extends MY_Model
             //$this->load->model('Demanda_opcion_extra_model');
             //$this->load->model('Demanda_lugar_interes_model');
             // Consulta de datos
-            $info->inmuebles_coincidentes = $this->get_inmuebles_coincidentes($id);
-            $info->inmuebles_propuestos = $this->get_inmuebles_propuestos($id);
+            //$info->inmuebles_coincidentes = $this->get_inmuebles_coincidentes($id);
+            //$info->inmuebles_propuestos = $this->get_inmuebles_propuestos($id);
             //$info->opciones_extras = $this->Demanda_opcion_extra_model->get_opciones_extras_inmueble($id);
             //$info->lugares_interes = $this->Demanda_lugar_interes_model->get_lugares_interes_inmueble($id);
             // Devolvemos toda la información calculada

@@ -72,9 +72,9 @@
                         <td>De <?php echo $element->metros_desde; ?> a <?php echo $element->metros_hasta; ?></td>
                         <td>De <?php echo $element->habitaciones_desde; ?> a <?php echo $element->habitaciones_hasta; ?></td>
                         <td>De <?php echo $element->banios_desde; ?> a <?php echo $element->banios_hasta; ?></td>
-                        <td>De <?php echo $this->utilities->cortar_texto($element->observaciones,30); ?></td>
-                        <td>De <?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
-                        <td><?php echo count($element->inmuebles); ?></td>
+                        <td>De <?php echo $this->utilities->cortar_texto($element->observaciones,50); ?></td>
+                        <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
+                        <td><?php //echo count($element->inmuebles); ?></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url($_controller."/edit/" . $element->id); ?>" title="Editar">
@@ -145,7 +145,8 @@
         $('#zona_id').val('');
         $('#agente_asignado_id').val('-1');
         $('#cliente_id').val('-1');
-        $('#oferta_id').val('-1');        
+        $('#oferta_id').val('-1');   
+        $('#tipo_demanda_id').val('-1');  
         $('#fecha_desde').val('');
         $('#fecha_hasta').val('');
         $('#banios_desde').val('');
@@ -220,6 +221,7 @@
                 null,
                 null,
                 {"sType": "date-euro"},
+                null,
                 null
             ]
         });

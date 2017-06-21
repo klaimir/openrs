@@ -2,7 +2,7 @@
 
 <div class="page-header">
     <h1>
-        Datos del demanda <?php echo $element->referencia; ?>
+        Datos de la demanda <?php echo $element->referencia; ?>
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             <?php echo lang('common_btn_edit'); ?>
@@ -16,23 +16,27 @@
 
 <div class="tabbable">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab_demandantes" data-toggle="tab">DEMANDANTES</a></li>
-        <li><a href="#tab_propietarios" data-toggle="tab">PROPIETARIOS</a></li>
+        <li class="active"><a href="#tab_demandantes" data-toggle="tab">INMUEBLES PROPUESTOS</a></li>
+        <li><a href="#tab_propietarios" data-toggle="tab">OPORTUNIDADES</a></li>
+        <?php /*
         <li><a href="#tab_opciones_extras" data-toggle="tab">CARACTERISTICAS</a></li>
         <li><a href="#tab_lugares_interes" data-toggle="tab">SITIOS CERCANOS</a></li>
+         * 
+         */
+        ?>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="tab_demandantes">
-            <?php $this->load->view('demandas/list_demandantes', $this->data); ?>
+            <?php //$this->load->view('demandas/list_demandas', $this->data); ?>
         </div>
         <div class="tab-pane" id="tab_propietarios">
-            <?php $this->load->view('demandas/list_propietarios', $this->data); ?>
+            <?php //$this->load->view('demandas/list_propiedades', $this->data); ?>
         </div>
         <div class="tab-pane" id="tab_opciones_extras">
-            <?php $this->load->view('demandas/list_opciones_extras', $this->data); ?>
+            <?php //$this->load->view('demandas/list_opciones_extras', $this->data); ?>
         </div>
         <div class="tab-pane" id="tab_lugares_interes">
-            <?php $this->load->view('demandas/list_lugares_interes', $this->data); ?>
+            <?php //$this->load->view('demandas/list_lugares_interes', $this->data); ?>
         </div>
     </div>    
 </div>

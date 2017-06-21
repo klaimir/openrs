@@ -75,6 +75,9 @@ class Demandas extends CRUD_controller
         // selector de ofertas
         $this->data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1);
         
+        // selector de tipos_demandas
+        $this->data['tipos_demandas'] = $this->Demanda_model->get_tipos_demandas_dropdown(-1);
+        
         // Selector de clientes
         $this->data['clientes'] = $this->Cliente_model->get_clientes_dropdown(-1);
     }
@@ -107,6 +110,9 @@ class Demandas extends CRUD_controller
         
         // Filtro oferta_id
         $this->utilities->set_value_session_filter('demandas_buscador', 'oferta_id');
+        
+        // Filtro tipo_demanda_id
+        $this->utilities->set_value_session_filter('demandas_buscador', 'tipo_demanda_id');
      
         // Filtro fecha_desde
         $this->utilities->set_value_session_filter('demandas_buscador', 'fecha_desde');
@@ -152,6 +158,7 @@ class Demandas extends CRUD_controller
         $filtros['agente_asignado_id'] = $this->session->userdata('demandas_buscador_agente_asignado_id');
         $filtros['cliente_id'] = $this->session->userdata('demandas_buscador_cliente_id');
         $filtros['oferta_id'] = $this->session->userdata('demandas_buscador_oferta_id');
+        $filtros['tipo_demanda_id'] = $this->session->userdata('demandas_buscador_tipo_demanda_id');
 
         // Búsqueda por rangos de búsqueda
         $filtros['fecha_desde'] = $this->session->userdata('demandas_buscador_fecha_desde');
@@ -284,7 +291,7 @@ class Demandas extends CRUD_controller
             }
             else
             {
-                $this->session->set_flashdata('message', lang('common_error_delete'));
+                $this->session->set_flashdata('message', $this->{$this->_model}->get_error());
             }
         }
         else

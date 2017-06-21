@@ -7,23 +7,13 @@
         </div>
         <div class="col-xs-12 col-md-6 col-lg-6">
             <div class="form-group">            
-                <?php echo label('Provincias', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('Clientes', 'cliente_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('provincia_id',$provincias,$filtros['provincia_id'], 'class="form-control chosen-select" id="provincia_id" onchange="show_poblaciones();"'); ?>
+                    <?php echo form_dropdown('cliente_id',$clientes,$filtros['cliente_id'], 'class="form-control chosen-select" id="cliente_id"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Poblaciones', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
-                <div id="poblaciones" class="col-sm-9">
-                </div>
-            </div>
-            <div class="form-group">            
-                <?php echo label('Zonas', 'zona_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
-                <div id="zonas" class="col-sm-9">
-                </div>
-            </div>
-            <div class="form-group">            
-                <?php echo label('Tipo', 'tipo_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('Tipo inmueble', 'tipo_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('tipo_id',$tipos_inmuebles,$filtros['tipo_id'], 'class="form-control chosen-select" id="tipo_id"'); ?>
                 </div>
@@ -32,6 +22,12 @@
                 <?php echo label('Ofertas', 'oferta_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('oferta_id',$ofertas,$filtros['oferta_id'], 'class="form-control" id="oferta_id"'); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <?php echo label('Tipo demanda', 'tipo_demanda_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('tipo_demanda_id',$tipos_demandas,$filtros['tipo_demanda_id'], 'class="form-control" id="tipo_demanda_id"'); ?>
                 </div>
             </div>
         </div>
@@ -53,13 +49,7 @@
                 <div class="col-sm-9">
                     <?php echo form_dropdown('estado_id',$estados,$filtros['estado_id'], 'class="form-control" id="estado_id"'); ?>
                 </div>
-            </div>
-            <div class="form-group">            
-                <?php echo label('Clientes', 'cliente_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
-                <div class="col-sm-9">
-                    <?php echo form_dropdown('cliente_id',$clientes,$filtros['cliente_id'], 'class="form-control chosen-select" id="cliente_id"'); ?>
-                </div>
-            </div>
+            </div>            
             <div class="form-group">            
                 <?php echo label('Fecha alta', 'rango_fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
@@ -70,6 +60,30 @@
                         </span>
                         <input class="input-sm form-control date-picker" name="fecha_hasta" id="fecha_hasta" value="<?php echo $filtros['fecha_hasta']; ?>" data-date-format="dd/mm/yyyy" type="text">
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <h4>Ubicación</h4>
+            <hr>
+        </div>
+        <div class="col-xs-12 col-md-6 col-lg-6">
+            <div class="form-group">            
+                <?php echo label('Provincias', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('provincia_id',$provincias,$filtros['provincia_id'], 'class="form-control chosen-select" id="provincia_id" onchange="show_poblaciones();"'); ?>
+                </div>
+            </div>            
+        </div>
+        <div class="col-xs-12 col-md-6 col-lg-6">
+            <div class="form-group">            
+                <?php echo label('Poblaciones', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div id="poblaciones" class="col-sm-9">
+                </div>
+            </div>
+            <div class="form-group">            
+                <?php echo label('Zonas', 'zona_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div id="zonas" class="col-sm-9">
                 </div>
             </div>
         </div>
