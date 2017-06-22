@@ -50,21 +50,7 @@ function menu_clientes($cliente_id,$active_section)
                     </a>
                     <b class="arrow"></b>
                 </li>
-
-                <li class="hover">
-                    <a href="#">
-                        <i class="menu-icon fa fa-calendar"></i>
-
-                        <span class="menu-text">
-                            FICHAS DE VISITA
-                            <span title="" class="badge badge-transparent tooltip-error" data-original-title="2 Important Events">
-                                <i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
-                            </span>
-                        </span>
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
+                
                 <?php /*
                 <li class="hover">
                     <a href="#">
@@ -90,7 +76,7 @@ function menu_clientes($cliente_id,$active_section)
                 <li class="hover">
                     <a href="<?php echo site_url('fichas_cliente/index/'.$cliente_id); ?>">
                         <i class="menu-icon fa fa-file-pdf-o"></i>
-                        <span class="menu-text"> FICHAS DEL CLIENTE </span>
+                        <span class="menu-text"> FICHA DEL CLIENTE </span>
                     </a>
                     <b class="arrow"></b>
                 </li>
@@ -150,7 +136,7 @@ function menu_inmuebles($inmueble_id,$active_section)
                 <li class="hover">
                     <a href="<?php echo site_url('inmuebles_fichas/index/'.$inmueble_id); ?>">
                         <i class="menu-icon fa fa-file-pdf-o"></i>
-                        <span class="menu-text"> FICHAS DEL INMUEBLE </span>
+                        <span class="menu-text"> FICHA DEL INMUEBLE </span>
                     </a>
                     <b class="arrow"></b>
                 </li>
@@ -158,7 +144,7 @@ function menu_inmuebles($inmueble_id,$active_section)
                 <li class="hover <?php echo set_active_option($active_section, "inmuebles_carteles"); ?>">
                     <a href="<?php echo site_url('inmuebles_carteles/index/'.$inmueble_id); ?>">
                         <i class="menu-icon fa fa-qrcode"></i>
-                        <span class="menu-text"> CARTELES </span>
+                        <span class="menu-text"> CARTEL </span>
                     </a>
 
                     <b class="arrow"></b>
@@ -186,6 +172,21 @@ function menu_demandas($demanda_id,$active_section)
                         <i class="menu-icon fa fa-users"></i>
                         <span class="menu-text"> DATOS DE LA DEMANDA </span>
                     </a>
+                    <b class="arrow"></b>
+                </li>
+                
+                <li class="hover <?php echo set_active_option($active_section, "demandas_fichas_visita"); ?>">
+                    <a href="<?php echo site_url('demandas_fichas_visita/index/'.$demanda_id); ?>">
+                        <i class="menu-icon fa fa-calendar"></i>
+
+                        <span class="menu-text">
+                            FICHAS DE VISITA
+                            <span title="" class="badge badge-transparent tooltip-error" data-original-title="2 Important Events">
+                                <i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
+                            </span>
+                        </span>
+                    </a>
+
                     <b class="arrow"></b>
                 </li>
 

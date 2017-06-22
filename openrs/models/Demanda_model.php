@@ -298,147 +298,7 @@ class Demanda_model extends MY_Model
         );
 
         return $data;
-    }   
-    
-    /**
-     * Asigna los elementos indicados a la demanda, borra el resto
-     *
-     * @param [$demanda_id]                         Indentificador de la demanda
-     *
-     * @return array con los tipos de inmuebles seleccionados
-     */
-    public function get_zonas_asignadas($demanda_id)
-    {
-        // Modelos axiliares
-        $this->load->model('Demanda_zona_model');
-        
-        return $this->Demanda_zona_model->get_zonas_demanda($demanda_id);
-    }
-    
-    /**
-     * Asigna los elementos indicados a la demanda, borra el resto
-     *
-     * @param [$demanda_id]                         Indentificador de la demanda
-     *
-     * @return array con los tipos de inmuebles seleccionados
-     */
-    public function get_tipos_inmuebles_asignados($demanda_id)
-    {
-        // Modelos axiliares
-        $this->load->model('Demanda_tipo_inmueble_model');
-        
-        return $this->Demanda_tipo_inmueble_model->get_tipos_inmuebles_demanda($demanda_id);
-    }
-	
-    /*
-    public function asignar_tipos_inmuebles($demanda_id,$tipos_inmuebles_seleccionados)
-    {
-        // For testing
-        //var_dump($tipos_inmuebles_seleccionados); die();
-        // Modelos axiliares
-        $this->load->model('Demanda_tipo_inmueble_model');
-        
-        // Tipos para asignar
-        if(!is_array($tipos_inmuebles_seleccionados))
-        {
-            $tipos_inmuebles_seleccionados=array();
-        }
-        // Tipos para borrar
-        $tipos_inmuebles_asignados=$this->Demanda_tipo_inmueble_model->get_tipos_inmuebles_demanda($demanda_id);
-        if(!is_array($tipos_inmuebles_asignados))
-        {
-            $tipos_inmuebles_asignados=array();
-        }
-        
-        // Datos de demanda
-        $datos['demanda_id']=$demanda_id;
-        
-        // Asignación
-        if(count($tipos_inmuebles_seleccionados))
-        {
-            foreach ($tipos_inmuebles_seleccionados as $tipo_inmueble_id)
-            {
-                if(!in_array($tipo_inmueble_id, $tipos_inmuebles_asignados))
-                {
-                    $datos['tipo_id']=$tipo_inmueble_id;
-                    $this->Demanda_tipo_inmueble_model->insert($datos); 
-                }
-            }
-        }
-        
-        // Borrado
-        if(count($tipos_inmuebles_asignados))
-        {
-            foreach ($tipos_inmuebles_asignados as $tipo_inmueble_id)
-            {
-                if(!in_array($tipo_inmueble_id, $tipos_inmuebles_seleccionados))
-                {
-                    $datos['tipo_id']=$tipo_inmueble_id;
-                    $this->Demanda_tipo_inmueble_model->delete($datos); 
-                }
-            }
-        }
-        
-        return TRUE;
-    }
-     * 
-     */
-        
-    /**
-     * Asigna los elementos indicados a la demanda, borra el resto
-     *
-     * @param [$demanda_id]                  Indentificador de la demanda
-     * @param [$tipos_inmuebles]             Array con los tipos de inmuebles
-     *
-     * @return array con los datos formateado
-     */
-    public function asignar_tipos_inmuebles($demanda_id,$tipos_inmuebles)
-    {
-        // For testing
-        //var_dump($tipos_inmuebles); die();
-        // Modelos axiliares
-        $this->load->model('Demanda_tipo_inmueble_model');
-        
-        $this->Demanda_tipo_inmueble_model->delete(array("demanda_id" => $demanda_id)); 
-        
-        if($tipos_inmuebles)
-        {
-            $datos['demanda_id']=$demanda_id;
-            foreach ($tipos_inmuebles as $tipo_inmueble_id)
-            {
-                $datos['tipo_id']=$tipo_inmueble_id;
-                $this->Demanda_tipo_inmueble_model->insert($datos); 
-            }
-        }
-        return TRUE;
-    }
-    
-    /**
-     * Asigna los elementos indicados a la demanda, borra el resto
-     *
-     * @param [$demanda_id]                  Indentificador de la demanda
-     * @param [$zonas]             Array con los tipos de inmuebles
-     *
-     * @return array con los datos formateado
-     */
-    public function asignar_zonas($demanda_id,$zonas)
-    {
-        // Modelos axiliares
-        $this->load->model('Demanda_zona_model');
-        
-        $this->Demanda_zona_model->delete(array("demanda_id" => $demanda_id)); 
-        
-        if($zonas)
-        {
-            $datos['demanda_id']=$demanda_id;
-            foreach ($zonas as $zona_id)
-            {
-                $datos['zona_id']=$zona_id;
-                $this->Demanda_zona_model->insert($datos); 
-            }
-        }
-        return TRUE;
-    }
+    }  
 
     /**
      * Devuelve los datos formateado de la interfaz
@@ -762,9 +622,9 @@ class Demanda_model extends MY_Model
             // Consulta de datos
             $info->tipos_inmuebles = $this->get_tipos_inmuebles_asignados($id);
             $info->zonas = $this->get_zonas_asignadas($id);            
+
+            $info->inmuebles_propuestos = $this->get_inmuebles_propuestos($id);
             
-            //$info->inmuebles_coincidentes = $this->get_inmuebles_coincidentes($id);
-            //$info->inmuebles_propuestos = $this->get_inmuebles_propuestos($id);
             //$info->opciones_extras = $this->Demanda_opcion_extra_model->get_opciones_extras_inmueble($id);
             //$info->lugares_interes = $this->Demanda_lugar_interes_model->get_lugares_interes_inmueble($id);
             // Devolvemos toda la información calculada
@@ -775,6 +635,162 @@ class Demanda_model extends MY_Model
             return NULL;
         }
     }    
+    
+     
+    
+    /**
+     * Asigna los elementos indicados a la demanda, borra el resto
+     *
+     * @param [$demanda_id]                         Indentificador de la demanda
+     *
+     * @return array con los tipos de inmuebles seleccionados
+     */
+    public function get_zonas_asignadas($demanda_id)
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_zona_model');
+        
+        return $this->Demanda_zona_model->get_zonas_demanda($demanda_id);
+    }
+    
+    /**
+     * Asigna los elementos indicados a la demanda, borra el resto
+     *
+     * @param [$demanda_id]                         Indentificador de la demanda
+     *
+     * @return array con los tipos de inmuebles seleccionados
+     */
+    public function get_tipos_inmuebles_asignados($demanda_id)
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_tipo_inmueble_model');
+        
+        return $this->Demanda_tipo_inmueble_model->get_tipos_inmuebles_demanda($demanda_id);
+    }
+	
+    /*
+    public function asignar_tipos_inmuebles($demanda_id,$tipos_inmuebles_seleccionados)
+    {
+        // For testing
+        //var_dump($tipos_inmuebles_seleccionados); die();
+        // Modelos axiliares
+        $this->load->model('Demanda_tipo_inmueble_model');
+        
+        // Tipos para asignar
+        if(!is_array($tipos_inmuebles_seleccionados))
+        {
+            $tipos_inmuebles_seleccionados=array();
+        }
+        // Tipos para borrar
+        $tipos_inmuebles_asignados=$this->Demanda_tipo_inmueble_model->get_tipos_inmuebles_demanda($demanda_id);
+        if(!is_array($tipos_inmuebles_asignados))
+        {
+            $tipos_inmuebles_asignados=array();
+        }
+        
+        // Datos de demanda
+        $datos['demanda_id']=$demanda_id;
+        
+        // Asignación
+        if(count($tipos_inmuebles_seleccionados))
+        {
+            foreach ($tipos_inmuebles_seleccionados as $tipo_inmueble_id)
+            {
+                if(!in_array($tipo_inmueble_id, $tipos_inmuebles_asignados))
+                {
+                    $datos['tipo_id']=$tipo_inmueble_id;
+                    $this->Demanda_tipo_inmueble_model->insert($datos); 
+                }
+            }
+        }
+        
+        // Borrado
+        if(count($tipos_inmuebles_asignados))
+        {
+            foreach ($tipos_inmuebles_asignados as $tipo_inmueble_id)
+            {
+                if(!in_array($tipo_inmueble_id, $tipos_inmuebles_seleccionados))
+                {
+                    $datos['tipo_id']=$tipo_inmueble_id;
+                    $this->Demanda_tipo_inmueble_model->delete($datos); 
+                }
+            }
+        }
+        
+        return TRUE;
+    }
+     * 
+     */
+        
+    /**
+     * Asigna los elementos indicados a la demanda, borra el resto
+     *
+     * @param [$demanda_id]                  Indentificador de la demanda
+     * @param [$tipos_inmuebles]             Array con los tipos de inmuebles
+     *
+     * @return array con los datos formateado
+     */
+    public function asignar_tipos_inmuebles($demanda_id,$tipos_inmuebles)
+    {
+        // For testing
+        //var_dump($tipos_inmuebles); die();
+        // Modelos axiliares
+        $this->load->model('Demanda_tipo_inmueble_model');
+        
+        $this->Demanda_tipo_inmueble_model->delete(array("demanda_id" => $demanda_id)); 
+        
+        if($tipos_inmuebles)
+        {
+            $datos['demanda_id']=$demanda_id;
+            foreach ($tipos_inmuebles as $tipo_inmueble_id)
+            {
+                $datos['tipo_id']=$tipo_inmueble_id;
+                $this->Demanda_tipo_inmueble_model->insert($datos); 
+            }
+        }
+        return TRUE;
+    }
+    
+    /**
+     * Asigna los elementos indicados a la demanda, borra el resto
+     *
+     * @param [$demanda_id]                  Indentificador de la demanda
+     * @param [$zonas]             Array con los tipos de inmuebles
+     *
+     * @return array con los datos formateado
+     */
+    public function asignar_zonas($demanda_id,$zonas)
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_zona_model');
+        
+        $this->Demanda_zona_model->delete(array("demanda_id" => $demanda_id)); 
+        
+        if($zonas)
+        {
+            $datos['demanda_id']=$demanda_id;
+            foreach ($zonas as $zona_id)
+            {
+                $datos['zona_id']=$zona_id;
+                $this->Demanda_zona_model->insert($datos); 
+            }
+        }
+        return TRUE;
+    }
+    
+    /**
+     * Devuelve los inmuebles asignados a una demanda
+     *
+     * @param [$demanda_id]                 Identificador de la demanda
+     *
+     * @return array de vista de inmuebles
+     */
+    function get_inmuebles_propuestos($demanda_id)
+    {
+        $this->load->model('Inmueble_demanda_model');
+        // Consulta
+        return $this->Inmueble_demanda_model->get_view_inmuebles_demanda($demanda_id);
+    }
     
     /**
      * Asigna los inmuebles seleccionados al demanda especificado
@@ -789,6 +805,7 @@ class Demanda_model extends MY_Model
         $this->load->model('Inmueble_demanda_model');
         // Asignación de inmuebles
         $datos['demanda_id']=$demanda_id;
+        $datos['fecha_asignacion']=date("Y-m-d");
         foreach($inmuebles_seleccionados as $inmueble_id)
         {
             $datos['inmueble_id']=$inmueble_id;
@@ -825,7 +842,7 @@ class Demanda_model extends MY_Model
         // Modelos axiliares
         $this->load->model('Inmueble_model');
         // Consulta de propiedades
-        $inmuebles_asociados = $this->get_inmuebles_asociados($id);
+        $inmuebles_asociados = $this->get_inmuebles_propuestos($id);
         // Calculamos los ids de los inmuebles
         $array_ids_inmuebles_asociados=$this->utilities->get_keys_objects_array($inmuebles_asociados,'id');
         // Devuelve los inmubles que no estén contenidos en los incompatibles

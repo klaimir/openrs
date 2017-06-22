@@ -1,11 +1,11 @@
-<?php menu_clientes ($element->id,"clientes"); ?>
+<?php menu_demandas ($element->id,"demandas"); ?>
 
 <div class="page-header">
     <h1>
-        Datos del cliente
+        Datos de la demanda
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            Asociar Inmuebles
+            Proponer Inmuebles
         </small>
     </h1>
 </div>
@@ -25,6 +25,7 @@
                             <span class="lbl"></span>
                         </label>
                     </th>
+                    <th>Referencia</th>
                     <th>Tipología</th>
                     <th>Municipio</th>
                     <th>Zona</th>
@@ -50,6 +51,7 @@
                                 <span class="lbl"></span>
                             </label>
                         </td>
+                        <td><?php echo $inmueble->referencia; ?></td>
                         <td><?php echo $inmueble->nombre_tipo; ?></td>
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>
                         <td><?php echo $inmueble->nombre_zona; ?></td>
@@ -73,7 +75,7 @@
     <div class="col-md-offset-3 col-md-9">
         <button class="btn btn-info" type="submit" name="submit">
             <i class="ace-icon fa fa-check bigger-110"></i>
-            Asociar Inmuebles
+            Proponer Inmuebles
         </button>
     </div>
 </div>

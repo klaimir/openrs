@@ -72,7 +72,7 @@
                         <td>De <?php echo $element->metros_desde; ?> a <?php echo $element->metros_hasta; ?></td>
                         <td>De <?php echo $element->habitaciones_desde; ?> a <?php echo $element->habitaciones_hasta; ?></td>
                         <td>De <?php echo $element->banios_desde; ?> a <?php echo $element->banios_hasta; ?></td>
-                        <td>De <?php echo $this->utilities->cortar_texto($element->observaciones,50); ?></td>
+                        <td><?php echo $this->utilities->cortar_texto($element->observaciones,50); ?></td>
                         <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
                         <td><?php //echo count($element->inmuebles); ?></td>
                         <td>

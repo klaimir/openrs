@@ -1,12 +1,8 @@
 <div class="row">
     <div class="col-xs-12">
-        <a class="btn btn-info pull-right" href="<?php echo site_url('inmuebles/insert/'.$element->id); ?>">
+        <a class="btn btn-info pull-right" href="<?php echo site_url('demandas/asociar_inmuebles/'.$element->id); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
-            <span class="menu-text"> Crear Inmueble </span>
-        </a>
-        <a class="btn btn-info pull-right" href="<?php echo site_url('clientes/asociar_inmuebles/'.$element->id); ?>">
-            <i class="menu-icon fa fa-plus-circle"></i>
-            <span class="menu-text"> Asociar Inmuebles </span>
+            <span class="menu-text"> Proponer Inmuebles </span>
         </a>
     </div>
 </div>
@@ -16,32 +12,54 @@
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
         <?php
-        if($element->propiedades)
+        if($element->inmuebles_propuestos)
         {
         ?>
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-striped table-bordered table-hover" id="tabgrid_inmuebles_propuestos">
             <thead>
                 <tr>
+                    <th>Origen</th>
+                    <th>Estado</th>
+                    <th>Fecha asig.</th>
+                    <th>Obs.</th>
+                    <th>Ficha <br> visita</th>
+                    <th>Visitado</th>
                     <th>Tipología</th>
                     <th>Municipio</th>
                     <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
-                    <th>Metros</th>
+                    <th>Precio <br> Compra</th>
+                    <th>Precio <br> Alquiler</th>
+                    <th>Met.</th>
                     <th>Hab.</th>
-                    <th>Baños</th>
-                    <th>Ficha encargo</th>
-                    <th>Cláusula Cert. Ener.</th>
+                    <th>Bañ.</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                    foreach ($element->propiedades as $inmueble)
+                    foreach ($element->inmuebles_propuestos as $inmueble)
                     {
                     ?>
                     <tr>
+                        <td><?php echo $inmueble->nombre_origen; ?></td>
+                        <td><?php echo $inmueble->nombre_evaluacion; ?></td>
+                        <td><?php echo $inmueble->fecha_asignacion_formateada; ?></td>
+                        <td><?php echo $this->utilities->cortar_texto($inmueble->observaciones,50); ?></td>
+                        <td>
+                            <?php if($inmueble->ficha_visita_id) { ?>
+                                <a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar ficha visita"><i class="ace-icon fa fa-newspaper-o"></i></a>
+                            <?php } else { ?>
+                                -
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <?php if($inmueble->visitado) { ?>
+                                <i class="ace-icon fa fa-check-square"></i>
+                            <?php } else { ?>
+                                <i class="ace-icon fa fa-close"></i>
+                            <?php } ?>
+                        </td>
                         <td><?php echo $inmueble->nombre_tipo; ?></td>
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>
                         <td><?php echo $inmueble->nombre_zona; ?></td>
@@ -51,8 +69,6 @@
                         <td><?php echo $inmueble->metros; ?></td>
                         <td><?php echo $inmueble->habitaciones; ?></td>
                         <td><?php echo $inmueble->banios; ?></td>
-                        <td>-</td>
-                        <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble">
@@ -97,7 +113,7 @@
         <?php 
         } else {
         ?>
-            <p><i class="ace-icon fa fa-info-circle"></i> Actualmente no hay inmuebles asociados al cliente actual</p>
+            <p><i class="ace-icon fa fa-info-circle"></i> Actualmente no hay inmuebles asociados a la demanda actual</p>
         <?php 
         }
         ?>
@@ -108,11 +124,34 @@
     jQuery(function ($) {
         $('.borrar-propiedad').click(function () {
             var inmueble = $(this).data("inmueble");
-            bootbox.confirm("¿Estás seguro/a de quitar la propiedad de este cliente?", function (result) {
+            bootbox.confirm("¿Estás seguro/a de quitar la propiedad de este demanda?", function (result) {
                 if (result) {
-                    window.location = '<?php echo site_url('clientes/quitar_inmueble/'.$element->id); ?>/' + inmueble;
+                    window.location = '<?php echo site_url('demandas/quitar_inmueble/'.$element->id); ?>/' + inmueble;
                 }
             });
+        });
+        
+        $('#tabgrid_inmuebles_propuestos').dataTable({
+            "iDisplayLength": 100,
+            "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
+            "aoColumns": [
+                null,                
+                null,
+                {"sType": "date-euro"},
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ]
         });
     })
 </script>
