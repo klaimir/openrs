@@ -22,6 +22,7 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>Ref. Demanda</th>
                     <th>Nombre Completo</th>
                     <th>CIF/NIE/NIF</th>
                     <th>Provincia</th>
@@ -39,6 +40,7 @@
                     {
                     ?>
                     <tr>
+                        <td><a href="<?php echo site_url("demandas/edit/" . $demandante->demanda_id); ?>" title="Editar demanda"><?php echo $demandante->referencia_demanda; ?></a></td>
                         <td><?php echo $demandante->apellidos.", ".$demandante->nombre; ?></td>
                         <td><?php echo $demandante->nif; ?></td>
                         <td><?php echo $demandante->nombre_provincia; ?></td>
@@ -49,7 +51,7 @@
                         <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="<?php echo site_url("demandas/edit/" . $demandante->demanda_id); ?>" title="Editar demanda">
+                                <a class="green" href="<?php echo site_url("clientes/edit/" . $demandante->id); ?>" title="Editar cliente">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
                                 <a class="red borrar-demanda" data-demanda="<?php echo $demandante->demanda_id; ?>" data-inmueble="<?php echo $demandante->id; ?>" href="#" title="Desasignar">
@@ -64,7 +66,7 @@
 
                                     <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                         <li>
-                                            <a href="<?php echo site_url("demandas/edit/" . $demandante->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar demanda">
+                                            <a href="<?php echo site_url("clientes/edit/" . $demandante->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar cliente">
                                                 <span class="green">
                                                     <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                                 </span>

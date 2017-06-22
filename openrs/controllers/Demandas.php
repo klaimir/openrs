@@ -477,8 +477,69 @@ class Demandas extends CRUD_controller
         $this->data['poblacion_seleccionada'] = $poblacion_seleccionada;
         $this->data['poblaciones'] = $this->Poblacion_model->get_poblaciones_provincia($provincia_id);
         $this->load->view('demandas/poblaciones', $this->data);
+    }    
+    
+    public function cargar_inmueble_propuesto($id = 0) {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Datos del inmueble propuesto
+        $this->load->model('Inmueble_demanda_model');
+        $datos=$this->Inmueble_demanda_model->get_by_id($id);
+        // Datos interfaz
+        if($datos)
+        {
+            $this->data['id'] = $id;
+            $this->data['evaluaciones'] = $this->Inmueble_demanda_model->get_evaluaciones_dropdown();
+            $this->data['evaluacion_id'] = $datos->evaluacion_id;
+            // Campos para helpers
+            $this->data['observaciones'] = array(
+                'name' => 'observaciones',
+                'id' => 'observaciones',
+                'type' => 'text',
+                'value' => $datos->observaciones,
+            );
+            // Cargamos la vista
+            $this->load->view('demandas/modificar_datos_inmuebles_propuesto', $this->data);
+        }
+        else
+        {
+            echo "El inmueble seleccionado no está asignado a la demanda actual";
+        }
+    }
+    
+    public function update_inmueble_propuesto() {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if($this->input->is_ajax_request())
+        {
+            // Permisos acceso
+            if (!$this->ion_auth->is_admin())
+            {
+                echo "No tiene permiso para realizar esta acción";
+            }
+            else
+            {
+                // Id. inmueble de la demanda
+                $id=$this->input->post('id');
+                // Modelo
+                $this->load->model('Inmueble_demanda_model');
+                // Datos
+                $check_update = $this->Inmueble_demanda_model->edit($id, $this->input->post('evaluacion_id'), $this->input->post('observaciones'));            
+                // Actualización de datos        
+                if($check_update)
+                {
+                    echo 1;
+                }
+                else
+                {
+                    echo "Error al introducir los datos. Inténtelo más tarde";
+                }
+            }
+        }
     }
 
+    /*
     public function import()
     {
         // Validation
@@ -522,6 +583,8 @@ class Demandas extends CRUD_controller
         // Render
         $this->render_private($this->_view . '/import_result', $this->data);
     }
+     * 
+     */
     
     public function export() {
         // Aplicamos los filtros establecidos en el buscador

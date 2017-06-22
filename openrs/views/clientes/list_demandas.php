@@ -18,6 +18,8 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>Ref. Demanda</th>
+                    <th>Ref. Inmueble</th>
                     <th>Tipología</th>
                     <th>Municipio</th>
                     <th>Zona</th>
@@ -37,10 +39,12 @@
                     {
                     ?>
                     <tr>
+                        <td><a href="<?php echo site_url("demandas/edit/" . $inmueble->demanda_id); ?>" title="Editar demanda"><?php echo $inmueble->referencia_demanda; ?></a></td>
+                        <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->referencia; ?></a></td>
                         <td><?php echo $inmueble->nombre_tipo; ?></td>
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>
                         <td><?php echo $inmueble->nombre_zona; ?></td>
-                        <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->direccion; ?></a></td>
+                        <td><?php echo $inmueble->direccion; ?></td>
                         <td><?php echo number_format($inmueble->precio_compra, 0, ",", "."); ?></td>
                         <td><?php echo number_format($inmueble->precio_alquiler, 0, ",", "."); ?></td>
                         <td><?php echo $inmueble->metros; ?></td>
@@ -49,7 +53,7 @@
                         <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="<?php echo site_url("demandas/edit/" . $inmueble->demanda_id); ?>" title="Editar demanda">
+                                <a class="green" href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
                                 <a class="red borrar-inmueble" data-demanda="<?php echo $inmueble->demanda_id; ?>" data-inmueble="<?php echo $inmueble->id; ?>" href="#" title="Desasignar">
@@ -64,7 +68,7 @@
 
                                     <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                         <li>
-                                            <a href="<?php echo site_url("demandas/edit/" . $inmueble->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar demanda">
+                                            <a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar inmueble">
                                                 <span class="green">
                                                     <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                                 </span>

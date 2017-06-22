@@ -15,7 +15,16 @@
             <div class="form-group">            
                 <?php echo label('Cliente', 'cliente_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('cliente_id',$clientes,$cliente_id, 'onchange="mark_modified_field();" class="form-control chosen-select" id="cliente_id"'); ?>
+                    <?php 
+                    echo form_dropdown('cliente_id',$clientes,$cliente_id, 'onchange="mark_modified_field();" class="form-control chosen-select" id="cliente_id"'); 
+                    // Añadimos enlace al cliente
+                    if($cliente_id)
+                    {
+                    ?>
+                    - <a href="<?php echo site_url("clientes/edit/" . $cliente_id); ?>" title="Editar cliente">Ver datos del cliente</a> -
+                    <?php
+                    }
+                    ?>
                 </div>
             </div> 
             <div class="form-group">            

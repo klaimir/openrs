@@ -164,19 +164,11 @@ ALTER TABLE `demandas` ADD `fecha_alta` date NOT NULL;
 ALTER TABLE `demandas` ADD `fecha_actualizacion` datetime default null;
 
 
-ALTER TABLE `inmuebles_demandas` ADD `origen_id` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1 para automáticos, aquellos asignados a través de un filtro de búsqueda, 2 para los propuestos por el agente' ;
-ALTER TABLE `inmuebles_demandas` ADD `evaluacion_id` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1 para pendientes de evaluar, estas se eliminarán si hay una nueva búsqueda, 2 para aquellas que interesan y 0 para las que no' ;
+ALTER TABLE `inmuebles_demandas` ADD `origen_id` TINYINT(1) NOT NULL DEFAULT '2' COMMENT '1 para automáticos, aquellos asignados a través de un filtro de búsqueda, 2 para los propuestos por el agente' ;
+ALTER TABLE `inmuebles_demandas` ADD `evaluacion_id` TINYINT(1) NOT NULL DEFAULT '2' COMMENT '1 para pendientes de evaluar, estas se eliminarán si hay una nueva búsqueda, 2 para aquellas que propuesta para visita y 3 para las descartadas por el agente, 4 para aquellas que interesan y 5 para las que no' ;
 ALTER TABLE `inmuebles_demandas` ADD `observaciones` varchar(255) NOT NULL ;
 ALTER TABLE `inmuebles_demandas` ADD `fecha_asignacion` DATE NOT NULL ;
-
-
-`origen_id` int(2) unsigned NOT NULL '',
-  origen`
-  evaluacion_id
-  observaciones
-
-
-  
+ 
   
 CREATE 
     OR REPLACE
@@ -212,6 +204,7 @@ CREATE TABLE IF NOT EXISTS `fichas_visita` (
   `agente_id` int(11) unsigned NOT NULL,
   `documento_generado_id` int(11) unsigned NOT NULL,
   `fecha` date NOT NULL,
+  `visitado` tinyint(1) NOT NULL default 0,
   `observaciones` text,
   PRIMARY KEY (`id`),
   KEY `FK_fichas_visita_documento_generado_id` (`documento_generado_id`),
@@ -222,18 +215,17 @@ CREATE TABLE IF NOT EXISTS `fichas_visita` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `inmuebles_fichas_visita`
+-- Estructura de tabla para la tabla `fichas_visita_inmuebles_demandas`
 --
 
-CREATE TABLE IF NOT EXISTS `inmuebles_fichas_visita` (
+CREATE TABLE IF NOT EXISTS `fichas_visita_inmuebles_demandas` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ficha_visita_id` int(11) unsigned NOT NULL,
-  `inmueble_id` int(11) unsigned NOT NULL,
-  `hora` varchar(10) NOT NULL,
-  `fecha_hora` timestamp NOT NULL,
+  `inmueble_demanda_id` int(11) unsigned NOT NULL,
+  `fecha_hora` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_inmuebles_fichas_visita_ficha_visita_id` (`ficha_visita_id`),
-  KEY `FK_inmuebles_fichas_visita_inmueble_id` (`inmueble_id`)
+  KEY `FK_inmuebles_fichas_visita_inmueble_demanda_id` (`inmueble_demanda_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -245,13 +237,35 @@ ALTER TABLE `fichas_visita`
   ADD CONSTRAINT `FK_fichas_visita_demanda_id` FOREIGN KEY (`demanda_id`) REFERENCES `demandas` (`id`) ON DELETE CASCADE;
 
 --
--- Filtros para la tabla `inmuebles_fichas_visita`
+-- Filtros para la tabla `fichas_visita_inmuebles_demandas`
 --
-ALTER TABLE `inmuebles_fichas_visita`
+ALTER TABLE `fichas_visita_inmuebles_demandas`
   ADD CONSTRAINT `FK_inmuebles_fichas_visita_ficha_visita_id` FOREIGN KEY (`ficha_visita_id`) REFERENCES `fichas_visita` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_inmuebles_fichas_visita_inmueble_id` FOREIGN KEY (`inmueble_id`) REFERENCES `inmuebles` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_inmuebles_fichas_visita_inmueble_demanda_id` FOREIGN KEY (`inmueble_demanda_id`) REFERENCES `inmuebles_demandas` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
-
+-- Inmuebles de una demanda
+CREATE 
+    OR REPLACE
+VIEW `v_inmuebles_demandas` AS
+    SELECT 
+ 		v_inmuebles.*, inmuebles_demandas.demanda_id, inmuebles_demandas.origen_id, inmuebles_demandas.evaluacion_id, inmuebles_demandas.observaciones as observaciones_demanda, inmuebles_demandas.fecha_asignacion, 
+		DATE_FORMAT(inmuebles_demandas.fecha_asignacion, "%d/%m/%Y") as fecha_asignacion_formateada, fichas_visita_inmuebles_demandas.ficha_visita_id, fichas_visita.visitado, inmuebles_demandas.id as inmueble_demanda_id,
+        CASE origen_id
+		  WHEN 1 THEN 'OPENRS'
+		  WHEN 2 THEN 'Agente'
+		END as 'nombre_origen',
+		CASE evaluacion_id
+		  WHEN 1 THEN 'Pendiente evaluar'
+		  WHEN 2 THEN 'Proponer para visita'
+		  WHEN 3 THEN 'Descartado por agente'
+		  WHEN 4 THEN 'Interesa cliente'
+		  WHEN 5 THEN 'No Interesa cliente'
+		END as 'nombre_evaluacion'		
+    FROM v_inmuebles
+	JOIN inmuebles_demandas on inmuebles_demandas.inmueble_id=v_inmuebles.id
+	LEFT JOIN fichas_visita_inmuebles_demandas on fichas_visita_inmuebles_demandas.inmueble_demanda_id=inmuebles_demandas.id
+	LEFT JOIN fichas_visita on fichas_visita_inmuebles_demandas.ficha_visita_id=fichas_visita.id
+	;
 
 

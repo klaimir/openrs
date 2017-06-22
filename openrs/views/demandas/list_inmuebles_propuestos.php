@@ -24,6 +24,7 @@
                     <th>Obs.</th>
                     <th>Ficha <br> visita</th>
                     <th>Visitado</th>
+                    <th>Ref.</th>
                     <th>Tipología</th>
                     <th>Municipio</th>
                     <th>Zona</th>
@@ -45,7 +46,7 @@
                         <td><?php echo $inmueble->nombre_origen; ?></td>
                         <td><?php echo $inmueble->nombre_evaluacion; ?></td>
                         <td><?php echo $inmueble->fecha_asignacion_formateada; ?></td>
-                        <td><?php echo $this->utilities->cortar_texto($inmueble->observaciones,50); ?></td>
+                        <td><?php echo $this->utilities->cortar_texto($inmueble->observaciones_demanda,50); ?></td>
                         <td>
                             <?php if($inmueble->ficha_visita_id) { ?>
                                 <a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar ficha visita"><i class="ace-icon fa fa-newspaper-o"></i></a>
@@ -60,10 +61,11 @@
                                 <i class="ace-icon fa fa-close"></i>
                             <?php } ?>
                         </td>
+                        <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->referencia; ?></a></td>
                         <td><?php echo $inmueble->nombre_tipo; ?></td>
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>
                         <td><?php echo $inmueble->nombre_zona; ?></td>
-                        <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->direccion; ?></a></td>
+                        <td><?php echo $inmueble->direccion; ?></td>
                         <td><?php echo number_format($inmueble->precio_compra, 0, ",", "."); ?></td>
                         <td><?php echo number_format($inmueble->precio_alquiler, 0, ",", "."); ?></td>
                         <td><?php echo $inmueble->metros; ?></td>
@@ -71,7 +73,7 @@
                         <td><?php echo $inmueble->banios; ?></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble">
+                                <a class="green inmueble_propuesto" data-target="#modificar_datos_inmueble_propuesto" href="#" data-toggle="modal" data-id="<?php echo $inmueble->inmueble_demanda_id;?>" title="Modificar datos de inmueble propuesto">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
                                 <a class="red borrar-propiedad" data-inmueble="<?php echo $inmueble->id; ?>" href="#" title="Desasignar">
@@ -119,6 +121,29 @@
         ?>
     </div>
 </div>
+<div class="modal fade" id="modificar_datos_inmueble_propuesto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="<?php echo site_url('demandas/update_inmueble_propuesto'); ?>">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modificar datos de inmueble propuesto</h4>
+      </div>
+      <div class="modal-body form-horizontal" id="modal-body">
+      </div>        
+      <div class="modal-footer">
+        <button class="btn btn-small" data-dismiss="modal">
+            <i class="icon-remove"></i>
+            Cancelar
+        </button>
+
+        <button class="btn btn-small btn-primary">
+            <i class="icon-ok"></i>
+            Aplicar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">   
     jQuery(function ($) {
@@ -150,8 +175,32 @@
                 null,
                 null,
                 null,
+                null,
                 null
             ]
+        });
+        
+        $('.inmueble_propuesto').on('click', function(e){
+            var id = $(this).data('id');
+            $('#modal-body').load('<?php echo site_url("demandas/cargar_inmueble_propuesto"); ?>/' + id);
+        });
+        
+        $('#modificar_datos_inmueble_propuesto .btn-primary').on('click', function () {
+            var modal=$(this).parents('#modificar_datos_inmueble_propuesto');
+            var posturl=$(modal).data('url');
+            var datastring=$(modal).find('input,select,textarea').serialize();
+            $.ajax({
+                type: 'POST',
+                data: datastring,
+                url: posturl,
+                success: function(data) {
+                    if (data==1) {   
+                        window.location = '<?php echo site_url('demandas/edit/'.$element->id); ?>';
+                    } else {
+                        alert(data);
+                    }
+                }
+            });
         });
     })
 </script>

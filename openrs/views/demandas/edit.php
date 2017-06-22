@@ -12,8 +12,6 @@
 
 <?php $this->load->view('common/message', $this->data); ?> 
 
-<?php echo form_open($this->uri->uri_string(), 'class="form-horizontal"'); ?>
-
 <div class="tabbable">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#tab_inmuebles_propuestos" data-toggle="tab">INMUEBLES PROPUESTOS</a></li>
@@ -24,6 +22,8 @@
         </div>
     </div>    
 </div>
+
+<?php echo form_open($this->uri->uri_string(), 'class="form-horizontal"'); ?>
 
 <?php $this->load->view($_view.'/form', $this->data); ?>
 

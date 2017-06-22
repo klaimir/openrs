@@ -66,4 +66,38 @@ class Inmueble_demanda_model extends MY_Model
         return $this->db->get()->result();
     }
     
+    /**
+     * Devuelve un array de evaluaciones en formato dropdown
+     *
+     * @return array de evaluaciones en formato dropdown
+     */
+    function get_evaluaciones_dropdown()
+    {
+        $evaluaciones = array();
+        $evaluaciones[1] = 'Pendiente evaluar';
+        $evaluaciones[2] = 'Proponer para visita';
+        $evaluaciones[3] = 'Descartado por agente';
+        $evaluaciones[4] = 'Interesa cliente';
+        $evaluaciones[5] = 'No Interesa cliente';
+        return $evaluaciones;
+    }
+    
+    /**
+     * Formatea los datos introducidos por el usuario y actualiza un registro en la base de datos
+     *
+     * @param [id]                  Indentificador del elemento
+     * @param [evaluacion_id]       Estado de evaluación a asignar
+     * @param [observaciones]       Observaciones
+     *
+     * @return void
+     */
+    function edit($id, $evaluacion_id, $observaciones)
+    {
+        // Formatted datas
+        $datos['evaluacion_id']=$evaluacion_id;
+        $datos['observaciones']=$observaciones;
+        // Parent update
+        return $this->update($datos, $id);
+    }
+    
 }

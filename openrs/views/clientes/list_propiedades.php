@@ -6,7 +6,7 @@
         </a>
         <a class="btn btn-info pull-right" href="<?php echo site_url('clientes/asociar_inmuebles/'.$element->id); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
-            <span class="menu-text"> Asociar Inmuebles </span>
+            <span class="menu-text"> Asignar Inmuebles Existentes </span>
         </a>
     </div>
 </div>
@@ -22,6 +22,7 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>Referencia</th>
                     <th>Tipología</th>
                     <th>Municipio</th>
                     <th>Zona</th>
@@ -42,10 +43,11 @@
                     {
                     ?>
                     <tr>
+                        <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->referencia; ?></a></td>
                         <td><?php echo $inmueble->nombre_tipo; ?></td>
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>
                         <td><?php echo $inmueble->nombre_zona; ?></td>
-                        <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->direccion; ?></a></td>
+                        <td><?php echo $inmueble->direccion; ?></td>
                         <td><?php echo number_format($inmueble->precio_compra, 0, ",", "."); ?></td>
                         <td><?php echo number_format($inmueble->precio_alquiler, 0, ",", "."); ?></td>
                         <td><?php echo $inmueble->metros; ?></td>

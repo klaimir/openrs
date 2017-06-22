@@ -1217,7 +1217,7 @@ class Demanda_model extends MY_Model
             $id_idioma = $this->data['session_id_idioma'];
         }
         // Consulta
-        $this->db->select('v_inmuebles.*, inmuebles_demandas.demanda_id');
+        $this->db->select('v_inmuebles.*, inmuebles_demandas.demanda_id, demandas.referencia as referencia_demanda');
         $this->db->from('v_inmuebles');
         $this->db->join('inmuebles_demandas', 'inmuebles_demandas.inmueble_id='.'v_inmuebles.id');
         $this->db->join('demandas', 'inmuebles_demandas.demanda_id='.'demandas.id');
@@ -1236,7 +1236,7 @@ class Demanda_model extends MY_Model
     
     function get_demandantes_inmueble($inmueble_id)
     {
-        $this->db->select('v_clientes.*, inmuebles_demandas.demanda_id');
+        $this->db->select('v_clientes.*, inmuebles_demandas.demanda_id, demandas.referencia as referencia_demanda');
         $this->db->from('v_clientes');     
         $this->db->join('demandas', 'demandas.cliente_id='.'v_clientes.id');
         $this->db->join('inmuebles_demandas', 'inmuebles_demandas.demanda_id='.'demandas.id');        
