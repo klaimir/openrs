@@ -4,6 +4,21 @@
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> Proponer Inmuebles </span>
         </a>
+        <?php if($element->inmuebles_propuestos) { ?>
+            <a class="btn btn-info pull-right" onclick="check_multiple_google_maps();">
+                <i class="menu-icon fa fa-map-marker"></i>
+                <span class="menu-text"> Ver en mapa </span>
+            </a>
+        <?php } ?>
+    </div>
+</div>
+
+<div class="row" id="google_maps_div" style="display:none;">      
+    <div class="space-10"></div>
+    <div class="col-xs-12">
+        <div id="google_maps">
+        </div>
+        <small class="blue">El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su filtro de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en su posición actual. Esta opción sólo funcionará si tiene habilitado en su dispositivo la geolocalización y no está bloqueado para el navegador web actual.</small>
     </div>
 </div>
 
@@ -22,7 +37,7 @@
                     <th>Estado</th>
                     <th>Fecha asig.</th>
                     <th>Obs.</th>
-                    <th>Ficha <br> visita</th>
+                    <th>Fecha <br> visita</th>
                     <th>Visitado</th>
                     <th>Ref.</th>
                     <th>Tipología</th>
@@ -49,7 +64,7 @@
                         <td><?php echo $this->utilities->cortar_texto($inmueble->observaciones_demanda,50); ?></td>
                         <td>
                             <?php if($inmueble->ficha_visita_id) { ?>
-                                <a href="<?php echo site_url("demandas_fichas_visita/edit/" . $inmueble->ficha_visita_id); ?>" title="Editar ficha visita"><i class="ace-icon fa fa-newspaper-o"></i></a>
+                                <a href="<?php echo site_url("demandas_fichas_visita/edit/" . $inmueble->ficha_visita_id); ?>" title="Editar ficha visita"><?php echo $inmueble->fecha_hora_visita_formateada; ?></a>
                             <?php } else { ?>
                                 -
                             <?php } ?>
@@ -146,6 +161,11 @@
 </div>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">   
+    function check_multiple_google_maps() {
+        $('#google_maps_div').toggle('slow');
+        $('#google_maps').load('<?php echo site_url('demandas/google_map_inmuebles_propuestos/'.$element->id);?>');
+    }
+    
     jQuery(function ($) {
         $('.borrar-propiedad').click(function () {
             var inmueble = $(this).data("inmueble");
@@ -164,7 +184,7 @@
                 null,
                 {"sType": "date-euro"},
                 null,
-                null,
+                {"sType": "date-euro"},
                 null,
                 null,
                 null,

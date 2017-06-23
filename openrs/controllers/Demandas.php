@@ -25,7 +25,7 @@ class Demandas extends CRUD_controller
         $this->lang->load('inmuebles');
     }
     
-    function multiple_google_map()
+    function google_map_inmuebles_propuestos($demanda_id)
     {
         // Deshabilitar profiler
         $this->output->enable_profiler(FALSE);
@@ -35,15 +35,22 @@ class Demandas extends CRUD_controller
             echo 'Petición no realizada a través de AJAX';
             return;
         }        
-        // Valores de los filtros de búsqueda
-        $filtros = $this->_generar_filtros_busqueda();
+        // Info de la demanda
+        $info=$this->{$this->_model}->get_info($demanda_id); 
+        // Valores de los filtros de búsqueda (servirán para centrar)
+        $filtros['provincia_id']=$info->provincia_id;
+        $filtros['poblacion_id']=$info->poblacion_id;
         // Búsqueda                
-        $inmuebles=$this->{$this->_model}->get_by_filtros($filtros); 
-        
+        $inmuebles=$info->inmuebles_propuestos;         
         // Check
         if($inmuebles)
         {
-            // Código de inmuebles
+            // Modelos auxiliares
+            $this->load->model('Inmueble_model');
+            // Create the map.
+            $this->data['map'] = $this->Inmueble_model->create_google_map($inmuebles,$filtros);
+            // Load our view, passing the map data that has just been created
+            $this->load->view('common/google_maps', $this->data);
         }
         else
         {

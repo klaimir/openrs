@@ -38,59 +38,16 @@ class Inmuebles extends CRUD_controller
         {
             echo 'Petición no realizada a través de AJAX';
             return;
-        }
-        
+        }        
         // Valores de los filtros de búsqueda
         $filtros = $this->_generar_filtros_busqueda();
         // Búsqueda                
-        $inmuebles=$this->{$this->_model}->get_by_filtros($filtros); 
-        
+        $inmuebles=$this->{$this->_model}->get_by_filtros($filtros);         
         // Check
         if($inmuebles)
         {
-            // Load the library
-            $this->load->library('googlemaps');
-            // Config
-            $config['loadAsynchronously'] = TRUE;
-            // Si hay filtros de provincia o población establecidos, los usamos, en caso contrario será nuestra posición actual (auto)
-            $config['center']=$this->{$this->_model}->format_google_map_center($filtros);
-            $config['zoom']=12;        
-            // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
-            $this->googlemaps->initialize($config);
-
-            // Añadir markers con rutas formateados
-            foreach ($inmuebles as $inmueble)
-            {            
-                $marker=array();
-                // Formateamos la posición
-                $marker['position']=$this->{$this->_model}->format_google_map_path($inmueble);
-                // Calculamos datos
-                $datos=$this->{$this->_model}->get_datos_google_maps($inmueble->id);
-                // Incluimos los datos en un infowindow
-                if($datos['image_path'])
-                {
-                    $html_image='<img width="225" height="150" class="nav-user-photo" src="'.  $datos['image_path'] .'" alt="Imagen principal del inmueble">';
-                }
-                else
-                {
-                    $html_image='Portada sin especificar';
-                }
-                $marker['infowindow_content']= $html_image                  
-                    . '<br>'. $datos['description']
-                    . '<br>'. $inmueble->direccion
-                    . '<br><a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
-                // Añadimos el marker
-                $this->googlemaps->add_marker($marker);
-            } 
-            
-            // Para entornos que no sean development es necesario una API-KEY
-            $this->load->model('Config_model');
-            $config=$this->Config_model->get_config();
-            $this->googlemaps->apiKey=$config->google_api_key;
-
             // Create the map.
-            $this->data['map'] = $this->googlemaps->create_map();
-
+            $this->data['map'] = $this->{$this->_model}->create_google_map($inmuebles,$filtros);
             // Load our view, passing the map data that has just been created
             $this->load->view('common/google_maps', $this->data);
         }

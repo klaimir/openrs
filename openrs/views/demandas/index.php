@@ -23,13 +23,14 @@
             <i class="menu-icon fa fa-upload"></i>
             <span class="menu-text"> Importar CSV </span>
         </a>
+         * 
+         */ 
+        ?>
         <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/export'); ?>">
             <i class="menu-icon fa fa-download"></i>
             <span class="menu-text"> Exportar CSV </span>
         </a>    
-         * 
-         */    
-        ?>
+         
     </div>
 </div>
 
