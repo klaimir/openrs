@@ -42,6 +42,7 @@
                 <tr>
                     <th>Ref.</th>
                     <th>Cliente</th>
+                    <th>Tipos<br>Inmuebles</th>
                     <th>Lugar</th>
                     <th>Precios</th>
                     <th>Metros</th>
@@ -67,7 +68,13 @@
                                 <?php echo $element->nombre_cliente; ?>
                             </a>              
                         </td>
-                        <td><?php echo $element->nombre_provincia; ?><?php if(!empty($element->nombre_poblacion)) echo "<br>".$element->nombre_poblacion; ?></td>
+                        <td><?php if($element->tipos_inmuebles) { echo $element->tipos_inmuebles; } else { echo "-"; } ?></td>
+                        <td>
+                            <?php
+                                echo $element->nombre_poblacion;
+                                if($element->zonas) { echo "<br>(". $element->zonas . ")";  }
+                             ?>
+                        </td>
                         <td>De <?php echo number_format($element->precio_desde, 0, ",", "."); ?> a <?php echo number_format($element->precio_hasta, 0, ",", "."); ?></td>
                         <td>De <?php echo $element->metros_desde; ?> a <?php echo $element->metros_hasta; ?></td>
                         <td>De <?php echo $element->habitaciones_desde; ?> a <?php echo $element->habitaciones_hasta; ?></td>
@@ -212,7 +219,8 @@
             "iDisplayLength": 100,
             "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
             "aoColumns": [
-                null,                
+                null, 
+                null,
                 null,                
                 null,
                 null,

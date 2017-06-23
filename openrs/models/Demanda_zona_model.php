@@ -36,4 +36,34 @@ class Demanda_zona_model extends MY_Model
         return $array;
     }
 
+    /**
+     * Devuelve las zonas asignados a una demanda
+     *
+     * @param	[$demanda_id]   Identificador de la demanda
+     * 
+     * @return String con las zonas seperados por , si existe o NULL en caso contrario
+     */
+    
+    function get_nombres_zonas_demanda($demanda_id)
+    {
+        // Consulta
+        $this->db->select('poblaciones_zonas.nombre');
+        $this->db->from($this->table);        
+        $this->db->join('poblaciones_zonas', 'poblaciones_zonas.id = '.$this->table.'.zona_id');
+        $this->db->where('demanda_id',$demanda_id);
+        $query = $this->db->get();
+        $results = $query->result();
+        // Formateamos los resultados
+        if ($results) {
+            $array=array();      
+            foreach($results as $result)
+            {
+                $array[]=$result->nombre;
+            }
+            return implode(', ', $array);
+        } else {
+            return NULL;
+        }
+    }
+    
 }

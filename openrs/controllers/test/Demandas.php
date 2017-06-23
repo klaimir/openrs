@@ -52,5 +52,23 @@ class Demandas extends MY_Controller
         // The report will be formatted in an HTML table for viewing. If you prefer the raw data you can retrieve an array using:
         var_dump($this->unit->result());
     }
+    
+    function nombres_tipos_inmuebles_demanda($demanda_id)
+    {
+        // Realizamos test con todas las combinaciones porque el validation fallaba
+        $this->load->model('Demanda_tipo_inmueble_model');
+        
+        // Asignamos tipos de inmuebles a una demanda con inmuebles      
+        $result=$this->Demanda_tipo_inmueble_model->get_nombres_tipos_inmuebles_demanda($demanda_id);
+        if($result)
+        {
+            echo $result;
+        }
+        else
+        {
+            echo "No existen tipos de inmuebles asociados";
+        }
+    }
+    
 
 }

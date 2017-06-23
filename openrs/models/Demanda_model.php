@@ -572,7 +572,21 @@ class Demanda_model extends MY_Model
         }
         // Consulta
         $this->db->from($this->view);
-        return $this->db->get()->result();
+        $results=$this->db->get()->result();
+        // Añadimos resultados adicionales
+        if($results)
+        {
+            // Realizamos test con todas las combinaciones porque el validation fallaba
+            $this->load->model('Demanda_tipo_inmueble_model');
+            $this->load->model('Demanda_zona_model');
+            
+            foreach ($results as $result)
+            {
+                $result->tipos_inmuebles=$this->Demanda_tipo_inmueble_model->get_nombres_tipos_inmuebles_demanda($result->id);
+                $result->zonas=$this->Demanda_zona_model->get_nombres_zonas_demanda($result->id);
+            }
+        }
+        return $results;
     }
     
     /**

@@ -49,7 +49,7 @@
                         <td><?php echo $this->utilities->cortar_texto($inmueble->observaciones_demanda,50); ?></td>
                         <td>
                             <?php if($inmueble->ficha_visita_id) { ?>
-                                <a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar ficha visita"><i class="ace-icon fa fa-newspaper-o"></i></a>
+                                <a href="<?php echo site_url("demandas_fichas_visita/edit/" . $inmueble->ficha_visita_id); ?>" title="Editar ficha visita"><i class="ace-icon fa fa-newspaper-o"></i></a>
                             <?php } else { ?>
                                 -
                             <?php } ?>
