@@ -604,34 +604,28 @@ class Demandas extends CRUD_controller
             
             $this->load->helper('csv');
             
-            // Cabecera
-            $cabecera = array('Referencia','Tipo','Fecha Alta','Provincia','Municipio','Zona','Dirección','Metros','Metros útiles','Hab.','Baños'
-                ,'Precio Compra','Precio Alquiler','Cert. Energ.','Año Construcción','Estado','Observaciones','Agente Asignado');
+            // Cabecera            
+            $cabecera = array('Referencia','Cliente','Tipos Inmuebles','Lugar','Precios','Metros','Hab.','Baños','Observaciones','Fecha alta');
             $array[] = $this->utilities->encoding_array($cabecera);
              
             // Resto de datos
             foreach ($elements as $element)
             {
                 $datos_formateado = array();
-
+                
                 $datos_formateado[] = $element->referencia;
-                $datos_formateado[] = $element->nombre_tipo; 
-                $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_alta);
-                $datos_formateado[] = $element->nombre_provincia;
-                $datos_formateado[] = $element->nombre_poblacion;
-                $datos_formateado[] = $element->nombre_zona;
-                $datos_formateado[] = $element->direccion;
-                $datos_formateado[] = $element->metros;
-                $datos_formateado[] = $element->metros_utiles;
-                $datos_formateado[] = $element->habitaciones;
-                $datos_formateado[] = $element->banios;
-                $datos_formateado[] = $element->precio_compra;   
-                $datos_formateado[] = $element->precio_alquiler;
-                $datos_formateado[] = $element->nombre_certificacion_energetica;
-                $datos_formateado[] = $element->anio_construccion;
-                $datos_formateado[] = $element->nombre_estado;
+                $datos_formateado[] = $element->nombre_cliente; 
+                if($element->tipos_inmuebles) { $tipos_inmuebles=$element->tipos_inmuebles; } else { $tipos_inmuebles="-"; }
+                $datos_formateado[] = $tipos_inmuebles;
+                $lugar = $element->nombre_poblacion;
+                if($element->zonas) { $lugar .= " (". $element->zonas . ")"; }
+                $datos_formateado[] = $lugar;
+                $datos_formateado[] = format_interval_csv(number_format($element->precio_desde, 0, ",", "."),number_format($element->precio_hasta, 0, ",", "."));
+                $datos_formateado[] = format_interval_csv($element->metros_desde,$element->metros_hasta);
+                $datos_formateado[] = format_interval_csv($element->habitaciones_desde,$element->habitaciones_hasta);
+                $datos_formateado[] = format_interval_csv($element->banios_desde,$element->banios_hasta);
                 $datos_formateado[] = $element->observaciones;
-                $datos_formateado[] = $element->nombre_agente_asignado;
+                $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_alta);
                 
                 // Conversión de todos los elementos del array
                 $array[] = $this->utilities->encoding_array($datos_formateado);

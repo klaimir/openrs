@@ -76,10 +76,10 @@
                                 if($element->zonas) { echo "<br>(". $element->zonas . ")";  }
                              ?>
                         </td>
-                        <td>De <?php echo number_format($element->precio_desde, 0, ",", "."); ?> a <?php echo number_format($element->precio_hasta, 0, ",", "."); ?></td>
-                        <td>De <?php echo $element->metros_desde; ?> a <?php echo $element->metros_hasta; ?></td>
-                        <td>De <?php echo $element->habitaciones_desde; ?> a <?php echo $element->habitaciones_hasta; ?></td>
-                        <td>De <?php echo $element->banios_desde; ?> a <?php echo $element->banios_hasta; ?></td>
+                        <td><?php echo format_interval(number_format($element->precio_desde, 0, ",", "."),number_format($element->precio_hasta, 0, ",", ".")); ?></td>
+                        <td><?php echo format_interval($element->metros_desde,$element->metros_hasta); ?></td>
+                        <td><?php echo format_interval($element->habitaciones_desde,$element->habitaciones_hasta); ?></td>
+                        <td><?php echo format_interval($element->banios_desde,$element->banios_hasta); ?></td>
                         <td><?php echo $this->utilities->cortar_texto($element->observaciones,50); ?></td>
                         <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
                         <td><?php //echo count($element->inmuebles); ?></td>

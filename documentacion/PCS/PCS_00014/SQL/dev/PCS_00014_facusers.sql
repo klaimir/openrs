@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `fichas_visita` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `demanda_id` int(11) unsigned NOT NULL,
   `agente_id` int(11) unsigned NOT NULL,
-  `documento_generado_id` int(11) unsigned NOT NULL,
+  `documento_generado_id` int(11) unsigned DEFAULT NULL,
   `fecha` date NOT NULL,
   `visitado` tinyint(1) NOT NULL default 0,
   `observaciones` text,
@@ -249,23 +249,32 @@ CREATE
     OR REPLACE
 VIEW `v_inmuebles_demandas` AS
     SELECT 
- 		v_inmuebles.*, inmuebles_demandas.demanda_id, inmuebles_demandas.origen_id, inmuebles_demandas.evaluacion_id, inmuebles_demandas.observaciones as observaciones_demanda, inmuebles_demandas.fecha_asignacion, 
-		DATE_FORMAT(inmuebles_demandas.fecha_asignacion, "%d/%m/%Y") as fecha_asignacion_formateada, fichas_visita_inmuebles_demandas.ficha_visita_id, fichas_visita.visitado, inmuebles_demandas.id as inmueble_demanda_id,
-        CASE origen_id
+ 		v_inmuebles.*, 
+		demandas.cliente_id, demandas.agente_asignado_id,
+		inmuebles_demandas.demanda_id, inmuebles_demandas.origen_id, inmuebles_demandas.evaluacion_id, inmuebles_demandas.observaciones as observaciones_demanda, inmuebles_demandas.fecha_asignacion, 
+		DATE_FORMAT(inmuebles_demandas.fecha_asignacion, "%d/%m/%Y") as fecha_asignacion_formateada, inmuebles_demandas.id as inmueble_demanda_id,
+        CASE inmuebles_demandas.origen_id
 		  WHEN 1 THEN 'OPENRS'
 		  WHEN 2 THEN 'Agente'
 		END as 'nombre_origen',
-		CASE evaluacion_id
+		CASE inmuebles_demandas.evaluacion_id
 		  WHEN 1 THEN 'Pendiente evaluar'
 		  WHEN 2 THEN 'Proponer para visita'
 		  WHEN 3 THEN 'Descartado por agente'
 		  WHEN 4 THEN 'Interesa cliente'
 		  WHEN 5 THEN 'No Interesa cliente'
-		END as 'nombre_evaluacion'		
+		END as 'nombre_evaluacion',
+		fichas_visita_inmuebles_demandas.ficha_visita_id, fichas_visita.visitado, 
+		DATE_FORMAT(fichas_visita.fecha, "%d/%m/%Y") as fecha_visita_formateada,
+		fichas_visita.fecha as fecha_visita,
+		DATE_FORMAT(fichas_visita_inmuebles_demandas.fecha_hora, "%H:%i") as hora_visita_formateada,
+        DATE_FORMAT(fichas_visita_inmuebles_demandas.fecha_hora, "%d/%m/%Y %H:%i") as fecha_hora_visita_formateada,
+		fichas_visita_inmuebles_demandas.fecha_hora as fecha_hora_visita
     FROM v_inmuebles
 	JOIN inmuebles_demandas on inmuebles_demandas.inmueble_id=v_inmuebles.id
+	JOIN demandas on inmuebles_demandas.demanda_id=demandas.id
 	LEFT JOIN fichas_visita_inmuebles_demandas on fichas_visita_inmuebles_demandas.inmueble_demanda_id=inmuebles_demandas.id
-	LEFT JOIN fichas_visita on fichas_visita_inmuebles_demandas.ficha_visita_id=fichas_visita.id
-	;
-
-
+	LEFT JOIN fichas_visita on fichas_visita_inmuebles_demandas.ficha_visita_id=fichas_visita.id;
+	
+ALTER TABLE `openrs`.`fichas_visita` ADD INDEX `ficha_visita_fecha` (`fecha`)COMMENT '';	
+	

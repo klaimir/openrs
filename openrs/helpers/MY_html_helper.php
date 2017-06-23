@@ -31,6 +31,60 @@ function label($line, $for, $attributes = array())
     return $line;
 }
 
+function format_interval($min, $max)
+{
+    if(!empty($min) && !empty($max))
+    {
+        if($min==$max)
+        {
+            return $min;
+        }
+        else
+        {
+            return "$min-$max";
+        }
+    }
+    else if(!empty($min))
+    {
+        return "Desde $min";
+    }
+    else if(!empty($max))
+    {
+        return "Hasta $max";
+    }
+    else
+    {
+        return "-";
+    }
+}
+
+function format_interval_csv($min, $max)
+{
+    if(!empty($min) && !empty($max))
+    {
+        if($min==$max)
+        {
+            return $min;
+        }
+        else
+        {
+            return "De $min hasta $max";
+        }
+    }
+    else if(!empty($min))
+    {
+        return "Desde $min";
+    }
+    else if(!empty($max))
+    {
+        return "Hasta $max";
+    }
+    else
+    {
+        return "No aplicado";
+    }
+}
+
 function menu_clientes($cliente_id,$active_section)
 {
     ?>
