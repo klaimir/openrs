@@ -54,7 +54,7 @@
                                 <a class="green" href="<?php echo site_url("clientes/edit/" . $demandante->id); ?>" title="Editar cliente">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
-                                <a class="red borrar-demanda" data-demanda="<?php echo $demandante->demanda_id; ?>" data-inmueble="<?php echo $demandante->id; ?>" href="#" title="Desasignar">
+                                <a class="red borrar-demanda" data-demanda="<?php echo $demandante->demanda_id; ?>" data-inmueble="<?php echo $element->id; ?>" href="#" title="Desasignar">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>
                             </div>
@@ -74,7 +74,7 @@
                                         </li>
 
                                         <li>
-                                            <a href="#" class="tooltip-error borrar-demanda" data-demanda="<?php echo $demandante->demanda_id; ?>" data-demanda="<?php echo $demandante->id; ?>" data-rel="tooltip" title="Desasignar">
+                                            <a href="#" class="tooltip-error borrar-demanda" data-demanda="<?php echo $demandante->demanda_id; ?>" data-demanda="<?php echo $element->id; ?>" data-rel="tooltip" title="Desasignar">
                                                 <span class="red">
                                                     <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                                 </span>
@@ -107,7 +107,7 @@
             var inmueble = $(this).data("inmueble");
             bootbox.confirm("¿Estás seguro/a de quitar la demanda de este inmueble?", function (result) {
                 if (result) {
-                    window.location = '<?php echo site_url('demandas/quitar_inmueble'); ?>/' + demanda + '/' + inmueble;
+                    window.location = '<?php echo site_url('inmuebles/quitar_demanda'); ?>/' + demanda + '/' + inmueble;
                 }
             });
         });

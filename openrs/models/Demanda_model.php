@@ -573,6 +573,19 @@ class Demanda_model extends MY_Model
         // Consulta
         $this->db->from($this->view);
         $results=$this->db->get()->result();
+        // Obtenemos datos auxiliares
+        return $this->get_datos_axuliares_view($results);
+    }
+    
+    /**
+     * Devuelve un array formateado con tipos de inmuebles y zonas de la demanda
+     * 
+     * @param [$results]        Array de datos de demandas filtradas 
+    *
+     * @return array de tipos_demandas en formato vista
+     */
+    function get_datos_axuliares_view($results)
+    {
         // Añadimos resultados adicionales
         if($results)
         {
@@ -588,6 +601,7 @@ class Demanda_model extends MY_Model
         }
         return $results;
     }
+    
     
     /**
      * Devuelve un array de tipos_demandas en formato dropdown
@@ -1256,6 +1270,44 @@ class Demanda_model extends MY_Model
         $this->db->join('inmuebles_demandas', 'inmuebles_demandas.demanda_id='.'demandas.id');        
         $this->db->where("inmueble_id",$inmueble_id);
         return $this->db->get()->result();
+    }
+    
+    /**
+     * Devuelve los demandas que no están contenidos en el listado
+     *
+     * @param [$array_exceptions]	Array de identificador de demandas que no pueden asociarse
+     * 
+     * @return Array con la información de los demandas
+     */
+    
+    function get_demandas_excepciones($array_exceptions)
+    {
+        // Consulta
+        $this->db->select($this->view.'.*');
+        $this->db->from($this->view);
+        if(is_array($array_exceptions) && count($array_exceptions)>0)
+        {
+            $this->db->where_not_in("id",$array_exceptions);
+        }
+        $results=$this->db->get()->result();
+        // Obtenemos datos auxiliares
+        return $this->get_datos_axuliares_view($results);
+    }
+    
+    /**
+     * Devuelve los demandas de un inmueble
+     *
+     * @param [$inmueble_id]		Identificador del inmueble
+     * 
+     * @return Array con la información de las demandas asociada
+     */
+    
+    function get_demandas_inmueble($inmueble_id)
+    {
+        // Modelos axiliares
+        $this->load->model('Inmueble_demanda_model');
+        // Consulta de demandas
+        return $this->Inmueble_demanda_model->get_demandas_inmueble($inmueble_id);
     }
     
 }

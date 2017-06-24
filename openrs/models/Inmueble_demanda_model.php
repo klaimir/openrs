@@ -14,6 +14,31 @@ class Inmueble_demanda_model extends MY_Model
         $this->primary_key = 'id';
     }
     
+    /**
+     * Comprueba que ningún demanda ya está asociado como propietario
+     *
+     * @param [$inmueble_id]                 Identificador del inmueble
+     * @param [$demandas_seleccionados]      Array de identificadores de demandas seleccionados
+     *
+     * @return TRUE OR FALSE
+     */
+    function check_exists_demandas_inmueble($inmueble_id,$demandas)
+    {        
+        $this->db->select('id');
+        $this->db->from($this->table);
+        $this->db->where("inmueble_id",$inmueble_id);
+        $this->db->where_in("demanda_id",$demandas);
+        $result=$this->db->get()->result();
+        // Si existen
+        if ($result)
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
     
     /**
      * Comprueba que ningún inmueble ya está asociado al demanda
@@ -98,6 +123,22 @@ class Inmueble_demanda_model extends MY_Model
         $datos['observaciones']=$observaciones;
         // Parent update
         return $this->update($datos, $id);
+    }
+    
+    /**
+     * Devuelve los demandas de un inmueble
+     *
+     * @param [$inmueble_id]		Identificador del inmueble
+     * 
+     * @return Array con la información de las demandas asociada
+     */
+    
+    function get_demandas_inmueble($inmueble_id)
+    {
+        $this->db->select('demanda_id');
+        $this->db->from('inmuebles_demandas');
+        $this->db->where("inmueble_id",$inmueble_id);
+        return $this->db->get()->result();
     }
     
 }

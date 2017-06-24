@@ -1048,6 +1048,92 @@ class Inmueble_model extends MY_Model
         // Devuelve los clientes que no estén contenidos en los incompatibles
         return $this->Cliente_model->get_clientes_excepciones($array_ids_incompatibles);
     }
+    
+    
+    /**
+     * Comprueba que ningún demanda ya está asociado como propietario
+     *
+     * @param [$inmueble_id]                Identificador del inmueble
+     * @param [$demandas_seleccionados]     Array de identificadores de demandas seleccionados
+     *
+     * @return TRUE OR FALSE
+     */
+    function check_asociar_demandas($inmueble_id,$demandas)
+    {
+        $this->load->model('Inmueble_demanda_model');
+        // Consulta
+        $exists=$this->Inmueble_demanda_model->check_exists_demandas_inmueble($inmueble_id,$demandas);
+         // Si existen
+        if ($exists)
+        {
+            $this->set_error('Algunos de las demandas seleccionadas están asignados al inmueble actual');
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+
+    /**
+     * Asigna los demandas seleccionados al inmueble especificado
+     *
+     * @param [$inmueble_id]                Identificador del inmueble
+     * @param [$demandas_seleccionados]     Array de identificadores de demandas seleccionados
+     *
+     * @return TRUE si todo fue bien o exception
+     */
+    function asociar_demandas($inmueble_id, $demandas_seleccionados)
+    {
+        // Modelos axiliares
+        $this->load->model('Inmueble_demanda_model');
+        // Asignación de demandas
+        $datos['inmueble_id'] = $inmueble_id;
+        $datos['fecha_asignacion']=date("Y-m-d");
+        foreach ($demandas_seleccionados as $demanda_id)
+        {
+            $datos['demanda_id'] = $demanda_id;
+            $this->Inmueble_demanda_model->insert($datos);
+        }
+        return TRUE;
+    }
+
+    /**
+     * Quita los demandas seleccionados al inmueble especificado
+     *
+     * @param [$inmueble_id]                Identificador del inmueble
+     * @param [$demandas_seleccionados]      Array de identificadores de demandas seleccionados
+     *
+     * @return Número de demandas borrados para el inmueble seleccionado
+     */
+    function quitar_demanda($demanda_id, $inmueble_id)
+    {
+        // Modelos axiliares
+        $this->load->model('Inmueble_demanda_model');
+        // Borrado de demanda
+        $datos['demanda_id'] = $demanda_id;
+        $datos['inmueble_id'] = $inmueble_id;
+        return $this->Inmueble_demanda_model->delete($datos);
+    }
+
+    /**
+     * Devuelve los demandas que se pueden asociar al inmueble especificado
+     *
+     * @param [$id]                         Identificador del inmueble
+     *
+     * @return array de identificadores de demandas que se pueden asociar al inmueble especificado
+     */
+    function get_demandas_asociar($id)
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_model');
+        // Consulta de demandas
+        $demandas = $this->Demanda_model->get_demandas_inmueble($id);
+        // Calculamos los ids de los demandas que no se pueden asignar a partir de las demandas
+        $array_ids_demandas = $this->utilities->get_keys_objects_array($demandas, 'demanda_id');
+        // Devuelve los demandas que no estén contenidos en los incompatibles
+        return $this->Demanda_model->get_demandas_excepciones($array_ids_demandas);
+    }
 
     /**
      * Realizar el proceso de importación de inmuebles por CSV

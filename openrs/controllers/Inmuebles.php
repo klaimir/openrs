@@ -457,6 +457,78 @@ class Inmuebles extends CRUD_controller
         }
         redirect($this->_controller. '/edit/' . $inmueble_id, 'refresh');
     }
+    
+    public function asociar_demandas($inmueble_id)
+    {
+        $this->data['element'] = $this->{$this->_model}->get_by_id($inmueble_id);        
+        
+        // Permisos acceso
+        $this->{$this->_model}->check_access($this->data['element']);
+
+        // Validation
+        if ($this->is_post())
+        {
+            // Rules
+            $this->form_validation->set_rules('demandas[]', 'Demandas seleccionadas', 'xss_clean|required');
+            // Check
+            if ($this->form_validation->run())
+            {
+                // Comprobar que algunos de los demandas están asociados con el inmueble
+                if($this->{$this->_model}->check_asociar_demandas($inmueble_id,$this->input->post('demandas')))
+                {
+                    // Asociar
+                    $result = $this->{$this->_model}->asociar_demandas($inmueble_id,$this->input->post('demandas'));
+                    // Check
+                    if ($result)
+                    {
+                        $this->session->set_flashdata('message', 'Las demandas han sido asignadas con éxito');
+                        $this->session->set_flashdata('message_color', 'success');
+                    }
+                    else
+                    {
+                        $this->session->set_flashdata('message', 'Error al asignar las demandas. Inténtelo más tarde');
+                    }
+                    redirect($this->_controller. '/edit/' . $inmueble_id, 'refresh');
+                }
+                else
+                {
+                    $this->data['message'] = $this->{$this->_model}->get_error();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        
+        // demandas disponibles
+        $this->data['demandas_disponibles']=$this->{$this->_model}->get_demandas_asociar($inmueble_id);
+
+        // Render
+        $this->render_private($this->_view . '/asociar_demandas', $this->data);
+    }
+    
+    public function quitar_demanda($demanda_id, $inmueble_id)
+    {
+        $this->data['element'] = $this->{$this->_model}->get_by_id($inmueble_id);        
+        
+        // Permisos acceso
+        $this->{$this->_model}->check_access($this->data['element']);
+
+        // Edit
+        $result = $this->{$this->_model}->quitar_demanda($demanda_id,$inmueble_id);
+        // Check
+        if ($result)
+        {
+            $this->session->set_flashdata('message', 'Se ha quitado la demanda del inmueble con éxito');
+            $this->session->set_flashdata('message_color', 'success');
+        }
+        else
+        {
+            $this->session->set_flashdata('message', 'No se ha podido quitar la demanda seleccionada del inmueble actual');
+        }
+        redirect($this->_controller. '/edit/' . $inmueble_id, 'refresh');
+    }
 
     public function import()
     {
