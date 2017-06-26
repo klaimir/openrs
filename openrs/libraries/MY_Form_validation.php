@@ -381,5 +381,36 @@ class MY_Form_validation extends CI_Form_validation
             $this->validation_data[$field] = $data;
         }
     }
+    
+    /**
+     *  Comprueba que existe el inmueble a asignar
+     *
+     * @access	public
+     * @param	$inmueble_id         identificador del inmueble
+     * @return	boolean
+     */
+    function check_exist_inmueble($inmueble_id)
+    {
+        if(empty($inmueble_id))
+        {
+            return TRUE;
+        }
+        else
+        {
+            // Modelos axiliares
+            $this->CI->load->model('Inmueble_model');
+            // Let's check the host first
+            $inmueble=$this->CI->Inmueble_model->get_by_id($inmueble_id);
+            if ($inmueble)
+            {
+                return TRUE;
+            }
+            else
+            {
+                $this->set_message('check_exist_inmueble', 'El inmueble especificado no existe en la base de datos. Es posible que haya sido borrado mientras intentaba realizar la acción actual');
+                return FALSE;
+            }
+        }
+    }
 
 }

@@ -305,7 +305,14 @@ class Demanda_model extends MY_Model
             $data['inmueble_id']=$inmueble_id_form;
             $this->load->model('Inmueble_model');
             $inmueble=$this->Inmueble_model->get_by_id($inmueble_id_form);
-            $data['referencia_inmueble'] = $inmueble->referencia;
+            if($inmueble)
+            {
+                $data['referencia_inmueble'] = $inmueble->referencia;
+            }
+            else
+            {
+                show_error("El inmueble seleccionado para asignarse a la nueva demanda no existe");
+            }
         }
 
         return $data;
@@ -840,8 +847,7 @@ class Demanda_model extends MY_Model
         {
             $inmuebles_seleccionados=array( 0 => $inmueble_id);
             return $this->asociar_inmuebles($demanda_id, $inmuebles_seleccionados);
-        }
-        
+        }        
     }
     
     /**

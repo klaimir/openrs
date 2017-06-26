@@ -117,7 +117,7 @@ class Cliente_model extends MY_Model
      *
      * @return array con los datos especificados para utilizarlos en los diferentes helpers
      */
-    public function set_datas_html($datos = NULL)
+    public function set_datas_html($datos = NULL,$inmueble_id)
     {
         // Selector de provincias
         $data['provincias'] = $this->Provincia_model->get_provincias_dropdown();
@@ -208,6 +208,22 @@ class Cliente_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('observaciones', is_object($datos) ? $datos->observaciones : ""),
         );
+        
+        // Especifica si se va a demandar un inmueble determinado
+        if($inmueble_id)
+        {
+            $data['inmueble_id']=$inmueble_id;
+            $this->load->model('Inmueble_model');
+            $inmueble=$this->Inmueble_model->get_by_id($inmueble_id);
+            if($inmueble)
+            {
+                $data['referencia_inmueble'] = $inmueble->referencia;
+            }
+            else
+            {
+                show_error("El inmueble seleccionado para asignarse al nuevo cliente no existe");
+            }
+        }
 
         return $data;
     }
@@ -288,7 +304,7 @@ class Cliente_model extends MY_Model
      *
      * @return void
      */
-    function create($formatted_datas)
+    function create($formatted_datas,$inmueble_id=0)
     {
         // Parent insert
         $id = $this->insert($formatted_datas);
@@ -309,6 +325,8 @@ class Cliente_model extends MY_Model
                     return FALSE;
                 }
             }
+            // Si está definido el inmueble
+            $this->asignar_inmueble($id,$inmueble_id);
             // Devolvemos id
             return $id;
         }
@@ -488,6 +506,27 @@ class Cliente_model extends MY_Model
             }
         }
         return $array_valores;
+    }
+    
+    /**
+     * Asigna el inmueble a la cliente
+     *
+     * @param [$cliente_id]              Indentificador de la cliente
+     * @param [$inmueble_id]             Indentificador del inmueble
+     *
+     * @return TRUE OR FALSE
+     */
+    public function asignar_inmueble($cliente_id,$inmueble_id)
+    {
+        if(empty($inmueble_id))
+        {
+            return TRUE;
+        }       
+        else
+        {
+            $inmuebles_seleccionados=array( 0 => $inmueble_id);
+            return $this->asociar_inmuebles($cliente_id, $inmuebles_seleccionados);
+        }        
     }
     
     /**
