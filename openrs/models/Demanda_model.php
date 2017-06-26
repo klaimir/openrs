@@ -128,7 +128,7 @@ class Demanda_model extends MY_Model
      *
      * @return array con los datos especificados para utilizarlos en los diferentes helpers
      */
-    public function set_datas_html($datos = NULL)
+    public function set_datas_html($datos = NULL, $cliente_id=NULL)
     {
         // Modelos auxiliares
         $this->load->model('Cliente_model');
@@ -280,7 +280,7 @@ class Demanda_model extends MY_Model
         $data['agente_asignado_id'] = $this->form_validation->set_value('agente_asignado_id', is_object($datos) ? $datos->agente_asignado_id : $this->data['session_user_id']);
         $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
         $data['provincia_id'] = $this->form_validation->set_value('provincia_id', is_object($datos) ? $datos->provincia_id : "");
-        $data['cliente_id'] = $this->form_validation->set_value('cliente_id', is_object($datos) ? $datos->cliente_id : "");
+        $data['cliente_id'] = $this->form_validation->set_value('cliente_id', is_object($datos) ? $datos->cliente_id : $cliente_id);
         $data['oferta_id'] = $this->form_validation->set_value('oferta_id', is_object($datos) ? $datos->oferta_id : "");
         $data['tipo_demanda_id'] = $this->form_validation->set_value('tipo_demanda_id', is_object($datos) ? $datos->tipo_demanda_id : "");
 

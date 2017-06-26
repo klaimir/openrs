@@ -278,7 +278,7 @@ class Demandas extends CRUD_controller
 
     public function _set_datas_html($datos = NULL)
     {
-        $this->data = array_merge_recursive($this->data, $this->{$this->_model}->set_datas_html($datos));
+        $this->data = array_merge_recursive($this->data, $this->{$this->_model}->set_datas_html($datos, $this->input->get('cliente_id')));
 
         $this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
     }
