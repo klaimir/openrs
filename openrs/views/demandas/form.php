@@ -1,3 +1,12 @@
+<?php
+if(isset($inmueble_id))
+{
+    echo form_hidden('inmueble_id',$inmueble_id);
+    ?>
+    <p>Se ha seleccionado el inmueble con referencia <strong><a href="<?php echo site_url('inmuebles/edit/'.$inmueble_id); ?>"><?php echo $referencia_inmueble; ?></a></strong> para ser asignado a la demanda actual</p>
+    <?php
+}
+?>
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">

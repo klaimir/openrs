@@ -103,6 +103,7 @@ class Demanda_model extends MY_Model
         $this->form_validation->set_rules('cliente_id', 'Cliente', 'required|xss_clean');
         $this->form_validation->set_rules('oferta_id', 'Oferta', 'required|xss_clean');
         $this->form_validation->set_rules('tipo_demanda_id', 'Tipo demanda', 'required|xss_clean');
+        $this->form_validation->set_rules('inmueble_id', 'Inmueble asignado', 'xss_clean');
     }
       
     /**
@@ -128,7 +129,7 @@ class Demanda_model extends MY_Model
      *
      * @return array con los datos especificados para utilizarlos en los diferentes helpers
      */
-    public function set_datas_html($datos = NULL, $cliente_id=NULL)
+    public function set_datas_html($datos = NULL, $cliente_id=NULL, $inmueble_id=NULL)
     {
         // Modelos auxiliares
         $this->load->model('Cliente_model');
@@ -296,6 +297,16 @@ class Demanda_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('observaciones', is_object($datos) ? $datos->observaciones : ""),
         );
+        
+        // Especifica si se va a demandar un inmueble determinado
+        $inmueble_id_form = $this->form_validation->set_value('inmueble_id',$inmueble_id);
+        if($inmueble_id_form)
+        {
+            $data['inmueble_id']=$inmueble_id_form;
+            $this->load->model('Inmueble_model');
+            $inmueble=$this->Inmueble_model->get_by_id($inmueble_id_form);
+            $data['referencia_inmueble'] = $inmueble->referencia;
+        }
 
         return $data;
     }  
@@ -351,6 +362,9 @@ class Demanda_model extends MY_Model
         {
             $datos_formateados['zonas_seleccionadas']=NULL;
         }
+        
+        // Inmueble asociado
+        $datos_formateados['inmueble_id']=$this->input->post('inmueble_id');
         
         return $datos_formateados;
     }
@@ -433,6 +447,8 @@ class Demanda_model extends MY_Model
             $this->asignar_tipos_inmuebles($id,$formatted_datas['tipos_inmuebles_seleccionados']);
             // Asignación de zonas seleccionados
             $this->asignar_zonas($id,$formatted_datas['zonas_seleccionadas']);
+            // Si está definido el inmueble
+            $this->asignar_inmueble($id,$formatted_datas['inmueble_id']);
             // Devolvemos id
             return $id;
         }
@@ -804,6 +820,28 @@ class Demanda_model extends MY_Model
             }
         }
         return TRUE;
+    }
+    
+    /**
+     * Asigna el inmueble a la demanda
+     *
+     * @param [$demanda_id]              Indentificador de la demanda
+     * @param [$inmueble_id]             Indentificador del inmueble
+     *
+     * @return TRUE OR FALSE
+     */
+    public function asignar_inmueble($demanda_id,$inmueble_id)
+    {
+        if(empty($inmueble_id))
+        {
+            return TRUE;
+        }       
+        else
+        {
+            $inmuebles_seleccionados=array( 0 => $inmueble_id);
+            return $this->asociar_inmuebles($demanda_id, $inmuebles_seleccionados);
+        }
+        
     }
     
     /**
