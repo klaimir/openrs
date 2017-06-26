@@ -172,7 +172,7 @@ class Cliente_model extends MY_Model
 
         $data['pais_id'] = $this->form_validation->set_value('pais_id', is_object($datos) ? $datos->pais_id : 64);
         $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
-        $data['agente_asignado_id'] = $this->form_validation->set_value('agente_asignado_id', is_object($datos) ? $datos->agente_asignado_id : "-1");
+        $data['agente_asignado_id'] = $this->form_validation->set_value('agente_asignado_id', is_object($datos) ? $datos->agente_asignado_id : $this->data['session_user_id']);
         $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
 
         if (!empty($data['poblacion_id']))

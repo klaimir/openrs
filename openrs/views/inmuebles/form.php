@@ -1,3 +1,11 @@
+<?php
+if(isset($cliente_id))
+{
+    ?>
+    <p>Se ha seleccionado el cliente <strong><a href="<?php echo site_url('clientes/edit/'.$cliente_id); ?>"><?php echo $nif_cliente; ?> - <?php echo $nombre_completo_cliente; ?></a></strong> para ser asignado al inmueble actual</p>
+    <?php
+}
+?>
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">

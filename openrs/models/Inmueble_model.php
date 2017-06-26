@@ -293,7 +293,7 @@ class Inmueble_model extends MY_Model
      *
      * @return array con los datos especificados para utilizarlos en los diferentes helpers
      */
-    public function set_datas_html($datos = NULL)
+    public function set_datas_html($datos = NULL, $cliente_id=0)
     {
         // Selector de provincias
         $data['provincias'] = $this->Provincia_model->get_provincias_dropdown();
@@ -382,7 +382,7 @@ class Inmueble_model extends MY_Model
         $data['tipo_id'] = $this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
         $data['certificacion_energetica_id'] = $this->form_validation->set_value('certificacion_energetica_id', is_object($datos) ? $datos->certificacion_energetica_id : "");
         $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
-        $data['captador_id'] = $this->form_validation->set_value('captador_id', is_object($datos) ? $datos->captador_id : "-1");
+        $data['captador_id'] = $this->form_validation->set_value('captador_id', is_object($datos) ? $datos->captador_id : $this->data['session_user_id']);
         $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
 
         if (!empty($data['poblacion_id']))
@@ -496,6 +496,23 @@ class Inmueble_model extends MY_Model
                     'type' => 'text',
                     'value' => $this->form_validation->set_value('keywords_seo_' . $idioma->id_idioma, is_object($datos_idioma) ? $datos_idioma->keywords_seo : ""),
                 );
+            }
+        }
+        
+        // Especifica si se va a demandar un cliente determinado
+        if($cliente_id)
+        {
+            $data['cliente_id']=$cliente_id;
+            $this->load->model('Cliente_model');
+            $cliente=$this->Cliente_model->get_by_id($cliente_id);
+            if($cliente)
+            {
+                $data['nif_cliente'] = $cliente->nif;
+                $data['nombre_completo_cliente'] = $cliente->apellidos.", ".$cliente->nombre;
+            }
+            else
+            {
+                show_error("El cliente seleccionado para asignarse como propietario del nuevo inmueble no existe");
             }
         }
 
@@ -643,7 +660,7 @@ class Inmueble_model extends MY_Model
      *
      * @return void
      */
-    function create($formatted_datas)
+    function create($formatted_datas, $cliente_id)
     {
         // Parent insert
         $id = $this->insert($formatted_datas);
@@ -686,6 +703,8 @@ class Inmueble_model extends MY_Model
                     return FALSE;
                 }
             }
+            // Si está definido el cliente
+            $this->asignar_cliente($id,$cliente_id);
             // Devolvemos id
             return $id;
         }
@@ -983,6 +1002,27 @@ class Inmueble_model extends MY_Model
         {
             return TRUE;
         }
+    }
+    
+    /**
+     * Asigna el cliente al inmueble
+     *
+     * @param [$cliente_id]              Indentificador de la cliente
+     * @param [$inmueble_id]             Indentificador del inmueble
+     *
+     * @return TRUE OR FALSE
+     */
+    public function asignar_cliente($inmueble_id,$cliente_id)
+    {
+        if(empty($cliente_id))
+        {
+            return TRUE;
+        }       
+        else
+        {
+            $clientes_seleccionados=array( 0 => $cliente_id);
+            return $this->asociar_clientes($inmueble_id, $clientes_seleccionados);
+        }        
     }
 
     /**

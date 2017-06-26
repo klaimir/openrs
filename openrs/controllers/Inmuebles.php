@@ -201,7 +201,7 @@ class Inmuebles extends CRUD_controller
     }
 
     // insert
-    public function insert()
+    public function insert($cliente_id=0)
     {
         // Validation
         if ($this->is_post())
@@ -214,7 +214,7 @@ class Inmuebles extends CRUD_controller
                 // Formatted datas
                 $formatted_datas=$this->{$this->_model}->get_formatted_datas();                
                 // Insert
-                $last_id=$this->{$this->_model}->create($formatted_datas);
+                $last_id=$this->{$this->_model}->create($formatted_datas,$cliente_id);
                 // Check
                 if ($last_id) {
                     $this->session->set_flashdata('message', lang('common_success_insert'));
@@ -230,7 +230,7 @@ class Inmuebles extends CRUD_controller
             }
         }
         // Set datas
-        $this->_set_datas_html();
+        $this->_set_datas_html(NULL,$cliente_id);
 
         // Render
         $this->render_private($this->_view . '/insert', $this->data);
@@ -278,9 +278,9 @@ class Inmuebles extends CRUD_controller
         $this->render_private($this->_view . '/edit', $this->data);
     }
 
-    public function _set_datas_html($datos = NULL)
+    public function _set_datas_html($datos = NULL, $cliente_id=0)
     {
-        $this->data = array_merge_recursive($this->data, $this->{$this->_model}->set_datas_html($datos));
+        $this->data = array_merge_recursive($this->data, $this->{$this->_model}->set_datas_html($datos, $cliente_id));
 
         $this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
     }
