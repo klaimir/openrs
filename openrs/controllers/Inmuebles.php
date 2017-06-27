@@ -73,9 +73,12 @@ class Inmuebles extends CRUD_controller
 
         // Selector de agentes
         $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
-
+        
         // selector de ofertas
         $this->data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1);
+
+        // selector de modificacion_precios
+        $this->data['modificacion_precios'] = $this->Inmueble_model->get_modificacion_precios_dropdown(-1);
         
         // selector de publicado
         $this->data['publicado'] = $this->Inmueble_model->get_publicado_dropdown(-1);
@@ -112,6 +115,9 @@ class Inmuebles extends CRUD_controller
         
         // Filtro oferta_id
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'oferta_id');
+        
+        // Filtro modificacion_precio_id
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'modificacion_precio_id');
         
         // Filtro publicado_id
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'publicado_id');
@@ -165,6 +171,7 @@ class Inmuebles extends CRUD_controller
         $filtros['zona_id'] = $this->session->userdata('inmuebles_buscador_zona_id');
         $filtros['captador_id'] = $this->session->userdata('inmuebles_buscador_captador_id');
         $filtros['oferta_id'] = $this->session->userdata('inmuebles_buscador_oferta_id');
+        $filtros['modificacion_precio_id'] = $this->session->userdata('inmuebles_buscador_modificacion_precio_id');
         $filtros['publicado_id'] = $this->session->userdata('inmuebles_buscador_publicado_id');
         $filtros['destacado_id'] = $this->session->userdata('inmuebles_buscador_destacado_id');
         $filtros['oportunidad_id'] = $this->session->userdata('inmuebles_buscador_oportunidad_id');
@@ -587,7 +594,8 @@ class Inmuebles extends CRUD_controller
             
             // Cabecera
             $cabecera = array('Referencia','Tipo','Fecha Alta','Provincia','Municipio','Zona','Dirección','Metros','Metros útiles','Hab.','Baños'
-                ,'Precio Compra','Precio Alquiler','Cert. Energ.','Año Construcción','Estado','Observaciones','Agente Asignado');
+                ,'Precio Compra','Precio Compra Anterior','Precio Alquiler','Precio Alquiler Anterior','Cert. Energ.','Año Construcción','Estado'
+                ,'Observaciones','Agente Asignado');
             $array[] = $this->utilities->encoding_array($cabecera);
              
             // Resto de datos
@@ -606,8 +614,10 @@ class Inmuebles extends CRUD_controller
                 $datos_formateado[] = $element->metros_utiles;
                 $datos_formateado[] = $element->habitaciones;
                 $datos_formateado[] = $element->banios;
-                $datos_formateado[] = $element->precio_compra;   
+                $datos_formateado[] = $element->precio_compra; 
+                $datos_formateado[] = $element->precio_compra_anterior;
                 $datos_formateado[] = $element->precio_alquiler;
+                $datos_formateado[] = $element->precio_alquiler_anterior;
                 $datos_formateado[] = $element->nombre_certificacion_energetica;
                 $datos_formateado[] = $element->anio_construccion;
                 $datos_formateado[] = $element->nombre_estado;

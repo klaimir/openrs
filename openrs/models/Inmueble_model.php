@@ -107,6 +107,8 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('observaciones', 'Observaciones', 'trim');
         $this->form_validation->set_rules('precio_compra', 'Precio Compra', 'xss_clean|is_natural');
         $this->form_validation->set_rules('precio_alquiler', 'Precio Alquiler', 'xss_clean|is_natural');
+        $this->form_validation->set_rules('precio_compra_anterior', 'Precio Compra', 'xss_clean|is_natural');
+        $this->form_validation->set_rules('precio_alquiler_anterior', 'Precio Alquiler', 'xss_clean|is_natural');
         $this->form_validation->set_rules('poblacion_id', 'Población', 'required');
         $this->form_validation->set_rules('zona_id', 'Zona', 'xss_clean');
         $this->form_validation->set_rules('provincia_id', 'Provincia', 'required');
@@ -410,12 +412,26 @@ class Inmueble_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('precio_compra', is_object($datos) ? $datos->precio_compra : ""),
         );
+        
+        $data['precio_compra_anterior'] = array(
+            'name' => 'precio_compra_anterior',
+            'id' => 'precio_compra_anterior',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('precio_compra_anterior', is_object($datos) ? $datos->precio_compra_anterior : ""),
+        );
 
         $data['precio_alquiler'] = array(
             'name' => 'precio_alquiler',
             'id' => 'precio_alquiler',
             'type' => 'text',
             'value' => $this->form_validation->set_value('precio_alquiler', is_object($datos) ? $datos->precio_alquiler : ""),
+        );
+
+        $data['precio_alquiler_anterior'] = array(
+            'name' => 'precio_alquiler_anterior',
+            'id' => 'precio_alquiler_anterior',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('precio_alquiler_anterior', is_object($datos) ? $datos->precio_alquiler_anterior : ""),
         );
 
         $data['observaciones'] = array(
@@ -538,6 +554,8 @@ class Inmueble_model extends MY_Model
         $datas['observaciones'] = $this->input->post('observaciones');
         $datas['precio_compra'] = $this->input->post('precio_compra');
         $datas['precio_alquiler'] = $this->input->post('precio_alquiler');
+        $datas['precio_compra_anterior'] = $this->input->post('precio_compra_anterior');
+        $datas['precio_alquiler_anterior'] = $this->input->post('precio_alquiler_anterior');
         $datas['tipo_id'] = $this->input->post('tipo_id');
         $datas['certificacion_energetica_id'] = $this->input->post('certificacion_energetica_id');
         $datas['estado_id'] = $this->input->post('estado_id');
@@ -802,6 +820,24 @@ class Inmueble_model extends MY_Model
             default:
                 break;
         }
+        // Modificaciones precio        
+        switch ($filtros['modificacion_precio_id'])
+        {
+            case 1:
+                $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior > precio_compra');
+                break;
+            case 2:
+                $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior < precio_compra');
+                break;
+            case 3:
+                $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior > precio_alquiler');
+                break;
+            case 4:
+                $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior < precio_alquiler');
+                break;
+            default:
+                break;
+        }        
         // Datos de publicado
         if (isset($filtros['publicado_id']) && $filtros['publicado_id'] >= 0)
         {
@@ -907,6 +943,22 @@ class Inmueble_model extends MY_Model
         $ofertas[2] = lang('inmuebles_ofertas_alquilar');
         $ofertas[3] = lang('inmuebles_ofertas_ambos');
         return $ofertas;
+    }
+    
+    /**
+     * Devuelve un array de modificacion_precios en formato dropdown
+     *
+     * @return array de modificacion_precios en formato dropdown
+     */
+    function get_modificacion_precios_dropdown($default = "")
+    {
+        $modificacion_precios = array();
+        $modificacion_precios[$default] = '- Seleccione modificación precio -';
+        $modificacion_precios[1] = "Precio de venta rebajado";
+        $modificacion_precios[2] = "Precio de venta aumentado";
+        $modificacion_precios[3] = "Precio de alquiler rebajado";
+        $modificacion_precios[4] = "Precio de alquiler aumentado";
+        return $modificacion_precios;
     }
     
     /**
@@ -1249,7 +1301,9 @@ class Inmueble_model extends MY_Model
                     $linedata['habitaciones'] = @$data_csv[$cont_columnas++];
                     $linedata['banios'] = @$data_csv[$cont_columnas++];
                     $linedata['precio_compra'] = @$data_csv[$cont_columnas++];
+                    $linedata['precio_compra_anterior'] = @$data_csv[$cont_columnas++];
                     $linedata['precio_alquiler'] = @$data_csv[$cont_columnas++];
+                    $linedata['precio_alquiler_anterior'] = @$data_csv[$cont_columnas++];
                     $linedata['nombre_certificacion_energetica'] = @$data_csv[$cont_columnas++];
                     $linedata['anio_construccion'] = @$data_csv[$cont_columnas++];
                     $linedata['nombre_estado'] = @$data_csv[$cont_columnas++];
@@ -1417,7 +1471,9 @@ class Inmueble_model extends MY_Model
         $datos['direccion'] = $data['direccion'];
         $datos['observaciones'] = $data['observaciones'];
         $datos['precio_compra'] = $data['precio_compra'];
+        $datos['precio_compra_anterior'] = $data['precio_compra_anterior'];
         $datos['precio_alquiler'] = $data['precio_alquiler'];
+        $datos['precio_alquiler_anterior'] = $data['precio_alquiler_anterior'];
         $datos['tipo_id'] = $data['tipo_id'];
         $datos['certificacion_energetica_id'] = $data['certificacion_energetica_id'];
         $datos['estado_id'] = $data['estado_id'];

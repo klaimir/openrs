@@ -120,15 +120,27 @@ if(isset($cliente_id))
                 </div>
             </div>
             <div class="form-group">
-                <?php echo label('Precio Compra', 'precio_compra', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('Precio compra', 'precio_compra', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_compra, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <?php echo label('Precio compra anterior', 'precio_compra', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($precio_compra_anterior, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">
                 <?php echo label('Precio Alquiler', 'precio_alquiler', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_alquiler, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <?php echo label('Precio alquiler anterior', 'precio_alquiler', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_input($precio_alquiler_anterior, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            

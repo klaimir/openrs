@@ -38,13 +38,15 @@
                     <th>Zona</th>
                     <th>Dirección</th>
                     <th>Metros</th>
-                    <th>Metros útiles</th>
+                    <th>Metros<br>útiles</th>
                     <th>Hab.</th>
                     <th>Baños</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
+                    <th>Precio<br>Compra</th>
+                    <th>Precio<br>Compra Ant.</th>
+                    <th>Precio<br>Alquiler</th>
+                    <th>Precio<br>Alquiler Ant.</th>
                     <th>Cert. Energ.</th>
-                    <th>Año Construcción</th>
+                    <th>Año<br>Const.</th>
                     <th>Estado</th>
                     <th>Observaciones</th>
                     <th>Otros errores encontrados</th>
@@ -70,7 +72,9 @@
                         <td><?php echo $element['habitaciones']; ?></td>
                         <td><?php echo $element['banios']; ?></td>
                         <td><?php echo $element['precio_compra']; ?></td>
-                        <td><?php echo $element['precio_alquiler']; ?></td>
+                        <td><?php echo $element['precio_compra_anterior']; ?></td>
+                        <td><?php echo $element['precio_alquiler']; ?></td>                            
+                        <td><?php echo $element['precio_alquiler_anterior']; ?></td>
                         <td><?php echo $element['nombre_certificacion_energetica']; ?></td>
                         <td><?php echo $element['anio_construccion']; ?></td>
                         <td><?php echo $element['nombre_estado']; ?></td>
@@ -97,6 +101,8 @@
                 null,                
                 null,
                 {"sType": "date-euro"},
+                null,
+                null,
                 null,
                 null,
                 null,

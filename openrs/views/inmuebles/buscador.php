@@ -123,6 +123,12 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">            
+                <?php echo label('Modificación precio', 'modificacion_precio_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('modificacion_precio_id',$modificacion_precios,$filtros['modificacion_precio_id'], 'class="form-control" id="modificacion_precio_id"'); ?>
+                </div>
+            </div>
         </div>
         <div class="col-xs-12 col-md-6 col-lg-6">
             <div class="form-group">            

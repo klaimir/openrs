@@ -152,6 +152,7 @@
         $('#zona_id').val('');
         $('#captador_id').val('-1');
         $('#oferta_id').val('-1');
+        $('#modificacion_precio_id').val('-1');   
         $('#publicado_id').val('-1');
         $('#destacado_id').val('-1');
         $('#oportunidad_id').val('-1');
