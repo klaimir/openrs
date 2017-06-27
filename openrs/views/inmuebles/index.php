@@ -65,6 +65,7 @@
                     <th>Metros</th>
                     <th>Hab.</th>
                     <th>Baños</th>
+                    <th>Img.</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -86,6 +87,7 @@
                         <td><?php echo $element->metros; ?></td>
                         <td><?php echo $element->habitaciones; ?></td>
                         <td><?php echo $element->banios; ?></td>
+                        <td><a href="<?php echo site_url('inmuebles_imagenes/index/'.$element->id); ?>"><?php echo $element->num_imagenes; ?></a></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url($_controller."/edit/" . $element->id); ?>" title="Editar">

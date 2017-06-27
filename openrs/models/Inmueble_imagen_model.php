@@ -159,6 +159,20 @@ class Inmueble_imagen_model extends MY_Model
     }    
     
     /**
+     * Obtiene el número de imágenes de un inmueble
+     * 
+     * @param [$inmueble_id]                Devuelve el número de imágenes de un inmueble
+     *
+     * @return int con el número de imágenes del inmueble
+     */
+    function get_num_imagenes_inmueble($inmueble_id)
+    {
+        $this->db->from($this->table);
+        $this->db->where('inmueble_id', $inmueble_id);
+        return $this->db->get()->num_rows();
+    } 
+    
+    /**
      * Elimina el imagen del sistema de imagenes y de la bd
      *
      * @param [imagen]        Datos del imagen en la base de datos

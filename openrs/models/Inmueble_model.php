@@ -213,7 +213,7 @@ class Inmueble_model extends MY_Model
      *
      * @return array con los datos de un inmueble en un mapa de google maps
      */
-    private function get_datos_google_maps($id)
+    private function _get_datos_google_maps($id)
     {
         // Rescatamos los parámetros del idioma
         $id_idioma = $this->infowindow_language;
@@ -916,7 +916,29 @@ class Inmueble_model extends MY_Model
         }
         // Consulta
         $this->db->from($this->view);
-        return $this->db->get()->result();
+        $results=$this->db->get()->result();
+        if($results)
+        {
+            // Obtenemos el número de imágenes de cada inmueble
+            foreach ($results as $result)
+            {
+                $result->num_imagenes=$this->get_num_imagenes($result->id);
+            }
+        }
+        return $results;
+    }
+    
+    /**
+     * Obtiene el número de imágenes de un inmueble
+     * 
+     * @param [$inmueble_id]                Devuelve el número de imágenes de un inmueble
+     *
+     * @return int con el número de imágenes del inmueble
+     */
+    function get_num_imagenes($inmueble_id)
+    {
+        $this->load->model('Inmueble_imagen_model');
+        return $this->Inmueble_imagen_model->get_num_imagenes_inmueble($inmueble_id);
     }
 
     /**
@@ -1547,7 +1569,7 @@ class Inmueble_model extends MY_Model
     public function get_infowindow_content_private($inmueble)
     {
         // Calculamos datos
-        $datos=$this->get_datos_google_maps($inmueble->id);
+        $datos=$this->_get_datos_google_maps($inmueble->id);
         // Incluimos los datos en un infowindow
         if($datos['image_path'])
         {
@@ -1568,7 +1590,7 @@ class Inmueble_model extends MY_Model
     public function get_infowindow_content_public($inmueble)
     {
         // Calculamos datos
-        $datos=$this->get_datos_google_maps($inmueble->id);
+        $datos=$this->_get_datos_google_maps($inmueble->id);
         // Incluimos los datos en un infowindow
         if($datos['image_path'])
         {
@@ -1663,7 +1685,7 @@ class Inmueble_model extends MY_Model
             // Formateamos la posición
             $marker['position']=$this->format_google_map_path($inmueble);
             // Calculamos datos
-            $datos=$this->get_datos_google_maps($inmueble->id);
+            $datos=$this->_get_datos_google_maps($inmueble->id);
             // Incluimos los datos en un infowindow
             if($datos['image_path'])
             {
