@@ -8,7 +8,10 @@ class Inmueble_model extends MY_Model
 {
 
     public $idiomas_activos = array();
-    public $markers = array();      // Array de coordenadas con los markers aplicados
+    public $markers = array();                  // Array de coordenadas con los markers aplicados
+    public $infowindow_type = 'private';        // Indica cómo se mostrará la información si atendiendo a la descripción privada o pública el inmueble
+    public $infowindow_language = NULL;         // Almacena en qué idioma se despliega la información. Si está NULL utilizará el idioma de la sesión
+    public $infowindow_nombre_seo = NULL;       // Nombre seo del language establecido
 
     public function __construct()
     {
@@ -63,6 +66,9 @@ class Inmueble_model extends MY_Model
         $this->load->model('Opcion_extra_model');
         $this->load->model('Lugar_interes_model');
         $this->load->model('Inmueble_idiomas_model');
+        
+        // Fichero de lenguaje
+        $this->lang->load('inmuebles');
     }
 
     /*     * *********************** SECURITY ************************ */
@@ -204,25 +210,24 @@ class Inmueble_model extends MY_Model
      * Calcula los datos necesarios para imprimir un inmueble en un mapa de google maps en un determinado idioma
      *
      * @param [id]                  Indentificador del elemento
-     * @param [$id_idioma]          Identificador del idioma
      *
      * @return array con los datos de un inmueble en un mapa de google maps
      */
-    public function get_datos_google_maps($id, $id_idioma = NULL)
+    private function get_datos_google_maps($id)
     {
-        // Si el idioma es NULL, consultamos el de la sesion
-        if (is_null($id_idioma))
-        {
-            $id_idioma = $this->data['session_id_idioma'];
-        }
+        // Rescatamos los parámetros del idioma
+        $id_idioma = $this->infowindow_language;
+        $idioma_nombre_seo = $this->infowindow_nombre_seo;
         // Array datos
         $datos['image_path']=NULL;
-        $datos['description']='Sin descripción';
+        $datos['description']=lang('inmuebles_infowindow_description_no_exist');
+        $datos['url_seo']=NULL;
         // Calculamos descripción
         $info=$this->Inmueble_idiomas_model->get_info_idiomas_by_inmueble($id);
         if(isset($info[$id_idioma]))
         {
             $datos['description']=$info[$id_idioma]->descripcion_seo;
+            $datos['url_seo']=$idioma_nombre_seo.'/'.$info[$id_idioma]->url_seo;
         }
         // Calculamos foto
         $this->load->model('Inmueble_imagen_model');
@@ -1560,6 +1565,26 @@ class Inmueble_model extends MY_Model
         return $infowindow_content;
     }
     
+    public function get_infowindow_content_public($inmueble)
+    {
+        // Calculamos datos
+        $datos=$this->get_datos_google_maps($inmueble->id);
+        // Incluimos los datos en un infowindow
+        if($datos['image_path'])
+        {
+            $html_image='<img width="225" height="150" class="nav-user-photo" src="'.  $datos['image_path'] .'" alt="'.lang('inmuebles_infowindow_portada_title').'">';
+        }
+        else
+        {
+            $html_image=lang('inmuebles_infowindow_portada_no_exist');
+        }
+        $infowindow_content= $html_image                  
+            . '<br>'. $datos['description']
+            . '<br><a href="'.  site_url($datos['url_seo']) .'">'.lang('inmuebles_infowindow_view_details').'</a>';
+        // Devolvemos el infowindow
+        return $infowindow_content;
+    }
+    
     private function add_infowindow_content($infowindow_content,$array_position)
     {
         $this->markers[$array_position]['infowindow_content'].='<hr>'.$infowindow_content;
@@ -1571,10 +1596,17 @@ class Inmueble_model extends MY_Model
         {            
             $marker=array();
             // Formateamos la posición
-            $address=$this->format_google_map_path($inmueble);
+            $address=$this->format_google_map_path($inmueble,$this->infowindow_type);
             $position=$this->googlemaps->get_lat_long_from_address($address);
             // Calculamos la ventana de información
-            $infowindow_content=$this->get_infowindow_content_private($inmueble);
+            if($this->infowindow_type=="private")
+            {
+                $infowindow_content=$this->get_infowindow_content_private($inmueble);
+            }
+            else
+            {
+                $infowindow_content=$this->get_infowindow_content_public($inmueble);
+            }
             // Si existe marker, entonces hay que anidar el infowindow content con el marker detectado
             $array_key=$this->exists_marker($position);            
             // Si existe el marker se anida al existente
@@ -1596,8 +1628,21 @@ class Inmueble_model extends MY_Model
         return $this->markers;
     }
     
-    public function create_google_map($inmuebles,$filtros)
+    public function create_google_map($inmuebles,$filtros,$infowindow_type="private",$infowindow_language=NULL)
     {
+        // Establecemos el tipo información del inmueble a mostrar y sus idiomas
+        $this->infowindow_type=$infowindow_type;        
+        // Si el idioma es NULL, consultamos el de la sesion
+        if (is_null($infowindow_language))
+        {
+            $this->infowindow_language = $this->data['session_id_idioma'];
+            $this->infowindow_nombre_seo = $this->data['session_idioma_nombre_seo'];
+        }
+        else
+        {
+            $this->infowindow_language = $infowindow_language;
+            $this->infowindow_nombre_seo = $this->Idioma_model->get_idioma($this->infowindow_language)->nombre_seo;
+        }
         // Load the library
         $this->load->library('googlemaps');
         // Config
@@ -1654,9 +1699,18 @@ class Inmueble_model extends MY_Model
         return $this->googlemaps->create_map();
     }
 
-    public function format_google_map_path($inmueble)
+    public function format_google_map_path($inmueble,$infowindow_type='private')
     {
-        $direccion_formateada = "$inmueble->direccion, $inmueble->nombre_poblacion, $inmueble->nombre_provincia, Spain";
+        // Obtenemos la dirección de otro lugar
+        if($infowindow_type=='private')
+        {
+            $direccion=$inmueble->direccion;
+        }
+        else
+        {
+            $direccion=$inmueble->direccion_publica;
+        }
+        $direccion_formateada = "$direccion, $inmueble->nombre_poblacion, $inmueble->nombre_provincia, Spain";
         // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
         return $this->utilities->cleantext($direccion_formateada);
     }

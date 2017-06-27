@@ -23,13 +23,11 @@ class Inmuebles extends CRUD_controller
         
         // Idiomas activos
         // Inicializamos para que el modelo sepa sobre qué idiomas debe de realizar sus validaciones
-        $this->{$this->_model}->idiomas_activos=$this->Idioma_model->get_idiomas_subidos_activos();
-        
-        // Fichero de lenguaje
-        $this->lang->load('inmuebles');
+        $this->{$this->_model}->idiomas_activos=$this->Idioma_model->get_idiomas_subidos_activos();        
     }
     
-    function multiple_google_map()
+    // Ajax method
+    function multiple_google_map($infowindow_type='private')
     {
         // Deshabilitar profiler
         $this->output->enable_profiler(FALSE);
@@ -47,7 +45,7 @@ class Inmuebles extends CRUD_controller
         if($inmuebles)
         {
             // Create the map.
-            $this->data['map'] = $this->{$this->_model}->create_google_map($inmuebles,$filtros);
+            $this->data['map'] = $this->{$this->_model}->create_google_map($inmuebles,$filtros,$infowindow_type);
             // Load our view, passing the map data that has just been created
             $this->load->view('common/google_maps', $this->data);
         }

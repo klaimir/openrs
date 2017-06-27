@@ -15,9 +15,13 @@
 <div class="row">
     <div class="col-xs-12">
         <?php if($elements) { ?>
-            <a class="btn btn-info pull-right" onclick="check_multiple_google_maps();">
+            <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('private');">
                 <i class="menu-icon fa fa-map-marker"></i>
-                <span class="menu-text"> Ver en mapa </span>
+                <span class="menu-text"> Ver mapa real</span>
+            </a>
+        <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('public');">
+                <i class="menu-icon fa fa-map-marker"></i>
+                <span class="menu-text"> Ver mapa público</span>
             </a>
         <?php } ?>
         <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/insert'); ?>">
@@ -207,9 +211,9 @@
     }                
     ?>
         
-    function check_multiple_google_maps() {
+    function check_multiple_google_maps(infowindow_type) {
         $('#google_maps_div').toggle('slow');
-        $('#google_maps').load('<?php echo site_url('inmuebles/multiple_google_map');?>');
+        $('#google_maps').load('<?php echo site_url('inmuebles/multiple_google_map/');?>'+infowindow_type);
     }
     
     jQuery(function ($) {
