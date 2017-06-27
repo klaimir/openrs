@@ -8,6 +8,7 @@ class Inmueble_model extends MY_Model
 {
 
     public $idiomas_activos = array();
+    public $markers = array();      // Array de coordenadas con los markers aplicados
 
     public function __construct()
     {
@@ -660,7 +661,7 @@ class Inmueble_model extends MY_Model
      *
      * @return void
      */
-    function create($formatted_datas, $cliente_id)
+    function create($formatted_datas, $cliente_id=0)
     {
         // Parent insert
         $id = $this->insert($formatted_datas);
@@ -1466,12 +1467,87 @@ class Inmueble_model extends MY_Model
         return $importdata;
     }
     
+    function exists_marker($position)
+    {
+        // Recorremos el array de marker buscando las coordenadas
+        foreach ($this->markers as $key => $marker)
+        {
+            $array_position=$marker['position'];
+            $string_position=$position[0].",".$position[1];
+            if($string_position==$array_position)
+            {
+                return $key;
+            }
+        }
+        
+        return FALSE;
+    }
+    
+    public function get_infowindow_content_private($inmueble)
+    {
+        // Calculamos datos
+        $datos=$this->get_datos_google_maps($inmueble->id);
+        // Incluimos los datos en un infowindow
+        if($datos['image_path'])
+        {
+            $html_image='<img width="225" height="150" class="nav-user-photo" src="'.  $datos['image_path'] .'" alt="Imagen principal del inmueble">';
+        }
+        else
+        {
+            $html_image='Portada sin especificar';
+        }
+        $infowindow_content= $html_image                  
+            . '<br>'. $datos['description']
+            . '<br>'. $inmueble->direccion
+            . '<br><a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
+        // Devolvemos el infowindow
+        return $infowindow_content;
+    }
+    
+    private function add_infowindow_content($infowindow_content,$array_position)
+    {
+        $this->markers[$array_position]['infowindow_content'].='<hr>'.$infowindow_content;
+    }
+    
+    public function calculate_unique_markers($inmuebles)
+    {
+        foreach ($inmuebles as $inmueble)
+        {            
+            $marker=array();
+            // Formateamos la posición
+            $address=$this->format_google_map_path($inmueble);
+            $position=$this->googlemaps->get_lat_long_from_address($address);
+            // Calculamos la ventana de información
+            $infowindow_content=$this->get_infowindow_content_private($inmueble);
+            // Si existe marker, entonces hay que anidar el infowindow content con el marker detectado
+            $array_key=$this->exists_marker($position);            
+            // Si existe el marker se anida al existente
+            if($array_key)
+            {
+                $this->add_infowindow_content($infowindow_content,$array_key);
+            }
+            // En caso contrario, creamos uno nuevo
+            else
+            {
+                $marker['position']=$position[0].','.$position[1];
+                $marker['infowindow_content']=$infowindow_content;
+                array_push($this->markers, $marker);
+            }            
+        }
+        // For testing
+        //var_dump($this->markers); die();
+        // Devolvemos los markers calculados
+        return $this->markers;
+    }
+    
     public function create_google_map($inmuebles,$filtros)
     {
         // Load the library
         $this->load->library('googlemaps');
         // Config
         $config['loadAsynchronously'] = TRUE;
+        // Activamos geocoding para mejorar rendimiento
+        $config['geocodeCaching'] = TRUE;
         // Si hay filtros de provincia o población establecidos, los usamos, en caso contrario será nuestra posición actual (auto)
         $config['center']=$this->format_google_map_center($filtros);
         $config['zoom']=12;        
@@ -1479,6 +1555,7 @@ class Inmueble_model extends MY_Model
         $this->googlemaps->initialize($config);
 
         // Añadir markers con rutas formateados
+        /*
         foreach ($inmuebles as $inmueble)
         {            
             $marker=array();
@@ -1501,7 +1578,16 @@ class Inmueble_model extends MY_Model
                 . '<br><a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
             // Añadimos el marker
             $this->googlemaps->add_marker($marker);
-        } 
+        }
+         * 
+         */
+        // Hay que unificar antes los markers repetidos
+        $markers=$this->calculate_unique_markers($inmuebles);
+        foreach($markers as $marker)
+        {
+            // Añadimos el marker
+            $this->googlemaps->add_marker($marker);
+        }
 
         // Para entornos que no sean development es necesario una API-KEY
         $this->load->model('Config_model');
