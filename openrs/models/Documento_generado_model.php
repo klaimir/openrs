@@ -140,7 +140,7 @@ class Documento_generado_model extends MY_Model
                         if($imagen->portada)
                         {
                             // Calculamos dimensiones para mantenter ratio
-                            $dimensiones_imagen=$this->utilities->redimensionar_fotografia(FCPATH.$imagen->imagen,400,400);
+                            $dimensiones_imagen=$this->utilities->redimensionar_fotografia(FCPATH.$imagen->imagen,600,600);
                             $html_imagen = '<img width="'.$dimensiones_imagen['anchura'].'" height="'.$dimensiones_imagen['altura'].'" src="' . base_url($imagen->imagen) . '" />';
                         }
                         else
@@ -159,7 +159,7 @@ class Documento_generado_model extends MY_Model
                             // Imprimimos el qr
                             $this->load->helper('qr');
                             create_qr($qr_text, FCPATH . 'uploads/inmuebles/' . $this->inmueble_id . '/codigo_qr.png');
-                            $html_codigo_qr = '<img src="' . base_url('uploads/inmuebles/' . $this->inmueble_id . '/codigo_qr.png') . '" />';
+                            $html_codigo_qr = '<img width="80" height="80" src="' . base_url('uploads/inmuebles/' . $this->inmueble_id . '/codigo_qr.png') . '" />';
                             $codigo_qr = $html_codigo_qr;
                         }
                         else
