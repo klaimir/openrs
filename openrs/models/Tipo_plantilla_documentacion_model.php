@@ -41,7 +41,7 @@ class Tipo_plantilla_documentacion_model extends MY_Model
         $categorias=$this->Categoria_informacion_documentacion_model->get_categorias_asignadas_by_tipo_plantilla($id);
         foreach($categorias as $categoria)
         {
-            $results[]=$this->Categoria_informacion_documentacion_model->with_marcas()->get($categoria->categoria_inf_id);
+            $results[$categoria->categoria_inf_id]=$this->Categoria_informacion_documentacion_model->with_marcas()->get($categoria->categoria_inf_id);
         }
         
         return $results;

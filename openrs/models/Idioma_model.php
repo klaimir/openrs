@@ -8,6 +8,27 @@ class Idioma_model extends MY_Model
     public function __construct()
     {        
         parent::__construct();
+        
+        $this->table = 'idiomas';
+        $this->primary_key = 'id';
+    }
+    
+    /**
+     * Devuelve un array de datos en formato dropdown
+     *
+     * @return array de datos en formato dropdown
+     */
+    
+    function get_dropdown($default_value="")
+    {
+        // Array de idiomas
+        $idiomas=$this->get_idiomas_subidos_activos();
+        // Drop down
+        $array_idiomas=$this->utilities->dropdown($idiomas,'id_idioma','nombre');
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione idioma -";
+        // Suma de ambos
+        return ($seleccion+$array_idiomas);
     }
     
     public function get_idiomas_subidos_activos(){

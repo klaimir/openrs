@@ -1058,6 +1058,44 @@ class Inmueble_model extends MY_Model
             return NULL;
         }
     }
+        
+    /**
+     * Devuelve toda la información de un inmueble en un idioma completo en formato vista
+     *
+     * @return array con toda la información del inmueble
+     */
+    function get_view_by_idioma($inmueble_id,$idioma_id)
+    {
+        $this->db->where($this->primary_key, $inmueble_id);
+        $this->db->where('idioma_id', $idioma_id);
+        $query = $this->db->get($this->view);
+        if ($query->num_rows === 0)
+            return FALSE;
+        return $query->first_row();
+    }
+    
+    /**
+     * Devuelve toda la información de un inmueble en un idioma completo para la impresión de un documento
+     *
+     * @return array con toda la información del inmueble
+     */
+    function get_info_documento($inmueble_id,$idioma_id)
+    {
+        $info = $this->get_view_by_idioma($inmueble_id,$idioma_id);
+        if ($info)
+        {
+            // Modelos axiliares
+            $this->load->model('Inmueble_idiomas_model');
+            // Consulta de datos
+            $info->info_idioma = $this->Inmueble_idiomas_model->get_info($inmueble_id,$idioma_id);
+            // Devolvemos toda la información calculada
+            return $info;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
     
     /**
      * Comprueba que ningún cliente ya está asociado como propietario

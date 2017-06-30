@@ -65,6 +65,15 @@ class MY_Model extends Base_Model
         
         return FALSE;
     }
+    
+    function get_view_by_id($id)
+    {
+        $this->db->where($this->primary_key, $id);
+        $query = $this->db->get($this->view);
+        if ($query->num_rows === 0)
+            return FALSE;
+        return $query->first_row();
+    }
 
     function get_by_id($id)
     {

@@ -92,5 +92,20 @@ class Inmueble_idiomas_model extends MY_Model
         }
         return $array;
     }
+    
+    /**
+     * Consulta los datos que tiene un determinado inmueble en un idioma en concreto
+     *
+     * @return array de datos
+     */
+    
+    function get_info($inmueble_id,$idioma_id)
+    {
+        $this->db->select();
+        $this->db->from($this->table);
+        $this->db->where('inmueble_id',$inmueble_id);
+        $this->db->where('idioma_id',$idioma_id);
+        return $this->db->get()->row();
+    }
 
 }

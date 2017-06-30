@@ -187,8 +187,32 @@ class Plantilla_documentacion_model extends MY_Model
         // Conversión de Datos
         unset($plantilla->id);
         $plantilla->descripcion = $plantilla->descripcion." - Copia";
+        $plantilla->nombre = $plantilla->nombre." - Copia";
         // Crear duplicado
         return $this->insert($plantilla);
+    }
+    
+    /**
+     * Devuelve un array de datos en formato dropdown
+     *
+     * @return array de datos en formato dropdown
+     */
+    
+    function get_dropdown($tipo_plantilla_id,$default_value="")
+    {
+        // Array de datos
+        $datos_dropdown=$this->as_dropdown('nombre')->where( array('tipo_plantilla_id' => $tipo_plantilla_id) )->order_by('nombre')->get_all();
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione plantilla -";
+        // Suma de ambos
+        if($datos_dropdown)
+        {
+            return ($seleccion+$datos_dropdown);
+        }
+        else
+        {
+            return $seleccion;
+        }
     }
 
 }

@@ -130,7 +130,7 @@ if(isset($inmueble_id))
             <div class="form-group">            
                 <?php echo label('Observaciones', 'observaciones', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_textarea($observaciones,'','onchange="mark_modified_field();" class="ckeditor"'); ?>
+                    <?php echo form_textarea($observaciones,'','onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
         </div>
