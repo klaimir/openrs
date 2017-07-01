@@ -187,7 +187,7 @@ function menu_inmuebles($inmueble_id,$active_section)
                     <b class="arrow"></b>
                 </li>
 
-                <li class="hover">
+                <li class="hover <?php echo set_active_option($active_section, "inmuebles_fichas"); ?>">
                     <a href="<?php echo site_url('inmuebles_fichas/index/'.$inmueble_id); ?>">
                         <i class="menu-icon fa fa-file-pdf-o"></i>
                         <span class="menu-text"> FICHA DEL INMUEBLE </span>

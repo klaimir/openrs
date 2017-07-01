@@ -115,5 +115,34 @@ INSERT INTO `marcas_documentacion` (`referencia`, `descripcion`, `especial`, `ca
 ('codigo_qr', 'Código QR del URL SEO de la zona pública', 1, 3),
 ('nombre', 'Nombre del agente', 1, 4),
 ('apellidos', 'Apellidos del agente', 1, 4);  
+
+
+--
+-- Estructura de tabla para la tabla `inmuebles_fichas`
+--
+
+CREATE TABLE IF NOT EXISTS `inmuebles_fichas` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `plantilla_id` int(11) unsigned NOT NULL,
+  `agente_id` int(11) unsigned NOT NULL,
+  `html` text NOT NULL,
+  `fecha` date NOT NULL,
+  `inmueble_id` int(11) unsigned DEFAULT NULL,
+  `idioma_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_inmuebles_fichas_agente_id` (`agente_id`),
+  KEY `FK_inmuebles_fichas_plantilla_id` (`plantilla_id`),
+  UNIQUE KEY `FK_inmuebles_fichas_inmueble_id` (`inmueble_id`),
+  KEY `FK_inmuebles_fichas_idioma_id` (`idioma_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Filtros para la tabla `inmuebles_fichas`
+--
+ALTER TABLE `inmuebles_fichas`
+  ADD CONSTRAINT `FK_inmuebles_fichas_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_inmuebles_fichas_inmueble_id` FOREIGN KEY (`inmueble_id`) REFERENCES `inmuebles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_inmuebles_fichas_plantilla_id` FOREIGN KEY (`plantilla_id`) REFERENCES `plantillas_documentacion` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_inmuebles_fichas_idioma_id` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`id_idioma`) ON UPDATE CASCADE;
   
   
