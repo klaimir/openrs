@@ -84,7 +84,7 @@ class Inmueble_cartel_model extends Documento_generado_model
                 'name' => 'html',
                 'id' => 'html',
                 'type' => 'text',
-                'value' => $this->form_validation->set_value('html', is_object($datos) ? $datos->html : ""),
+                'value' => $this->form_validation->set_value('html', is_object($datos) ? $this->utilities->process_html($datos->html) : ""),
             );
         }
         else
@@ -113,7 +113,9 @@ class Inmueble_cartel_model extends Documento_generado_model
         $datas['inmueble_id'] = $this->inmueble_id;
         $datas['agente_id'] = $this->data['session_user_id'];
         $datas['fecha'] = date("Y-m-d");
-        $datas['html'] = $this->generar_html_cartel($datas['inmueble_id'],$datas['plantilla_id'],$datas['idioma_id'],$datas['agente_id']);
+        $html=$this->generar_html_cartel($datas['inmueble_id'],$datas['plantilla_id'],$datas['idioma_id'],$datas['agente_id']);
+        // Hay que quitar el dominio local
+        $datas['html'] = $this->utilities->process_html($html,'input');
         return $datas;
     }
     
@@ -125,7 +127,7 @@ class Inmueble_cartel_model extends Documento_generado_model
     public function get_formatted_datas_edit()
     {        
         $datas['impreso'] = $this->utilities->get_sql_value_string($this->input->post('impreso'), 'defined', $this->input->post('impreso'), 0);
-        $datas['html'] = $this->input->post('html');
+        $datas['html'] = $this->utilities->process_html($this->input->post('html'),'input');
         return $datas;
     }
 

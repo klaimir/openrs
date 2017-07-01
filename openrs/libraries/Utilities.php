@@ -32,6 +32,23 @@ class Utilities
     {
         $this->CI = & get_instance();
     }
+    
+    /**
+     * Reemplaza las marcas de los datos generales
+     *
+     * @return void
+     */
+    function process_html($html, $format='output')
+    {
+        if($format=='output')
+        {
+            return str_replace("%base_url%", base_url(), $html);
+        }
+        else
+        {
+            return str_replace(base_url(), "%base_url%", $html);
+        }
+    }
 
     /**
      * Establece el valor de sesión en un filtro de búsqueda para un parámetro dado

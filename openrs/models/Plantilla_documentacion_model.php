@@ -91,7 +91,7 @@ class Plantilla_documentacion_model extends MY_Model
             'name' => 'html',
             'id' => 'html',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('html',is_object($datos) ? $datos->html : ""),
+            'value' => $this->form_validation->set_value('html',is_object($datos) ? $this->utilities->process_html($datos->html) : ""),
         );
 
         return $data;
@@ -108,7 +108,7 @@ class Plantilla_documentacion_model extends MY_Model
         $datas['nombre'] = $this->input->post('nombre');
         $datas['descripcion'] = $this->input->post('descripcion');
         $datas['tipo_plantilla_id'] = $this->input->post('tipo_plantilla_id');
-        $datas['html'] = $this->input->post('html');
+        $datas['html'] = $this->utilities->process_html($this->input->post('html'),'input');
         return $datas;
     }
 
