@@ -261,8 +261,23 @@ class Inmuebles extends CRUD_controller
                 // Check
                 if ($updated_rows>=0)
                 {
-                    $this->session->set_flashdata('message', lang('common_success_edit'));
-                    $this->session->set_flashdata('message_color', 'success');
+                    // Check de cambiar de QR para un cartel generado
+                    $change_qr = $this->{$this->_model}->check_regenerate_qr($id);
+                    // Si hay que cambiar el QR
+                    if($change_qr==1)
+                    {
+                        $this->session->set_flashdata('message', 'Ha modificado la url-seo generada para el código QR del cartel actual. La aplicación ha regenerado ya el código QR con la nueva url-seo, pero debe imprimir nuevamente el cartel ya que el anterior código QR ya no es válido. Deberá sustituir el cartel impreso anteriormente por el nuevo que acaba de generarse');
+                        redirect('inmuebles_carteles/index/'.$id, 'refresh');
+                    }
+                    else if($change_qr==2)                    
+                    {
+                        $this->session->set_flashdata('message', 'Ha modificado la url-seo generada para el código QR del cartel actual. Al dejarlo vacío deberá quitar el cartel del escaparate si ya lo tenía colgado. Si desea publicar uno nuevo, vuelva a cumplimentar la url-seo y generar el cartel nuevamente');
+                    }
+                    else                    
+                    {
+                        $this->session->set_flashdata('message', lang('common_success_edit'));
+                        $this->session->set_flashdata('message_color', 'success');
+                    }
                 }
                 else
                 {

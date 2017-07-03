@@ -110,6 +110,22 @@ class Documento_generado_model extends MY_Model
             }
         }
     }
+    
+    /**
+     * Genera la imagen QR
+     *
+     * @return string html con el código qr generado
+     */
+    function generate_qr_image($inmueble_id,$idioma_id,$url_seo)
+    {
+         // Calculamos el texto qr
+        $idioma=$this->Idioma_model->get_idioma($idioma_id);
+        $qr_text=site_url($idioma->nombre_seo.'/'.$url_seo);
+        // Imprimimos el qr
+        $this->load->helper('qr');
+        create_qr($qr_text, FCPATH . 'uploads/inmuebles/' . $inmueble_id . '/codigo_qr.png');
+        return '<img width="80" height="80" src="' . base_url('uploads/inmuebles/' . $inmueble_id . '/codigo_qr.png') . '" />';
+    }
 
     /**
      * Reemplaza las marcas de los datos de los inmuebles
@@ -148,25 +164,6 @@ class Documento_generado_model extends MY_Model
                             $html_imagen = NULL;
                         }
                         $this->html = str_replace($replace, $html_imagen, $this->html);
-                        break;
-                    case "codigo_qr":
-                        // Hay  que comprobar el idioma primero
-                        if ($this->inmueble->info_idioma)
-                        {
-                            // Calculamos el texto qr
-                            $idioma=$this->Idioma_model->get_idioma($this->idioma_id);
-                            $qr_text=site_url($idioma->nombre_seo.'/'.$this->inmueble->info_idioma->url_seo);
-                            // Imprimimos el qr
-                            $this->load->helper('qr');
-                            create_qr($qr_text, FCPATH . 'uploads/inmuebles/' . $this->inmueble_id . '/codigo_qr.png');
-                            $html_codigo_qr = '<img width="80" height="80" src="' . base_url('uploads/inmuebles/' . $this->inmueble_id . '/codigo_qr.png') . '" />';
-                            $codigo_qr = $html_codigo_qr;
-                        }
-                        else
-                        {
-                            $codigo_qr = "";
-                        }
-                        $this->html = str_replace($replace, $codigo_qr, $this->html);
                         break;
                     case "fecha_alta":
                         $this->html = str_replace($replace, $this->utilities->cambiafecha_bd($this->inmueble->fecha_alta), $this->html);
@@ -237,6 +234,53 @@ class Documento_generado_model extends MY_Model
                             $keywords_seo = "";
                         }
                         $this->html = str_replace($replace, $keywords_seo, $this->html);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                $referencia = $marca->referencia;
+                $this->html = str_replace($replace, $this->inmueble->$referencia, $this->html);
+            }
+        }
+    }
+    
+    /**
+     * Reemplaza las marcas de los datos de los carteles
+     *
+     * @return void
+     */
+    function sustituir_marcas_carteles()
+    {
+        // Modelos axiliares
+        $this->load->model('Inmueble_model');
+        // Marcas
+        $categoria = $this->categorias[6];
+        // Datos
+        $this->inmueble = $this->Inmueble_model->get_info_documento($this->inmueble_id, $this->idioma_id);
+        // Por cada marca se determina un valor
+        foreach ($categoria->marcas as $marca)
+        {
+            // Calculamos el replace
+            $replace = "%" . $categoria->referencia . "." . $marca->referencia . "%";
+            // Si la marca es especial hay que aplicar algún tipo de función para resolver su valor
+            if ($marca->especial)
+            {
+                switch ($marca->referencia)
+                {
+                    case "codigo_qr":
+                        // Hay  que comprobar el idioma primero
+                        if ($this->inmueble->info_idioma)
+                        {                           
+                            $codigo_qr = $this->generate_qr_image($this->inmueble_id,$this->idioma_id,$this->inmueble->info_idioma->url_seo);
+                        }
+                        else
+                        {
+                            $codigo_qr = "";
+                        }
+                        $this->html = str_replace($replace, $codigo_qr, $this->html);
                         break;
                     default:
                         break;

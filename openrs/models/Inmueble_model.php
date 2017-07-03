@@ -504,6 +504,13 @@ class Inmueble_model extends MY_Model
                     'type' => 'text',
                     'value' => $this->form_validation->set_value('url_seo_' . $idioma->id_idioma, is_object($datos_idioma) ? $datos_idioma->url_seo : ""),
                 );
+                // URl SEO anterior
+                $data['datos_idioma'][$idioma->id_idioma]['url_seo_anterior'] = array(
+                    'name' => 'url_seo_anterior_' . $idioma->id_idioma,
+                    'id' => 'url_seo_anterior_' . $idioma->id_idioma,
+                    'type' => 'text',
+                    'value' => $this->form_validation->set_value('url_seo_anterior_' . $idioma->id_idioma, is_object($datos_idioma) ? $datos_idioma->url_seo : ""),
+                );
                 // Descripción SEO
                 $data['datos_idioma'][$idioma->id_idioma]['descripcion_seo'] = array(
                     'name' => 'descripcion_seo_' . $idioma->id_idioma,
@@ -1797,6 +1804,51 @@ class Inmueble_model extends MY_Model
         {
             return "auto";
         }
+    }
+    
+    /**
+     * Determina si hay que regenarar el código QR de un inmueble pq haya cambiado su url-seo
+     *
+     * @param [$cliente_id]		Identificador del inmueble
+     * 
+     * @return Array con la información del inmueble
+     */
+    function check_regenerate_qr($inmueble_id)
+    {
+        // Carga del modelo
+        $this->load->model('Inmueble_cartel_model');
+        // Mirar si hay cartel generado
+        $cartel=$this->Inmueble_cartel_model->get_by_inmueble($inmueble_id);
+        // Leemos el url-seo anterior del inmueble en el idioma del cartel para compararlo con el actual
+        if($cartel)
+        {
+            $idioma_id=$cartel->idioma_id;
+            $url_seo_anterior=$this->input->post('url_seo_anterior_'.$idioma_id);
+            $url_seo_actual=$this->input->post('url_seo_'.$idioma_id);
+            // Si ahora no tiene URL-seo
+            if(empty($url_seo_actual))
+            {
+                // Si tiene url-seo generado
+                if($cartel->impreso && is_file(FCPATH . 'uploads/inmuebles/' . $inmueble_id . '/codigo_qr.png'))
+                {
+                    // Hay que borrar el cartel pq ya no tiene código QR
+                    // Por si acaso no pero avisaremos
+                    //$this->Cartel_model->remove($cartel);
+                    return 2;
+                }
+            }
+            else
+            {
+                // Si difieren, hay que regenerar el QR
+                if($url_seo_anterior!=$url_seo_actual)
+                {
+                    $this->Inmueble_cartel_model->generate_qr_image($inmueble_id,$idioma_id,$url_seo_actual);
+                    return 1;
+                }
+            }
+        }
+        // En el resto de casos no hay que hacer acciones con el cartel
+        return FALSE;
     }
 
     /**

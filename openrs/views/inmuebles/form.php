@@ -230,6 +230,7 @@ if(isset($cliente_id))
                                         <?php echo label('URL SEO', 'url_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
                                         <div class="col-sm-9">
                                             <?php echo form_input($datos_idioma[$idioma->id_idioma]['url_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                                            <?php echo form_hidden($datos_idioma[$idioma->id_idioma]['url_seo_anterior']['name'], $datos_idioma[$idioma->id_idioma]['url_seo_anterior']['value']); ?>
                                         </div>
                                     </div>
                                     <div class="form-group">            

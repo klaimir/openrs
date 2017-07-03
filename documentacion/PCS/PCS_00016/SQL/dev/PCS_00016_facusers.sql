@@ -29,7 +29,7 @@ ALTER TABLE `inmuebles_carteles`
 
 
 
-
+-- Vista inmuebles
 CREATE 
     OR REPLACE
 VIEW `v_inmuebles` AS
@@ -43,7 +43,9 @@ VIEW `v_inmuebles` AS
 		tipos_inmueble_idiomas.idioma_id AS idioma_id,
 		tipos_certificacion_energetica.nombre AS nombre_certificacion_energetica,
 		estados.nombre AS nombre_estado,
-		CONCAT_WS(', ',users.last_name,users.first_name) AS nombre_captador
+		CONCAT_WS(', ',users.last_name,users.first_name) AS nombre_captador,
+		inmuebles_carteles.id as cartel_id
+		inmuebles_carteles.impreso as cartel_impreso
     FROM
         inmuebles
 		JOIN estados ON inmuebles.estado_id = estados.id
@@ -57,8 +59,6 @@ VIEW `v_inmuebles` AS
 		LEFT JOIN inmuebles_carteles ON inmuebles_carteles.inmueble_id = inmuebles.id;
 
 
-
-
 -- Eliminamos restricción para que no de problemas al insertar usuario
 ALTER TABLE `fichas_visita` DROP FOREIGN KEY `FK_fichas_visita_documento_generado_id`;
 
@@ -66,8 +66,16 @@ ALTER TABLE `fichas_visita` DROP `documento_generado_id`;
 
 drop table documentos_generados;
 
+-- Carteles del inmueble
+INSERT INTO `categorias_informacion_documentacion` (`id`, `nombre`, `referencia`, `descripcion`) VALUES ('6', 'Cartel', 'carteles', 'Carteles del inmueble');
 
+-- Ficha demanda
+INSERT INTO `tipos_plantilla_documentacion` (`id`, `nombre`, `descripcion`) VALUES ('5', 'Ficha demanda', '');
 
+-- Añadirmos el QR sólo para el carteles
+INSERT INTO `tipos_plantilla_documentacion_categorias_asignadas` (`id`, `tipo_plantilla_id`, `categoria_inf_id`) VALUES (NULL, '3', '6');
+
+-- Marcas
 truncate marcas_documentacion;
 
 INSERT INTO `marcas_documentacion` (`referencia`, `descripcion`, `especial`, `categoria_inf_id`) VALUES
@@ -112,7 +120,7 @@ INSERT INTO `marcas_documentacion` (`referencia`, `descripcion`, `especial`, `ca
 ('nombre_captador', 'Nombre completo del captador', 0, 3),
 ('observaciones', 'Observaciones', 0, 3),
 ('imagen_portada', 'Imagen de la portada pública', 1, 3),
-('codigo_qr', 'Código QR del URL SEO de la zona pública', 1, 3),
+('codigo_qr', 'Código QR del URL SEO de la zona pública', 1, 6),
 ('nombre', 'Nombre del agente', 1, 4),
 ('apellidos', 'Apellidos del agente', 1, 4);  
 
