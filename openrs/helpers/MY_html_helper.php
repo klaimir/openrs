@@ -127,8 +127,8 @@ function menu_clientes($cliente_id,$active_section)
                     <b class="arrow"></b>
                 </li>
 
-                <li class="hover">
-                    <a href="<?php echo site_url('fichas_cliente/index/'.$cliente_id); ?>">
+                <li class="hover <?php echo set_active_option($active_section, "clientes_fichas"); ?>">
+                    <a href="<?php echo site_url('clientes_fichas/index/'.$cliente_id); ?>">
                         <i class="menu-icon fa fa-file-pdf-o"></i>
                         <span class="menu-text"> FICHA DEL CLIENTE </span>
                     </a>

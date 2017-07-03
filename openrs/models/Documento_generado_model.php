@@ -80,9 +80,9 @@ class Documento_generado_model extends MY_Model
     function sustituir_marcas_clientes()
     {
         // Marcas
-        $categoria = $this->categorias[1];
+        $categoria = $this->categorias[2];
         // Datos
-        $this->cliente = $this->Cliente_model->get_by_view_id($this->cliente_id);
+        $this->cliente = $this->Cliente_model->get_view_by_id($this->cliente_id);
         // Por cada marca se determina un valor
         foreach ($categoria->marcas as $marca)
         {
@@ -94,10 +94,10 @@ class Documento_generado_model extends MY_Model
                 switch ($marca->referencia)
                 {
                     case "fecha_nac":
-                        $this->html = str_replace($replace, $this->utilities->cambiafecha_bd($this->inmueble->fecha_nac), $this->html);
+                        $this->html = str_replace($replace, $this->utilities->cambiafecha_bd($this->cliente->fecha_nac), $this->html);
                         break;
                     case "fecha_alta":
-                        $this->html = str_replace($replace, $this->utilities->cambiafecha_bd($this->inmueble->fecha_alta), $this->html);
+                        $this->html = str_replace($replace, $this->utilities->cambiafecha_bd($this->cliente->fecha_alta), $this->html);
                         break;
                     default:
                         break;

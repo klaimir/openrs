@@ -154,3 +154,30 @@ ALTER TABLE `inmuebles_fichas`
   ADD CONSTRAINT `FK_inmuebles_fichas_idioma_id` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`id_idioma`) ON UPDATE CASCADE;
   
   
+
+--
+-- Estructura de tabla para la tabla `clientes_fichas`
+--
+
+CREATE TABLE IF NOT EXISTS `clientes_fichas` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `plantilla_id` int(11) unsigned NOT NULL,
+  `agente_id` int(11) unsigned NOT NULL,
+  `html` text NOT NULL,
+  `fecha` date NOT NULL,
+  `cliente_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_clientes_fichas_agente_id` (`agente_id`),
+  KEY `FK_clientes_fichas_plantilla_id` (`plantilla_id`),
+  UNIQUE KEY `FK_clientes_fichas_cliente_id` (`cliente_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Filtros para la tabla `clientes_fichas`
+--
+ALTER TABLE `clientes_fichas`
+  ADD CONSTRAINT `FK_clientes_fichas_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_clientes_fichas_cliente_id` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_clientes_fichas_plantilla_id` FOREIGN KEY (`plantilla_id`) REFERENCES `plantillas_documentacion` (`id`) ON UPDATE CASCADE;
+  
+  
