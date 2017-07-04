@@ -4,18 +4,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH . 'models/Documento_generado_model.php';
 
-class Cliente_ficha_model extends Documento_generado_model
+class Demanda_ficha_model extends Documento_generado_model
 {
 
     public function __construct()
     {
         parent::__construct();
         
-        $this->table = 'clientes_fichas';
-        $this->view = 'v_clientes_fichas';
+        $this->table = 'demandas_fichas';
+        $this->view = 'v_demandas_fichas';
         $this->primary_key = 'id';
         
-        $this->has_one['cliente'] = array('local_key' => 'id', 'foreign_key' => 'cliente_id', 'foreign_model' => 'Cliente_model');
+        $this->has_one['demanda'] = array('local_key' => 'id', 'foreign_key' => 'demanda_id', 'foreign_model' => 'Demanda_model');
 
         // Carga de modelos
         $this->load->model('Plantilla_documentacion_model');
@@ -85,7 +85,7 @@ class Cliente_ficha_model extends Documento_generado_model
         else
         {
             // Selector de plantillas
-            $data['plantillas'] = $this->Plantilla_documentacion_model->get_dropdown(2);                
+            $data['plantillas'] = $this->Plantilla_documentacion_model->get_dropdown(5);                
             $data['plantilla_id'] = $this->form_validation->set_value('plantilla_id', is_object($datos) ? $datos->plantilla_id : "");
         }
 
@@ -100,10 +100,10 @@ class Cliente_ficha_model extends Documento_generado_model
     public function get_formatted_datas_insert()
     {        
         $datas['plantilla_id'] = $this->input->post('plantilla_id');
-        $datas['cliente_id'] = $this->cliente_id;
+        $datas['demanda_id'] = $this->demanda_id;
         $datas['agente_id'] = $this->data['session_user_id'];
         $datas['fecha'] = date("Y-m-d");
-        $html=$this->generar_html_ficha($datas['cliente_id'],$datas['plantilla_id'],$datas['agente_id']);
+        $html=$this->generar_html_ficha($datas['demanda_id'],$datas['plantilla_id'],$datas['agente_id']);
         // Hay que quitar el dominio local
         $datas['html'] = $this->utilities->process_html($html,'input');
         return $datas;
@@ -141,7 +141,7 @@ class Cliente_ficha_model extends Documento_generado_model
     function create()
     {
         // Borramos antes por concurrencia
-        $this->delete(array("cliente_id" => $this->cliente_id));
+        $this->delete(array("demanda_id" => $this->demanda_id));
         // Formatted datas
         $formatted_datas=$this->get_formatted_datas_insert();                
         // Parent insert
@@ -165,16 +165,16 @@ class Cliente_ficha_model extends Documento_generado_model
     }
     
     /**
-     * Devuelve los fichas adjuntos de un determinado cliente
+     * Devuelve los fichas adjuntos de un determinado demanda
      *
-     * @param [cliente_id]                  Indentificador del elemento
+     * @param [demanda_id]                  Indentificador del elemento
      *
      * @return void
      */
-    function get_fichas_cliente($cliente_id)
+    function get_fichas_demanda($demanda_id)
     {
         $this->db->from($this->table);
-        $this->db->where('cliente_id', $cliente_id);
+        $this->db->where('demanda_id', $demanda_id);
         return $this->db->get()->row();
     }    
     
@@ -183,10 +183,10 @@ class Cliente_ficha_model extends Documento_generado_model
      *
      * @return void
      */
-    function generar_html_ficha($cliente_id,$plantilla_id,$agente_id)
+    function generar_html_ficha($demanda_id,$plantilla_id,$agente_id)
     {
         // Establecemos los identificadores necesarios para generar el documento
-        $this->cliente_id=$cliente_id;
+        $this->demanda_id=$demanda_id;
         $this->plantilla_id=$plantilla_id;
         $this->agente_id=$agente_id;
         // Aplicamos datos de la plantilla
@@ -196,14 +196,14 @@ class Cliente_ficha_model extends Documento_generado_model
     }
     
     /**
-     * Devuelve el ficha correspondiente al cliente
+     * Devuelve el ficha correspondiente al demanda
      *
      * @return array de datos de plantilla
      */
     
-    function get_by_cliente($cliente_id)
+    function get_by_demanda($demanda_id)
     {
-        return $this->get(array("cliente_id" => $cliente_id));
+        return $this->get(array("demanda_id" => $demanda_id));
     }
     
     /**

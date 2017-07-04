@@ -597,7 +597,7 @@ class Demanda_model extends MY_Model
         $this->db->from($this->view);
         $results=$this->db->get()->result();
         // Obtenemos datos auxiliares
-        return $this->get_datos_axuliares_view($results);
+        return $this->get_datos_auxiliares_view($results);
     }
     
     /**
@@ -607,7 +607,7 @@ class Demanda_model extends MY_Model
     *
      * @return array de tipos_demandas en formato vista
      */
-    function get_datos_axuliares_view($results)
+    function get_datos_auxiliares_view($results)
     {
         // Añadimos resultados adicionales
         if($results)
@@ -623,8 +623,7 @@ class Demanda_model extends MY_Model
             }
         }
         return $results;
-    }
-    
+    }    
     
     /**
      * Devuelve un array de tipos_demandas en formato dropdown
@@ -638,6 +637,17 @@ class Demanda_model extends MY_Model
         $tipo_demandas[1] = 'Sin filtros de búsqueda';
         $tipo_demandas[2] = 'Con filtros de búsqueda';
         return $tipo_demandas;
+    }
+    
+    /**
+     * Devuelve el texto de una determinada tipo de demanda
+     *
+     * @return string con el texto del tipo de demanda
+     */
+    function get_tipo_demanda_by_id($id)
+    {
+        $tipo_demandas = $this->get_tipos_demandas_dropdown();
+        return $tipo_demandas[$id];
     }
 
     /**
@@ -654,6 +664,32 @@ class Demanda_model extends MY_Model
         unset($demanda->fecha_actualizacion);
         // Crear duplicado
         return $this->create($demanda);
+    }
+    
+    /**
+     * Devuelve toda la información de una demanda en un idioma completo para la impresión de un documento
+     *
+     * @return array con toda la información del demanda
+     */
+    function get_info_documento($demanda_id)
+    {
+        $info = $this->get_view_by_id($demanda_id);
+        if ($info)
+        {
+            // Modelos auxiliares
+            $this->load->model('Inmueble_model');
+            // Calculamos resto de datos necesarios
+            $info->oferta=$this->Inmueble_model->get_oferta_by_id($info->oferta_id);
+            $info->tipo=$this->get_tipo_demanda_by_id($info->tipo_demanda_id);
+            // Transformamos en array para recupara información adicional
+            $info_array=$this->get_datos_auxiliares_view(array( 0 => $info));
+            // Devolvemos toda la información calculada
+            return $info_array[0];
+        }
+        else
+        {
+            return NULL;
+        }
     }
 
     /**
@@ -1335,7 +1371,7 @@ class Demanda_model extends MY_Model
         }
         $results=$this->db->get()->result();
         // Obtenemos datos auxiliares
-        return $this->get_datos_axuliares_view($results);
+        return $this->get_datos_auxiliares_view($results);
     }
     
     /**

@@ -980,6 +980,17 @@ class Inmueble_model extends MY_Model
     }
     
     /**
+     * Devuelve el texto de una oferta de inmueble
+     *
+     * @return string con el texto de la oferta del inmueble
+     */
+    function get_oferta_by_id($id)
+    {
+        $ofertas = $this->get_ofertas_dropdown();
+        return $ofertas[$id];
+    }
+    
+    /**
      * Devuelve un array de modificacion_precios en formato dropdown
      *
      * @return array de modificacion_precios en formato dropdown

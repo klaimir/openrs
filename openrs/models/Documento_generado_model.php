@@ -10,6 +10,7 @@ class Documento_generado_model extends MY_Model
     // Identificadores aplicados
     public $inmueble_id = NULL;
     public $cliente_id = NULL;
+    public $demanda_id = NULL;
     
     public $idioma_id = NULL;    
     public $agente_id = NULL;
@@ -17,6 +18,7 @@ class Documento_generado_model extends MY_Model
     // Datos recabados de la bd
     public $inmueble = NULL;
     public $cliente = NULL;
+    public $demanda = NULL;
     public $agente = NULL;
     public $plantilla = NULL;
     public $categorias = NULL;
@@ -290,6 +292,50 @@ class Documento_generado_model extends MY_Model
             {
                 $referencia = $marca->referencia;
                 $this->html = str_replace($replace, $this->inmueble->$referencia, $this->html);
+            }
+        }
+    }
+    
+    /**
+     * Reemplaza las marcas de los datos de los demandas
+     *
+     * @return void
+     */
+    function sustituir_marcas_demandas()
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_model');
+        // Marcas
+        $categoria = $this->categorias[7];
+        // Datos
+        $this->demanda = $this->Demanda_model->get_info_documento($this->demanda_id);
+        // Por cada marca se determina un valor
+        foreach ($categoria->marcas as $marca)
+        {
+            // Calculamos el replace
+            $replace = "%" . $categoria->referencia . "." . $marca->referencia . "%";
+            // Si la marca es especial hay que aplicar algún tipo de función para resolver su valor
+            if ($marca->especial)
+            {
+                switch ($marca->referencia)
+                {
+                    case "fecha_alta":
+                        $this->html = str_replace($replace, $this->utilities->cambiafecha_bd($this->demanda->fecha_alta), $this->html);
+                        break;
+                    case "precio_desde":
+                        $this->html = str_replace($replace, number_format($this->demanda->precio_desde, 0, ",", "."), $this->html);
+                        break;
+                    case "precio_hasta":
+                        $this->html = str_replace($replace, number_format($this->demanda->precio_hasta, 0, ",", "."), $this->html);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                $referencia = $marca->referencia;
+                $this->html = str_replace($replace, $this->demanda->$referencia, $this->html);
             }
         }
     }

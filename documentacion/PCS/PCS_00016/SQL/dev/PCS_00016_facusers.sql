@@ -71,9 +71,15 @@ INSERT INTO `categorias_informacion_documentacion` (`id`, `nombre`, `referencia`
 
 -- Ficha demanda
 INSERT INTO `tipos_plantilla_documentacion` (`id`, `nombre`, `descripcion`) VALUES ('5', 'Ficha demanda', '');
+INSERT INTO `categorias_informacion_documentacion` (`id`, `nombre`, `referencia`, `descripcion`) VALUES (7, 'Demandas', 'demandas', '-');
 
 -- Añadirmos el QR sólo para el carteles
 INSERT INTO `tipos_plantilla_documentacion_categorias_asignadas` (`id`, `tipo_plantilla_id`, `categoria_inf_id`) VALUES (NULL, '3', '6');
+
+-- Añadirmos datos de la ficha de demanda
+INSERT INTO `tipos_plantilla_documentacion_categorias_asignadas` (`id`, `tipo_plantilla_id`, `categoria_inf_id`) VALUES (NULL, '5', '1');
+INSERT INTO `tipos_plantilla_documentacion_categorias_asignadas` (`id`, `tipo_plantilla_id`, `categoria_inf_id`) VALUES (NULL, '5', '4');
+INSERT INTO `tipos_plantilla_documentacion_categorias_asignadas` (`id`, `tipo_plantilla_id`, `categoria_inf_id`) VALUES (NULL, '5', '7');
 
 -- Marcas
 truncate marcas_documentacion;
@@ -122,7 +128,30 @@ INSERT INTO `marcas_documentacion` (`referencia`, `descripcion`, `especial`, `ca
 ('imagen_portada', 'Imagen de la portada pública', 1, 3),
 ('codigo_qr', 'Código QR del URL SEO de la zona pública', 1, 6),
 ('nombre', 'Nombre del agente', 1, 4),
-('apellidos', 'Apellidos del agente', 1, 4);  
+('apellidos', 'Apellidos del agente', 1, 4),
+('referencia', 'Referencia de la demanda', 0, 7),
+('fecha_alta', 'Fecha de alta de la demanda', 1, 7),
+('oferta', 'Oferta demandada', 0, 7),
+('tipo', 'Tipo de demanda', 0, 7),
+('nombre_cliente', 'Nombre completo del cliente demandante', 0, 7),
+('tipos_inmuebles', 'Listado de tipos de inmuebles separados por comas', 0, 7),
+('nombre_provincia', 'Nombre de la provincia', 0, 7),
+('nombre_poblacion', 'Nombre del municipio', 0, 7),
+('zonas', 'Listado de zonas separados por comas', 0, 7),
+('metros_desde', 'Metros totales (desde)', 0, 7),
+('metros_hasta', 'Metros totales (hasta)', 0, 7),
+('habitaciones_desde', 'Número de habitaciones (desde)', 0, 7),
+('habitaciones_hasta', 'Número de habitaciones (hasta)', 0, 7),
+('banios_desde', 'Número de baños (desde)', 0, 7),
+('banios_hasta', 'Número de baños (hasta)', 0, 7),
+('precio_desde', 'Precio (desde)', 1, 7),
+('precio_hasta', 'Precio (hasta)', 1, 7),
+('anio_construccion_desde', 'Año construcción (desde)', 0, 7),
+('anio_construccion_hasta', 'Año construcción (hasta)', 0, 7),
+('nombre_certificacion_energetica', 'Certificación energética mínima', 0, 7),
+('nombre_estado', 'Estado', 0, 7),
+('nombre_agente_asignado', 'Nombre completo del agente asignado', 0, 7),
+('observaciones', 'Observaciones', 0, 7);  
 
 
 --
@@ -179,5 +208,32 @@ ALTER TABLE `clientes_fichas`
   ADD CONSTRAINT `FK_clientes_fichas_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_clientes_fichas_cliente_id` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_clientes_fichas_plantilla_id` FOREIGN KEY (`plantilla_id`) REFERENCES `plantillas_documentacion` (`id`) ON UPDATE CASCADE;
+  
+  
+  
+--
+-- Estructura de tabla para la tabla `demandas_fichas`
+--
+
+CREATE TABLE IF NOT EXISTS `demandas_fichas` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `plantilla_id` int(11) unsigned NOT NULL,
+  `agente_id` int(11) unsigned NOT NULL,
+  `html` text NOT NULL,
+  `fecha` date NOT NULL,
+  `demanda_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_demandas_fichas_agente_id` (`agente_id`),
+  KEY `FK_demandas_fichas_plantilla_id` (`plantilla_id`),
+  UNIQUE KEY `FK_demandas_fichas_demanda_id` (`demanda_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Filtros para la tabla `demandas_fichas`
+--
+ALTER TABLE `demandas_fichas`
+  ADD CONSTRAINT `FK_demandas_fichas_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_demandas_fichas_demanda_id` FOREIGN KEY (`demanda_id`) REFERENCES `demandas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_demandas_fichas_plantilla_id` FOREIGN KEY (`plantilla_id`) REFERENCES `plantillas_documentacion` (`id`) ON UPDATE CASCADE;
   
   

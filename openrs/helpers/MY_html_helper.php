@@ -253,8 +253,8 @@ function menu_demandas($demanda_id,$active_section)
                     <b class="arrow"></b>
                 </li>
 
-                <li class="hover">
-                    <a href="<?php echo site_url('fichas_demanda/index/'.$demanda_id); ?>">
+                <li class="hover <?php echo set_active_option($active_section, "demandas_fichas"); ?>">
+                    <a href="<?php echo site_url('demandas_fichas/index/'.$demanda_id); ?>">
                         <i class="menu-icon fa fa-file-pdf-o"></i>
                         <span class="menu-text"> FICHA DE LA DEMANDA </span>
                     </a>

@@ -46,6 +46,13 @@ class Documentos extends MY_Controller
         var_dump($this->Cliente_ficha_model);
     }
     
+    function get_info_demanda($demanda_id)
+    {
+        $this->load->model('Demanda_model');
+        $info=$this->Demanda_model->get_info_documento($demanda_id);
+        var_dump($info);
+    }
+    
     function dropdown_plantillas($tipo_plantilla_id)
     {
         $this->load->model('Plantilla_documentacion_model');
