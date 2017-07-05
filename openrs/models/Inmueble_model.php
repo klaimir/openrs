@@ -1840,7 +1840,7 @@ class Inmueble_model extends MY_Model
             if(empty($url_seo_actual))
             {
                 // Si tiene url-seo generado
-                if($cartel->impreso && is_file(FCPATH . 'uploads/inmuebles/' . $inmueble_id . '/codigo_qr.png'))
+                if($cartel->impreso && is_file(FCPATH . 'uploads/inmuebles/' . $inmueble_id . '/'.$cartel->hash_qr_image.'.png'))
                 {
                     // Hay que borrar el cartel pq ya no tiene código QR
                     // Por si acaso no pero avisaremos
@@ -1853,8 +1853,7 @@ class Inmueble_model extends MY_Model
                 // Si difieren, hay que regenerar el QR
                 if($url_seo_anterior!=$url_seo_actual)
                 {
-                    $this->Inmueble_cartel_model->generate_qr_image($inmueble_id,$idioma_id,$url_seo_actual);
-                    return 1;
+                    return $this->Inmueble_cartel_model->reemplazar_qr_image($inmueble_id,$idioma_id,$url_seo_actual);
                 }
             }
         }

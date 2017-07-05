@@ -24,6 +24,7 @@ class Documento_generado_model extends MY_Model
     public $categorias = NULL;
     // Datos de la plantilla
     public $html = NULL;
+    public $hash_qr_image=NULL;
 
     public function __construct()
     {
@@ -118,15 +119,17 @@ class Documento_generado_model extends MY_Model
      *
      * @return string html con el código qr generado
      */
-    function generate_qr_image($inmueble_id,$idioma_id,$url_seo)
+    function generate_qr_image($inmueble_id,$idioma_id,$url_seo,$hash_qr_image)
     {
          // Calculamos el texto qr
         $idioma=$this->Idioma_model->get_idioma($idioma_id);
         $qr_text=site_url($idioma->nombre_seo.'/'.$url_seo);
+        // Limpiamos ficheros
+        $this->utilities->clean_files(FCPATH . 'uploads/inmuebles/' . $inmueble_id,"png");
         // Imprimimos el qr
         $this->load->helper('qr');
-        create_qr($qr_text, FCPATH . 'uploads/inmuebles/' . $inmueble_id . '/codigo_qr.png');
-        return '<img width="80" height="80" src="' . base_url('uploads/inmuebles/' . $inmueble_id . '/codigo_qr.png') . '" />';
+        create_qr($qr_text, FCPATH . 'uploads/inmuebles/' . $inmueble_id . '/'.$hash_qr_image.'.png');
+        return '<img width="80" height="80" src="' . base_url('uploads/inmuebles/' . $inmueble_id . '/'.$hash_qr_image.'.png') . '" />';
     }
 
     /**
@@ -276,7 +279,7 @@ class Documento_generado_model extends MY_Model
                         // Hay  que comprobar el idioma primero
                         if ($this->inmueble->info_idioma)
                         {                           
-                            $codigo_qr = $this->generate_qr_image($this->inmueble_id,$this->idioma_id,$this->inmueble->info_idioma->url_seo);
+                            $codigo_qr = $this->generate_qr_image($this->inmueble_id,$this->idioma_id,$this->inmueble->info_idioma->url_seo,$this->hash_qr_image);
                         }
                         else
                         {

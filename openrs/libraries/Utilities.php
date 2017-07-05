@@ -1216,6 +1216,20 @@ class Utilities
         }
         closedir($h);
     }
+    
+    function clean_files($dir,$ext="pdf")
+    {
+        $h = opendir($dir);
+        while ($file = readdir($h))
+        {
+            if (substr($file, -4) == '.'.$ext)
+            {
+                $path = $dir . '/' . $file;
+                @unlink($path);
+            }
+        }
+        closedir($h);
+    }
 
     function trim_words($str, $limit = 100, $end_char = '...')
     {

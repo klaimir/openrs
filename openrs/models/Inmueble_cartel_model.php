@@ -113,7 +113,8 @@ class Inmueble_cartel_model extends Documento_generado_model
         $datas['inmueble_id'] = $this->inmueble_id;
         $datas['agente_id'] = $this->data['session_user_id'];
         $datas['fecha'] = date("Y-m-d");
-        $html=$this->generar_html_cartel($datas['inmueble_id'],$datas['plantilla_id'],$datas['idioma_id'],$datas['agente_id']);
+        $datas['hash_qr_image'] = uniqid();
+        $html=$this->generar_html_cartel($datas['inmueble_id'],$datas['plantilla_id'],$datas['idioma_id'],$datas['agente_id'],$datas['hash_qr_image']);
         // Hay que quitar el dominio local
         $datas['html'] = $this->utilities->process_html($html,'input');
         return $datas;
@@ -187,20 +188,57 @@ class Inmueble_cartel_model extends Documento_generado_model
         $this->db->from($this->table);
         $this->db->where('inmueble_id', $inmueble_id);
         return $this->db->get()->row();
-    }    
+    } 
+    
+    /**
+     * Reemplaza una imagen QR en un documento existente
+     *
+     * @return TRUE OR FALSE
+     */
+    function reemplazar_qr_image($inmueble_id,$idioma_id,$url_seo)
+    {
+        // Hash
+        $hash_qr_image=uniqid();        
+        // Reemplazamos hash en html cartel
+        $cartel=$this->get_by_inmueble($inmueble_id);
+        $html_formateado = str_replace($cartel->hash_qr_image, $hash_qr_image, $cartel->html);
+        // For testing pourpose
+        /*
+        var_dump($cartel->hash_qr_image);
+        var_dump($hash_qr_image);
+        var_dump($cartel->html);
+        var_dump($html_formateado);
+        die();
+         * 
+         */
+        // Generamos la imagen
+        $this->generate_qr_image($inmueble_id, $idioma_id, $url_seo, $hash_qr_image);
+        // Salvamos hash en bd
+        $formatted_datas['hash_qr_image']=$hash_qr_image;
+        $formatted_datas['html']=$html_formateado;
+        return $this->update($formatted_datas,$cartel->id);
+    }
     
     /**
      * Formatea los datos introducidos por el usuario y crea un registro en la base de datos
      *
      * @return void
      */
-    function generar_html_cartel($inmueble_id,$plantilla_id,$idioma_id,$agente_id)
+    function generar_html_cartel($inmueble_id,$plantilla_id,$idioma_id,$agente_id,$hash_qr_image=NULL)
     {
         // Establecemos los identificadores necesarios para generar el documento
         $this->inmueble_id=$inmueble_id;
         $this->idioma_id=$idioma_id;
         $this->plantilla_id=$plantilla_id;
         $this->agente_id=$agente_id;
+        if(is_null($hash_qr_image))
+        {
+            $this->hash_qr_image=uniqid();
+        }
+        else
+        {
+            $this->hash_qr_image=$hash_qr_image;
+        }
         // Aplicamos datos de la plantilla
         $this->aplicar_plantilla();
         // Devolemos el HTML generado
@@ -228,9 +266,9 @@ class Inmueble_cartel_model extends Documento_generado_model
     function remove($cartel)
     {        
         // Borrado físico del fichero
-        if(file_exists(FCPATH . 'uploads/inmuebles/' . $cartel->inmueble_id . '/codigo_qr.png'))
+        if(file_exists(FCPATH . 'uploads/inmuebles/' . $cartel->inmueble_id . '/'.$cartel->hash_qr_image.'.png'))
         {
-            if(!unlink(FCPATH . 'uploads/inmuebles/' . $cartel->inmueble_id . '/codigo_qr.png'))
+            if(!unlink(FCPATH . 'uploads/inmuebles/' . $cartel->inmueble_id . '/'.$cartel->hash_qr_image.'.png'))
             {
                 $this->set_error('El código qr generado está en uso. Inténtelo más tarde');
                 return FALSE;

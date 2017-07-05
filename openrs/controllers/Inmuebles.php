@@ -266,8 +266,13 @@ class Inmuebles extends CRUD_controller
                     // Si hay que cambiar el QR
                     if($change_qr==1)
                     {
+                         // Carga del modelo
+                        $this->load->model('Inmueble_cartel_model');
+                        // Mirar si hay cartel generado
+                        $cartel=$this->Inmueble_cartel_model->get_by_inmueble($id);
+                        // Mensaje
                         $this->session->set_flashdata('message', 'Ha modificado la url-seo generada para el código QR del cartel actual. La aplicación ha regenerado ya el código QR con la nueva url-seo, pero debe imprimir nuevamente el cartel ya que el anterior código QR ya no es válido. Deberá sustituir el cartel impreso anteriormente por el nuevo que acaba de generarse');
-                        redirect('inmuebles_carteles/index/'.$id, 'refresh');
+                        redirect('inmuebles_carteles/edit/'.$cartel->id, 'refresh');
                     }
                     else if($change_qr==2)                    
                     {
