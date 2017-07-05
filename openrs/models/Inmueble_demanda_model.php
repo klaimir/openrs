@@ -133,11 +133,15 @@ class Inmueble_demanda_model extends MY_Model
      * @return Array con la información de las demandas asociada
      */
     
-    function get_demandas_inmueble($inmueble_id)
+    function get_demandas_inmueble($inmueble_id,$evaluacion_id=NULL)
     {
         $this->db->select('demanda_id');
         $this->db->from('inmuebles_demandas');
         $this->db->where("inmueble_id",$inmueble_id);
+        if(!is_null($evaluacion_id))
+        {
+            $this->db->where("evaluacion_id",$evaluacion_id);
+        }
         return $this->db->get()->result();
     }
     

@@ -60,12 +60,14 @@
                     <th>Municipio</th>
                     <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
+                    <th>Precio<br> Compra</th>
+                    <th>Precio<br> Alquiler</th>
                     <th>Metros</th>
                     <th>Hab.</th>
-                    <th>Baños</th>
+                    <th>Bañ.</th>
                     <th>Img.</th>
+                    <th>Dem.</th>
+                    <th>Pend.</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -87,7 +89,24 @@
                         <td><?php echo $element->metros; ?></td>
                         <td><?php echo $element->habitaciones; ?></td>
                         <td><?php echo $element->banios; ?></td>
-                        <td><a href="<?php echo site_url('inmuebles_imagenes/index/'.$element->id); ?>"><?php echo $element->num_imagenes; ?></a></td>
+                        <td>
+                            <?php
+                            if($element->num_imagenes>0)
+                            {
+                            ?>
+                                <a href="<?php echo site_url('inmuebles_imagenes/index/'.$element->id); ?>"><?php echo $element->num_imagenes; ?></a>
+                            <?php
+                            }
+                            else
+                            {
+                            ?>
+                                <a href="<?php echo site_url('inmuebles_imagenes/insert/'.$element->id); ?>"><?php echo $element->num_imagenes; ?></a>
+                            <?php
+                            }
+                            ?>
+                        </td>
+                        <td><?php echo $element->num_demandas_totales; ?></td>
+                        <td><?php echo $element->num_demandas_pendientes; ?></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url($_controller."/edit/" . $element->id); ?>" title="Editar">

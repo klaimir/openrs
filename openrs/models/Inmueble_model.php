@@ -926,10 +926,16 @@ class Inmueble_model extends MY_Model
         $results=$this->db->get()->result();
         if($results)
         {
-            // Obtenemos el número de imágenes de cada inmueble
+            // Modelos axiliares
+            $this->load->model('Demanda_model');
+            // Datos adicionales de cada inmueble
             foreach ($results as $result)
             {
+                // Obtenemos el número de imágenes de cada inmueble
                 $result->num_imagenes=$this->get_num_imagenes($result->id);
+                // Consulta de demandas
+                $result->num_demandas_totales = count($this->Demanda_model->get_demandas_inmueble($result->id));
+                $result->num_demandas_pendientes = count($this->Demanda_model->get_demandas_inmueble($result->id,1));
             }
         }
         return $results;
@@ -1065,7 +1071,8 @@ class Inmueble_model extends MY_Model
             $this->load->model('Inmueble_lugar_interes_model');
             // Consulta de datos
             $info->propietarios = $this->Cliente_model->get_propietarios_inmueble($id);
-            $info->demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
+            //$info->demandantes = $this->Demanda_model->get_demandantes_inmueble($id);
+            $info->demandas = $this->Demanda_model->get_view_demandas_inmueble($id);
             $info->opciones_extras = $this->Inmueble_opcion_extra_model->get_opciones_extras_inmueble($id);
             $info->lugares_interes = $this->Inmueble_lugar_interes_model->get_lugares_interes_inmueble($id);
             // Devolvemos toda la información calculada

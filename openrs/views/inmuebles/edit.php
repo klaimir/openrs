@@ -16,14 +16,14 @@
 
 <div class="tabbable">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab_demandantes" data-toggle="tab">DEMANDANTES</a></li>
+        <li class="active"><a href="#tab_demandas" data-toggle="tab">DEMANDAS</a></li>
         <li><a href="#tab_propietarios" data-toggle="tab">PROPIETARIOS</a></li>
         <li><a href="#tab_opciones_extras" data-toggle="tab">CARACTERISTICAS</a></li>
         <li><a href="#tab_lugares_interes" data-toggle="tab">SITIOS CERCANOS</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane active" id="tab_demandantes">
-            <?php $this->load->view('inmuebles/list_demandantes', $this->data); ?>
+        <div class="tab-pane active" id="tab_demandas">
+            <?php $this->load->view('inmuebles/list_demandas', $this->data); ?>
         </div>
         <div class="tab-pane" id="tab_propietarios">
             <?php $this->load->view('inmuebles/list_propietarios', $this->data); ?>

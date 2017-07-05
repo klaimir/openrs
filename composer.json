@@ -8,7 +8,7 @@
 		"source": "https://github.com/klaimir/openrs"
 	},
 	"require": {
-		"php": ">=5.3",
+		"php": ">=5.5",
 		"libern/qr-code-reader": "^1.0"
 	},
 	"suggest": {
