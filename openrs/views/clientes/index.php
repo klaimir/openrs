@@ -14,10 +14,6 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <a class="btn btn-info pull-right" onclick="$('#buscador').toggle('slow');">
-            <i class="menu-icon fa fa-search"></i>
-            <span class="menu-text"> Buscador </span>
-        </a>
         <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/insert'); ?>">
             <i class="menu-icon fa fa-plus-circle"></i>
             <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
@@ -37,7 +33,7 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
-        <table class="table table-striped table-bordered table-hover" id="tabgrid">
+        <table class="table table-striped table-bordered table-hover" id="tabgrid_clientes">
             <thead>
                 <tr>
                     <th>Nombre Completo</th>
@@ -47,6 +43,9 @@
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>E-mail</th>
+                    <th>Fecha alta</th>
+                    <th>Ofe.</th>
+                    <th>Dem.</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -65,6 +64,9 @@
                         <td><?php echo $element->direccion; ?></td>
                         <td><?php echo $element->telefonos; ?></td>
                         <td><?php echo $element->correo; ?></td>
+                        <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
+                        <td><?php echo $element->num_propiedades; ?></td>
+                        <td><?php echo $element->num_inmuebles_demandados; ?></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url($_controller."/edit/" . $element->id); ?>" title="Editar">
@@ -167,6 +169,24 @@
                     window.location = '<?php echo site_url($_controller); ?>/delete/' + id;
                 }
             });
+        });
+        
+        $('#tabgrid_clientes').dataTable({
+            "iDisplayLength": 100,
+            "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
+            "aoColumns": [
+                null, 
+                null,
+                null,                
+                null,
+                null,
+                null,
+                null,
+                {"sType": "date-euro"},
+                null,
+                null,
+                null
+            ]
         });
     })
 </script>

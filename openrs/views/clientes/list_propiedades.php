@@ -32,8 +32,6 @@
                     <th>Metros</th>
                     <th>Hab.</th>
                     <th>Baños</th>
-                    <th>Ficha encargo</th>
-                    <th>Cláusula Cert. Ener.</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -53,8 +51,6 @@
                         <td><?php echo $inmueble->metros; ?></td>
                         <td><?php echo $inmueble->habitaciones; ?></td>
                         <td><?php echo $inmueble->banios; ?></td>
-                        <td>-</td>
-                        <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble">

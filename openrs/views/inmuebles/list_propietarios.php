@@ -29,8 +29,6 @@
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>E-mail</th>
-                    <th>Ficha encargo</th>
-                    <th>Cláusula Cert. Ener.</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -47,8 +45,6 @@
                         <td><?php echo $propietario->direccion; ?></td>
                         <td><?php echo $propietario->telefonos; ?></td>
                         <td><?php echo $propietario->correo; ?></td>
-                        <td>-</td>
-                        <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url("clientes/edit/" . $propietario->id); ?>" title="Editar cliente">

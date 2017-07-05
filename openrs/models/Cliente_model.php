@@ -413,7 +413,20 @@ class Cliente_model extends MY_Model
         }
         // Consulta
         $this->db->from($this->view);
-        return $this->db->get()->result();
+        $results=$this->db->get()->result();
+        if($results)
+        {
+            // Modelos axiliares
+            $this->load->model('Inmueble_model');
+            $this->load->model('Demanda_model');
+            // Datos adicionales de cada inmueble
+            foreach ($results as $result)
+            {
+                $result->num_propiedades = count($this->Inmueble_model->get_propiedades_cliente($result->id));
+                $result->num_inmuebles_demandados = count($this->Demanda_model->get_inmuebles_demandados($result->id));
+            }
+        }
+        return $results;
     }
 
     /**

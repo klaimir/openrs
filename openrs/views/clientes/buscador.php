@@ -1,11 +1,17 @@
-<div class="well" id="buscador" style="display:none;">
+<div class="well" id="buscador">
     <?php echo form_open('clientes', 'class="form-horizontal" method="get"'); ?>    
     <div class="row">
         <div class="col-xs-12 col-md-6 col-lg-6">
             <div class="form-group">            
+                <?php echo label('Paises', 'pais_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('pais_id',$paises,$filtros['pais_id'], 'class="form-control chosen-select" id="pais_id"'); ?>
+                </div>
+            </div>
+            <div class="form-group">            
                 <?php echo label('Provincias', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('provincia_id',$provincias,$filtros['provincia_id'], 'class="form-control" id="provincia_id" onchange="show_poblaciones();"'); ?>
+                    <?php echo form_dropdown('provincia_id',$provincias,$filtros['provincia_id'], 'class="form-control chosen-select" id="provincia_id" onchange="show_poblaciones();"'); ?>
                 </div>
             </div>
             <div class="form-group">            
@@ -13,36 +19,36 @@
                 <div id="poblaciones" class="col-sm-9">
                 </div>
             </div>
+            
+            <?php /*
             <div class="form-group">            
                 <?php echo label('Intereses', 'interes_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('interes_id',$intereses,$filtros['interes_id'], 'class="form-control" id="interes_id"'); ?>
                 </div>
             </div>
+             * 
+             */
+            ?>
         </div>
         <div class="col-xs-12 col-md-6 col-lg-6">
             <div class="form-group">            
-                <?php echo label('Paises', 'pais_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('Agentes', 'agente_asignado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('pais_id',$paises,$filtros['pais_id'], 'class="form-control" id="pais_id"'); ?>
+                    <?php echo form_dropdown('agente_asignado_id',$agentes,$filtros['agente_asignado_id'], 'class="form-control" id="agente_asignado_id"'); ?>
                 </div>
-            </div>
+            </div>            
             <div class="form-group">            
                 <?php echo label('Estados', 'estado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('estado_id',$estados,$filtros['estado_id'], 'class="form-control" id="estado_id"'); ?>
                 </div>
             </div>
-            <div class="form-group">            
-                <?php echo label('Agentes', 'agente_asignado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
-                <div class="col-sm-9">
-                    <?php echo form_dropdown('agente_asignado_id',$agentes,$filtros['agente_asignado_id'], 'class="form-control" id="agente_asignado_id"'); ?>
-                </div>
-            </div>
+            
             <div class="form-group">            
                 <?php echo label('Fecha alta', 'rango_fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <div class="input-daterange input-group">
+                    <div class="input-range input-group">
                         <input class="input-sm form-control date-picker" name="fecha_desde" id="fecha_desde" value="<?php echo $filtros['fecha_desde']; ?>" data-date-format="dd/mm/yyyy" type="text">
                         <span class="input-group-addon">
                             <i class="fa fa-exchange"></i>

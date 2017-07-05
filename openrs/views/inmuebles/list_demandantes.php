@@ -30,7 +30,6 @@
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>E-mail</th>
-                    <th>Ficha visita</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -48,7 +47,6 @@
                         <td><?php echo $demandante->direccion; ?></td>
                         <td><?php echo $demandante->telefonos; ?></td>
                         <td><?php echo $demandante->correo; ?></td>
-                        <td>-</td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url("clientes/edit/" . $demandante->id); ?>" title="Editar cliente">
