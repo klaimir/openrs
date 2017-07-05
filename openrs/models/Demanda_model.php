@@ -498,11 +498,8 @@ class Demanda_model extends MY_Model
      */
     function get_by_filtros($filtros = NULL)
     {
-        // Filtro Tipo de inmueble
-        if (isset($filtros['tipo_id']) && $filtros['tipo_id'] >= 0)
-        {
-            $this->db->where('tipo_id', $filtros['tipo_id']);
-        }
+        // Hay que poner esto para que no afecte a los JOINS
+        $this->db->select($this->view.'.*');
         // Filtro Provincia
         if (isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0)
         {
@@ -512,12 +509,7 @@ class Demanda_model extends MY_Model
         if (isset($filtros['poblacion_id']) && !empty($filtros['poblacion_id']) && $filtros['provincia_id'] >= 0)
         {
             $this->db->where('poblacion_id', $filtros['poblacion_id']);
-        }
-        // Filtro Zona
-        if (isset($filtros['zona_id']) && !empty($filtros['zona_id']))
-        {
-            $this->db->where('zona_id', $filtros['zona_id']);
-        }
+        }        
         // Filtro Agente Asignado
         if (isset($filtros['agente_asignado_id']) && $filtros['agente_asignado_id'] >= 0)
         {
@@ -595,6 +587,16 @@ class Demanda_model extends MY_Model
         }
         // Consulta
         $this->db->from($this->view);
+        // Filtro Tipo de inmueble
+        if (isset($filtros['tipo_id']) && $filtros['tipo_id'] >= 0)
+        {
+            $this->db->join('demandas_tipos_inmueble', 'demandas_tipos_inmueble.demanda_id='.$this->view.'.id')->where('demandas_tipos_inmueble.tipo_id', $filtros['tipo_id']);
+        }
+        // Filtro Zona
+        if (isset($filtros['zona_id']) && !empty($filtros['zona_id']))
+        {
+            $this->db->join('demandas_poblaciones_zonas', 'demandas_poblaciones_zonas.demanda_id='.$this->view.'.id')->where('demandas_poblaciones_zonas.zona_id', $filtros['zona_id']);
+        }
         $results=$this->db->get()->result();
         // Obtenemos datos auxiliares
         return $this->get_datos_auxiliares_view($results);
