@@ -1400,12 +1400,30 @@ class Demanda_model extends MY_Model
      * @return Array con la información de las demandas asociada
      */
     
-    function get_view_demandas_inmueble($inmueble_id,$evaluacion_id=NULL)
+    function get_view_demandas_inmueble($inmueble_id)
     {
         $this->db->select($this->view.'.*');
         $this->db->from($this->view);
         $this->db->join('inmuebles_demandas', 'inmuebles_demandas.demanda_id='.$this->view.'.id');        
         $this->db->where("inmueble_id",$inmueble_id);
+        $results=$this->db->get()->result();
+        // Obtenemos datos auxiliares
+        return $this->get_datos_auxiliares_view($results);
+    }
+    
+    /**
+     * Devuelve las demandas de un cliente en formato vista
+     *
+     * @param [$cliente_id]		Identificador del cliente
+     * 
+     * @return Array con la información de las demandas asociada
+     */
+    
+    function get_view_demandas_cliente($cliente_id)
+    {
+        $this->db->select($this->view.'.*');
+        $this->db->from($this->view);       
+        $this->db->where("cliente_id",$cliente_id);
         $results=$this->db->get()->result();
         // Obtenemos datos auxiliares
         return $this->get_datos_auxiliares_view($results);

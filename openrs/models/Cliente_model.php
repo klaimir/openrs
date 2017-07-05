@@ -468,6 +468,7 @@ class Cliente_model extends MY_Model
             // Consulta de propiedades
             $info->propiedades = $this->Inmueble_model->get_propiedades_cliente($id);
             $info->inmuebles_demandados = $this->Demanda_model->get_inmuebles_demandados($id);
+            $info->demandas = $this->Demanda_model->get_view_demandas_cliente($id);
             // Devolvemos toda la información calculada
             return $info;
         }
