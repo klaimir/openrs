@@ -605,7 +605,7 @@ class Demandas extends CRUD_controller
             $this->load->helper('csv');
             
             // Cabecera            
-            $cabecera = array('Referencia','Cliente','Tipos Inmuebles','Lugar','Precios','Metros','Hab.','Baños','Observaciones','Fecha alta');
+            $cabecera = array('Referencia','Cliente','Tipos Inmuebles','Lugar','Precios','Metros','Hab.','Baños','Observaciones','Fecha alta','Inm. Propuestos','Inm. Pendientes');
             $array[] = $this->utilities->encoding_array($cabecera);
              
             // Resto de datos
@@ -626,6 +626,8 @@ class Demandas extends CRUD_controller
                 $datos_formateado[] = format_interval_csv($element->banios_desde,$element->banios_hasta);
                 $datos_formateado[] = $element->observaciones;
                 $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_alta);
+                $datos_formateado[] = $element->num_inmuebles_propuestos;
+                $datos_formateado[] = $element->num_inmuebles_pendientes;
                 
                 // Conversión de todos los elementos del array
                 $array[] = $this->utilities->encoding_array($datos_formateado);

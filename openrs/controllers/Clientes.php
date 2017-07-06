@@ -359,7 +359,8 @@ class Clientes extends CRUD_controller
             $this->load->helper('csv');
             
             // Cabecera
-            $cabecera = array('CIF/NIE/NIF','Nombre','Apellidos','Fecha Nac.','Dirección','E-mail','Teléfono','Pais','Provincia','Municipio','Estado','Observaciones','Agente Asignado');
+            $cabecera = array('CIF/NIE/NIF','Nombre','Apellidos','Fecha Nac.','Dirección','E-mail','Teléfono','Pais','Provincia','Municipio',
+                'Estado','Observaciones','Agente Asignado','Fecha alta','Oferta','Inm. Demandados');
             $array[] = $this->utilities->encoding_array($cabecera);
              
             // Resto de datos
@@ -380,6 +381,9 @@ class Clientes extends CRUD_controller
                 $datos_formateado[] = $element->nombre_estado;
                 $datos_formateado[] = $element->observaciones;
                 $datos_formateado[] = $element->nombre_agente_asignado;
+                $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_alta);
+                $datos_formateado[] = $element->num_propiedades;
+                $datos_formateado[] = $element->num_inmuebles_demandados;
                 
                 // Conversión de todos los elementos del array
                 $array[] = $this->utilities->encoding_array($datos_formateado);
