@@ -51,7 +51,8 @@
                     <th>Baños</th>
                     <th>Observaciones</th>
                     <th>Fecha alta</th>
-                    <th>Inmuebles</th>
+                    <th>Pro.</th>
+                    <th>Pend.</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -82,7 +83,8 @@
                         <td><?php echo format_interval($element->banios_desde,$element->banios_hasta); ?></td>
                         <td><?php echo $this->utilities->cortar_texto($element->observaciones,50); ?></td>
                         <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
-                        <td><?php //echo count($element->inmuebles); ?></td>
+                        <td><?php echo $element->num_inmuebles_propuestos; ?></td>
+                        <td><?php echo $element->num_inmuebles_pendientes; ?></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url($_controller."/edit/" . $element->id); ?>" title="Editar">
@@ -230,6 +232,7 @@
                 null,
                 null,
                 {"sType": "date-euro"},
+                null,
                 null,
                 null
             ]

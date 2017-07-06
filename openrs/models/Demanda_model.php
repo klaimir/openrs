@@ -621,7 +621,10 @@ class Demanda_model extends MY_Model
             foreach ($results as $result)
             {
                 $result->tipos_inmuebles=$this->Demanda_tipo_inmueble_model->get_nombres_tipos_inmuebles_demanda($result->id);
-                $result->zonas=$this->Demanda_zona_model->get_nombres_zonas_demanda($result->id);
+                $result->zonas=$this->Demanda_zona_model->get_nombres_zonas_demanda($result->id);                
+                // Consulta de inmuebles
+                $result->num_inmuebles_propuestos = count($this->get_inmuebles_demanda($result->id));
+                $result->num_inmuebles_pendientes = count($this->get_inmuebles_demanda($result->id,1));
             }
         }
         return $results;
@@ -1390,6 +1393,22 @@ class Demanda_model extends MY_Model
         $this->load->model('Inmueble_demanda_model');
         // Consulta de demandas
         return $this->Inmueble_demanda_model->get_demandas_inmueble($inmueble_id,$evaluacion_id);
+    }
+    
+    /**
+     * Devuelve los inmuebles de una demanda
+     *
+     * @param [$demanda_id]		Identificador de la demanda
+     * 
+     * @return Array con la información de las demandas asociada
+     */
+    
+    function get_inmuebles_demanda($demanda_id,$evaluacion_id=NULL)
+    {
+        // Modelos axiliares
+        $this->load->model('Inmueble_demanda_model');
+        // Consulta de demandas
+        return $this->Inmueble_demanda_model->get_inmuebles_demanda($demanda_id,$evaluacion_id);
     }
     
     /**

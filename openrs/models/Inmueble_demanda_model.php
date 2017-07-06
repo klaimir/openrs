@@ -145,4 +145,24 @@ class Inmueble_demanda_model extends MY_Model
         return $this->db->get()->result();
     }
     
+    /**
+     * Devuelve los inmuebles de una demanda
+     *
+     * @param [$demanda_id]		Identificador de la demanda
+     * 
+     * @return Array con la información de las demandas asociada
+     */
+    
+    function get_inmuebles_demanda($demanda_id,$evaluacion_id=NULL)
+    {
+        $this->db->select('inmueble_id');
+        $this->db->from('inmuebles_demandas');
+        $this->db->where("demanda_id",$demanda_id);
+        if(!is_null($evaluacion_id))
+        {
+            $this->db->where("evaluacion_id",$evaluacion_id);
+        }
+        return $this->db->get()->result();
+    }
+    
 }
