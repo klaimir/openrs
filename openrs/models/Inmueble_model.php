@@ -773,13 +773,60 @@ class Inmueble_model extends MY_Model
         // Devolvemos error
         return FALSE;
     }
-
+    
     /**
-     * Lee los inmuebles en formato vista según los filtros indicados
+     * Lee los inmuebles en formato con los filtros indicados en una demanda
      *
-     * @return array de datos de plantilla
+     * @return array de datos
      */
-    function get_by_filtros($filtros = NULL)
+    function get_by_filtros_demandas($filtros = NULL)
+    {
+        $this->db->select($this->table.'.id');
+        // Filtros generales
+        $this->procesar_filtros_generales($filtros);
+        // Filtro certificación energética minima
+        if (isset($filtros['certificacion_energetica_minima_id']) && $filtros['certificacion_energetica_minima_id'] >= 0)
+        {
+            $this->db->where('certificacion_energetica_id <= ', $filtros['certificacion_energetica_minima_id']);
+        }
+        // Años de construcción
+        if (isset($filtros['anio_construccion_desde']) && $filtros['anio_construccion_desde'] != "")
+        {
+            $this->db->where('anio_construccion >=', $filtros['anio_construccion_desde']);
+        }
+        if (isset($filtros['anio_construccion_hasta']) && $filtros['anio_construccion_hasta'] != "")
+        {
+            $this->db->where('anio_construccion <=', $filtros['anio_construccion_hasta']);
+        }
+        // Filtro Zonas
+        if (isset($filtros['zonas']) && is_array($filtros['zonas']))
+        {
+            $this->db->where_in('zona_id', $filtros['zonas']);
+        }
+        // Filtro Tipos
+        if (isset($filtros['tipos_inmuebles']) && is_array($filtros['tipos_inmuebles']))
+        {
+            $this->db->where_in('tipo_id', $filtros['tipos_inmuebles']);
+        }
+        // For testing
+        //var_dump($filtros);
+        // Consulta
+        $this->db->from($this->table);
+        $this->db->join('poblaciones', $this->table.'.poblacion_id=poblaciones.id');
+        $this->db->join('provincias', 'poblaciones.provincia_id=provincias.id');
+        // Sólo inmuebles en estados que no sean histórico
+        $this->db->join('estados', $this->table.'.estado_id=estados.id')->where('historico', 0);
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Aplica los filtros a una determinada consulta
+     *
+     * @param [$filtros]                  Filtros a aplicar
+     *
+     * @return void
+     */
+    function procesar_filtros_generales($filtros)
     {
         // Filtro Tipo de inmueble
         if (isset($filtros['tipo_id']) && $filtros['tipo_id'] >= 0)
@@ -875,43 +922,54 @@ class Inmueble_model extends MY_Model
             $this->db->where('fecha_alta <=', $this->utilities->cambiafecha_form($filtros['fecha_hasta']));
         }
         // Baños
-        if (isset($filtros['banios_desde']) && $filtros['banios_desde'] != "")
+        if (isset($filtros['banios_desde']) && $filtros['banios_desde'] >0)
         {
             $this->db->where('banios >=', $filtros['banios_desde']);
         }
-        if (isset($filtros['banios_hasta']) && $filtros['banios_hasta'] != "")
+        if (isset($filtros['banios_hasta']) && $filtros['banios_hasta'] >0)
         {
             $this->db->where('banios <=', $filtros['banios_hasta']);
         }
         // Habitaciones
-        if (isset($filtros['habitaciones_desde']) && $filtros['habitaciones_desde'] != "")
+        if (isset($filtros['habitaciones_desde']) && $filtros['habitaciones_desde'] >0)
         {
             $this->db->where('habitaciones >=', $filtros['habitaciones_desde']);
         }
-        if (isset($filtros['habitaciones_hasta']) && $filtros['habitaciones_hasta'] != "")
+        if (isset($filtros['habitaciones_hasta']) && $filtros['habitaciones_hasta'] >0)
         {
             $this->db->where('habitaciones <=', $filtros['habitaciones_hasta']);
         }
         // Metros
-        if (isset($filtros['metros_desde']) && $filtros['metros_desde'] != "")
+        if (isset($filtros['metros_desde']) && $filtros['metros_desde'] >0)
         {
             $this->db->where('metros >=', $filtros['metros_desde']);
         }
-        if (isset($filtros['metros_hasta']) && $filtros['metros_hasta'] != "")
+        if (isset($filtros['metros_hasta']) && $filtros['metros_hasta'] >0)
         {
             $this->db->where('metros <=', $filtros['metros_hasta']);
         }
         // Precios
-        if (isset($filtros['precios_desde']) && $filtros['precios_desde'] != "")
+        if (isset($filtros['precios_desde']) && $filtros['precios_desde'] != '')
         {
             $precio_desde=$filtros['precios_desde'];
             $this->db->where("((precio_compra <> 0 AND precio_compra >= '$precio_desde') OR (precio_alquiler <> 0 AND precio_alquiler >= '$precio_desde'))");
         }
-        if (isset($filtros['precios_hasta']) && $filtros['precios_hasta'] != "")
+        if (isset($filtros['precios_hasta']) && $filtros['precios_hasta']  != '')
         {
             $precio_hasta=$filtros['precios_hasta'];
             $this->db->where("((precio_compra <> 0 AND precio_compra <= '$precio_hasta') OR (precio_alquiler <> 0 AND precio_alquiler <= '$precio_hasta'))");
         }
+    }
+
+    /**
+     * Lee los inmuebles en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_by_filtros($filtros = NULL)
+    {
+        // Filtros generales
+        $this->procesar_filtros_generales($filtros);
         // Idioma
         if (isset($filtros['idioma_id']) && $filtros['idioma_id'] != "")
         {

@@ -70,5 +70,9 @@ class Demandas extends MY_Controller
         }
     }
     
-
+    function check_inmuebles_coincidentes_filtros($demanda_id)
+    {
+        $this->load->model('Demanda_model');
+        $this->Demanda_model->check_inmuebles_coincidentes_filtros($demanda_id);
+    }
 }

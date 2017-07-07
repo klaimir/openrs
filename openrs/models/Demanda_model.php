@@ -465,6 +465,95 @@ class Demanda_model extends MY_Model
             return FALSE;
         }
     }    
+    
+    /**
+     * Transforma
+     *
+     * @param [demanda]                  Datos completos de la demanda
+     *
+     * @return void
+     */
+    function _convert_to_filters_inmuebles($demanda)
+    {
+        $filtros=$demanda;
+        // Filtros que hay que cambiar nomenclatura
+        $filtros['certificacion_energetica_minima_id']=$demanda['certificacion_energetica_id'];
+        $filtros['precios_desde']=$demanda['precio_desde'];
+        $filtros['precios_hasta']=$demanda['precio_hasta'];
+        // Filtros que no sirven
+        $filtros['modificacion_precio_id']=0;
+        unset($filtros['estado_id']);
+        unset($filtros['certificacion_energetica_id']);
+        return $filtros;
+    }
+    
+    /**
+     * Comprueba que inmuebles cumplen con los criterios seleccionados de búsqueda y los asigna a la demanda
+     *
+     * @param [id]                  Indentificador del elemento
+     *
+     * @return void
+     */
+    function check_inmuebles_coincidentes_filtros($demanda_id)
+    {
+        // Modelos axiliares
+        $this->load->model('Inmueble_model');
+        $this->load->model('Inmueble_demanda_model');
+        
+        // Consultamos información del inmueble de forma eficiente
+        $demanda=$this->get_info_array($demanda_id);
+        // sólo vamos a analizar demandas con filtros especificados y que no sean históricas
+        if($demanda['tipo_demanda_id']==1 || $demanda['estado']->historico) return TRUE;
+        
+        $filtros=$this->_convert_to_filters_inmuebles($demanda);
+        $inmuebles_seleccionados = $this->utilities->get_keys_objects_array($this->Inmueble_model->get_by_filtros_demandas($filtros), 'id');  
+                
+        // For testing
+        //var_dump($inmuebles_seleccionados);
+
+        // Inmuebles para borrar
+        $inmuebles_seleccionados_anteriormente=$this->utilities->get_keys_objects_array($this->Inmueble_demanda_model->get_inmuebles_demanda($demanda_id,1,1), 'inmueble_id');
+        $inmuebles_asignados=$this->utilities->get_keys_objects_array($this->Inmueble_demanda_model->get_inmuebles_demanda($demanda_id), 'inmueble_id');
+        
+        // For testing
+        //var_dump($inmuebles_seleccionados_anteriormente);
+        //var_dump($inmuebles_asignados);
+        
+        // Datos de demanda
+        $datos['demanda_id']=$demanda_id;
+        
+        // Asignación
+        if(count($inmuebles_seleccionados))
+        {
+            foreach ($inmuebles_seleccionados as $inmueble_id)
+            {
+                if(!in_array($inmueble_id, $inmuebles_asignados))
+                {
+                    $datos['inmueble_id']=$inmueble_id;
+                    $datos['origen_id']=1;
+                    $datos['evaluacion_id']=1;
+                    $datos['fecha_asignacion']=date("Y-m-d");
+                    $this->Inmueble_demanda_model->insert($datos); 
+                }
+            }
+        }
+        
+        // Borrado
+        $datos_delete['demanda_id']=$demanda_id;
+        if(count($inmuebles_seleccionados_anteriormente))
+        {
+            foreach ($inmuebles_seleccionados_anteriormente as $inmueble_id)
+            {
+                if(!in_array($inmueble_id, $inmuebles_seleccionados))
+                {
+                    $datos_delete['inmueble_id']=$inmueble_id;
+                    $this->Inmueble_demanda_model->delete($datos_delete); 
+                }
+            }
+        }
+        
+        return TRUE;
+    }
 
     /**
      * Formatea los datos introducidos por el usuario y actualiza un registro en la base de datos
@@ -484,7 +573,11 @@ class Demanda_model extends MY_Model
         {
             if($this->asignar_tipos_inmuebles($id,$formatted_datas['tipos_inmuebles_seleccionados']));
             {
-                return $this->asignar_zonas($id,$formatted_datas['zonas_seleccionadas']);
+                if($this->asignar_zonas($id,$formatted_datas['zonas_seleccionadas']))
+                {
+                    // Realizamos encuadre de datos
+                    return $this->check_inmuebles_coincidentes_filtros($id);                    
+                }
             }
         }
         // Devolvemos error
@@ -702,7 +795,7 @@ class Demanda_model extends MY_Model
      *
      * @return array con toda la información del demanda
      */
-    function get_info($id)
+    function get_info($id,$get_propuestos=TRUE)
     {
         $info = $this->get($id);
         if ($info)
@@ -715,7 +808,10 @@ class Demanda_model extends MY_Model
             $info->tipos_inmuebles = $this->get_tipos_inmuebles_asignados($id);
             $info->zonas = $this->get_zonas_asignadas($id);            
 
-            $info->inmuebles_propuestos = $this->get_inmuebles_propuestos($id);
+            if($get_propuestos)
+            {
+                $info->inmuebles_propuestos = $this->get_inmuebles_propuestos($id);
+            }
             
             //$info->opciones_extras = $this->Demanda_opcion_extra_model->get_opciones_extras_inmueble($id);
             //$info->lugares_interes = $this->Demanda_lugar_interes_model->get_lugares_interes_inmueble($id);
@@ -728,7 +824,33 @@ class Demanda_model extends MY_Model
         }
     }    
     
-     
+     /**
+     * Devuelve toda la información de un demanda
+     *
+     * @return array con toda la información del demanda
+     */
+    function get_info_array($id,$get_propuestos=FALSE)
+    {
+        $info = $this->as_array()->with_estado()->get($id);
+        if ($info)
+        {            
+            // Consulta de datos
+            $info['tipos_inmuebles'] = $this->get_tipos_inmuebles_asignados($id);
+            $info['zonas'] = $this->get_zonas_asignadas($id);            
+
+            if($get_propuestos)
+            {
+                $info['inmuebles_propuestos'] = $this->get_inmuebles_propuestos($id);
+            }
+            //var_dump($info); die();
+            // Devolvemos toda la información calculada
+            return $info;
+        }
+        else
+        {
+            return NULL;
+        }
+    } 
     
     /**
      * Asigna los elementos indicados a la demanda, borra el resto
