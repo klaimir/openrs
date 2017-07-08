@@ -238,11 +238,11 @@ if(isset($inmueble_id))
         }
         else
         {
-            $('#tipo_id').val('');
+            $('#tipos_id').val('');
             $('#certificacion_energetica_id').val('');
             $('#provincia_id').val('');
             $('#poblacion_id').val('');
-            $('#zona_id').val('');  
+            $('#zonas_id').val('');  
             $('#fecha_desde').val('');
             $('#fecha_hasta').val('');
             $('#banios_desde').val('');
@@ -259,8 +259,9 @@ if(isset($inmueble_id))
             $('#datos_especificos').hide();
             // Resetear los valores no es suficiente para los chosen select, hay que hacer esto tb
             $('#poblacion_id').html('<span>- Seleccione -</span><div><b></b></div>');
-            $('#zona_id').html('<span>- Seleccione -</span><div><b></b></div>');
-            $('#tipo_id').html('<span>- Seleccione -</span><div><b></b></div>');
+            $('#zonas_id').html('<span>- Seleccione -</span><div><b></b></div>');
+            // Esto último lo habilitaremos si ponemos el boostrap multiselect sólamente
+            //$('#tipos_id').html('<span>- Seleccione -</span><div><b></b></div>');
         }
     }
 

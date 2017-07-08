@@ -736,6 +736,8 @@ class Inmueble_model extends MY_Model
             }
             // Si está definido el cliente
             $this->asignar_cliente($id,$cliente_id);
+            // Buscamos si casa con alguna demanda
+            $this->check_demandas_coincidentes_filtros($id);
             // Devolvemos id
             return $id;
         }
@@ -744,6 +746,39 @@ class Inmueble_model extends MY_Model
             $this->set_error(lang('common_error_insert'));
             return FALSE;
         }
+    }
+    
+    /**
+     * Comprueba que demandas cumplen con las características del inmuebles y los asigna a la demanda
+     *
+     * @param [id]                  Indentificador del elemento
+     *
+     * @return void
+     */
+    function check_demandas_coincidentes_filtros($id)
+    {
+        // Modelos axiliares
+        $this->load->model('Demanda_model');
+        
+        // Consultamos información del inmueble de forma eficiente
+        $inmueble=$this->with_estado()->get($id);
+        // sólo vamos a analizar inmuebles que no sean históricas
+        if($inmueble->estado->historico) return TRUE;
+        
+        // Seleccionamos demandas que no sean históricas y que tengan filtro especificado
+        $demandas=$this->Demanda_model->get_demandas_aplicar_filtros_busqueda();
+        //var_dump($demandas);
+        
+        // Para cada demanda, aplicamos su algoritmo de búsqueda
+        if($demandas)
+        {
+            foreach ($demandas as $demanda)
+            {
+                $this->Demanda_model->check_inmuebles_coincidentes_filtros($demanda->id);
+            }
+        }
+        
+        return TRUE;
     }
 
     /**
@@ -767,6 +802,8 @@ class Inmueble_model extends MY_Model
             $result_idiomas = $this->Inmueble_idiomas_model->save_datos_idiomas($id, $this->get_formatted_datas_idiomas());
             // Testear resultado devuelto por save_datos_idiomas
             //var_dump($result_idiomas); die();
+            // Buscamos si casa con alguna demanda
+            $this->check_demandas_coincidentes_filtros($id);
             // Devolverá TRUE OR FALSE;
             return $result_idiomas;
         }
@@ -799,12 +836,12 @@ class Inmueble_model extends MY_Model
             $this->db->where('anio_construccion <=', $filtros['anio_construccion_hasta']);
         }
         // Filtro Zonas
-        if (isset($filtros['zonas']) && is_array($filtros['zonas']))
+        if (isset($filtros['zonas']) && is_array($filtros['zonas']) && count($filtros['zonas'])>0)
         {
             $this->db->where_in('zona_id', $filtros['zonas']);
         }
         // Filtro Tipos
-        if (isset($filtros['tipos_inmuebles']) && is_array($filtros['tipos_inmuebles']))
+        if (isset($filtros['tipos_inmuebles']) && is_array($filtros['tipos_inmuebles']) && count($filtros['zonas'])>0)
         {
             $this->db->where_in('tipo_id', $filtros['tipos_inmuebles']);
         }

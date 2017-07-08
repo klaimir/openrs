@@ -456,6 +456,8 @@ class Demanda_model extends MY_Model
             $this->asignar_zonas($id,$formatted_datas['zonas_seleccionadas']);
             // Si está definido el inmueble
             $this->asignar_inmueble($id,$formatted_datas['inmueble_id']);
+            // Realizamos encuadre de inmuebles que se ajusten a los criterios de la demanda
+            $this->check_inmuebles_coincidentes_filtros($id);
             // Devolvemos id
             return $id;
         }
@@ -488,9 +490,24 @@ class Demanda_model extends MY_Model
     }
     
     /**
+     * Devuelve demandas que no sean históricas y que tengan filtro especificado
+     * 
+     * @return Array de demandas
+     */
+    
+    function get_demandas_aplicar_filtros_busqueda()
+    {
+        $this->db->select($this->table.'.id');
+        $this->db->from($this->table);
+        $this->db->join('estados', $this->table.'.estado_id='.'estados.id')->where("historico",0);
+        $this->db->where("tipo_demanda_id",2);
+        return $this->db->get()->result();
+    }
+    
+    /**
      * Comprueba que inmuebles cumplen con los criterios seleccionados de búsqueda y los asigna a la demanda
      *
-     * @param [id]                  Indentificador del elemento
+     * @param [$demanda_id]                  Indentificador de la demanda
      *
      * @return void
      */
@@ -502,8 +519,16 @@ class Demanda_model extends MY_Model
         
         // Consultamos información del inmueble de forma eficiente
         $demanda=$this->get_info_array($demanda_id);
+        //var_dump($demanda_id);
+        //var_dump($demanda);
+        
         // sólo vamos a analizar demandas con filtros especificados y que no sean históricas
-        if($demanda['tipo_demanda_id']==1 || $demanda['estado']->historico) return TRUE;
+        if($demanda['tipo_demanda_id']==1 || $demanda['estado']->historico) 
+        {
+            // Antes hay que borrar cualquier inmueble pendiente si lo hubiera
+            $this->Inmueble_demanda_model->delete_inmuebles_seleccionados_anteriormente_demanda($demanda_id);
+            return TRUE;
+        }
         
         $filtros=$this->_convert_to_filters_inmuebles($demanda);
         $inmuebles_seleccionados = $this->utilities->get_keys_objects_array($this->Inmueble_model->get_by_filtros_demandas($filtros), 'id');  
@@ -575,7 +600,7 @@ class Demanda_model extends MY_Model
             {
                 if($this->asignar_zonas($id,$formatted_datas['zonas_seleccionadas']))
                 {
-                    // Realizamos encuadre de datos
+                    // Realizamos encuadre de inmuebles que se ajusten a los criterios de la demanda
                     return $this->check_inmuebles_coincidentes_filtros($id);                    
                 }
             }
@@ -747,6 +772,34 @@ class Demanda_model extends MY_Model
         $tipo_demandas = $this->get_tipos_demandas_dropdown();
         return $tipo_demandas[$id];
     }
+    
+    /**
+     * Devuelve los datos formateado para una duplicación
+     *
+     * @return array con los datos formateado
+     */
+    public function get_formatted_datas_duplicar($demanda)
+    {
+        // Demanda id
+        $demanda_id=$demanda->id;
+        // Conversión de Datos
+        unset($demanda->id);
+        $demanda->referencia = uniqid();
+        $demanda->fecha_alta = date("Y-m-d");
+        unset($demanda->fecha_actualizacion);
+        $datos_formateados['demanda']=$demanda;
+        
+        // Datos de tipos de inmuebles
+        $datos_formateados['tipos_inmuebles_seleccionados']=$this->get_tipos_inmuebles_asignados($demanda_id);
+        
+        // Datos de zonas
+        $datos_formateados['zonas_seleccionadas']=$this->get_zonas_asignadas($demanda_id);
+        
+        // Inmueble asociado
+        $datos_formateados['inmueble_id']=NULL;
+        
+        return $datos_formateados;
+    }
 
     /**
      * Duplica los datos de un demanda
@@ -755,13 +808,10 @@ class Demanda_model extends MY_Model
      */
     function duplicar($demanda)
     {
-        // Conversión de Datos
-        unset($demanda->id);
-        $demanda->referencia = uniqid();
-        $demanda->fecha_alta = date("Y-m-d");
-        unset($demanda->fecha_actualizacion);
+        // Obtenemos los datos formateados para la demanda
+        $datos_formateados=$this->get_formatted_datas_duplicar($demanda);        
         // Crear duplicado
-        return $this->create($demanda);
+        return $this->create($datos_formateados);
     }
     
     /**

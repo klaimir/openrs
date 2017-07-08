@@ -169,4 +169,21 @@ class Inmueble_demanda_model extends MY_Model
         return $this->db->get()->result();
     }
     
+    /**
+     * Elimina los inmuebles de origen OPENRS y pendientes de REVISAR asignados a una demanda
+     *
+     * @param [$demanda_id]                  Indentificador de la demanda
+     *
+     * @return void
+     */
+    function delete_inmuebles_seleccionados_anteriormente_demanda($demanda_id)
+    {
+        // Formatted datas
+        $where['demanda_id']=$demanda_id;
+        $where['evaluacion_id']=1;
+        $where['origen_id']=1;
+        // Delete
+        return $this->delete($where);
+    }
+    
 }
