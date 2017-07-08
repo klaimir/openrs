@@ -1,6 +1,6 @@
 <div class="page-header">
     <h1>
-        Clientes
+        Inmuebles
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             Importar

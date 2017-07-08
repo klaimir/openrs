@@ -1664,6 +1664,7 @@ class Inmueble_model extends MY_Model
         $datos['estado_id'] = $data['estado_id'];
         $datos['poblacion_id'] = $data['poblacion_id'];
         $datos['zona_id'] = $this->utilities->get_sql_value_string($data['zona_id'], "defined", $data['zona_id'], NULL);
+        $datos['captador_id'] = $this->data['session_user_id'];
 
         return $datos;
     }
