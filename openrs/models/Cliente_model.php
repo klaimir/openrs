@@ -438,12 +438,13 @@ class Cliente_model extends MY_Model
     {
         // Conversión de Datos
         unset($cliente->id);
-        $cliente->nif = '';
-        $cliente->correo = '';
+        // Ponemos estos ids para que no de error de unique constraint
+        $cliente->nif = uniqid();
+        $cliente->correo = uniqid();
         unset($cliente->fecha_alta);
         unset($cliente->fecha_actualizacion);
         // Crear duplicado
-        return $this->insert($cliente);
+        return $this->create($cliente);
     }
 
     /**
@@ -911,6 +912,7 @@ class Cliente_model extends MY_Model
         $datos['pais_id'] = $data['pais_id'];
         $datos['estado_id'] = $data['estado_id'];
         $datos['poblacion_id'] = $data['poblacion_id'];
+        $datos['agente_asignado_id'] = $this->data['session_user_id'];
 
         return $datos;
     }
