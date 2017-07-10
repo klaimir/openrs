@@ -446,6 +446,30 @@ class Cliente_model extends MY_Model
         // Crear duplicado
         return $this->create($cliente);
     }
+    
+    /**
+     * Devuelve el identificador del cliente que coincide con el email indicado
+     *
+     * @param [$email]		E-mail del cliente
+     * 
+     * @return Int con el identificador del cliente
+     */
+    
+    function get_id_by_email($email)
+    {
+        $this->db->select($this->table.'.id');
+        $this->db->from($this->table);
+        $this->db->where("correo",$email);
+        $row=$this->db->get()->row();
+        if($row)
+        {
+            return $row->id;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
 
     /**
      * Devuelve un array de intereses en formato dropdown

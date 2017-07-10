@@ -30,6 +30,7 @@
         <table class="table table-striped table-bordered table-hover" id="tabgrid_import_validation">
             <thead>
                 <tr>
+                    <th>Propietario</th>
                     <th>Referencia</th>
                     <th>Tipo</th>
                     <th>Fecha Alta</th>
@@ -60,6 +61,7 @@
                     {
                     ?>
                     <tr <?php if ($element['error']) echo 'class="danger"'; ?>>
+                        <td><?php echo $element['email_cliente']; ?></td>  
                         <td><?php echo $element['referencia']; ?></td>  
                         <td><?php echo $element['nombre_tipo']; ?></td>    
                         <td><?php echo $element['fecha_alta']; ?></td>
@@ -98,7 +100,8 @@
             "iDisplayLength": 100,
             "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
             "aoColumns": [
-                null,                
+                null, 
+                null,
                 null,
                 {"sType": "date-euro"},
                 null,

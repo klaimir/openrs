@@ -1,0 +1,15 @@
+Referencia;Tipo;Fecha Alta;Provincia;Municipio;Zona;Dirección;Metros;Metros útiles;Hab.;Baños;Precio Compra;Precio Compra Anterior;Precio Alquiler;Precio Alquiler Anterior;Cert. Energ.;Año Construcción;Estado;Observaciones;Propietario
+REF0001;Vivienda piso;01/06/2017;Almería;Almería;;calle granada;50;50;2;1;200000;0;0;0;Exento;;Captación;;
+REF0002;Vivienda piso;02/06/2017;Almería;Almería;;carretera granada;70;70;3;2;300000;0;0;0;Exento;;Captación;;
+REF0003;Vivienda piso;03/06/2017;Almería;Almería;;avenida del mediterraneo;100;100;4;3;400000;0;0;0;Exento;;Captación;;
+REF0006;Vivienda unifamiliar;12/06/2017;Cádiz;Cádiz;;Avenida marconi, 10;60;50;1;1;125000;150000;0;0;En trámite;1995;Captación;jur jur;
+5944ea26a1ab8;Vivienda unifamiliar;17/06/2017;Cádiz;Cádiz;Centro;Catedral;60;52;1;1;0;0;600;0;En trámite;0;Captación;;noexiste@gmail.com
+REF0005;Oficina;09/06/2017;Almería;Almería;No existe;Calle Obispo Orberá, 5;400;350;4;1;135000;140000;500;525;Exento;1982;Captación;Esta es una oficina en el centro;
+59515d52a7091;Oficina;26/06/2017;Almería;Almería;Centro;Calle Obispo Orberá,1, bajo;400;350;4;1;135000;0;500;0;Exento;1982;Captación;Esta es una oficina en el centro;
+59515d6d021ea;Oficina;26/06/2017;Almería;Almería;Centro;Calle Obispo Orberá,1, bajo;400;350;4;1;135000;0;500;0;Exento;1982;Captación;Esta es una oficina en el centro;
+REF0004;Casa Grande;05/06/2017;Cádiz;Cádiz;;Calle Benjumeda;90;84;2;1;50000;0;0;0;En trámite;2009;En construcción;;
+REF0010;Casa Grande;15/06/2017;Cádiz;Cádiz;Centro;Calle Rosa;60;50;1;1;40000;0;0;0;D;1990;Captación;Correcto;
+DEM0200;Casa Grande;26/06/2017;Cádiz;Cádiz;;Calle Doctor Flemming, 11;100;90;3;2;450000;0;0;0;C;2009;Captación;;
+5943f77c20f59;Casa Grande;15/06/2017;Cádiz;Cádiz;Centro;Calle Chile, 2;60;50;1;1;100000;90000;0;0;D;1990;Captación;Correcto;
+595f8dec1f807;Casa Grande;07/07/2017;Cádiz;Cádiz;Centro;Calle Chile, 2;60;50;1;1;100000;90000;0;0;D;1990;Captación;Correcto;
+595225d56466d;Casa Grande;27/06/2017;Cádiz;Cádiz;Centro;Calle Rosa;60;50;1;1;40000;0;0;0;D;1990;Captación;Correcto;angel.berasuain@gmail.com

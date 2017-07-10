@@ -1453,6 +1453,8 @@ class Inmueble_model extends MY_Model
         // Comprobación
         if (file_exists($filename))
         {
+            // Modelos auxiliares
+            $this->load->model('Cliente_model');
             // Cargamos librería CSVReader
             $this->load->library('CSVReader');
             // Leemos los datos
@@ -1473,7 +1475,7 @@ class Inmueble_model extends MY_Model
 
                     $cont_columnas=0;
                     
-                    // Asignación datos
+                    // Asignación datos                    
                     $linedata['referencia'] = @$data_csv[$cont_columnas++];
                     $linedata['nombre_tipo'] = @$data_csv[$cont_columnas++];
                     $linedata['fecha_alta'] = @$data_csv[$cont_columnas++];
@@ -1493,6 +1495,7 @@ class Inmueble_model extends MY_Model
                     $linedata['anio_construccion'] = @$data_csv[$cont_columnas++];
                     $linedata['nombre_estado'] = @$data_csv[$cont_columnas++];
                     $linedata['observaciones'] = @$data_csv[$cont_columnas++];
+                    $linedata['email_cliente'] = @$data_csv[$cont_columnas++];
 
                     // Conversión de todos los elementos del array                
                     $linedata = $this->utilities->encoding_array($linedata, 'windows-1252', 'UTF-8//IGNORE');
@@ -1568,6 +1571,22 @@ class Inmueble_model extends MY_Model
     {
         // Procesar datos
         $error = FALSE;
+        
+        // Email cliente
+        if(empty($linedata['email_cliente']))
+        {
+            $linedata['email_cliente'].=' <span class="label label-success">Sin especificar</span>';
+            $linedata['cliente_id'] = NULL;
+        }
+        else
+        {
+            $linedata['cliente_id'] = $this->Cliente_model->get_id_by_email($linedata['email_cliente']);
+            if (empty($linedata['cliente_id']))
+            {
+                $linedata['email_cliente'].=' <span class="label label-warning">No existe</span>';
+                $error = TRUE;
+            }
+        }
 
         // Comprueba que no está repetido
         if (!is_null($referencias_importados))
@@ -1622,11 +1641,20 @@ class Inmueble_model extends MY_Model
             else
             {
                 // Zona
-                $linedata['zona_id'] = $this->Zona_model->get_id_by_nombre($linedata['nombre_zona'], $linedata['poblacion_id']);
-                if (!$linedata['zona_id'])
+                if(empty($linedata['nombre_zona']))
                 {
-                    $linedata['nombre_zona'].=' <span class="label label-success">No existe</span>';
+                    $linedata['nombre_zona'].=' <span class="label label-success">Sin especificar</span>';
+                    $linedata['zona_id'] = NULL;
                 }
+                else
+                {
+                    $linedata['zona_id'] = $this->Zona_model->get_id_by_nombre($linedata['nombre_zona'], $linedata['poblacion_id']);
+                    if (!$linedata['zona_id'])
+                    {
+                        $linedata['nombre_zona'].=' <span class="label label-warning">No existe</span>';
+                        $error = TRUE;
+                    }
+                }                
             }
         }
 
@@ -1644,29 +1672,34 @@ class Inmueble_model extends MY_Model
      */
     public function get_csv_formatted_datas($data)
     {
-        $datos = array();
-                    
-        $datos['referencia'] = $data['referencia'];
-        $datos['metros'] = $data['metros'];
-        $datos['metros_utiles'] = $data['metros_utiles'];
-        $datos['habitaciones'] = $data['habitaciones'];
-        $datos['banios'] = $data['banios'];
-        $datos['anio_construccion'] = $data['anio_construccion'];
-        $datos['fecha_alta'] = $this->utilities->cambiafecha_form($data['fecha_alta']);
-        $datos['direccion'] = $data['direccion'];
-        $datos['observaciones'] = $data['observaciones'];
-        $datos['precio_compra'] = $data['precio_compra'];
-        $datos['precio_compra_anterior'] = $data['precio_compra_anterior'];
-        $datos['precio_alquiler'] = $data['precio_alquiler'];
-        $datos['precio_alquiler_anterior'] = $data['precio_alquiler_anterior'];
-        $datos['tipo_id'] = $data['tipo_id'];
-        $datos['certificacion_energetica_id'] = $data['certificacion_energetica_id'];
-        $datos['estado_id'] = $data['estado_id'];
-        $datos['poblacion_id'] = $data['poblacion_id'];
-        $datos['zona_id'] = $this->utilities->get_sql_value_string($data['zona_id'], "defined", $data['zona_id'], NULL);
-        $datos['captador_id'] = $this->data['session_user_id'];
+        // Datos del inmueble
+        $datos_inmueble = array();
+             
+        $datos_inmueble['referencia'] = $data['referencia'];
+        $datos_inmueble['metros'] = $data['metros'];
+        $datos_inmueble['metros_utiles'] = $data['metros_utiles'];
+        $datos_inmueble['habitaciones'] = $data['habitaciones'];
+        $datos_inmueble['banios'] = $data['banios'];
+        $datos_inmueble['anio_construccion'] = $data['anio_construccion'];
+        $datos_inmueble['fecha_alta'] = $this->utilities->cambiafecha_form($data['fecha_alta']);
+        $datos_inmueble['direccion'] = $data['direccion'];
+        $datos_inmueble['observaciones'] = $data['observaciones'];
+        $datos_inmueble['precio_compra'] = $data['precio_compra'];
+        $datos_inmueble['precio_compra_anterior'] = $data['precio_compra_anterior'];
+        $datos_inmueble['precio_alquiler'] = $data['precio_alquiler'];
+        $datos_inmueble['precio_alquiler_anterior'] = $data['precio_alquiler_anterior'];
+        $datos_inmueble['tipo_id'] = $data['tipo_id'];
+        $datos_inmueble['certificacion_energetica_id'] = $data['certificacion_energetica_id'];
+        $datos_inmueble['estado_id'] = $data['estado_id'];
+        $datos_inmueble['poblacion_id'] = $data['poblacion_id'];
+        $datos_inmueble['zona_id'] = $this->utilities->get_sql_value_string($data['zona_id'], "defined", $data['zona_id'], NULL);
+        $datos_inmueble['captador_id'] = $this->data['session_user_id'];
+        $datos_formateados['inmueble'] = $datos_inmueble;
+        
+        // Propietario asociado
+        $datos_formateados['cliente_id'] = $data['cliente_id'];
 
-        return $datos;
+        return $datos_formateados;
     }
 
     /**
@@ -1685,8 +1718,10 @@ class Inmueble_model extends MY_Model
             {
                 if (!$data['error'])
                 {
+                    // Datos formateados
+                    $datos_formateados=$this->get_csv_formatted_datas($data);
                     // Creación
-                    $id = $this->create($this->get_csv_formatted_datas($data));
+                    $id = $this->create($datos_formateados['inmueble'],$datos_formateados['cliente_id']);
                     //Fin comprobaciones
                     $importdata[$key]['importado'] = ($id) ? TRUE : FALSE;
                 }
