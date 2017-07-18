@@ -50,16 +50,16 @@
 		);
  
 	/* Y la configuración del kcfinder, la debemos poner así si estamos trabajando en local */
-	$config_mini['filebrowserBrowseUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/browse.php";
-	$config_mini['filebrowserImageBrowseUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/browse.php?type=images";
-	$config_mini['filebrowserUploadUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/upload.php?type=files";
-	$config_mini['filebrowserImageUploadUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/upload.php?type=images";
-	/*$_SESSION['KCFINDER'] = array();
+	$config_mini['filebrowserBrowseUrl'] = base_url()."assets/admin/ckeditor/kcfinder/browse.php";
+	$config_mini['filebrowserImageBrowseUrl'] = base_url()."assets/admin/ckeditor/kcfinder/browse.php?type=images";
+	$config_mini['filebrowserUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=files";
+	$config_mini['filebrowserImageUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=images";
+	$_SESSION['KCFINDER'] = array();
 	$_SESSION['KCFINDER']['disabled'] = false; // Activate the uploader, Users to this page MUST be authenticated
 	$_SESSION['KCFINDER']['uploadURL'] = "/uploads/".$this->ion_auth->user()->row()->id; // Based on my second folder structure
-	*/
 	
-	echo $this->ckeditor->editor('contenido_1', $it['form_group']['value'], $config_mini);
+	
+	echo $this->ckeditor->editor('contenido_'.$idioma->id_idioma, $it['form_group']['value'], $config_mini);
 	?>
 								<?php //$this->load->view('bootstrap/form_input',$it);?>
 							<?php endforeach;?>

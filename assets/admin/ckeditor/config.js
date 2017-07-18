@@ -20,7 +20,7 @@ CKEDITOR.editorConfig = function( config ){
 
    config.filebrowserBrowseUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/browse.php';
    config.filebrowserImageBrowseUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/browse.php?type=images';
-   config.filebrowserFlashBrowseUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder//browse.php?type=flash';
+   config.filebrowserFlashBrowseUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/browse.php?type=flash';
    config.filebrowserUploadUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/upload.php?type=files';
    config.filebrowserImageUploadUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/upload.php?type=images';
    config.filebrowserFlashUploadUrl = 'http://localhost/openrs/assets/admin/ckeditor/kcfinder/upload.php?type=flash';
