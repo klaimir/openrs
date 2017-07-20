@@ -20,13 +20,14 @@ $url = substr($url[2], 0, 1); // assuming the full path is "/home/username/tmp"
 
 switch ($_SERVER['SERVER_NAME'])
 {
-	case 'www.gesticadiz.es':
-		$uploadURL = 'http://openrs.es/demo/uploads';
-		$uploadDIR = 'http://openrs.es/demo/uploads';
+        // https://stackoverflow.com/questions/36271925/kcfinder-upload-image-issue/43618477#43618477
+	case 'www.produccion.es':
+		$uploadURL = 'http://produccion.es/uploads';
+		$uploadDIR = '../../../../uploads';
 		break;
 	case 'www.openrs.es':
 		$uploadURL = 'http://openrs.es/demo/uploads';
-		$uploadDIR = 'http://openrs.es/demo/uploads';
+		$uploadDIR = '../../../../uploads';
 		break;
 	default:
 		$uploadURL = 'http://127.0.0.1/openrs/uploads';
