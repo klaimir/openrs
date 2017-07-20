@@ -17,7 +17,22 @@
 // See http://kcfinder.sunhater.com/install for setting descriptions
 $url = explode("=",$_SERVER["REQUEST_URI"]);
 $url = substr($url[2], 0, 1); // assuming the full path is "/home/username/tmp"
-//echo $url;exit();
+
+switch ($_SERVER['SERVER_NAME'])
+{
+	case 'www.gesticadiz.es':
+		$uploadURL = 'http://openrs.es/demo/uploads';
+		$uploadDIR = 'http://openrs.es/demo/uploads';
+		break;
+	case 'www.openrs.es':
+		$uploadURL = 'http://openrs.es/demo/uploads';
+		$uploadDIR = 'http://openrs.es/demo/uploads';
+		break;
+	default:
+		$uploadURL = 'http://localhost/openrs/uploads';
+		$uploadDIR = '../../../../uploads';
+		break;
+}   
 
 $_CONFIG = array(
 
@@ -27,9 +42,8 @@ $_CONFIG = array(
     'denyExtensionRename' => false,
 
     'theme' => "oxygen",
-
-    'uploadURL' => $url,
-    'uploadDir' => "",
+	'uploadURL' => $uploadURL,
+	'uploadDir' => $uploadDIR,
 
     'dirPerms' => 0755,
     'filePerms' => 0644,
