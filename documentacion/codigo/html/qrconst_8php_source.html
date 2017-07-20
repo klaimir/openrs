@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OPENRS: Fichero Fuente D:/Wamp/www/openrs/openrs/libraries/qrcode/qrconst.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">OPENRS
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">Software para gestión de inmobiliaria y de su sitio web</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Buscar');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('qrconst_8php_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">qrconst.php</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="qrconst_8php.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&lt;?php</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/*</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * PHP QR Code encoder</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * Common constants</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> *</span></div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> * Based on libqrencode C library distributed under LGPL 2.1</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * Copyright (C) 2006, 2007, 2008, 2009 Kentaro Fukuchi &lt;fukuchi@megaui.net&gt;</span></div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> *</span></div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * PHP QR Code is distributed under LGPL 3</span></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * Copyright (C) 2010 Dominik Dzienia &lt;deltalab at poczta dot fm&gt;</span></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *</span></div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * This library is free software; you can redistribute it and/or</span></div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> * modify it under the terms of the GNU Lesser General Public</span></div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> * License as published by the Free Software Foundation; either</span></div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> * version 3 of the License, or any later version.</span></div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> *</span></div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"> * This library is distributed in the hope that it will be useful,</span></div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"> * Lesser General Public License for more details.</span></div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"> *</span></div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"> * You should have received a copy of the GNU Lesser General Public</span></div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment"> * License along with this library; if not, write to the Free Software</span></div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"> * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA</span></div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"> */</span></div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">// Encoding modes</span></div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;     </div><div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="qrconst_8php.html#a24d6b51d9ddaaefd084528b779b16ffb">   31</a></span>&#160;    define(<span class="stringliteral">&#39;QR_MODE_NUL&#39;</span>, -1);</div><div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="qrconst_8php.html#abc8d5a6a5d9977177af9aced52703323">   32</a></span>&#160;    define(<span class="stringliteral">&#39;QR_MODE_NUM&#39;</span>, 0);</div><div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="qrconst_8php.html#a3525e0bd3a1dadffcdb3f1b9a973db8f">   33</a></span>&#160;    define(<span class="stringliteral">&#39;QR_MODE_AN&#39;</span>, 1);</div><div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="qrconst_8php.html#aa3452182528d53c7b65c6802ad15b772">   34</a></span>&#160;    define(<span class="stringliteral">&#39;QR_MODE_8&#39;</span>, 2);</div><div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="qrconst_8php.html#a2b9cfae389f30855ddfa68fef6ffb5ee">   35</a></span>&#160;    define(<span class="stringliteral">&#39;QR_MODE_KANJI&#39;</span>, 3);</div><div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="qrconst_8php.html#ab9c56e5432a5c63b792802d26cff5d9b">   36</a></span>&#160;    define(<span class="stringliteral">&#39;QR_MODE_STRUCTURE&#39;</span>, 4);</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// Levels of error correction.</span></div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div><div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="qrconst_8php.html#ae106d3baebd9c27c90b2abadb25df012">   40</a></span>&#160;    define(<span class="stringliteral">&#39;QR_ECLEVEL_L&#39;</span>, 0);</div><div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="qrconst_8php.html#afa670ea7afad29461222face71c5ba1e">   41</a></span>&#160;    define(<span class="stringliteral">&#39;QR_ECLEVEL_M&#39;</span>, 1);</div><div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="qrconst_8php.html#ab8794177ecfd3ccdc8a1677ea3e32bbe">   42</a></span>&#160;    define(<span class="stringliteral">&#39;QR_ECLEVEL_Q&#39;</span>, 2);</div><div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="qrconst_8php.html#a6c2b8366b7a5336d61db447be8884044">   43</a></span>&#160;    define(<span class="stringliteral">&#39;QR_ECLEVEL_H&#39;</span>, 3);</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    </div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// Supported output formats</span></div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    </div><div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="qrconst_8php.html#a31802a9747faed0854c3740a9065df0f">   47</a></span>&#160;    define(<span class="stringliteral">&#39;QR_FORMAT_TEXT&#39;</span>, 0);</div><div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="qrconst_8php.html#ac0680a77cbb0fb197076f71573e47868">   48</a></span>&#160;    define(<span class="stringliteral">&#39;QR_FORMAT_PNG&#39;</span>,  1);</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    </div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">class </span><a class="code" href="classqrstr.html">qrstr</a> {</div><div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classqrstr.html#a53d12ca8348a81ade11e701c12eea347">   51</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">function</span> <span class="keyword">set</span>(&amp;$srctab, $x, $y, $repl, $replLen = <span class="keyword">false</span>) {</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            $srctab[$y] = substr_replace($srctab[$y], ($replLen !== <span class="keyword">false</span>)?substr($repl,0,$replLen):$repl, $x, ($replLen !== <span class="keyword">false</span>)?$replLen:strlen($repl));</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }   </div><div class="ttc" id="classqrstr_html"><div class="ttname"><a href="classqrstr.html">qrstr</a></div><div class="ttdef"><b>Definition:</b> <a href="phpqrcode_8php_source.html#l00098">phpqrcode.php:98</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_9be49a88b1b6a68547165ef88fe5404c.html">openrs</a></li><li class="navelem"><a class="el" href="dir_c59213852dd58fa729a1991f9b9795a4.html">libraries</a></li><li class="navelem"><a class="el" href="dir_4d72366f84c6d5d34b7c9e5cb18f48c0.html">qrcode</a></li><li class="navelem"><a class="el" href="qrconst_8php.html">qrconst.php</a></li>
+    <li class="footer">Generado por
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
+</body>
+</html>
