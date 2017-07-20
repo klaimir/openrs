@@ -4,7 +4,7 @@ function pdo_connect(){
 
 	try{
 		$dbdriver   = 'mysql';
-		$hostname   = 'gesticadiz.es';
+		$hostname   = 'produccion.es';
 		$database   = 'openrs';
 		$username   = 'openrs';
 		$password   = 'Ytoh^267';

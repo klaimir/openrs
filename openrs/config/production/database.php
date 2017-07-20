@@ -76,7 +76,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'gesticadiz.es',
+	'hostname' => 'produccion.es',
 	'username' => 'openrs',
 	'password' => 'Ytoh^267',
 	'database' => 'openrs',
