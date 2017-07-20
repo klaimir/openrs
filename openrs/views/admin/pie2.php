@@ -54,9 +54,9 @@ function formulario(form, idioma){
  
 	/* Y la configuración del kcfinder, la debemos poner así si estamos trabajando en local */
 	$config_mini['filebrowserBrowseUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/browse.php";
-	$config_mini['filebrowserImageBrowseUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/browse.php?type=images";
+	$config_mini['filebrowserImageBrowseUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/browse.php?type=general";
 	$config_mini['filebrowserUploadUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/upload.php?type=files";
-	$config_mini['filebrowserImageUploadUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/upload.php?type=images";?>
+	$config_mini['filebrowserImageUploadUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/upload.php?type=general";?>
 	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f1','class'=>'form-horizontal'));?>
 	<div class="form-group">
 		<div class="col-sm-2">

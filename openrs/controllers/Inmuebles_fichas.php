@@ -122,6 +122,8 @@ class Inmuebles_fichas extends CRUD_controller
         // Set datas
         $this->_set_datas_html($this->data['element']);
         
+        $this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
+        
         // Render
         $this->render_private($this->_view.'/edit', $this->data);
     } 

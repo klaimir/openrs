@@ -29,7 +29,7 @@ switch ($_SERVER['SERVER_NAME'])
 		$uploadDIR = 'http://openrs.es/demo/uploads';
 		break;
 	default:
-		$uploadURL = 'http://localhost/openrs/uploads';
+		$uploadURL = 'http://127.0.0.1/openrs/uploads';
 		$uploadDIR = '../../../../uploads';
 		break;
 }   
@@ -57,6 +57,38 @@ $_CONFIG = array(
             'move' => true,
             'rename' => true
         ),
+        
+        'general' => array(
+            'upload' => true,
+            'delete' => true,
+            'copy' => true,
+            'move' => true,
+            'rename' => true
+        ),
+        
+        'inmuebles' => array(
+            'upload' => false,
+            'delete' => false,
+            'copy' => false,
+            'move' => false,
+            'rename' => false
+        ),
+        
+        'clientes' => array(
+            'upload' => false,
+            'delete' => false,
+            'copy' => false,
+            'move' => false,
+            'rename' => false
+        ),
+        
+        'demandas' => array(
+            'upload' => false,
+            'delete' => false,
+            'copy' => false,
+            'move' => false,
+            'rename' => false
+        ),
 
         'dirs' => array(
             'create' => true,
@@ -73,11 +105,19 @@ $_CONFIG = array(
         'files'   =>  "",
         'flash'   =>  "swf",
         'images'  =>  "*img",
+        'inmuebles'   =>  "*img",
+        'clientes'   =>  "*img",
+        'demandas'   =>  "*img",
+        'general'   =>  "*img",
 
         // TinyMCE types
         'file'    =>  "",
         'media'   =>  "swf flv avi mpg mpeg qt mov wmv asf rm",
         'image'   =>  "*img",
+        'inmuebles'   =>  "*img",
+        'clientes'   =>  "*img",
+        'demandas'   =>  "*img",
+        'general'   =>  "*img",
     ),
 
     'filenameChangeChars' => array(/*

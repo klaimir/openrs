@@ -18,7 +18,15 @@
 <div class="form-group">            
     <?php echo label('Contenido del documento', 'html', 'class="col-sm-3 control-label no-padding-right"'); ?>
     <div class="col-sm-9">
-        <?php echo form_textarea($html,'','class="ckeditor" onchange="mark_modified_field();"'); ?>
+        <?php 
+        //echo form_textarea($html,'','class="ckeditor" onchange="mark_modified_field();"'); 
+        /* Y la configuración del kcfinder, la debemos poner así si estamos trabajando en local */
+	$config_mini['filebrowserBrowseUrl'] = base_url()."assets/admin/ckeditor/kcfinder/browse.php";
+	$config_mini['filebrowserImageBrowseUrl'] = base_url()."assets/admin/ckeditor/kcfinder/browse.php?type=inmuebles";
+	$config_mini['filebrowserUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=inmuebles";
+	$config_mini['filebrowserImageUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=inmuebles";	
+	echo $this->ckeditor->editor($html['name'], $html['value'], $config_mini);
+        ?>
     </div>
 </div>
 
