@@ -11,7 +11,7 @@ La inmobiliaria que implante OPENRS en su negocio contará con:
 En definitiva, el software viene a satisfacer las principales necesidades de gestión y publicación de información de una PYME inmobiliaria bajo un único software sin tener que delegar su actividad en otra empresa, con una interfaz sencilla e intuituiva y totalmente responsive
 
 *******************
-Release Information
+Información sobre el repositorio
 *******************
 
 Este repositorio contendrá todas las futuras actualizaciones y amplicaciones que se realicen del software. Para descargar la última versión sólo tienes que acceder a la última versión del repositorio en:
