@@ -15,16 +15,19 @@ Release Information
 *******************
 
 Este repositorio contendrá todas las futuras actualizaciones y amplicaciones que se realicen del software. Para descargar la última versión sólo tienes que acceder a la última versión del repositorio en:
-<https://github.com/klaimir/openrs>`_.
+<https://github.com/klaimir/openrs>.
 
 **************************
 Documentación del proyecto
 **************************
 
 En la carpeta documentacion podrás encontrar una toda la documentación del proyecto:
+
 - PCS: Cambios realizados durante la vida del proyecto.
+
 - matrices_pruebas: Listas de verificación o pruebas realizadas.
-- codigo: Documentación del código en formato HTML y rtf. Visite la siguiente página <http://www.openrs.es/documentacion/codigo/html/>`_ para ver su versión on-line.
+
+- codigo: Documentación del código en formato HTML y rtf. Visite la siguiente página <http://www.openrs.es/documentacion/codigo/html/> para ver su versión on-line.
 
 *******************
 Requisitos
@@ -36,7 +39,7 @@ El software ha sido probado, al menos, con la versión 5.5.9, pero, siguiendo la
 Instalación
 ************
 
-Lea la sección de 'Manual de implantación y explotación' dentro del documento correspondiente a la memoria del proyecto.
+Lea la sección de "Manual de implantación y explotación" dentro del documento correspondiente a la memoria del proyecto.
 
 *******
 Licencia
