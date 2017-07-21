@@ -1,70 +1,60 @@
 ###################
-What is CodeIgniter
+¿Qué es OPENRS?
 ###################
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+OPENRS viene a dar un proporcionar un soplo de aire fresco al sector inmobiliario, siendo el primer software libre de uso exclusivo para PYMES inmobiliarias que abarca tanto el aspecto de la gestión del negocio como la promoción del mismo, y lo más importante, la propia empresa tendrá absoluta libertad para adaptar y modificar su funcionamiento.
+
+La inmobiliaria que implante OPENRS en su negocio contará con:
+- Un sitio web público, en el que podrá publicar los inmuebles que desee en diferentes categorías y visualizar una amplia gama de detalles, así como disponer de algunas secciones predefinidas, útiles para la promoción de la empresa, como noticias, contacto o el buscador de inmuebles, pero tendrá la libertad de agregar cualquier otra que considere apropiada.
+- Una zona privada para poder gestionar los datos más importantes de su negocio, como son, las propiedades que oferte, su cartera de clientes (tanto demandantes como ofertantes) y un módulo demandas para poder cruzar estos datos automática o manualmente. También dispondrá de herramientas para configurar el aspecto del sitio web y las preferencias del sistema.
+
+En definitiva, el software viene a satisfacer las principales necesidades de gestión y publicación de información de una PYME inmobiliaria bajo un único software sin tener que delegar su actividad en otra empresa, con una interfaz sencilla e intuituiva y totalmente responsive
 
 *******************
 Release Information
 *******************
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+Este repositorio contendrá todas las futuras actualizaciones y amplicaciones que se realicen del software. Para descargar la última versión sólo tienes que acceder a la última versión del repositorio en:
+<https://github.com/klaimir/openrs>`_.
 
 **************************
-Changelog and New Features
+Documentación del proyecto
 **************************
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+En la carpeta documentacion podrás encontrar una toda la documentación del proyecto:
+- PCS: Cambios realizados durante la vida del proyecto.
+- matrices_pruebas: Listas de verificación o pruebas realizadas.
+- codigo: Documentación del código en formato HTML y rtf. Visite la siguiente página <http://www.openrs.es/documentacion/codigo/html/>`_ para ver su versión on-line.
 
 *******************
-Server Requirements
+Requisitos
 *******************
 
-PHP version 5.6 or newer is recommended.
-
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+El software ha sido probado, al menos, con la versión 5.5.9, pero, siguiendo las recomendaciones del framework empleado para su desarrollo, CodeIgniter, se recomienda la versión de PHP 5.6 o superior.
 
 ************
-Installation
+Instalación
 ************
 
-Please see the `installation section <https://codeigniter.com/user_guide/installation/index.html>`_
-of the CodeIgniter User Guide.
+Lea la sección de 'Manual de implantación y explotación' dentro del documento correspondiente a la memoria del proyecto.
 
 *******
-License
+Licencia
 *******
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+Por favor, leer licencia descrita en el fichero license.txt.
 
 *********
-Resources
+Recursos
 *********
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community IRC <https://webchat.freenode.net/?channels=%23codeigniter>`_
+-  Código de la última versión del software.
+-  Documentación del proyecto.
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
+Para informar de cualquier incidencia, error, etc. Por favor, dirigir un correo electrónico con título "OPENRS - Titulo del correo" a la siguiente dirección angel.berasuain@gmail.com, gracias.
 
 ***************
-Acknowledgement
+Reconocimiento
 ***************
 
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+Al creador del software le gustaría dar las gracias a Daniel Molina Cabrera por su atención durante la realización del proyecto así como a TIPYCOS por su colaboración y soporte de la web.
