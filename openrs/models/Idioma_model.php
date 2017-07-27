@@ -54,4 +54,25 @@ class Idioma_model extends MY_Model
     	$this->db->where('nombre_seo2', $nombre_seo2);
     	return $this->db->get('idiomas')->row();
     }
+    
+    public function get_idiomas_subidos(){
+    	$this->db->where('subido', 1);
+    	return $this->db->get('idiomas')->result();
+    }
+    
+    public function idiomas_activos(){
+    	$this->db->where('activo', 1);
+    	$this->db->where('subido', 1);
+    	return $this->db->get('idiomas')->result();
+    }
+    
+    public function modificar_idioma($id, $datos){
+    	$this->db->where('id_idioma', $id);
+    	$this->db->update('idiomas', $datos);
+    }
+    
+    public function get_idiomas_no_subidos(){
+    	$this->db->where('subido', 0);
+    	return $this->db->get('idiomas')->result();
+    }
 }

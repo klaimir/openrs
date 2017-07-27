@@ -260,4 +260,143 @@ class Admin extends MY_Controller
     	$this->session->set_flashdata('mensaje', 'Modificación realizada correctamente');
     	redirect('admin/pie','refresh');
     }
+    
+/***********************************************************************************************************/
+/************************************************* IDIOMAS *************************************************/
+/***********************************************************************************************************/
+    
+    public function gestionar_idiomas($error = NULL){
+    	$this->data = $this->inicializar(-4, $this->lang->line('admin_gestionar_idiomas'));
+    	if($error == 1)
+    		$this->data['message'] = $this->lang->line('admin_c_gestionar_idiomas_error1');
+    	elseif($error == 2)
+    		$this->data['message'] = $this->lang->line('admin_c_gestionar_idiomas_error2');
+    	elseif($error == 3)
+    		$this->data['message'] = $this->lang->line('admin_c_gestionar_idiomas_exito');
+    		$this->data['idiomas'] = $this->Idioma_model->get_idiomas_subidos();
+    	$this->render_private('admin/gestionar_idiomas', $this->data);
+    }
+    
+    public function modificar_idioma(){
+    	if($this->input->post()){
+    		$id = $this->input->post('id_idioma');
+    		$this->form_validation->set_rules('nombre_'.$id,$this->lang->line('admin_idioma'),'trim|required|max_length[50]');
+    		$this->form_validation->set_rules('nombre_seo_'.$id,$this->lang->line('admin_idioma_seo1'),'trim|required|max_length[3]');
+    		$this->form_validation->set_rules('nombre_seo2_'.$id,$this->lang->line('admin_idioma_seo2'),'trim|required|max_length[10]');
+    		
+    		//editamos mensajes
+    		$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
+    		$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));
+    		
+    		if($this->form_validation->run()==FALSE){
+    			$this->gestionar_idiomas();
+    		}else{
+    			if(count($this->Idioma_model->idiomas_activos()) > '1' || $this->input->post('activo_'.$id)){
+    				$datos = array('nombre' => $this->input->post('nombre_'.$id),
+    						'nombre_seo' => $this->input->post('nombre_seo_'.$id),
+    						'nombre_seo2' => $this->input->post('nombre_seo2_'.$id),
+    						'activo' => $this->input->post('activo_'.$id));
+    				$this->Idioma_model->modificar_idioma($id, $datos);
+    				redirect('admin/gestionar_idiomas', 'refresh');
+    			}else{
+    				$this->gestionar_idiomas(1);
+    			}
+    		}
+    	}
+    }
+    
+    function subir_idiomas($error = NULL){
+    	$data = $this->inicializar(-4, $this->lang->line('admin_subir_idiomas'));
+    	if($error == 1)
+    		$this->data['message'] = $this->lang->line('admin_c_subir_idiomas_error1');
+    	elseif($error == 2)
+    		$this->data['message'] = $this->lang->line('admin_c_subir_idiomas_exito');
+    	elseif($error == 3)
+    		$this->data['message'] = $this->lang->line('admin_c_subir_idiomas_error2');
+    	elseif($error == 4)
+    		$this->data['message'] = $this->lang->line('admin_c_subir_idiomas_error3');
+    	elseif($error == 5)
+    		$this->data['message'] = $this->lang->line('admin_c_subir_idiomas_error4');
+    	foreach($this->Idioma_model->get_idiomas_no_subidos() as $idioma){
+    		$this->data['idiomas'][$idioma->id_idioma] = $idioma->nombre;
+    	}
+    	$this->render_private('admin/subir_idiomas', $this->data);
+    }
+    
+    function subir_idioma(){    	
+    	$this->form_validation->set_rules('idioma',$this->lang->line('admin_idioma'),'trim|required');   	
+    	if($this->form_validation->run()){
+    		$idioma = $this->Idioma_model->get_idioma($this->input->post('idioma'));
+    		if(isset($_FILES['userfile']['tmp_name'])){
+    			if(file_exists(APPPATH."language/".$idioma->carpeta_idioma)){
+    				if($dir = opendir(APPPATH."language/".$idioma->carpeta_idioma)){
+    					while(($archivo = readdir($dir)) !== false){
+    						if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess' && $archivo != '.svn'){
+    							if(!unlink(APPPATH."language/".$idioma->carpeta_idioma.'/'.$archivo))
+    								$this->subir_idiomas(3);
+    						}
+    					}
+    					closedir($dir);
+    				}
+    				if(!rmdir(APPPATH."language/".$idioma->carpeta_idioma))
+    					$this->subir_idiomas(3);
+    			}
+    			if(mkdir(APPPATH."language/".$idioma->carpeta_idioma, 755, true)){
+    				$config['upload_path'] = APPPATH."language/".$idioma->carpeta_idioma.'/';
+    				$config['allowed_types']='zip';
+    				$config['max_size']	= '1000';
+    				$config['overwrite']=TRUE;
+    				
+    				$this->load->library('upload', $config);
+    				if (!$this->upload->do_upload()) {
+    					$this->subir_idiomas(4);
+    				}else{
+    					$file_data = $this->upload->data();
+    					$zip = new ZipArchive;
+    					$res = $zip->open(APPPATH."language/".$idioma->carpeta_idioma.'/'.$file_data['file_name']);
+    					if ($res === TRUE) {
+    						$zip->extractTo(APPPATH."language/".$idioma->carpeta_idioma.'/');
+    						$zip->close();
+    						unlink(APPPATH."language/".$idioma->carpeta_idioma.'/'.$file_data['file_name']);
+    						$datos = array('activo' => '1',
+    								'subido' => '1');
+    						$this->Idioma_model->modificar_idioma($this->input->post('idioma'), $datos);
+    						redirect('admin/subir_idiomas/2', 'refresh');
+    					} else {
+    						$this->subir_idiomas(5);
+    					}
+    				}
+    			}else{
+    				$this->subir_idiomas(3);
+    			}
+    		}
+    	}else{
+    		$this->subir_idiomas(1);
+    	}
+    }
+    
+    function eliminar_idioma($idioma_aux){
+    	$idioma = $this->Idioma_model->get_idioma($idioma_aux);
+    	if(file_exists(APPPATH."language/".$idioma->carpeta_idioma)){
+    		if($dir = opendir(APPPATH."language/".$idioma->carpeta_idioma)){
+    			while(($archivo = readdir($dir)) !== false){
+    				if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess' && $archivo != '.svn'){
+    					if(!unlink(APPPATH."language/".$idioma->carpeta_idioma.'/'.$archivo))
+    						$this->gestionar_idiomas(2);
+    				}
+    			}
+    			closedir($dir);
+    		}else{
+    			$this->gestionar_idiomas(2);
+    		}
+    		if(!rmdir(APPPATH."language/".$idioma->carpeta_idioma))
+    			$this->gestionar_idiomas(2);
+    			$datos = array('subido' => '0',
+    					'activo' => '0');
+    			$this->Idioma_model->modificar_idioma($idioma_aux, $datos);
+    			redirect('admin/gestionar_idiomas/3');
+    	}else{
+    		$this->gestionar_idiomas(2);
+    	}
+    }
 }

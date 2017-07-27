@@ -113,7 +113,7 @@
 
     <ul class="submenu">
         <li class="<?php echo set_active_option($_active_section,'idiomas'); ?>">
-            <a href="<?php echo site_url('idiomas'); ?>" onClick="return show_confirm_exit_message();">
+            <a href="<?php echo site_url('admin/gestionar_idiomas'); ?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Idiomas </span>
             </a>
