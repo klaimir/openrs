@@ -4,10 +4,10 @@ function pdo_connect(){
 
 	try{
 		$dbdriver   = 'mysql';
-		$hostname   = 'openrs.es';
-		$database   = 'openrs_2';
-		$username   = 'openrs_2';
-		$password   = 'Ytoh^267';
+		$hostname   = getenv('dbhost');
+		$database   = getenv('dbname');
+		$username   = getenv('dbuser');
+		$password   = getenv('dbpass');
 
 		//to connect
 		$DB = new PDO($dbdriver.':host='.$hostname.'; dbname='.$database, $username, $password);

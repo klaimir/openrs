@@ -76,10 +76,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'openrs.es',
-	'username' => 'openrs_2',
-	'password' => 'Ytoh^267',
-	'database' => 'openrs_2',
+	'hostname' => getenv('dbhost'),
+	'username' => getenv('dbuser'),
+	'password' => getenv('dbpass'),
+	'database' => getenv('dbname'),
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
