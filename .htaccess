@@ -12,7 +12,7 @@ Header set P3P "policyref='/w3c/p3p.xml', CP='NOI DSP COR NID CUR ADM DEV OUR BU
     # If your default controller is something other than
     # "welcome" you should probably change this
     # RewriteRule ^(welcome(/index)?|index(\.php)?)/?$ / [L,R=301]
-    RewriteRule ^(.*)/index/?$ $1 [L,R=301]
+    RewriteRule ^(.*)/index.php?/$1 [L,R=301]
 
     # Removes trailing slashes (prevents SEO duplicate content issues)
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -33,14 +33,14 @@ Header set P3P "policyref='/w3c/p3p.xml', CP='NOI DSP COR NID CUR ADM DEV OUR BU
     # previously this would not have been possible.
     # 'system' can be replaced if you have renamed your system folder.
     RewriteCond %{REQUEST_URI} ^system.*
-    RewriteRule ^(.*)$ /index.php/$1 [L]
+    RewriteRule ^(.*)$ /index.php?/$1 [L]
 
     # Checks to see if the user is attempting to access a valid file,
     # such as an image or css document, if this isn't true it sends the
     # request to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php/$1 [L]
+    RewriteRule ^(.*)$ index.php?/$1 [L]
 
 </IfModule>
 
