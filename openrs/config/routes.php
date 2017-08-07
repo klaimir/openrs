@@ -744,7 +744,7 @@ class dynamic_route{
 
 if(ENVIRONMENT!="development")
 {
-    require(ENVIRONMENT.'/connect.php');
+    require('connect.php');
 
     $dynamic_route = new dynamic_route;
     // Give dynamic route database connection
