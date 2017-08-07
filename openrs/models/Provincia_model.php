@@ -57,7 +57,7 @@ class Provincia_model extends MY_Model
         }
         else
         {
-            $provincias=$this->as_dropdown('provincia')->where('activa',1)->get_all();  
+            $provincias=$this->as_dropdown('provincia')->where_in('activa',1)->get_all();  
         }
         // Selección inicial
         $seleccion[$default_value]="- Seleccione provincia -";
@@ -66,6 +66,29 @@ class Provincia_model extends MY_Model
         // return array_merge($seleccion,$provincias);
         // Por tanto devolvemos el operador suma para que mantenga las claves numéricas
         return ($seleccion+$provincias);
+    }
+    
+    /**
+     * Consulta las provincias
+     *
+     * @param [$ids_provincias]                  Array de provincia
+     *
+     * @return array de provincias
+     */
+
+    function get_provincias_in_array($ids_provincias)
+    {
+        // Consulta
+        $this->db->from($this->table);
+        if(count($ids_provincias))
+        {
+            $this->db->where_in($this->primary_key, $ids_provincias);
+        }
+        else
+        {
+            $this->db->where($this->primary_key, 0);
+        }
+        return $this->db->get()->result();
     }
     
     /**

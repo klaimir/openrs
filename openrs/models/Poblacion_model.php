@@ -186,6 +186,31 @@ class Poblacion_model extends MY_Model
      * @return array de poblaciones
      */
 
+    function get_poblaciones_provincia_in_array($provincia_id, $ids_poblaciones)
+    {
+        // Consulta
+        $this->db->from($this->table);
+        $this->db->where('provincia_id', $provincia_id);
+        if(count($ids_poblaciones))
+        {
+            $this->db->where_in($this->primary_key, $ids_poblaciones);
+        }
+        else
+        {
+            $this->db->where($this->primary_key, 0);
+        }
+        $this->db->order_by('poblacion');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Consulta las poblaciones de una provincia
+     *
+     * @param [$provincia_id]                  Indentificador de provincia
+     *
+     * @return array de poblaciones
+     */
+
     function get_poblaciones_provincia($provincia_id)
     {
         $this->db->from($this->table);

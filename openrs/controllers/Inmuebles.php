@@ -27,6 +27,38 @@ class Inmuebles extends CRUD_controller
     }
     
     // Ajax method
+    function load_poblaciones($provincia_id=0, $poblacion_seleccionada = NULL)
+    {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if(!$this->input->is_ajax_request())
+        {
+            echo 'Petición no realizada a través de AJAX';
+            return;
+        }        
+        $this->data['poblacion_seleccionada'] = $poblacion_seleccionada;
+        $this->data['poblaciones'] = $this->{$this->_model}->get_poblaciones_provincia_existentes($provincia_id);
+        $this->load->view('inmuebles/poblaciones', $this->data);
+    }
+    
+    // Ajax method    
+    public function load_zonas($poblacion_id=0, $zona_seleccionada = NULL)
+    {        
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if(!$this->input->is_ajax_request())
+        {
+            echo 'Petición no realizada a través de AJAX';
+            return;
+        }
+        $this->data['zona_seleccionada'] = $zona_seleccionada;
+        $this->data['zonas'] = $this->{$this->_model}->get_zonas_poblacion_existentes($poblacion_id);
+        $this->load->view('inmuebles/zonas', $this->data);
+    }
+    
+    // Ajax method
     function multiple_google_map($infowindow_type='private')
     {
         // Deshabilitar profiler
@@ -58,7 +90,7 @@ class Inmuebles extends CRUD_controller
     private function _load_filtros()
     {
         // Selector de provincias
-        $this->data['provincias'] = $this->Provincia_model->get_provincias_dropdown(-1);
+        $this->data['provincias'] = $this->Inmueble_model->get_provincias_existentes_dropdown(-1);
 
         // Selector de tipos_inmuebles
         $this->data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown(-1);

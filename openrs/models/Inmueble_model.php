@@ -2053,6 +2053,101 @@ class Inmueble_model extends MY_Model
         }
         return $this->db->get()->result();
     }
+    
+    /**
+     * Consulta los identificadores de las provincias existentes
+     *
+     *
+     * @return array de identificares de provincias
+     */
+
+    function get_id_provincias_existentes()
+    {
+        $this->db->distinct('provincia_id');
+        $this->db->from($this->view);
+        $result=$this->db->get()->result();
+        return $this->utilities->get_keys_objects_array($result,'provincia_id');
+    }
+    
+    /**
+     * Consulta las provincia
+     *
+     * @return array de provincia
+     */
+
+    function get_provincias_existentes_dropdown($default_value="")
+    {
+        // Consulta existentes
+        $ids_provincias=$this->get_id_provincias_existentes();
+        // Consulta provincias
+        $provincias=$this->Provincia_model->get_provincias_in_array($ids_provincias);        
+        $provincias_dropdown=$this->utilities->dropdown($provincias, 'id', 'provincia');        
+        // Selección inicial
+        $seleccion[$default_value]="- Seleccione provincia -";
+        return ($seleccion+$provincias_dropdown);
+    }
+    
+    /**
+     * Consulta los identificadores de las poblaciones existentes
+     *
+     *
+     * @return array de identificares de poblaciones
+     */
+
+    function get_id_poblaciones_existentes()
+    {
+        $this->db->distinct('poblacion_id');
+        $this->db->from($this->table);
+        $result=$this->db->get()->result();
+        return $this->utilities->get_keys_objects_array($result,'poblacion_id');
+    }
+    
+    /**
+     * Consulta las poblaciones de una provincia
+     *
+     * @param [$provincia_id]                  Indentificador de provincia
+     *
+     * @return array de poblaciones
+     */
+
+    function get_poblaciones_provincia_existentes($provincia_id)
+    {
+        // Consulta existentes
+        $ids_poblaciones=$this->get_id_poblaciones_existentes();
+        // Consulta poblaciones
+        return $this->Poblacion_model->get_poblaciones_provincia_in_array($provincia_id,$ids_poblaciones);
+    }
+    
+    /**
+     * Consulta los identificadores de las zonas existentes
+     *
+     *
+     * @return array de identificares de zonas
+     */
+
+    function get_id_zonas_existentes()
+    {
+        $this->db->distinct('zona_id');
+        $this->db->from($this->table);
+        $result=$this->db->get()->result();
+        return $this->utilities->get_keys_objects_array($result,'zona_id');
+    }
+    
+    /**
+     * Consulta las zonas de una población
+     *
+     * @param [$poblacion_id]                  Indentificador de poblaciones
+     *
+     * @return array de zonas
+     */
+
+    function get_zonas_poblacion_existentes($poblacion_id)
+    {
+        // Consulta existentes
+        $ids_zonas=$this->get_id_zonas_existentes();
+        // Consulta poblaciones
+        return $this->Zona_model->get_zonas_poblacion_in_array($poblacion_id,$ids_zonas);
+    }
 
     /**
      * Marca o desmarca una opción extra para un inmueble en concreto

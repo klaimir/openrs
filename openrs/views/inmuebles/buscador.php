@@ -1,4 +1,4 @@
-<div class="well" id="buscador">
+<div class="well" id="buscador" style="display:none;">
     <?php echo form_open('inmuebles', 'class="form-horizontal" method="get"'); ?>    
     <div class="row">
         <div class="col-xs-12">
@@ -9,7 +9,7 @@
             <div class="form-group">            
                 <?php echo label('Provincias', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('provincia_id',$provincias,$filtros['provincia_id'], 'class="form-control chosen-select" id="provincia_id" onchange="show_poblaciones();"'); ?>
+                    <?php echo form_dropdown('provincia_id',$provincias,$filtros['provincia_id'], 'class="form-control" id="provincia_id" onchange="show_poblaciones();"'); ?>
                 </div>
             </div>
             <div class="form-group">            
@@ -25,7 +25,7 @@
             <div class="form-group">            
                 <?php echo label('Tipo', 'tipo_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('tipo_id',$tipos_inmuebles,$filtros['tipo_id'], 'class="form-control chosen-select" id="tipo_id"'); ?>
+                    <?php echo form_dropdown('tipo_id',$tipos_inmuebles,$filtros['tipo_id'], 'class="form-control" id="tipo_id"'); ?>
                 </div>
             </div>
         </div>
@@ -176,6 +176,6 @@
 <script type="text/javascript">    
     function show_poblaciones() {
         var provincia_id=$('#provincia_id').val();
-        $('#poblaciones').load('<?php echo site_url("common/load_poblaciones");?>/'+provincia_id);
+        $('#poblaciones').load('<?php echo site_url("inmuebles/load_poblaciones");?>/'+provincia_id);
     }
 </script>
