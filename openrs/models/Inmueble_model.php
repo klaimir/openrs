@@ -108,7 +108,7 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('habitaciones', 'Habitaciones', 'required|is_natural');
         $this->form_validation->set_rules('banios', 'Baños', 'required|is_natural');
         $this->form_validation->set_rules('anio_construccion', 'Año Construcción', 'is_natural|exact_length[4]');
-        $this->form_validation->set_rules('fecha_alta', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
+        $this->form_validation->set_rules('fecha_alta', 'Fecha de alta', 'xss_clean|checkDateFormat');
         $this->form_validation->set_rules('direccion', 'Dirección', 'required|xss_clean|max_length[200]');
         $this->form_validation->set_rules('observaciones', 'Observaciones', 'trim');
         $this->form_validation->set_rules('precio_compra', 'Precio Compra', 'xss_clean|is_natural');
