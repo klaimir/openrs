@@ -1797,6 +1797,11 @@ class Inmueble_model extends MY_Model
         $infowindow_content= $html_image                  
             . '<br>'. $datos['description']
             . '<br><a href="'.  site_url($datos['url_seo']) .'">'.lang('inmuebles_infowindow_view_details').'</a>';
+        // Añadir editar si está logueado como agente inmobiliario
+        if($this->data["session_es_agente"])
+        {
+            $infowindow_content.=' | <a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
+        }
         // Devolvemos el infowindow
         return $infowindow_content;
     }
