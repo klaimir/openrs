@@ -139,6 +139,7 @@
         $('#poblacion_id').val('');
         $('#agente_asignado_id').val('-1');
         $('#interes_id').val('-1');
+        $('#tipo_interes_id').val('-1');
         $('#fecha_desde').val('');
         $('#fecha_hasta').val('');
         // Resetear los valores no es suficiente para los chosen select, hay que hacer esto tb

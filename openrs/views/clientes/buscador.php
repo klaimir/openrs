@@ -19,17 +19,12 @@
                 <div id="poblaciones" class="col-sm-9">
                 </div>
             </div>
-            
-            <?php /*
             <div class="form-group">            
                 <?php echo label('Intereses', 'interes_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('interes_id',$intereses,$filtros['interes_id'], 'class="form-control" id="interes_id"'); ?>
                 </div>
             </div>
-             * 
-             */
-            ?>
         </div>
         <div class="col-xs-12 col-md-6 col-lg-6">
             <div class="form-group">            
@@ -43,8 +38,7 @@
                 <div class="col-sm-9">
                     <?php echo form_dropdown('estado_id',$estados,$filtros['estado_id'], 'class="form-control" id="estado_id"'); ?>
                 </div>
-            </div>
-            
+            </div>            
             <div class="form-group">            
                 <?php echo label('Fecha alta', 'rango_fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
@@ -55,6 +49,12 @@
                         </span>
                         <input class="input-sm form-control date-picker" name="fecha_hasta" id="fecha_hasta" value="<?php echo $filtros['fecha_hasta']; ?>" data-date-format="dd/mm/yyyy" type="text">
                     </div>
+                </div>
+            </div>            
+            <div class="form-group">            
+                <?php echo label('Tipo de interés', 'tipo_interes_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('tipo_interes_id',$tipo_intereses,$filtros['tipo_interes_id'], 'class="form-control" id="tipo_interes_id"'); ?>
                 </div>
             </div>
         </div>

@@ -2063,7 +2063,7 @@ class Inmueble_model extends MY_Model
 
     function get_id_provincias_existentes()
     {
-        $this->db->distinct('provincia_id');
+        $this->db->select('distinct(provincia_id) as provincia_id');
         $this->db->from($this->view);
         $result=$this->db->get()->result();
         return $this->utilities->get_keys_objects_array($result,'provincia_id');
@@ -2096,7 +2096,7 @@ class Inmueble_model extends MY_Model
 
     function get_id_poblaciones_existentes()
     {
-        $this->db->distinct('poblacion_id');
+        $this->db->select('distinct(poblacion_id) as poblacion_id');
         $this->db->from($this->table);
         $result=$this->db->get()->result();
         return $this->utilities->get_keys_objects_array($result,'poblacion_id');
@@ -2127,7 +2127,7 @@ class Inmueble_model extends MY_Model
 
     function get_id_zonas_existentes()
     {
-        $this->db->distinct('zona_id');
+        $this->db->select('distinct(zona_id) as zona_id');
         $this->db->from($this->table);
         $result=$this->db->get()->result();
         return $this->utilities->get_keys_objects_array($result,'zona_id');

@@ -38,6 +38,9 @@ class Clientes extends CRUD_controller
 
         // selector de intereses
         $this->data['intereses'] = $this->Cliente_model->get_intereses_dropdown(-1);
+        
+        // selector de tipo de intereses
+        $this->data['tipo_intereses'] = $this->Cliente_model->get_tipo_intereses_dropdown(-1);
     }
 
     private function _load_filtros_session()
@@ -59,6 +62,9 @@ class Clientes extends CRUD_controller
 
         // Filtro interes_id
         $this->utilities->set_value_session_filter('clientes_buscador', 'interes_id');
+        
+        // Filtro tipo_interes_id
+        $this->utilities->set_value_session_filter('clientes_buscador', 'tipo_interes_id');
 
         // Filtro fecha_desde
         $this->utilities->set_value_session_filter('clientes_buscador', 'fecha_desde');
@@ -77,6 +83,7 @@ class Clientes extends CRUD_controller
         $filtros['poblacion_id'] = $this->session->userdata('clientes_buscador_poblacion_id');
         $filtros['agente_asignado_id'] = $this->session->userdata('clientes_buscador_agente_asignado_id');
         $filtros['interes_id'] = $this->session->userdata('clientes_buscador_interes_id');
+        $filtros['tipo_interes_id'] = $this->session->userdata('clientes_buscador_tipo_interes_id');
 
         // Búsqueda por rango de fechas
         $filtros['fecha_desde'] = $this->session->userdata('clientes_buscador_fecha_desde');

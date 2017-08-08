@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH . 'core/MY_Controller.php';
 
-class Inmuebles extends MY_Controller
+class Clientes extends MY_Controller
 {
 
     function __construct()
@@ -31,12 +31,13 @@ class Inmuebles extends MY_Controller
         // Comprobación de acceso
         $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
         
-        $this->load->model('Inmueble_model');
+        $this->load->model('Cliente_model');
     }
     
-    function dropdown_tipo()
+    function propietarios($tipo_oferta,$historico=0)
     {
-        var_dump($this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown());
+        $this->load->model('Cliente_Inmueble_model');
+        var_dump($this->Cliente_Inmueble_model->get_ids_clientes($tipo_oferta,$historico));
     }
 
     function general()
@@ -50,7 +51,7 @@ class Inmuebles extends MY_Controller
         // Validation Insert (FALSE)
         $this->form_validation->reset_validation();
         $this->form_validation->set_data($_POST);
-        $result_validation_insert=$this->Inmueble_model->validation(); 
+        $result_validation_insert=$this->Cliente_model->validation(); 
         $this->unit->run(FALSE, $result_validation_insert, 'Test de validación al insertar 1');
 
         $nombre2 = 'Nombre fichero';
@@ -62,14 +63,14 @@ class Inmuebles extends MY_Controller
         $this->form_validation->reset_validation();
         // Esta linea hay que añadirla para que pille bien los datos de validación
         $this->form_validation->set_data($_POST);
-        $result_validation_insert2=$this->Inmueble_model->validation(); 
+        $result_validation_insert2=$this->Cliente_model->validation(); 
         $this->unit->run(TRUE, $result_validation_insert2, 'Test de validación al insertar 2');
                     
         // Insert
-        $datos_formateados = $this->Inmueble_model->get_formatted_datas();
-        $id=$this->Inmueble_model->insert($datos_formateados);
+        $datos_formateados = $this->Cliente_model->get_formatted_datas();
+        $id=$this->Cliente_model->insert($datos_formateados);
         
-        $datos_bd_insert=$this->Inmueble_model->get_by_id($id);
+        $datos_bd_insert=$this->Cliente_model->get_by_id($id);
         
         $this->unit->run($datos_bd_insert->nombre, $nombre2, 'Test de nombre al insertar');
         $this->unit->run($datos_bd_insert->descripcion, $descripcion2, 'Test de descripción al insertar');
@@ -82,7 +83,7 @@ class Inmuebles extends MY_Controller
         
         $this->form_validation->reset_validation();
         $this->form_validation->set_data($_POST);
-        $result_validation_edit=$this->Inmueble_model->validation($id);
+        $result_validation_edit=$this->Cliente_model->validation($id);
         
         $this->unit->run(FALSE, $result_validation_edit, 'Test de validación al update 1');
         
@@ -94,21 +95,21 @@ class Inmuebles extends MY_Controller
         
         $this->form_validation->reset_validation();
         $this->form_validation->set_data($_POST);
-        $result_validation_edit2=$this->Inmueble_model->validation($id);
+        $result_validation_edit2=$this->Cliente_model->validation($id);
         
         $this->unit->run(TRUE, $result_validation_edit2, 'Test de validación al update 2');
         
-        $datos_formateados2 = $this->Inmueble_model->get_formatted_datas();
-        $affected=$this->Inmueble_model->update($datos_formateados2,$id);
+        $datos_formateados2 = $this->Cliente_model->get_formatted_datas();
+        $affected=$this->Cliente_model->update($datos_formateados2,$id);
         
-        $datos_bd_edit2=$this->Inmueble_model->get_by_id($id);
+        $datos_bd_edit2=$this->Cliente_model->get_by_id($id);
         
         $this->unit->run($affected, 1, 'Test de nombre (affected)');
         $this->unit->run($datos_bd_edit2->nombre, $nombre_edit2, 'Test de nombre (update)');
         $this->unit->run($datos_bd_edit2->descripcion, $descripcion_edit2, 'Test de descripción (update)');
 
         // Delete        
-        $result_validation_delete=$this->Inmueble_model->delete($id);
+        $result_validation_delete=$this->Cliente_model->delete($id);
         $this->unit->run($result_validation_delete, 1, 'Test de delete');
 
         // The report will be formatted in an HTML table for viewing. If you prefer the raw data you can retrieve an array using:
