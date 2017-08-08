@@ -58,4 +58,22 @@ VIEW `openrs`.`v_demandas` AS
         JOIN `openrs`.`clientes` ON ((`openrs`.`demandas`.`cliente_id` = `openrs`.`clientes`.`id`)))
         LEFT JOIN `openrs`.`tipos_certificacion_energetica` ON ((`openrs`.`demandas`.`certificacion_energetica_id` = `openrs`.`tipos_certificacion_energetica`.`id`)))
         LEFT JOIN `openrs`.`users` ON ((`openrs`.`demandas`.`agente_asignado_id` = `openrs`.`users`.`id`)));
+		
+
+-- Campos no usados
+ALTER TABLE `clientes`
+  DROP `busca_vender`,
+  DROP `busca_comprar`,
+  DROP `busca_alquilar`,
+  DROP `busca_alquiler`,
+  DROP `estado_civil`;
+
+ALTER TABLE `inmuebles`
+  DROP `obra_nueva`,
+  DROP `cuota_comunidad`,
+  DROP `forma_pago`,
+  DROP `anejos`,
+  DROP `cargas_vivienda`,
+  DROP `descripcion_vivienda`,
+  DROP `antiguedad_edificio`;
 

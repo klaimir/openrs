@@ -191,19 +191,6 @@ class Inmueble_model extends MY_Model
             // Testing
             //die();
         }
-
-        /* 	
-          16	obra_nueva	varchar(30)	utf8_general_ci		No 	inmueble_usado		Cambiar Cambiar	Eliminar Eliminar
-         * 	
-
-          18	cuota_comunidad	double			Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
-          19	forma_pago	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
-          20	anejos	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
-          21	cargas_vivienda	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
-          22	descripcion_vivienda	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
-          23	descripcion_edificio	text	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
-          24	antiguedad_edificio	varchar(200)	utf8_general_ci		Sí 	NULL		Cambiar Cambiar	Eliminar Eliminar
-         */
     }
 
     /**

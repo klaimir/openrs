@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<p><?php echo lang('index_subheading');?></p>
+<?php /*<p><?php echo lang('index_subheading');?></p>*/ ?>
 
 <div class="space-10"></div>
 

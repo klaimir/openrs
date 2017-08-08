@@ -8,7 +8,18 @@ if (!defined('BASEPATH'))
  *
  * @author Admin
  */
-class Backup_model extends CI_Model {
+
+require_once APPPATH . 'core/MY_Model.php';
+
+class Backup_model extends MY_Model {
+    
+    public function __construct()
+    {        
+        parent::__construct();
+        
+        $this->table = 'backup';
+        $this->primary_key = 'id';
+    }
 
     private $backup = 'backup';
 

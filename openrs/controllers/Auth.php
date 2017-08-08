@@ -12,6 +12,9 @@ class Auth extends MY_Controller
         parent::__construct();
         $this->template->set_template('header_and_content');
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+        
+        // Sección activa
+        $this->data['_active_section']='auth';
     }
 
     // redirect if needed, otherwise display the user list
@@ -356,6 +359,7 @@ class Auth extends MY_Controller
         if ($activation)
         {
             // redirect them to the auth page
+            $this->session->set_flashdata('message_color', 'success');
             $this->session->set_flashdata('message', $this->ion_auth->messages());
             redirect("auth", 'refresh');
         }
@@ -404,11 +408,13 @@ class Auth extends MY_Controller
                 // do we have the right userlevel?
                 if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
                 {
-                    $this->ion_auth->deactivate($id);
+                    $this->ion_auth->deactivate($id);                    
                 }
             }
 
             // redirect them back to the auth page
+            $this->session->set_flashdata('message_color', 'success');
+            $this->session->set_flashdata('message', $this->ion_auth->messages());
             redirect('auth', 'refresh');
         }
     }
@@ -449,6 +455,7 @@ class Auth extends MY_Controller
         {
             // check to see if we are creating the user
             // redirect them back to the admin page
+            $this->session->set_flashdata('message_color', 'success');
             $this->session->set_flashdata('message', $this->ion_auth->messages());
             redirect("auth", 'refresh');
         }
@@ -532,6 +539,16 @@ class Auth extends MY_Controller
                 $this->form_validation->set_rules('password', $this->lang->line('edit_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
                 $this->form_validation->set_rules('password_confirm', $this->lang->line('edit_user_validation_password_confirm_label'), 'required');
             }
+            
+            // Si se han especificado grupos, hay que comprobar que no se han quitado permisos a los admins
+            if ($this->ion_auth->is_admin() && $this->input->post('groups'))
+            {
+                if(!$this->Usuario_model->check_unique_admin($id,$this->input->post('groups')))
+                {
+                    $this->session->set_flashdata('message', $this->Usuario_model->get_error());
+                    redirect('auth', 'refresh');
+                }                
+            }
 
             if ($this->form_validation->run() === TRUE)
             {
@@ -555,7 +572,6 @@ class Auth extends MY_Controller
 
                     if (isset($groupData) && !empty($groupData))
                     {
-
                         $this->ion_auth->remove_from_group('', $id);
 
                         foreach ($groupData as $grp)
@@ -569,6 +585,7 @@ class Auth extends MY_Controller
                 if ($this->ion_auth->update($user->id, $data))
                 {
                     // redirect them back to the admin page if admin, or to the base url if non admin
+                    $this->session->set_flashdata('message_color', 'success');
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     if ($this->ion_auth->is_admin())
                     {
