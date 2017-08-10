@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH . 'core/MY_Controller.php';
 
@@ -6,7 +8,8 @@ require_once APPPATH . 'core/MY_Controller.php';
  *
  * @author roytuts.com
  */
-class Backup extends MY_Controller {
+class Backup extends MY_Controller
+{
 
     /**
      * error messages
@@ -29,12 +32,18 @@ class Backup extends MY_Controller {
      * if this array is empty then entire site structure is backed up
      * public $directories = array("application", "forum", "assets/images", "assets/js", "assets/css", "system");
      */
-    private $directories = array("assets/admin/downloads");
+    private $directories = array("uploads");
 
     /**
      * containts a list of all the directories to ignore, leave empty to backup all
      */
     private $ignore_directories = array('backups');
+    
+    /**
+     * containts a list of all the tablas to ignore, leave empty to backup all
+     */    
+    private $ignore_tables = array('v_clientes','v_clientes_ficheros','v_clientes_inmuebles','v_demandas','v_demandas_ficheros','v_estados','v_inmuebles',
+        'v_inmuebles_demandas','v_inmuebles_demandas','v_inmuebles_ficheros','v_tipos_ficheros','v_backups');
 
     /**
      * the directory name used for the temp file copy when everything is backed up
@@ -86,51 +95,80 @@ class Backup extends MY_Controller {
     private $db_backup_path = 'backups/databases/';
     private $site_backup_path = 'backups/sites/';
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->load->dbutil();
         $this->load->library('zip');
-        $this->load->library('form_validation');
         $this->load->model('backup_model', 'backup');
         $this->back_url = $this->session->flashdata($this->back_url_key);
-        
-         // Secure the access
+
+        // Secure the access
         $this->_security();
+        
+        // Comprobación de acceso
+        $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+
+        // Sección activa
+        $this->data['_active_section'] = 'backup';
     }
 
-    private function handle_error($err) {
-        $this->error .= $err . "\r\n"; // "\r\n" means each error message will display in a new line
+    private function handle_error($err)
+    {
+        $this->error .= $err . "<br>"; // "\r\n" means each error message will display in a new line
     }
 
-    private function handle_success($succ) {
-        $this->success .= $succ . "\r\n"; // "\r\n" means each error message will display in a new line
+    private function handle_success($succ)
+    {
+        $this->success .= $succ . "<br>"; // "\r\n" means each error message will display in a new line
     }
 
     /**
      * display the main backup view page
      */
-    function index() {
-        if ($this->input->post('backup')) {
-            $this->form_validation->set_rules('backup_type', 'Backup Type', 'required');
-            $this->form_validation->set_rules('file_type', 'File Type', 'required');
-            if ($this->form_validation->run($this)) {
+    function index()
+    {
+        if ($this->input->post('backup'))
+        {
+            $this->form_validation->set_rules('backup_type', 'Tipo de copia de seguridad', 'required');
+            $this->form_validation->set_rules('file_type', 'Tipo de compresión', 'required');
+            if ($this->form_validation->run($this))
+            {
                 $backup_type = $this->input->post('backup_type');
                 $file_format = $this->input->post('file_type');
-                if (trim($backup_type) == 1) {
+                if (trim($backup_type) == 1)
+                {
                     $this->get_db_backup($this->db_backup_path, $backup_type, $file_format);
-                } else if (trim($backup_type) == 2) {
+                }
+                else if (trim($backup_type) == 2)
+                {
                     $this->get_site_backup($this->site_backup_path, $backup_type, $file_format);
+                } 
+                else if (trim($backup_type) == 3)
+                {
+                    $this->get_db_backup($this->db_backup_path, 1, $file_format);
+                    $this->get_site_backup($this->site_backup_path, 2, $file_format);
                 }
             }
         }
-        $data['errors'] = $this->error;
-        $data['success'] = $this->success;
         
+        if (isset($this->success) && strlen($this->success)) {            
+            $this->data['message_color']='success';
+            $this->data['message']=$this->success;
+        }
+
+        if (isset($this->error) && strlen($this->error)) {
+            $this->data['message'] = $this->error;
+        }
+
+        if (validation_errors()) {
+            $this->data['message'] = validation_errors();
+        }
+
         // List
-        $this->data['list']=$this->backup->getAll();
+        $this->data['list'] = $this->backup->getAll();
         // Datas
-        $data_merged=array_merge($this->data, $data);
-        $this->render_private('backup/index', $data_merged);
+        $this->render_private('backup/index', $this->data);
     }
 
     /**
@@ -141,87 +179,135 @@ class Backup extends MY_Controller {
      *
      * @access private
      */
-    private function get_db_backup($file_path, $backup_type, $file_format = 1) {
+    private function get_db_backup($file_path, $backup_type, $file_format = 1)
+    {
         $this->load->helper('string');
         $key_name1 = md5(date("d_m_Y_H_i_s")) . '_';
         $key_name2 = '_db';
         $key_name3 = date("d_m_Y_H_i_s");
-        if ($file_format == 1) {
-//strong file name
+        if ($file_format == 1)
+        {
+            //strong file name
             $file_name = $key_name1 . $key_name3 . $key_name2 . '.zip';
             $prefs = array(
-                'ignore' => array($this->ignore_directories),
+                'ignore' => $this->ignore_tables,
                 'format' => 'zip', // gzip, zip, txt
                 'filename' => $file_name, // File name - NEEDED ONLY WITH ZIP FILES
                 'add_drop' => TRUE, // Whether to add DROP TABLE statements to backup file
                 'add_insert' => TRUE, // Whether to add INSERT data to backup file
                 'newline' => "\n" // Newline character used in backup file
             );
-//Backup your entire database and assign it to a variable
+            //Backup your entire database and assign it to a variable
             $backup = $this->dbutil->backup($prefs);
             $file = $file_path . $file_name;
-            if (strlen($backup)) {
-                if (!write_file($file, $backup)) {
-                    $this->handle_error('Error while writing db backup to disk: ' . $file_name);
-                } else {
-                    $this->handle_success('File Name: ' . $file_name . '. ');
-                    $this->handle_success('DB backup successfully written to disk. ');
+            if (strlen($backup))
+            {
+                if (!write_file($file, $backup))
+                {
+                    $this->handle_error('Error mientras se escribía la base de datos al disco: ' . $file_name);
+                }
+                else
+                {
+                    $this->handle_success('Nombre de fichero: ' . $file_name . '. ');
+                    $this->handle_success('Base de datos escrita con éxito a disco. ');
                     $date_arr = explode('_', $key_name3);
                     $date = $date_arr[0] . '-' . $date_arr[1] . '-' . $date_arr[2] . ' ' . $date_arr[3] . ':' . $date_arr[4] . ':' . $date_arr[5];
-                    $saved_data = $this->backup->save_backup_details($file_name, $file_path);
-                    if ($saved_data !== NULL) {
-                        $this->handle_success('DB Backup details successfully saved to database. ');
-                        $this->handle_success('You can download db backup here ' . anchor($this->db_download_url . $saved_data, 'download', array('class' => 'download')));
-                        $this->handle_success('You can delete db backup here ' . anchor($this->db_delete_url . $saved_data, 'delete', array('class' => 'delete', 'onclick' => "return confirm('Are you sure want to delete this file ?')")));
-                    } else {
-                        if (file_exists($file)) {
+                    $saved_data = $this->backup->save_backup_details($file_name, $file_path, $backup_type);
+                    if ($saved_data !== NULL)
+                    {
+                        $this->handle_success('Copia de seguridad de la base de datos realizada con éxito. ');
+                        $this->handle_success('A continuación puedes acceder a la copia de seguridad aquí ' . anchor($this->db_download_url . $saved_data, 'descargar', array('class' => 'download')));
+                        $this->handle_success('Puedes borrar la copia de seguridad pulsando aquí ' . anchor($this->db_delete_url . $saved_data, 'eliminar', array('class' => 'delete', 'onclick' => "return confirm('¿ Estás seguro de borrar la copia de seguridad realizada ?')")));
+                    }
+                    else
+                    {
+                        if (file_exists($file))
+                        {
                             unlink($file);
                         }
-                        $this->handle_error('Error while saving db backup to database: ' . $file_name);
+                        $this->handle_error('Error mientras se guardaban los datos en la base de datos: ' . $file_name);
                     }
                 }
-            } else {
-                $this->handle_error('Error while getting db backup: ' . $file_name);
             }
-        } else if ($file_format == 2) {
+            else
+            {
+                $this->handle_error('Error mientras realizaba la copia de seguridad: ' . $file_name);
+            }
+        }
+        else if ($file_format == 2)
+        {
             $file_name = $key_name1 . $key_name3 . $key_name2 . '.sql.gz';
             $prefs = array(
-                'ignore' => array($this->ignore_directories),
+                'ignore' => $this->ignore_tables,
                 'format' => 'gzip', // gzip, zip, txt
                 'filename' => $file_name, // File name - NEEDED ONLY WITH ZIP FILES
                 'add_drop' => TRUE, // Whether to add DROP TABLE statements to backup file
                 'add_insert' => TRUE, // Whether to add INSERT data to backup file
                 'newline' => "\n" // Newline character used in backup file
             );
-//Backup your entire database and assign it to a variable
-
+            //Backup your entire database and assign it to a variable
             // PCS_00001_01
             //$backup = & $this->dbutil->backup($prefs);
-            
+
             $backup = $this->dbutil->backup($prefs);
             $file = $file_path . $file_name;
-            if (strlen($backup)) {
-                if (!write_file($file, $backup)) {
-                    $this->handle_error('Error while writing db backup to disk: ' . $file_name);
-                } else {
-                    $this->handle_success('File Name: ' . $file_name . '. ');
-                    $this->handle_success('DB backup successfully written to disk. ');
+            if (strlen($backup))
+            {
+                if (!write_file($file, $backup))
+                {
+                    $this->handle_error('Error mientras se escribía la base de datos al disco: ' . $file_name);
+                }
+                else
+                {                    
+                    $this->handle_success('Nombre de fichero: ' . $file_name . '. ');
+                    $this->handle_success('Base de datos escrita con éxito a disco. ');
                     $date_arr = explode('_', $key_name3);
                     $date = $date_arr[0] . '-' . $date_arr[1] . '-' . $date_arr[2] . ' ' . $date_arr[3] . ':' . $date_arr[4] . ':' . $date_arr[5];
-                    $saved_data = $this->backup->save_backup_details($file_name, $file_path);
-                    if ($saved_data !== NULL) {
-                        $this->handle_success('DB Backup details successfully saved to database. ');
-                        $this->handle_success('You can download db backup here ' . anchor($this->db_download_url . $saved_data, 'download', array('class' => 'download')));
-                        $this->handle_success('You can delete db backup here ' . anchor($this->db_delete_url . $saved_data, 'delete', array('class' => 'delete', 'onclick' => "return confirm('Are you sure want to delete this file ?')")));
-                    } else {
-                        if (file_exists($file)) {
+                    $saved_data = $this->backup->save_backup_details($file_name, $file_path, $backup_type);
+                    if ($saved_data !== NULL)
+                    {
+                        $this->handle_success('Copia de seguridad de la base de datos realizada con éxito. ');
+                        $this->handle_success('A continuación puedes acceder a la copia de seguridad aquí ' . anchor($this->db_download_url . $saved_data, 'descargar', array('class' => 'download')));
+                        $this->handle_success('Puedes borrar la copia de seguridad pulsando aquí ' . anchor($this->db_delete_url . $saved_data, 'eliminar', array('class' => 'delete', 'onclick' => "return confirm('Are you sure want to delete this file ?')")));
+                    }
+                    else
+                    {
+                        if (file_exists($file))
+                        {
                             unlink($file);
                         }
-                        $this->handle_error('Error while saving db backup to database: ' . $file_name);
+                        $this->handle_error('Error mientras se guardaban los datos en la base de datos: ' . $file_name);
                     }
                 }
-            } else {
-                $this->handle_error('Error while getting db backup: ' . $file_name);
+            }
+            else
+            {
+                $this->handle_error('Error mientras realizaba la copia de seguridad: ' . $file_name);
+            }
+        }
+    }
+    
+    /*
+     *
+     * download
+     *
+     * descarga la copia de seguridad
+     *
+     * @access public
+     */
+
+    function download($file_id)
+    {
+        $file_data = $this->backup->check_site_file($file_id);
+        if ($file_data !== NULL)
+        {
+            if($file_data->backup_type==1)
+            {
+                $this->download_db_file($file_id);
+            }
+            else
+            {
+                $this->download_site_file($file_id);
             }
         }
     }
@@ -234,15 +320,19 @@ class Backup extends MY_Controller {
      *
      * @access public
      */
-    function delete_db_file($file_id) {
+    function delete_db_file($file_id)
+    {
         $this->session->keep_flashdata($this->back_url_key);
-        if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL) {
+        if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL)
+        {
             $this->back_url = $this->home_url;
         }
         $file_data = $this->backup->delete_db_file($file_id);
-        if ($file_data !== NULL) {
+        if ($file_data !== NULL)
+        {
             $file = $file_data->backup_location . $file_data->backup_name;
-            if (file_exists($file)) {
+            if (file_exists($file))
+            {
                 unlink($file);
             }
         }
@@ -258,13 +348,16 @@ class Backup extends MY_Controller {
      * @access public
      */
 
-    function download_db_file($file_id) {
+    function download_db_file($file_id)
+    {
         $this->session->keep_flashdata($this->back_url_key);
-        if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL) {
+        if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL)
+        {
             $this->back_url = $this->home_url;
         }
         $file_data = $this->backup->check_db_file($file_id);
-        if ($file_data !== NULL) {
+        if ($file_data !== NULL)
+        {
             $this->load->helper('download');
             $file_path = $this->db_backup_path . $file_data->backup_name;
             $data = file_get_contents($file_path); // Read the file's contents
@@ -275,6 +368,31 @@ class Backup extends MY_Controller {
         }
         redirect($this->back_url);
     }
+    
+    /*
+     *
+     * delete
+     *
+     * Elimina la copia de seguridad
+     *
+     * @access public
+     */
+
+    function delete($file_id)
+    {
+        $file_data = $this->backup->check_site_file($file_id);
+        if ($file_data !== NULL)
+        {
+            if($file_data->backup_type==1)
+            {
+                $this->delete_site_file($file_id);
+            }
+            else
+            {
+                $this->delete_site_file($file_id);
+            }
+        }
+    }
 
     /**
      *
@@ -284,15 +402,19 @@ class Backup extends MY_Controller {
      *
      * @access public
      */
-    function delete_site_file($file_id) {
+    function delete_site_file($file_id)
+    {
         $this->session->keep_flashdata($this->back_url_key);
-        if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL) {
+        if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL)
+        {
             $this->back_url = $this->home_url;
         }
         $file_data = $this->backup->delete_site_file($file_id);
-        if ($file_data !== NULL) {
+        if ($file_data !== NULL)
+        {
             $file = $file_data->backup_location . $file_data->backup_name;
-            if (file_exists($file)) {
+            if (file_exists($file))
+            {
                 unlink($file);
             }
         }
@@ -308,13 +430,16 @@ class Backup extends MY_Controller {
      * @access public
      */
 
-    function download_site_file($file_id) {
+    function download_site_file($file_id)
+    {
         $this->session->keep_flashdata($this->back_url_key);
-        if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL) {
+        if (strlen(trim($this->back_url)) <= 0 || $this->back_url == NULL)
+        {
             $this->back_url = $this->home_url;
         }
         $file_data = $this->backup->check_site_file($file_id);
-        if ($file_data !== NULL) {
+        if ($file_data !== NULL)
+        {
             $this->load->helper('download');
             $file_path = $file_data->backup_location . $file_data->backup_name;
             $data = file_get_contents($file_path); // Read the file's contents
@@ -335,84 +460,111 @@ class Backup extends MY_Controller {
      *
      * @access private
      */
-    private function get_site_backup($file_path, $backup_type, $file_format = 1) {
+    private function get_site_backup($file_path, $backup_type, $file_format = 1)
+    {
         $this->zip->clear_data();
         $this->check_directory($file_path);
         $this->check_directory($this->copy_directory);
-//loop each of the folder that will be backed up
-        if (count($this->directories) > 0) {
-            foreach ($this->directories as $dir) {
-                if (!in_array($dir, $this->ignore_directories)) {
+        //loop each of the folder that will be backed up
+        if (count($this->directories) > 0)
+        {
+            foreach ($this->directories as $dir)
+            {
+                if (!in_array($dir, $this->ignore_directories))
+                {
                     $location = $this->base_path . $dir . "/";
                     $this->zip->read_dir($location, FALSE);
                 }
             }
-        } else {
-//takes a copy of the code to ensure that the backup of backups is not made.
+        }
+        else
+        {
+            //takes a copy of the code to ensure that the backup of backups is not made.
             $copied = FALSE;
-            if ($this->structure_copied === FALSE) {
+            if ($this->structure_copied === FALSE)
+            {
                 $path = str_replace('\\', '/', realpath($this->base_path));
                 $copied = $this->copy_site_files($path, $this->base_path . $this->copy_directory . "/");
             }
-            if (($copied === TRUE) || ($this->structure_copied === TRUE)) {
+            if (($copied === TRUE) || ($this->structure_copied === TRUE))
+            {
                 $this->zip->read_dir($this->base_path . $this->copy_directory . "/", FALSE);
             }
         }
         flush();
         $key_name = date("d_m_Y_H_i_s");
-        if ($file_format == 1) {
+        if ($file_format == 1)
+        {
             $file_name = md5($key_name) . '_site.zip';
             $zipped = $this->zip->archive($file_path . $file_name);
             $this->zip->clear_data();
-            if ($this->structure_copied === TRUE) { //we need to remove the copied files to ensure that the server is kept nice and tidy
+            if ($this->structure_copied === TRUE)
+            { //we need to remove the copied files to ensure that the server is kept nice and tidy
                 $this->remove_temp_files($this->base_path . $this->copy_directory . "/");
             }
-            if ($zipped == 1) {
-                $this->handle_success('File Name: ' . $file_name . '. ');
-                $this->handle_success('Site backup successfully written to disk. ');
+            if ($zipped == 1)
+            {
+                $this->handle_success('Nombre de fichero: ' . $file_name . '. ');
+                $this->handle_success('Ficheros adjuntos escritos con éxito a disco. ');
                 $date_arr = explode('_', $key_name);
                 $date = $date_arr[0] . '-' . $date_arr[1] . '-' . $date_arr[2] . ' ' . $date_arr[3] . ':' . $date_arr[4] . ':' . $date_arr[5];
                 $file = $file_path . $file_name;
                 $saved_data = $this->backup->save_backup_details($file_name, $file_path, $backup_type);
-                if ($saved_data !== NULL) {
-                    $this->handle_success('Site Backup details successfully saved to database. ');
-                    $this->handle_success('You can get site backup here ' . anchor($this->site_download_url . $saved_data, 'download', array('class' => 'download')));
-                    $this->handle_success('You can delete site backup here ' . anchor($this->site_delete_url . $saved_data, 'delete', array('class' => 'delete', 'onclick' => "return confirm('Are you sure want to delete this file ?')")));
-                } else {
-                    if (file_exists($file)) {
+                if ($saved_data !== NULL)
+                {
+                    $this->handle_success('Copia de seguridad de los ficheros adjuntos realizado con éxito. ');
+                    $this->handle_success('A continuación puedes acceder a la copia de seguridad aquí ' . anchor($this->site_download_url . $saved_data, 'descargar', array('class' => 'download')));
+                    $this->handle_success('Puedes borrar la copia de seguridad pulsando aquí ' . anchor($this->site_delete_url . $saved_data, 'eliminar', array('class' => 'delete', 'onclick' => "return confirm('Are you sure want to delete this file ?')")));
+                }
+                else
+                {
+                    if (file_exists($file))
+                    {
                         unlink($file);
                     }
-                    $this->handle_success('Error while saving site backup to database: ' . $file_name);
+                    $this->handle_success('Error mientras se guardaban los datos en la base de datos: ' . $file_name);
                 }
-            } else {
-                $this->handle_error('Error while writing site backup to disk: ' . $file_name);
             }
-        } else if ($file_format == 2) {
+            else
+            {
+                $this->handle_error('Error mientras se copiaban los ficheros adjuntos: ' . $file_name);
+            }
+        }
+        else if ($file_format == 2)
+        {
             $file_name = md5($key_name) . '_site.tar.gz';
             $zipped = $this->zip->archive($file_path . $file_name);
             $this->zip->clear_data();
-            if ($this->structure_copied === TRUE) { //we need to remove the copied files to ensure that the server is kept nice and tidy
+            if ($this->structure_copied === TRUE)
+            { //we need to remove the copied files to ensure that the server is kept nice and tidy
                 $this->remove_temp_files($this->base_path . $this->copy_directory . "/");
             }
-            if ($zipped == 1) {
-                $this->handle_success('File Name: ' . $file_name . '. ');
-                $this->handle_success('Site backup successfully written to disk. ');
+            if ($zipped == 1)
+            {
+                $this->handle_success('Nombre de fichero: ' . $file_name . '. ');
+                $this->handle_success('Ficheros adjuntos escritos con éxito a disco. ');
                 $date_arr = explode('_', $key_name);
                 $date = $date_arr[0] . '-' . $date_arr[1] . '-' . $date_arr[2] . ' ' . $date_arr[3] . ':' . $date_arr[4] . ':' . $date_arr[5];
                 $file = $file_path . $file_name;
                 $saved_data = $this->backup->save_backup_details($file_name, $file_path, $backup_type);
-                if ($saved_data !== NULL) {
-                    $this->handle_success('Site Backup details successfully saved to database. ');
-                    $this->handle_success('You can get site backup here ' . anchor($this->site_download_url . $saved_data, 'download', array('class' => 'download')));
-                    $this->handle_success('You can delete site backup here ' . anchor($this->site_delete_url . $saved_data, 'delete', array('class' => 'delete', 'onclick' => "return confirm('Are you sure want to delete this file ?')")));
-                } else {
-                    if (file_exists($file)) {
+                if ($saved_data !== NULL)
+                {
+                    $this->handle_success('Copia de seguridad de los ficheros adjuntos realizado con éxito. ');
+                    $this->handle_success('A continuación puedes acceder a la copia de seguridad aquí ' . anchor($this->site_download_url . $saved_data, 'descargar', array('class' => 'download')));
+                    $this->handle_success('Puedes borrar la copia de seguridad pulsando aquí ' . anchor($this->site_delete_url . $saved_data, 'eliminar', array('class' => 'delete', 'onclick' => "return confirm('Are you sure want to delete this file ?')")));
+                }
+                else
+                {
+                    if (file_exists($file))
+                    {
                         unlink($file);
                     }
-                    $this->handle_success('Error while saving site backup to database: ' . $file_name);
+                    $this->handle_success('Error mientras se guardaban los datos en la base de datos: ' . $file_name);
                 }
-            } else {
-                $this->handle_error('Error while writing site backup to disk: ' . $file_name);
+            }
+            else
+            {
+                $this->handle_error('Error mientras se copiaban los ficheros adjuntos: ' . $file_name);
             }
         }
     }
@@ -426,31 +578,44 @@ class Backup extends MY_Controller {
      *
      * @access private
      */
-    private function copy_site_files($path, $dest) {
-        if (is_dir($path)) {
+    private function copy_site_files($path, $dest)
+    {
+        if (is_dir($path))
+        {
             @mkdir($dest);
             $objects = scandir($path);
-            if (sizeof($objects) > 0) {
-                foreach ($objects as $file) {
-                    if ($file == "." || $file == "..") {
+            if (sizeof($objects) > 0)
+            {
+                foreach ($objects as $file)
+                {
+                    if ($file == "." || $file == "..")
+                    {
                         continue;
                     }
-// go on
-                    if (is_dir($path . "/" . $file)) {
-                        if ((!in_array($file, $this->ignore_directories)) && ($file != $this->copy_directory)) {
+                    // go on
+                    if (is_dir($path . "/" . $file))
+                    {
+                        if ((!in_array($file, $this->ignore_directories)) && ($file != $this->copy_directory))
+                        {
                             $this->copy_site_files($path . "/" . $file, $dest . "/" . $file);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         copy($path . "/" . $file, $dest . "/" . $file);
                     }
                 }
             }
             $this->structure_copied = TRUE;
             return TRUE;
-        } elseif (is_file($path)) {
+        }
+        elseif (is_file($path))
+        {
             $this->structure_copied = TRUE;
             return copy($path, $dest);
-        } else {
+        }
+        else
+        {
             $this->structure_copied = TRUE;
             return FALSE;
         }
@@ -469,30 +634,45 @@ class Backup extends MY_Controller {
      * @access private
      */
 
-    private function remove_temp_files($directory) {
-        if (substr($directory, -1) == "/") {
+    private function remove_temp_files($directory)
+    {
+        if (substr($directory, -1) == "/")
+        {
             $directory = substr($directory, 0, -1);
         }
-        if (!file_exists($directory) || !is_dir($directory)) {
+        if (!file_exists($directory) || !is_dir($directory))
+        {
             return FALSE;
-        } elseif (!is_readable($directory)) {
+        }
+        elseif (!is_readable($directory))
+        {
             return FALSE;
-        } else {
+        }
+        else
+        {
             $directoryHandle = opendir($directory);
-            while ($contents = readdir($directoryHandle)) {
-                if ($contents != '.' && $contents != '..') {
+            while ($contents = readdir($directoryHandle))
+            {
+                if ($contents != '.' && $contents != '..')
+                {
                     $path = $directory . "/" . $contents;
-                    if (is_dir($path)) {
+                    if (is_dir($path))
+                    {
                         $this->remove_temp_files($path);
-                    } else {
+                    }
+                    else
+                    {
                         unlink($path);
                     }
                 }
             }
             closedir($directoryHandle);
-            if (!rmdir($directory)) {
+            if (!rmdir($directory))
+            {
                 return FALSE;
-            } else {
+            }
+            else
+            {
                 return TRUE;
             }
         }
@@ -508,8 +688,10 @@ class Backup extends MY_Controller {
      * @access private
      */
 
-    private function check_directory($path) {
-        if (!@opendir($path)) {
+    private function check_directory($path)
+    {
+        if (!@opendir($path))
+        {
             mkdir($path, 0755);
         } //if(!@opendir($path))
         return;

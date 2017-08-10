@@ -26,6 +26,10 @@
             <i class="menu-icon fa fa-download"></i>
             <span class="menu-text"> Exportar CSV </span>
         </a>        
+        <a class="btn btn-info pull-right" id="busqueda_avanzada">
+            <i class="menu-icon fa fa-search"></i>
+            <span class="menu-text"> Búsqueda Avanzada </span>
+        </a>
     </div>
 </div>
 
@@ -135,6 +139,7 @@
         $('#poblacion_id').val('');
         $('#agente_asignado_id').val('-1');
         $('#interes_id').val('-1');
+        $('#tipo_interes_id').val('-1');
         $('#fecha_desde').val('');
         $('#fecha_hasta').val('');
         // Resetear los valores no es suficiente para los chosen select, hay que hacer esto tb
@@ -169,6 +174,15 @@
                     window.location = '<?php echo site_url($_controller); ?>/delete/' + id;
                 }
             });
+        });
+        
+        $('#busqueda_avanzada').click(function () {
+            $('#buscador').toggle('slow');    
+            
+            $('.chosen-select').each(function() {
+                                         var $this = $(this);
+                                         $this.next().css({'width': 400 });
+                                });
         });
         
         $('#tabgrid_clientes').dataTable({

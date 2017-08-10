@@ -30,32 +30,24 @@ class Usuarios extends MY_Controller
         // Restricciones de existencia
         $this->data['element'] = $this->Usuario_model->get_by_id($id);
         // Existe usuario
-        if ($this->Usuario_model->check_access($this->data['element']))
+        $this->Usuario_model->check_access($this->data['element']);
+        
+        // Restricciones del modelo
+        if ($this->Usuario_model->check_delete($id))
         {
-            // Restricciones del modelo
-            if ($this->Usuario_model->check_delete($id))
+            if ($this->Usuario_model->delete_usuario($id))
             {
-                if ($this->Usuario_model->delete_usuario($id))
-                {
-                    $this->session->set_flashdata('message', 'El usuario ha sido borrado con éxito');
-                    $this->session->set_flashdata('color_message', 'success');
-                }
-                else
-                {
-                    $this->session->set_flashdata('message', 'Error al borrar el usuario');
-                    $this->session->set_flashdata('color_message', 'danger');
-                }
+                $this->session->set_flashdata('message', 'El usuario ha sido borrado con éxito');
+                $this->session->set_flashdata('message_color', 'success');
             }
             else
             {
-                $this->session->set_flashdata('message', 'El usuario seleccionado tiene datos asociados o es un usuario especial del sistema');
-                $this->session->set_flashdata('color_message', 'danger');
+                $this->session->set_flashdata('message', 'Error al borrar el usuario');
             }
         }
         else
         {
-            $this->session->set_flashdata('message', 'Error usuario seleccionado no existe');
-            $this->session->set_flashdata('color_message', 'danger');
+            $this->session->set_flashdata('message', $this->Usuario_model->get_error());
         }
 
         redirect(site_url('auth'), 'refresh');

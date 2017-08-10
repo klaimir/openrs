@@ -58,12 +58,19 @@ class MY_Model extends Base_Model
         // Definir en la clase hija
         $this->check_access_conditions($datos);
         // Check del error
-        if($this->exists_error && $this->show_errors)
+        if($this->exists_error)
         {          
-            show_error($this->text_error);
+            if($this->show_errors)
+            {
+                show_error($this->text_error);
+            }
+            else
+            {
+                return FALSE;
+            }
         }
         
-        return FALSE;
+        return TRUE;
     }
     
     function get_view_by_id($id)

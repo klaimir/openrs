@@ -13,42 +13,42 @@
 <div class="form-group">            
     <?php echo lang('create_user_fname_label', 'first_name', 'class="col-sm-3 control-label no-padding-right"'); ?>
     <div class="col-sm-9">
-        <?php echo form_input($first_name); ?>
+        <?php echo form_input($first_name, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
     </div>
 </div>
 
 <div class="form-group"> 
     <?php echo lang('create_user_lname_label', 'last_name', 'class="col-sm-3 control-label no-padding-right"'); ?>
     <div class="col-sm-9">
-        <?php echo form_input($last_name); ?>
+        <?php echo form_input($last_name, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
     </div>
 </div>
 
 <div class="form-group"> 
     <?php echo lang('create_user_email_label', 'email', 'class="col-sm-3 control-label no-padding-right"'); ?>
     <div class="col-sm-9">
-        <?php echo form_input($email); ?>
+        <?php echo form_input($email, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
     </div>
 </div>
 
 <div class="form-group"> 
     <?php echo lang('create_user_phone_label', 'phone', 'class="col-sm-3 control-label no-padding-right"'); ?>
     <div class="col-sm-9">
-        <?php echo form_input($phone); ?>
+        <?php echo form_input($phone, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
     </div>
 </div>
 
 <div class="form-group"> 
     <?php echo lang('create_user_password_label', 'password', 'class="col-sm-3 control-label no-padding-right"'); ?>
     <div class="col-sm-9">
-        <?php echo form_input($password); ?>
+        <?php echo form_input($password, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
     </div>
 </div>
 
 <div class="form-group"> 
     <?php echo lang('create_user_password_confirm_label', 'password_confirm', 'class="col-sm-3 control-label no-padding-right"'); ?>
     <div class="col-sm-9">
-        <?php echo form_input($password_confirm); ?>
+        <?php echo form_input($password_confirm, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
     </div>
 </div>
 

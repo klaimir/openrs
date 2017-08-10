@@ -36,6 +36,10 @@
             <i class="menu-icon fa fa-download"></i>
             <span class="menu-text"> Exportar CSV </span>
         </a>        
+        <a class="btn btn-info pull-right" id="busqueda_avanzada">
+            <i class="menu-icon fa fa-search"></i>
+            <span class="menu-text"> Búsqueda Avanzada </span>
+        </a>
     </div>
 </div>
 
@@ -202,13 +206,13 @@
         if(isset($filtros['poblacion_id']) && $filtros['poblacion_id']!="")
         {
     ?>
-            $('#poblaciones').load('<?php echo site_url("common/load_poblaciones/".$filtros['provincia_id']."/".$filtros['poblacion_id']); ?>');
+            $('#poblaciones').load('<?php echo site_url("inmuebles/load_poblaciones/".$filtros['provincia_id']."/".$filtros['poblacion_id']); ?>');
     <?php
         }
         else
         {
     ?>
-            $('#poblaciones').load('<?php echo site_url("common/load_poblaciones/".$filtros['provincia_id']); ?>');
+            $('#poblaciones').load('<?php echo site_url("inmuebles/load_poblaciones/".$filtros['provincia_id']); ?>');
     <?php
         }
     }                
@@ -220,13 +224,13 @@
         if(isset($filtros['zona_id']) && $filtros['zona_id']!="")
         {
     ?>
-            $('#zonas').load('<?php echo site_url("common/load_zonas/".$filtros['poblacion_id']."/".$filtros['zona_id']); ?>');
+            $('#zonas').load('<?php echo site_url("inmuebles/load_zonas/".$filtros['poblacion_id']."/".$filtros['zona_id']); ?>');
     <?php
         }
         else
         {
     ?>
-            $('#zonas').load('<?php echo site_url("common/load_zonas/".$filtros['poblacion_id']); ?>');
+            $('#zonas').load('<?php echo site_url("inmuebles/load_zonas/".$filtros['poblacion_id']); ?>');
     <?php
         }
     }                
@@ -238,6 +242,17 @@
     }
     
     jQuery(function ($) {
+        
+        $('#busqueda_avanzada').click(function () {
+            $('#buscador').toggle('slow');    
+            /*
+            $('.chosen-select').each(function() {
+                                         var $this = $(this);
+                                         $this.next().css({'width': 400 });
+                                });
+                                */
+        });
+        
         $('.borrar-elemento').click(function () {
             var id = $(this).data("id");
             bootbox.confirm("¿Estás seguro/a?", function (result) {

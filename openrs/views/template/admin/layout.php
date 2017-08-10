@@ -112,7 +112,7 @@
 
                 <div class="navbar-buttons navbar-header pull-right" role="navigation">
                     <ul class="nav ace-nav">
-                        
+                        <?php /*
                         <li class="purple">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <i class="ace-icon fa fa-bell icon-animated-bell"></i>
@@ -181,7 +181,7 @@
                             </ul>
                         </li>
                         
-                        <?php /*
+                        
                         <li class="green">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
@@ -296,7 +296,7 @@
                         
                         <li class="light-blue">
                             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                                <img class="nav-user-photo" src="<?php echo base_url(); ?>assets/admin/avatars/user.jpg" alt="Jason's Photo" />
+                                <?php /* <img class="nav-user-photo" src="<?php echo base_url(); ?>assets/admin/avatars/user.jpg" alt="Jason's Photo" /> */ ?>
                                 <span class="user-info">
                                     <small>Bienvenido,</small>
                                     <?php echo $session_identity; ?>

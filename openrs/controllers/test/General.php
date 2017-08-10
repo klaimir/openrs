@@ -31,6 +31,11 @@ class General extends MY_Controller
         // Comprobación de acceso
         $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
     }
+        
+    function get_num_admins($user_id)
+    { 
+        echo $this->Usuario_model->get_num_admins($user_id);
+    }
     
     function slugify()
     {        

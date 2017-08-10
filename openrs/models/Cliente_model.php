@@ -86,13 +86,6 @@ class Cliente_model extends MY_Model
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('agente_asignado_id', 'Agente Asignado', 'xss_clean');
         $this->form_validation->set_rules('estado_id', 'Estado', 'required');
-        /*
-          12	busca_vender	tinyint(4)			No 	0
-          13	busca_comprar	tinyint(4)			No 	0
-          14	busca_alquilar	tinyint(4)			No 	0
-          15	busca_alquiler	tinyint(4)			No 	0
-          17	estado_civil	varchar(50)	utf8_general_ci		Sí 	NULL
-         */
     }
 
     /**
@@ -358,7 +351,67 @@ class Cliente_model extends MY_Model
      * @return array de datos de plantilla
      */
     function get_by_filtros($filtros=NULL)
-    {
+    {        
+        // Filtro Intereses
+        if (isset($filtros['interes_id']) && $filtros['interes_id'] > 0)
+        {
+            // Intereses  
+            /*
+            switch ($filtros['interes_id'])
+            {
+                case 1:
+                    $this->db->where('busca_vender', 1);
+                    break;
+                case 2:
+                    $this->db->where('busca_alquilar', 1);
+                    break;
+                case 3:
+                    $this->db->where('busca_alquiler', 1);
+                    break;
+                case 4:
+                    $this->db->where('busca_comprar', 1);
+                    break;
+                default:
+                    break;
+            }
+             * 
+             */            
+            $ids_clientes=array();
+            switch ($filtros['interes_id'])
+            {
+                case 1:
+                    $this->load->model('Cliente_Inmueble_model');
+                    // Devuelve los ids de los clientes que tienen propiedades en venta
+                    $ids_clientes = $this->Cliente_Inmueble_model->get_ids_clientes(1, $filtros['tipo_interes_id']);
+                    break;
+                case 2:
+                    $this->load->model('Cliente_Inmueble_model');
+                    // Devuelve los ids de los clientes que tienen propiedades en alquiler
+                    $ids_clientes = $this->Cliente_Inmueble_model->get_ids_clientes(2, $filtros['tipo_interes_id']);
+                    break;
+                case 3:
+                    $this->load->model('Demanda_model');
+                    // Devuelve los ids de los clientes que tienen demandas que buscan alquier
+                    $ids_clientes = $this->Demanda_model->get_ids_clientes(2, $filtros['tipo_interes_id']);
+                    break;
+                case 4:
+                    $this->load->model('Demanda_model');
+                    // Devuelve los ids de los clientes que tienen demandas que buscan comprar
+                    $ids_clientes = $this->Demanda_model->get_ids_clientes(1, $filtros['tipo_interes_id']);
+                    break;
+                default:
+                    break;
+            }
+            // Comparamos los ids de cliente obtenidos
+            if(count($ids_clientes))
+            {
+                $this->db->where_in('id', $ids_clientes);
+            }
+            else
+            {
+                $this->db->where('id', 0);
+            }
+        }
         // Filtro Pais
         if (isset($filtros['pais_id']) && $filtros['pais_id'] >= 0)
         {
@@ -383,25 +436,7 @@ class Cliente_model extends MY_Model
         if (isset($filtros['estado_id']) && $filtros['estado_id'] >= 0)
         {
             $this->db->where('estado_id', $filtros['estado_id']);
-        }
-        // Intereses        
-        switch ($filtros['interes_id'])
-        {
-            case 1:
-                $this->db->where('busca_vender', 1);
-                break;
-            case 2:
-                $this->db->where('busca_alquilar', 1);
-                break;
-            case 3:
-                $this->db->where('busca_alquiler', 1);
-                break;
-            case 4:
-                $this->db->where('busca_comprar', 1);
-                break;
-            default:
-                break;
-        }
+        }        
         // Fechas
         if (isset($filtros['fecha_desde']) && $filtros['fecha_desde'] != "")
         {
@@ -480,10 +515,24 @@ class Cliente_model extends MY_Model
     {
         $intereses = array();
         $intereses[$default] = '- Seleccione interés -';
-        $intereses[1] = 'Busca vender';
-        $intereses[2] = 'Busca alquilar';
-        $intereses[3] = 'Busca un alquiler';
-        $intereses[4] = 'Busca comprar';
+        $intereses[1] = 'Ofrece algún inmueble en venta';
+        $intereses[2] = 'Ofrece algún inmueble en alquiler';
+        $intereses[3] = 'Demanda inmuebles en alquiler';
+        $intereses[4] = 'Demanda inmuebles en venta';
+        return $intereses;
+    }
+    
+    /**
+     * Devuelve un array de tipo de intereses en formato dropdown
+     *
+     * @return array de tipo de intereses en formato dropdown
+     */
+    function get_tipo_intereses_dropdown($default = "")
+    {
+        $intereses = array();
+        $intereses[$default] = '- Seleccione -';
+        $intereses[0] = 'La demanda u oferta es actual';
+        $intereses[1] = 'La demanda u oferta es antigua';
         return $intereses;
     }
 

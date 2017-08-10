@@ -1,4 +1,4 @@
-<div class="well" id="buscador">
+<div class="well" id="buscador" style="display:none;">
     <?php echo form_open('demandas', 'class="form-horizontal" method="get"'); ?>    
     <div class="row">
         <div class="col-xs-12">

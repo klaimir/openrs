@@ -1637,7 +1637,7 @@ class Utilities
         $mensaje = "Usted no tiene acceso a esta sección";
         foreach ($perfiles as $perfil)
         {
-            if ($this->CI->data[$perfil])
+            if (isset($this->CI->data[$perfil]) && $this->CI->data[$perfil])
             {
                 $error = FALSE;
             }

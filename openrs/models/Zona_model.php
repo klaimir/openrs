@@ -197,6 +197,31 @@ class Zona_model extends MY_Model
     }
     
     /**
+     * Consulta las zonas de una población
+     *
+     * @param [$poblacion_id]                  Indentificador de población
+     *
+     * @return array de zonas
+     */
+
+    function get_zonas_poblacion_in_array($poblacion_id, $ids_zonas)
+    {
+        // Consulta
+        $this->db->from($this->table);
+        $this->db->where('poblacion_id', $poblacion_id);
+        if(count($ids_zonas))
+        {
+            $this->db->where_in($this->primary_key, $ids_zonas);
+        }
+        else
+        {
+            $this->db->where($this->primary_key, 0);
+        }
+        $this->db->order_by('nombre');
+        return $this->db->get()->result();
+    }
+    
+    /**
      * Devuelve el identificador de un zona que coincida con el nombre suministrado
      *
      * @param	[nombre_zona]   Nombre del zona

@@ -12,6 +12,15 @@ class Usuario_model extends MY_Model
         $this->table = 'users';
         $this->primary_key = 'id';
         
+        $this->has_many['inmuebles'] = array('local_key'=>'id', 'foreign_key'=>'captador_id', 'foreign_model'=>'Inmueble_model'); 
+        $this->has_many['clientes'] = array('local_key'=>'id', 'foreign_key'=>'agente_asignado_id', 'foreign_model'=>'Cliente_model');
+        $this->has_many['demandas'] = array('local_key'=>'id', 'foreign_key'=>'agente_asignado_id', 'foreign_model'=>'Demanda_model');
+        $this->has_many['inmuebles_fichas'] = array('local_key'=>'id', 'foreign_key'=>'agente_id', 'foreign_model'=>'Inmueble_ficha_model'); 
+        $this->has_many['inmuebles_carteles'] = array('local_key'=>'id', 'foreign_key'=>'agente_id', 'foreign_model'=>'Inmueble_cartel_model'); 
+        $this->has_many['clientes_fichas'] = array('local_key'=>'id', 'foreign_key'=>'agente_id', 'foreign_model'=>'Cliente_ficha_model');
+        $this->has_many['demandas_fichas'] = array('local_key'=>'id', 'foreign_key'=>'agente_id', 'foreign_model'=>'Demanda_ficha_model');
+        $this->has_many['backups'] = array('local_key'=>'id', 'foreign_key'=>'admin_id', 'foreign_model'=>'Backup_model');
+        
         $this->load->model('Idioma_model');
     }
     
@@ -21,20 +30,82 @@ class Usuario_model extends MY_Model
     {
         return TRUE;
     }
+    
+    /**
+     * Devuelve el número de administradores del sistema sin contar el indicado
+     *
+     * @return int
+     */
+    
+    function get_num_admins($user_id)
+    {
+        // Array de agentes
+        return $this->db->select('id')
+                                ->where($this->ion_auth_model->tables['users_groups'].'.group_id',1)
+                                ->where($this->ion_auth_model->tables['users_groups'].'.user_id <>',$user_id)
+		                ->get($this->ion_auth_model->tables['users_groups'])
+                                ->num_rows();
+    }
+    
+    /**
+     * Comprueba que el usuario especificado no se le puede quitar el permiso de administrador por ser el único
+     *
+     * @param [id]			Identificador del usuario
+     * @param [groups]                  Grupos de usuario
+     *
+     * @return TRUE OR FALSE
+     */
+    function check_unique_admin($id, $groups)
+    {        
+        // Si es admin y es el único del sistema
+        if($this->is_admin($id) && $this->get_num_admins($id)==0)
+        {
+            // Se comprueba que no se puede eliminar el permiso de admin ya que debe haber al menos un admin
+            if(!in_array(1, $groups))
+            {
+                $this->set_error("No se puede quitar permiso de administrador al único administrador del sistema");
+                return FALSE;
+            }
+        }
+        
+        return TRUE;
+    }
 
     function check_delete($id)
     {
         // Comprobación Borrado de datos relacionados
-        if ($id !== 1)
+        if ($id == $this->data['session_user_id'])
         {
-            return TRUE;
-        }
-        else
-        {
+            $this->set_error("No se puede eliminar al usuario en curso");
             return FALSE;
         }
+        
+        // Si es admin y es el único del sistema, no se puede eliminar, debe haber al menos un admin
+        if($this->is_admin($id) && $this->get_num_admins($id)==0)
+        {
+            $this->set_error("No se puede eliminar al único administrador del sistema");
+            return FALSE;
+        }
+        
+        $info=$this->with_clientes()->with_inmuebles()->with_demandas()->with_inmuebles_fichas()->with_inmuebles_carteles()->with_clientes_fichas()
+                ->with_demandas_fichas()->with_backups()->get($id);
+        if (count($info->clientes) || count($info->inmuebles) || count($info->demandas) || count($info->inmuebles_fichas) || count($info->inmuebles_carteles)
+            || count($info->clientes_fichas) || count($info->demandas_fichas) || count($info->backups))
+        {
+            $this->set_error("El usuario seleccionado tiene datos asociados");
+            return FALSE;
+        }
+        
+        return TRUE;
     }
 
+    /**
+     * Elimina al usuario especificado del sistema
+     *
+     * @param [id]			Identificador del usuario
+     *
+     * @return TRUE OR FALSE
+     */
     function delete_usuario($id)
     {
         return $this->ion_auth_model->delete_user($id);
@@ -45,7 +116,7 @@ class Usuario_model extends MY_Model
      *
      * @param [id]			Identificador del usuario
      *
-     * @return valor formateado
+     * @return TRUE OR FALSE
      */
     public function is_agente($id = false)
     {
@@ -58,44 +129,13 @@ class Usuario_model extends MY_Model
      *
      * @param [id]			Identificador del usuario
      *
-     * @return valor formateado
+     * @return TRUE OR FALSE
      */
     public function is_admin($id = false)
     {
         return $this->ion_auth->is_admin($id);
     }
-    
-    function modificar_idioma_usuario($id, $id_idioma){
-    	$this->db->where('id', $id);
-    	return $this->db->update('users', array('id_idioma' => $id_idioma));
-    }
-    
-    function get_usuario_idioma($id_usuario){
-    	$this->db->select('idiomas.nombre, idiomas.id_idioma, idiomas.nombre_seo2');
-    	$this->db->from('users');
-    	$this->db->join('idiomas', 'users.id_idioma = idiomas.id_idioma');
-    	$this->db->where('id', $id_usuario);
-    	return $this->db->get()->row();
-    }
-    
-    function get_columnas_pie(){
-    	$this->db->where('iduser', 1);
-    	$this->db->where('id_opc > 0');
-    	$this->db->order_by('columna', 'asc');
-    	return $this->db->get('footer_opciones_cliente')->result();
-    }
-    
-    function get_codigo_pie($id, $idioma){
-    	$this->db->where('id_opc_cliente',$id);
-    	$this->db->where('id_idioma',$idioma);
-    	return $this->db->get('footer_texto_idiomas')->row()->contenido;
-    }
-    
-    function get_lang($id_usuario){
-    	$idioma_usuario=$this->get_usuario_idioma($id_usuario);
-        return $this->Idioma_model->get_idioma($idioma_usuario->id_idioma);
-    }
-    
+        
     /**
      * Devuelve un array de agentes en formato dropdown
      *
@@ -130,5 +170,36 @@ class Usuario_model extends MY_Model
         }
         return $array_valores;
     }
+    
+    function modificar_idioma_usuario($id, $id_idioma){
+    	$this->db->where('id', $id);
+    	return $this->db->update('users', array('id_idioma' => $id_idioma));
+    }
+    
+    function get_usuario_idioma($id_usuario){
+    	$this->db->select('idiomas.nombre, idiomas.id_idioma, idiomas.nombre_seo2');
+    	$this->db->from('users');
+    	$this->db->join('idiomas', 'users.id_idioma = idiomas.id_idioma');
+    	$this->db->where('id', $id_usuario);
+    	return $this->db->get()->row();
+    }
+    
+    function get_columnas_pie(){
+    	$this->db->where('iduser', 1);
+    	$this->db->where('id_opc > 0');
+    	$this->db->order_by('columna', 'asc');
+    	return $this->db->get('footer_opciones_cliente')->result();
+    }
+    
+    function get_codigo_pie($id, $idioma){
+    	$this->db->where('id_opc_cliente',$id);
+    	$this->db->where('id_idioma',$idioma);
+    	return $this->db->get('footer_texto_idiomas')->row()->contenido;
+    }
+    
+    function get_lang($id_usuario){
+    	$idioma_usuario=$this->get_usuario_idioma($id_usuario);
+        return $this->Idioma_model->get_idioma($idioma_usuario->id_idioma);
+    }    
 
 }

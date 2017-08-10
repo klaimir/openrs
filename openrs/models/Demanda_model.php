@@ -1584,6 +1584,40 @@ class Demanda_model extends MY_Model
     }
     
     /**
+     * Consulta los identificadores de los clientes que cumplen una determinadas condiciones
+     * 
+     * @param [$tipo_compra]               1 para venta, 2 para alquiler
+     * @param [$historico]                 1 para estados antiguos, 0 para actuales
+     *
+     * @return array de identificares de clientes
+     */
+
+    function get_ids_clientes($tipo_oferta, $historico=-1)
+    {
+        $this->db->select('distinct(cliente_id) as cliente_id');
+        $this->db->from($this->view);
+        // Ofertas        
+        switch ($tipo_oferta)
+        {
+            case 1:
+                $this->db->where('(oferta_id=1 OR oferta_id=3)');
+                break;
+            case 2:
+                $this->db->where('(oferta_id=2 OR oferta_id=3)');
+                break;
+            default:
+                break;
+        }
+        // Si hay histórico especificado
+        if($historico!=-1)
+        {
+            $this->db->where('historico',$historico);
+        }
+        $result=$this->db->get()->result();
+        return $this->utilities->get_keys_objects_array($result,'cliente_id');
+    }
+    
+    /**
      * Devuelve las demandas de un inmueble en formato vista
      *
      * @param [$inmueble_id]		Identificador del inmueble

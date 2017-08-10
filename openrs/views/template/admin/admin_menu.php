@@ -1,4 +1,4 @@
-<li>
+<li class="<?php echo set_active_menu($_active_section,array("auth")); ?>">
     <a href="<?php echo site_url('auth'); ?>" onClick="return show_confirm_exit_message();">
         <i class="menu-icon fa fa-users"></i>
         <span class="menu-text"> Usuarios </span>
@@ -7,7 +7,7 @@
     <b class="arrow"></b>
 </li>
 
-<li>
+<li class="<?php echo set_active_menu($_active_section,array("backup")); ?>">
     <a href="<?php echo site_url('backup'); ?>" onClick="return show_confirm_exit_message();">
         <i class="menu-icon fa fa-database"></i>
         <span class="menu-text"> Copias Seguridad </span>
