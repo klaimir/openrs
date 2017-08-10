@@ -19,6 +19,8 @@ class Backup_model extends MY_Model {
         
         $this->table = 'backup';
         $this->primary_key = 'id';
+        
+        $this->view = 'v_backups';
     }
 
     private $backup = 'backup';
@@ -28,11 +30,12 @@ class Backup_model extends MY_Model {
      *
      * @return boolean
      */
-    function save_backup_details($file_name, $file_path) {
+    function save_backup_details($file_name, $file_path, $backup_type) {
         $this->db->trans_start();
         $data = array(
             'backup_name' => $file_name,
             'backup_location' => $file_path,
+            'backup_type' => $backup_type,
             'created_date' => date('Y-m-d H:i:s'),
             'admin_id' => $this->data['session_user_id']
         );
@@ -128,9 +131,7 @@ class Backup_model extends MY_Model {
      * @return array of backups
      */
     function getAll() {
-        $fieldslist=$this->utilities->getFieldsTable($this->backup); 
-        $this->db->select($fieldslist);
-        $this->db->from($this->backup);
+        $this->db->from($this->view);
         $query = $this->db->get();
         return $query->result();
     }

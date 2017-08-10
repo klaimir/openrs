@@ -86,13 +86,6 @@ class Cliente_model extends MY_Model
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('agente_asignado_id', 'Agente Asignado', 'xss_clean');
         $this->form_validation->set_rules('estado_id', 'Estado', 'required');
-        /*
-          12	busca_vender	tinyint(4)			No 	0
-          13	busca_comprar	tinyint(4)			No 	0
-          14	busca_alquilar	tinyint(4)			No 	0
-          15	busca_alquiler	tinyint(4)			No 	0
-          17	estado_civil	varchar(50)	utf8_general_ci		Sí 	NULL
-         */
     }
 
     /**
