@@ -6,7 +6,7 @@
 <?php }?>
   	<div class="container">
 	    <div class="col-sm-3 cabecera-logo hidden-xs">
-			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'assets/admin/img/preferencias/'.$config->imagen; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
+			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'uploads/general/img/preferencias/'.$config->imagen; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
 		</div>
 	    <div class="col-md-9 menu-desplegable hidden-xs">
 			<div class="menu-nav hidden-xs" style="background-color:<?php echo $config->ccabecera;?>">
@@ -22,7 +22,7 @@
 							<?php }?>
 					
 							<?php if($sh->tipo_seccion == 1):?>
-								<a href="<?php echo site_url('sseccion/seccion/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
+								<a href="<?php echo site_url('seccion/seccion/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 2): ?>
 								<a href="<?php echo site_url($sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 3): ?>
@@ -162,7 +162,7 @@
 			</nav>
 		</div> 
 		<div class="col-xs-9 cabecera-logo hidden-sm hidden-md hidden-lg">
-			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'img/preferencias/'.$config->user_id.'/'.$config->imagen_thumb; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
+			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'uploads/general/img/preferencias/'.$config->imagen; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
 		</div>
 	</div>
 </div>

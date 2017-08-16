@@ -11,6 +11,10 @@ $lang['cms_eliminar'] = 'Eliminar';
 $lang['cms_texto'] = 'Texto';
 $lang['cms_carrusel'] = 'Carrusel';
 $lang['cms_iframe'] = 'Iframe';
+$lang['cms_inmuebles'] = 'Inmuebles';
+$lang['cms_parallax'] = 'Parallax';
+$lang['cms_buscador'] = 'Buscador';
+$lang['cms_blog'] = 'Blog';
 $lang['cms_bloques_paso1'] = 'Paso 1 - Datos del bloque';
 $lang['cms_bloques_paso2'] = 'Paso 2 - Contenido del bloque';
 $lang['cms_bloque_texto'] = "bloque de texto";
@@ -104,6 +108,7 @@ $lang['cms_c_editar_imagen_galeria'] = 'Editar imagen galería';
 $lang['cms_c_ordenar_categorias_carrusel'] = 'Ordenar categorias carrusel';
 $lang['cms_c_galeria_editar_categoria'] = 'Editar categoría';
 $lang['cms_c_bloques_ancho'] = 'Ancho';
+$lang['cms_crear_inmuebles'] = 'Crear Bloque Inmuebles';
 
 //Controlador Formularios
 $lang['cms_titulo'] = 'Título';
@@ -138,6 +143,9 @@ $lang['cms_c_bloques_titulo_placeholder'] = 'Nombre del bloque';
 $lang['cms_color'] = 'Color';
 $lang['cms_ancho_completo'] = 'Ancho completo';
 $lang['cms_ancho_margen'] = 'Ancho con margen';
+$lang['cms_inmuebles_numero'] = 'Número de inmuebles';
+$lang['cms_inmuebles_resumen'] = 'Resumen';
+$lang['cms_inmuebles_tipo'] = 'Tipo';
 
 //Controlador Inmobiliaria
 

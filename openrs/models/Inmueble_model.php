@@ -916,24 +916,26 @@ class Inmueble_model extends MY_Model
             default:
                 break;
         }
-        // Modificaciones precio        
-        switch ($filtros['modificacion_precio_id'])
-        {
-            case 1:
-                $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior > precio_compra');
-                break;
-            case 2:
-                $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior < precio_compra');
-                break;
-            case 3:
-                $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior > precio_alquiler');
-                break;
-            case 4:
-                $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior < precio_alquiler');
-                break;
-            default:
-                break;
-        }        
+        // Modificaciones precio 
+        if(isset($filtros['modificacion_precio_id'])){
+            switch ($filtros['modificacion_precio_id'])
+            {
+                case 1:
+                    $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior > precio_compra');
+                    break;
+                case 2:
+                    $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior < precio_compra');
+                    break;
+                case 3:
+                    $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior > precio_alquiler');
+                    break;
+                case 4:
+                    $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior < precio_alquiler');
+                    break;
+                default:
+                    break;
+            }  
+        }
         // Datos de publicado
         if (isset($filtros['publicado_id']) && $filtros['publicado_id'] >= 0)
         {
