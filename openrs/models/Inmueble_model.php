@@ -2135,6 +2135,126 @@ class Inmueble_model extends MY_Model
         // Consulta poblaciones
         return $this->Zona_model->get_zonas_poblacion_in_array($poblacion_id,$ids_zonas);
     }
+    
+    /**
+     * Calcula el número de inmuebles agrupados por estado
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_estado($personal=1,$historico=0)
+    {
+        $this->db->select('estados.nombre as label,count(*) as data');
+        $this->db->from($this->table);
+        $this->db->join('estados', $this->table.'.estado_id=estados.id');    
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        $this->db->group_by($this->table.'.estado_id');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de inmuebles agrupados por oferta
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_oferta($personal=1,$historico=0)
+    {
+        $array=array();
+        $row1['label']='Sólo venta';
+        $row1['data']=$this->get_num_stats_by_oferta_id(1,$personal,$historico);
+        array_push($array, $row1);
+        $row2['label']='Sólo alquiler';
+        $row2['data']=$this->get_num_stats_by_oferta_id(2,$personal,$historico);
+        array_push($array, $row2);
+        $row3['label']='Venta y alquiler';
+        $row3['data']=$this->get_num_stats_by_oferta_id(3,$personal,$historico);
+        array_push($array, $row3);
+        // Hay que devolver NULL si no hay datos que mostrar
+        if($row1['data']==0 && $row2['data']==0 && $row3['data']==0)
+        {
+            return NULL;
+        }
+        return $array;
+    }
+    
+    /**
+     * Calcula el número de inmuebles agrupados por oferta
+     *
+     * @param [$oferta_id]         Indica la oferta a consulta. Sólo venta, sólo alquiler o venta y alquiler
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_num_stats_by_oferta_id($oferta_id,$personal=1,$historico=0)
+    {
+        $this->db->select($this->table.'.id');
+        $this->db->from($this->table);
+        $this->db->join('estados', $this->table.'.estado_id=estados.id');    
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        // Ofertas        
+        switch ($oferta_id)
+        {
+            case 1:
+                $this->db->where('(precio_compra > 0 and precio_alquiler=0)');
+                break;
+            case 2:
+                $this->db->where('(precio_alquiler > 0 and precio_compra=0)');
+                break;
+            case 3:
+                $this->db->where('precio_compra > 0');
+                $this->db->where('precio_alquiler > 0');
+                break;
+            default:
+                break;
+        }
+        return $this->db->get()->num_rows();
+    }
+    
+    /**
+     * Calcula el número de inmuebles agrupados por tipo
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_tipo($personal=1,$historico=0)
+    {
+        $this->db->select('nombre_tipo as label,count(*) as data');
+        $this->db->from($this->view);   
+        if($historico!=2)
+        {
+            $this->db->where('historico_estado', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        $this->db->group_by($this->view.'.nombre_tipo');
+        return $this->db->get()->result();
+    }
 
     /**
      * Marca o desmarca una opción extra para un inmueble en concreto

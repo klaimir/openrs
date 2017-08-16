@@ -16,10 +16,23 @@ class Usuarios extends MY_Controller
     }
 
     // dashboard
-    function dashboard()
+    function dashboard($personal=1)
     {
+        $this->load->model('Inmueble_model');
+        // Inmuebles por estado
+        $inmuebles_estados = $this->Inmueble_model->get_stats_by_estado($personal);
+        $this->data['inmuebles_estados']=$inmuebles_estados;
+        // Inmuebles por oferta
+        $inmuebles_ofertas = $this->Inmueble_model->get_stats_by_oferta($personal);
+        $this->data['inmuebles_ofertas']=$inmuebles_ofertas;
+        // Inmuebles por tipo
+        $inmuebles_tipos = $this->Inmueble_model->get_stats_by_tipo($personal);
+        $this->data['inmuebles_tipos']=$inmuebles_tipos;
+        // Tipo de estadística
+        $this->data['personal']=$personal;
+        $this->data['texto_titulo']= $personal ? 'Personales' : 'Generales';
         // Render
-        $this->render_private('dashboard', $this->data);
+        $this->render_private('usuarios/dashboard', $this->data);
     }
 
     public function delete_user($id)
