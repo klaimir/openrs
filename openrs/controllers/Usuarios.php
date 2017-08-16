@@ -36,6 +36,9 @@ class Usuarios extends MY_Controller
         // Inmuebles por publicación
         $inmuebles_publicacion = $this->Inmueble_model->get_stats_by_publicacion($personal);
         $this->data['inmuebles_publicacion']=$inmuebles_publicacion;
+        // Inmuebles por cartel
+        $inmuebles_cartel = $this->Inmueble_model->get_stats_by_cartel($personal);
+        $this->data['inmuebles_cartel']=$inmuebles_cartel;
         // Tipo de estadística
         $this->data['personal']=$personal;
         $this->data['texto_titulo']= $personal ? 'Personales' : 'Generales';

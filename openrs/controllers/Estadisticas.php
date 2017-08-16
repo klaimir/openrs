@@ -107,5 +107,19 @@ class Estadisticas extends MY_Controller
             echo 1;
         }
     }
+    
+    function cartel_inmuebles($personal=1,$historico=0)
+    {
+        $this->load->model('Inmueble_model');
+        $inmuebles = $this->Inmueble_model->get_stats_by_cartel($personal,$historico);
+        if($inmuebles)
+        {
+            echo json_encode($inmuebles);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
 
 }

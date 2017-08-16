@@ -2,10 +2,11 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                Inicio
-                <small>
+                Inicio                
                     <i class="ace-icon fa fa-angle-double-right"></i>
-                    Estadísticas <?php echo $texto_titulo; ?> (
+                    Estadísticas <?php echo $texto_titulo; ?> 
+                 <small>
+                    (
                     <?php if ($personal)
                     {
                     ?>- <a href="<?php echo site_url('usuarios/dashboard/0'); ?>" class="blue">Ver Generales</a> -<?php
