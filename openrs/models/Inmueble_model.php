@@ -2231,6 +2231,92 @@ class Inmueble_model extends MY_Model
     }
     
     /**
+     * Calcula el número de inmuebles por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_stats_by_alta($anio,$personal=1)
+    {
+        $this->db->select('mes_alta,count(*) as total');
+        $this->db->from($this->view);
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        $this->db->where('anio_alta', $anio);
+        $this->db->group_by($this->view.'.mes_alta');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de inmuebles por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_anios_stats($personal=1)
+    {
+        $this->db->select('distinct(anio_alta) as anio');
+        $this->db->from($this->view);
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de inmuebles por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_dropdown_anios_stats($personal=1)
+    {
+        $result=$this->get_anios_stats($personal);
+        if($result)
+        {
+            return $this->utilities->dropdown($result, 'anio', 'anio');
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+    
+    /**
+     * Devuelve el número de inmuebles por mes con un array en formato plot
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_stats_plot_by_alta($anio,$personal=1)
+    {
+        $result=$this->get_stats_by_alta($anio,$personal);
+        $result_dropdown=$this->utilities->dropdown($result, 'mes_alta', 'total');  
+        for($cont=1;$cont<=12;$cont++)
+        {
+            if(isset($result_dropdown[$cont]))
+            {
+                $total=intval($result_dropdown[$cont]);
+            }
+            else
+            {
+                $total=0;
+            }
+            $array[] = array($cont, $total);
+        }
+        return $array;
+    }
+    
+    /**
      * Calcula el número de inmuebles agrupados por tipo
      *
      * @param [$personal]          Indica si la estadística es personal

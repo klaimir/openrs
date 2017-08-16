@@ -65,5 +65,19 @@ class Estadisticas extends MY_Controller
             echo 1;
         }
     }
+    
+    function altas_inmuebles($personal,$anio)
+    {
+        $this->load->model('Inmueble_model');
+        $inmuebles = $this->Inmueble_model->get_stats_plot_by_alta($anio,$personal);
+        if($inmuebles)
+        {
+            echo json_encode($inmuebles);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
 
 }
