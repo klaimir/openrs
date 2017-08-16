@@ -2362,6 +2362,75 @@ class Inmueble_model extends MY_Model
         $this->db->group_by($this->view.'.captador_id');
         return $this->db->get()->result();
     }
+    
+    /**
+     * Calcula el número de inmuebles agrupados por publicacion
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_stats_by_publicacion($personal=1,$historico=0)
+    {
+        $array=array();
+        $row1['label']='Destacados';
+        $row1['data']=$this->get_num_stats_by_publicacion(1,$personal,$historico);
+        array_push($array, $row1);
+        $row2['label']='Oportunidades';
+        $row2['data']=$this->get_num_stats_by_publicacion(2,$personal,$historico);
+        array_push($array, $row2);
+        $row3['label']='Sin publicar';
+        $row3['data']=$this->get_num_stats_by_publicacion(3,$personal,$historico);
+        array_push($array, $row3);
+        // Hay que devolver NULL si no hay datos que mostrar
+        if($row1['data']==0 && $row2['data']==0 && $row3['data']==0)
+        {
+            return NULL;
+        }
+        return $array;
+    }
+    
+    /**
+     * Calcula el número de inmuebles agrupados por publicación
+     *
+     * @param [$publicacion_id]         Indica la publicacion a consulta. Sólo venta, sólo alquiler o venta y alquiler
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_num_stats_by_publicacion($publicacion_id,$personal=1,$historico=0)
+    {
+        $this->db->select($this->table.'.id');
+        $this->db->from($this->table);
+        $this->db->join('estados', $this->table.'.estado_id=estados.id');    
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        // Ofertas        
+        switch ($publicacion_id)
+        {
+            case 1:
+                $this->db->where('publicado',1);
+                $this->db->where('destacado',1);
+                break;
+            case 2:
+                $this->db->where('publicado',1);
+                $this->db->where('destacado',1);
+                break;
+            case 3:
+                $this->db->where('publicado',0);
+                break;
+            default:
+                break;
+        }
+        return $this->db->get()->num_rows();
+    }
 
     /**
      * Marca o desmarca una opción extra para un inmueble en concreto

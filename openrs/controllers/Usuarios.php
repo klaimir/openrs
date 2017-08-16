@@ -33,6 +33,9 @@ class Usuarios extends MY_Controller
         $inmuebles_altas = $this->Inmueble_model->get_stats_plot_by_alta($this->data['anio_actual'],$personal);        
         $this->data['inmuebles_altas']=$inmuebles_altas;
         $this->data['dropdown_anios']=$this->Inmueble_model->get_dropdown_anios_stats($personal); 
+        // Inmuebles por publicación
+        $inmuebles_publicacion = $this->Inmueble_model->get_stats_by_publicacion($personal);
+        $this->data['inmuebles_publicacion']=$inmuebles_publicacion;
         // Tipo de estadística
         $this->data['personal']=$personal;
         $this->data['texto_titulo']= $personal ? 'Personales' : 'Generales';

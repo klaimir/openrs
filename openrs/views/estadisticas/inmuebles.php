@@ -239,6 +239,60 @@
     </div><!-- /.col -->
 </div><!-- /.row -->
 
+<div class="row">
+    <div class="col-lg-6 col-xs-12">
+
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-signal"></i>
+                    Publicación
+                </h5>
+                
+                <div class="widget-toolbar no-border">
+                    <div class="inline dropdown-hover">
+                        <button class="btn btn-minier btn-primary">
+                            <span id="inmuebles_publicacion_selected">Vigentes</span>
+                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                            <li>
+                                <a data-valor="0" href="#" class="inmuebles_publicacion">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Vigentes
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="1" class="inmuebles_publicacion" href="#">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Histórico
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="2" class="inmuebles_publicacion" href="#">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Todas
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div id="piechart_inmuebles_publicacion"></div>
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+
+        </div><!-- /.widget-box -->
+
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
 <?php if(!$personal) { ?>
 <div class="row">
     <div class="col-xs-12">
@@ -520,6 +574,53 @@
                 });
             });
         }
+        
+        // Plot publicacion
+        var num_inmuebles_publicacion = <?php echo count($inmuebles_publicacion); ?>;
+        if (num_inmuebles_publicacion > 0)
+        {
+            var placeholder = $('#piechart_inmuebles_publicacion').css({'width': '90%', 'min-height': '200px'});
+            var data = <?php echo json_encode($inmuebles_publicacion); ?>;
+            drawPieChart(placeholder, data);
+            drawTootip(placeholder);
+        }
+        else
+        {
+            $('#piechart_inmuebles_publicacion').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+        }
+
+        $('.inmuebles_publicacion').on('click', function () {
+            var tipo_consulta = $(this).data('valor');
+            $.ajax({
+                url: '<?php echo site_url('estadisticas/publicacion_inmuebles/' . $personal . '/'); ?>' + tipo_consulta,
+                success: function (data) {
+                    // Texto
+                    if (tipo_consulta == 0)
+                    {
+                        $('#inmuebles_publicacion_selected').html('Vigentes');
+                    }
+                    else if (tipo_consulta == 1)
+                    {
+                        $('#inmuebles_publicacion_selected').html('Histórico');
+                    }
+                    else
+                    {
+                        $('#inmuebles_publicacion_selected').html('Todas');
+                    }
+                    // Respuesta
+                    if (data == 1)
+                    {
+                        $('#piechart_inmuebles_publicacion').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                    }
+                    else
+                    {
+                        var placeholder = $('#piechart_inmuebles_publicacion').css({'width': '90%', 'min-height': '200px'});
+                        drawPieChart(placeholder, JSON.parse(data));
+                        drawTootip(placeholder);
+                    }
+                }
+            });
+        });
 
     })
 </script>
