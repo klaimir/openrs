@@ -2341,6 +2341,27 @@ class Inmueble_model extends MY_Model
         $this->db->group_by($this->view.'.nombre_tipo');
         return $this->db->get()->result();
     }
+    
+    /**
+     * Calcula el número de inmuebles agrupados por agente
+     *
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_agente($historico=0)
+    {
+        $this->db->select('nombre_captador as label,count(*) as data');
+        $this->db->from($this->view);   
+        if($historico!=2)
+        {
+            $this->db->where('historico_estado', $historico);
+        }
+        // Idioma
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        $this->db->group_by($this->view.'.captador_id');
+        return $this->db->get()->result();
+    }
 
     /**
      * Marca o desmarca una opción extra para un inmueble en concreto

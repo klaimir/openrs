@@ -36,6 +36,16 @@ class Usuarios extends MY_Controller
         // Tipo de estadística
         $this->data['personal']=$personal;
         $this->data['texto_titulo']= $personal ? 'Personales' : 'Generales';
+        // Inmuebles por agente
+        if(!$personal)
+        {
+            $inmuebles_agentes = $this->Inmueble_model->get_stats_by_agente();
+            $this->data['inmuebles_agentes']=$inmuebles_agentes;
+        }
+        else
+        {
+            $this->data['inmuebles_agentes']=array();
+        }
         // Render
         $this->render_private('usuarios/dashboard', $this->data);
     }

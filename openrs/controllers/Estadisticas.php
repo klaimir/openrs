@@ -79,5 +79,19 @@ class Estadisticas extends MY_Controller
             echo 1;
         }
     }
+    
+    function agentes_inmuebles($historico=0)
+    {
+        $this->load->model('Inmueble_model');
+        $inmuebles = $this->Inmueble_model->get_stats_by_agente($historico);
+        if($inmuebles)
+        {
+            echo json_encode($inmuebles);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
 
 }

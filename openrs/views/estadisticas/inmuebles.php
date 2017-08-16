@@ -239,6 +239,63 @@
     </div><!-- /.col -->
 </div><!-- /.row -->
 
+<?php if(!$personal) { ?>
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-signal"></i>
+                    Captadores
+                </h5>
+
+                <div class="widget-toolbar no-border">
+                    <div class="inline dropdown-hover">
+                        <button class="btn btn-minier btn-primary">
+                            <span id="inmuebles_agentes_selected">Vigentes</span>
+                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                            <li>
+                                <a data-valor="0" href="#" class="inmuebles_agentes">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Vigentes
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="1" class="inmuebles_agentes" href="#">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Histórico
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="2" class="inmuebles_agentes" href="#">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Todas
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div id="piechart_inmuebles_agentes"></div>
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+
+        </div><!-- /.widget-box -->
+
+    </div><!-- /.col -->
+
+</div><!-- /.row -->
+<?php } ?>
+
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function ($) {
@@ -411,6 +468,58 @@
                 }
             });
         });
+        
+        // Plot agentes
+        var personal=<?php echo $personal; ?>
+        // La estadística de agente sólo es general
+        if(!personal)
+        {
+            var num_inmuebles_agentes = <?php echo count($inmuebles_agentes); ?>;
+            if (num_inmuebles_agentes > 0)
+            {
+                var placeholder = $('#piechart_inmuebles_agentes').css({'width': '90%', 'min-height': '200px'});
+                var data = <?php echo json_encode($inmuebles_agentes); ?>;
+                drawPieChart(placeholder, data);
+                drawTootip(placeholder);
+            }
+            else
+            {
+                $('#piechart_inmuebles_agentes').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+            }
+
+            $('.inmuebles_agentes').on('click', function () {
+                var agente_consulta = $(this).data('valor');
+                $.ajax({
+                    url: '<?php echo site_url('estadisticas/agentes_inmuebles/'); ?>' + agente_consulta,
+                    success: function (data) {
+                        // Texto
+                        if (agente_consulta == 0)
+                        {
+                            $('#inmuebles_agentes_selected').html('Vigentes');
+                        }
+                        else if (agente_consulta == 1)
+                        {
+                            $('#inmuebles_agentes_selected').html('Histórico');
+                        }
+                        else
+                        {
+                            $('#inmuebles_agentes_selected').html('Todas');
+                        }
+                        // Respuesta
+                        if (data == 1)
+                        {
+                            $('#piechart_inmuebles_agentes').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                        }
+                        else
+                        {
+                            var placeholder = $('#piechart_inmuebles_agentes').css({'width': '90%', 'min-height': '200px'});
+                            drawPieChart(placeholder, JSON.parse(data));
+                            drawTootip(placeholder);
+                        }
+                    }
+                });
+            });
+        }
 
     })
 </script>
