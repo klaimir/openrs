@@ -2491,11 +2491,14 @@ class Inmueble_model extends MY_Model
         $row2['label']='Oportunidades';
         $row2['data']=$this->get_num_stats_by_publicacion(2,$personal,$historico);
         array_push($array, $row2);
-        $row3['label']='Sin publicar';
+        $row3['label']='Sin categoría';
         $row3['data']=$this->get_num_stats_by_publicacion(3,$personal,$historico);
         array_push($array, $row3);
+        $row4['label']='Sin publicar';
+        $row4['data']=$this->get_num_stats_by_publicacion(4,$personal,$historico);
+        array_push($array, $row4);
         // Hay que devolver NULL si no hay datos que mostrar
-        if($row1['data']==0 && $row2['data']==0 && $row3['data']==0)
+        if($row1['data']==0 && $row2['data']==0 && $row3['data']==0 && $row4['data']==0)
         {
             return NULL;
         }
@@ -2533,9 +2536,14 @@ class Inmueble_model extends MY_Model
                 break;
             case 2:
                 $this->db->where('publicado',1);
-                $this->db->where('destacado',1);
+                $this->db->where('oportunidad',1);
                 break;
             case 3:
+                $this->db->where('publicado',1);
+                $this->db->where('destacado',0);
+                $this->db->where('oportunidad',0);
+                break;
+            case 4:
                 $this->db->where('publicado',0);
                 break;
             default:
