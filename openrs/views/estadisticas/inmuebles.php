@@ -1,5 +1,56 @@
 <div class="row">
     <div class="col-lg-6 col-xs-12">
+        
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-signal"></i>
+                    Evolución de altas
+                </h5>
+                
+                <div class="widget-toolbar no-border">
+                    <div class="inline dropdown-hover">
+                        <button class="btn btn-minier btn-primary">
+                            <span id="inmuebles_altas_selected"><?php echo $anio_actual; ?></span>
+                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                        </button>
+                        <?php 
+                        if(count($dropdown_anios)>1) {                             
+                        ?>
+                            <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                            <?php
+                            foreach($dropdown_anios as $anio)
+                            {
+                            ?>
+                                <li>
+                                    <a data-anio="<?php echo $anio; ?>" href="#altas" class="inmuebles_altas">
+                                        <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                        <?php echo $anio; ?>
+                                    </a>
+                                </li>
+                            <?php
+                            }
+                            ?>
+                            </ul>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <a name=”altas”></a>
+                <div class="widget-main">
+                    <div id="plot_inmuebles_altas"></div>
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+
+        </div><!-- /.widget-box -->
+
+    </div><!-- /.col -->
+    
+    <div class="col-lg-6 col-xs-12">
 
         <div class="widget-box">
             <div class="widget-header widget-header-flat widget-header-small">
@@ -82,59 +133,7 @@
 
         </div><!-- /.widget-box -->
     </div><!-- /.col -->
-
-    <div class="col-lg-6 col-xs-12">
-
-        <div class="widget-box">
-            <div class="widget-header widget-header-flat widget-header-small">
-                <h5 class="widget-title">
-                    <i class="ace-icon fa fa-signal"></i>
-                    Ofertas
-                </h5>
-
-                <div class="widget-toolbar no-border">
-                    <div class="inline dropdown-hover">
-                        <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_ofertas_selected">Vigentes</span>
-                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
-                            <li>
-                                <a data-valor="0" href="#ofertas" class="inmuebles_ofertas">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Vigentes
-                                </a>
-                            </li>
-
-                            <li>
-                                <a data-valor="1" class="inmuebles_ofertas" href="#ofertas">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Histórico
-                                </a>
-                            </li>
-
-                            <li>
-                                <a data-valor="2" class="inmuebles_ofertas" href="#ofertas">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Todas
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="widget-body">
-                <a name=”ofertas”></a>
-                <div class="widget-main">
-                    <div id="piechart_inmuebles_ofertas"></div>
-                </div><!-- /.widget-main -->
-            </div><!-- /.widget-body -->
-
-        </div><!-- /.widget-box -->
-
-    </div><!-- /.col -->
+    
 </div><!-- /.row -->
 
 <div class="row">
@@ -197,44 +196,46 @@
             <div class="widget-header widget-header-flat widget-header-small">
                 <h5 class="widget-title">
                     <i class="ace-icon fa fa-signal"></i>
-                    Evolución de altas
+                    Ofertas
                 </h5>
-                
+
                 <div class="widget-toolbar no-border">
                     <div class="inline dropdown-hover">
                         <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_altas_selected"><?php echo $anio_actual; ?></span>
+                            <span id="inmuebles_ofertas_selected">Vigentes</span>
                             <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
                         </button>
-                        <?php 
-                        if(count($dropdown_anios)>1) {                             
-                        ?>
-                            <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
-                            <?php
-                            foreach($dropdown_anios as $anio)
-                            {
-                            ?>
-                                <li>
-                                    <a data-anio="<?php echo $anio; ?>" href="#altas" class="inmuebles_altas">
-                                        <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                        <?php echo $anio; ?>
-                                    </a>
-                                </li>
-                            <?php
-                            }
-                            ?>
-                            </ul>
-                        <?php
-                        }
-                        ?>
+
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                            <li>
+                                <a data-valor="0" href="#ofertas" class="inmuebles_ofertas">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Vigentes
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="1" class="inmuebles_ofertas" href="#ofertas">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Histórico
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="2" class="inmuebles_ofertas" href="#ofertas">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Todas
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
             <div class="widget-body">
-                <a name=”altas”></a>
+                <a name=”ofertas”></a>
                 <div class="widget-main">
-                    <div id="plot_inmuebles_altas"></div>
+                    <div id="piechart_inmuebles_ofertas"></div>
                 </div><!-- /.widget-main -->
             </div><!-- /.widget-body -->
 
@@ -350,11 +351,9 @@
 
     </div><!-- /.col -->
 </div><!-- /.row -->
-
 <?php if(!$personal) { ?>
-<div class="row">
-    <div class="col-xs-12">
-
+<div class="row">    
+    <div class="col-lg-6 col-xs-12">
         <div class="widget-box">
             <div class="widget-header widget-header-flat widget-header-small">
                 <h5 class="widget-title">
@@ -402,16 +401,80 @@
                 </div><!-- /.widget-main -->
             </div><!-- /.widget-body -->
 
-        </div><!-- /.widget-box -->
-
-    </div><!-- /.col -->
-
-</div><!-- /.row -->
+        </div><!-- /.widget-box -->   
+        
+    </div>
+</div>
 <?php } ?>
+<div class="row">
+    <div class="col-xs-12" style="overflow-y:auto">
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-building"></i>
+                    Últimos Registrados
+                </h5>                
+            </div>
+        </div><!-- /.widget-box -->    
+        
+        <?php $this->data['elements']=$ultimos_registrados; $this->load->view('inmuebles/list_buscador', $this->data); ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12" style="overflow-y:auto">
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-building"></i>
+                    Últimos modificados
+                </h5>                
+            </div>
+        </div><!-- /.widget-box -->    
+        
+        <?php $this->data['elements']=$ultimos_modificados; $this->load->view('inmuebles/list_buscador', $this->data); ?>
+    </div>
+</div>   
+<div class="row">
+    <div class="col-xs-12" style="overflow-y:auto">
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-building"></i>
+                    Pendientes de evaluar en demandas
+                </h5>                
+            </div>
+        </div><!-- /.widget-box -->    
+        
+        <?php $this->data['elements']=$pendientes_evaluar; $this->load->view('estadisticas/list_inmuebles_demandas', $this->data); ?>
+    </div>
+</div> 
+<div class="row">
+    <div class="col-xs-12" style="overflow-y:auto">
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-building"></i>
+                    Propuesto para visita en demandas
+                </h5>                
+            </div>
+        </div><!-- /.widget-box -->    
+        
+        <?php $this->data['elements']=$propuestos_visita; $this->load->view('estadisticas/list_inmuebles_demandas', $this->data); ?>
+    </div>
+</div> 
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function ($) {
+        
+        $('.borrar-elemento').click(function () {
+            var id = $(this).data("id");
+            bootbox.confirm("¿Estás seguro/a?", function (result) {
+                if (result) {
+                    window.location = 'inmuebles/delete/' + id;
+                }
+            });
+        });
 
         // Plot estados
         var num_inmuebles_estados = <?php echo count($inmuebles_estados); ?>;

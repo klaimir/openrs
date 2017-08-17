@@ -50,4 +50,17 @@ class Estadisticas extends MY_Controller
         var_dump($this->Inmueble_model->get_stats_by_oferta($personal,$historico));
     }
     
+    function get_ultimos_inmuebles_modificados($personal=1)
+    { 
+        $this->load->model('Inmueble_model');
+        var_dump($this->Inmueble_model->get_ultimos_inmuebles_modificados($personal));
+    }
+    
+    function get_ultimos_inmuebles_registrados($personal=1)
+    { 
+        $this->load->model('Inmueble_model');
+        var_dump($this->Inmueble_model->get_ultimos_inmuebles_registrados($personal));
+    }
+    
+    
 }

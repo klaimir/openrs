@@ -984,6 +984,31 @@ class Inmueble_model extends MY_Model
             $this->db->where("((precio_compra <> 0 AND precio_compra <= '$precio_hasta') OR (precio_alquiler <> 0 AND precio_alquiler <= '$precio_hasta'))");
         }
     }
+    
+    /**
+     * Aplica datos adicionales
+     *
+     * @param [$results]                  Inmuebles 
+     *
+     * @return void
+     */
+    function set_datos_adicionales_listado($results)
+    {
+        if($results)
+        {
+            // Modelos axiliares
+            $this->load->model('Demanda_model');
+            // Datos adicionales de cada inmueble
+            foreach ($results as $result)
+            {
+                // Obtenemos el número de imágenes de cada inmueble
+                $result->num_imagenes=$this->get_num_imagenes($result->id);
+                // Consulta de demandas
+                $result->num_demandas_totales = count($this->Demanda_model->get_demandas_inmueble($result->id));
+                $result->num_demandas_pendientes = count($this->Demanda_model->get_demandas_inmueble($result->id,1));
+            }
+        }
+    }
 
     /**
      * Lee los inmuebles en formato vista según los filtros indicados
@@ -1006,22 +1031,109 @@ class Inmueble_model extends MY_Model
         // Consulta
         $this->db->from($this->view);
         $results=$this->db->get()->result();
-        if($results)
-        {
-            // Modelos axiliares
-            $this->load->model('Demanda_model');
-            // Datos adicionales de cada inmueble
-            foreach ($results as $result)
-            {
-                // Obtenemos el número de imágenes de cada inmueble
-                $result->num_imagenes=$this->get_num_imagenes($result->id);
-                // Consulta de demandas
-                $result->num_demandas_totales = count($this->Demanda_model->get_demandas_inmueble($result->id));
-                $result->num_demandas_pendientes = count($this->Demanda_model->get_demandas_inmueble($result->id,1));
-            }
-        }
+        // Set datos adicionales
+        $this->set_datos_adicionales_listado($results);
+        // Return
         return $results;
     }
+    
+    /**
+     * Lee los inmuebles en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_ultimos_inmuebles_modificados($personal = 1, $limit = 5)
+    {
+        // Captador
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        // Fecha
+        $this->db->where('fecha_actualizacion is not null');
+        // Consulta
+        $this->db->from($this->view);
+        $this->db->order_by('fecha_actualizacion', 'desc');
+        $this->db->limit($limit);
+        $results=$this->db->get()->result();
+        // Set datos adicionales
+        $this->set_datos_adicionales_listado($results);
+        // Return
+        return $results;
+    }
+    
+    /**
+     * Lee los inmuebles en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_ultimos_inmuebles_registrados($personal = 1, $limit = 5)
+    {
+        // Captador
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        // Consulta
+        $this->db->from($this->view);
+        $this->db->order_by('fecha_alta', 'desc');
+        $this->db->limit($limit);
+        $results=$this->db->get()->result();
+        // Set datos adicionales
+        $this->set_datos_adicionales_listado($results);
+        // Return
+        return $results;
+    }
+    
+    /**
+     * Lee los inmuebles en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_inmuebles_demandas($personal = 1, $evaluacion_id=1)
+    {
+        // Lista de campos
+        $fieldslist=$this->utilities->getFieldsTable('v_inmuebles_demandas'); 
+        $this->db->select($fieldslist);
+        // Captador
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        // Consulta
+        $this->db->from('v_inmuebles_demandas');
+        return $this->db->get()->result();
+    }
+    
+    /*
+    function get_inmuebles_demandas($personal = 1, $evaluacion_id=1)
+    {
+        // Lista de campos
+        $fieldslist=$this->utilities->getFieldsTable($this->view); 
+        $this->db->select($fieldslist.',inmuebles_demandas.demanda_id,demandas.referencia as referencia_demanda');
+        // Captador
+        if($personal)
+        {
+            $this->db->where('captador_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        // Consulta
+        $this->db->from($this->view);
+        $this->db->join('inmuebles_demandas', $this->view.'.id=inmuebles_demandas.inmueble_id')->where("evaluacion_id",$evaluacion_id);
+        $this->db->join('demandas', 'demandas.id=inmuebles_demandas.demanda_id');
+        $results=$this->db->get()->result();
+        // Return
+        return $results;
+    }
+     * 
+     */
     
     /**
      * Obtiene el número de imágenes de un inmueble

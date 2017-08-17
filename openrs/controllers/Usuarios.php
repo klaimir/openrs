@@ -20,25 +20,27 @@ class Usuarios extends MY_Controller
     {
         $this->load->model('Inmueble_model');
         // Inmuebles por estado
-        $inmuebles_estados = $this->Inmueble_model->get_stats_by_estado($personal);
-        $this->data['inmuebles_estados']=$inmuebles_estados;
+        $this->data['inmuebles_estados'] = $this->Inmueble_model->get_stats_by_estado($personal);
         // Inmuebles por oferta
-        $inmuebles_ofertas = $this->Inmueble_model->get_stats_by_oferta($personal);
-        $this->data['inmuebles_ofertas']=$inmuebles_ofertas;
+        $this->data['inmuebles_ofertas'] = $this->Inmueble_model->get_stats_by_oferta($personal);
         // Inmuebles por tipo
-        $inmuebles_tipos = $this->Inmueble_model->get_stats_by_tipo($personal);
-        $this->data['inmuebles_tipos']=$inmuebles_tipos;
+        $this->data['inmuebles_tipos'] = $this->Inmueble_model->get_stats_by_tipo($personal);
         // Evolución de inmuebles registrados
         $this->data['anio_actual']=date("Y");
-        $inmuebles_altas = $this->Inmueble_model->get_stats_plot_by_alta($this->data['anio_actual'],$personal);        
-        $this->data['inmuebles_altas']=$inmuebles_altas;
+        $this->data['inmuebles_altas'] = $this->Inmueble_model->get_stats_plot_by_alta($this->data['anio_actual'],$personal);
         $this->data['dropdown_anios']=$this->Inmueble_model->get_dropdown_anios_stats($personal); 
         // Inmuebles por publicación
-        $inmuebles_publicacion = $this->Inmueble_model->get_stats_by_publicacion($personal);
-        $this->data['inmuebles_publicacion']=$inmuebles_publicacion;
+        $this->data['inmuebles_publicacion'] = $this->Inmueble_model->get_stats_by_publicacion($personal);
         // Inmuebles por cartel
-        $inmuebles_cartel = $this->Inmueble_model->get_stats_by_cartel($personal);
-        $this->data['inmuebles_cartel']=$inmuebles_cartel;
+        $this->data['inmuebles_cartel']=$this->Inmueble_model->get_stats_by_cartel($personal);
+        // Últimos Inmuebles registrados
+        $this->data['ultimos_registrados']=$this->Inmueble_model->get_ultimos_inmuebles_registrados($personal);
+        // Últimos Inmuebles modificados
+        $this->data['ultimos_modificados']=$this->Inmueble_model->get_ultimos_inmuebles_modificados($personal);
+        // Últimos Inmuebles pendientes de evaluar
+        $this->data['pendientes_evaluar']=$this->Inmueble_model->get_inmuebles_demandas($personal,1);
+        // Últimos Inmuebles propuestos para visita
+        $this->data['propuestos_visita']=$this->Inmueble_model->get_inmuebles_demandas($personal,2);
         // Tipo de estadística
         $this->data['personal']=$personal;
         $this->data['texto_titulo']= $personal ? 'Personales' : 'Generales';
