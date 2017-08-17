@@ -644,7 +644,7 @@ class Inmuebles extends CRUD_controller
             
             // Cabecera
             $cabecera = array('Referencia','Tipo','Fecha Alta','Provincia','Municipio','Zona','Dirección','Metros','Metros útiles','Hab.','Baños'
-                ,'Precio Compra','Precio Compra Anterior','Precio Alquiler','Precio Alquiler Anterior','Cert. Energ.','Año Construcción','Estado'
+                ,'Precio Compra','Precio Compra Anterior','Precio Alquiler','Precio Alquiler Anterior','Cert. Energ.','Kwh/m2 anual','Año Construcción','Estado'
                 ,'Observaciones','Agente Asignado','Imágenes','Dem. totales','Dem. pendientes');
             $array[] = $this->utilities->encoding_array($cabecera);
              
@@ -669,6 +669,7 @@ class Inmuebles extends CRUD_controller
                 $datos_formateado[] = $element->precio_alquiler;
                 $datos_formateado[] = $element->precio_alquiler_anterior;
                 $datos_formateado[] = $element->nombre_certificacion_energetica;
+                $datos_formateado[] = $element->kwh_m2_anio;
                 $datos_formateado[] = $element->anio_construccion;
                 $datos_formateado[] = $element->nombre_estado;
                 $datos_formateado[] = $element->observaciones;

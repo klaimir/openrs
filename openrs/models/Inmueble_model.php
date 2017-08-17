@@ -120,6 +120,14 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('provincia_id', 'Provincia', 'required');
         $this->form_validation->set_rules('tipo_id', 'Tipo', 'required');
         $this->form_validation->set_rules('certificacion_energetica_id', 'Certificación energética', 'required');
+        // Validación especial de kwh_m2
+        $certificacion_energetica_id=$this->form_validation->get_validation_data('certificacion_energetica_id');
+        $rules_kwh_m2_anio="";
+        if ($certificacion_energetica_id!=8 && $certificacion_energetica_id!=9)
+        {
+            $rules_kwh_m2_anio.="required|max_length[5]|is_natural_no_zero|";
+        }
+        $this->form_validation->set_rules('kwh_m2_anio', 'Consumo Kwh/m2 anual', $rules_kwh_m2_anio . 'xss_clean');        
         $this->form_validation->set_rules('estado_id', 'Estado', 'required');
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
         $this->form_validation->set_rules('captador_id', 'Captador', 'xss_clean');
@@ -346,6 +354,13 @@ class Inmueble_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('banios', is_object($datos) ? $datos->banios : ""),
         );
+        
+        $data['kwh_m2_anio'] = array(
+            'name' => 'kwh_m2_anio',
+            'id' => 'kwh_m2_anio',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('kwh_m2_anio', is_object($datos) ? $datos->kwh_m2_anio : ""),
+        );
 
         $data['anio_construccion'] = array(
             'name' => 'anio_construccion',
@@ -547,6 +562,7 @@ class Inmueble_model extends MY_Model
         $datas['metros_utiles'] = $this->input->post('metros_utiles');
         $datas['habitaciones'] = $this->input->post('habitaciones');
         $datas['banios'] = $this->input->post('banios');
+        $datas['kwh_m2_anio'] = $this->utilities->get_sql_value_string($this->input->post('kwh_m2_anio'), "defined", $this->input->post('kwh_m2_anio'), '');
         $datas['anio_construccion'] = $this->utilities->get_sql_value_string($this->input->post('anio_construccion'), "defined", $this->input->post('anio_construccion'), '');
         $datas['fecha_alta'] = $this->utilities->cambiafecha_form($this->input->post('fecha_alta'));
         $datas['direccion'] = $this->input->post('direccion');
@@ -1593,6 +1609,7 @@ class Inmueble_model extends MY_Model
                     $linedata['precio_alquiler'] = @$data_csv[$cont_columnas++];
                     $linedata['precio_alquiler_anterior'] = @$data_csv[$cont_columnas++];
                     $linedata['nombre_certificacion_energetica'] = @$data_csv[$cont_columnas++];
+                    $linedata['kwh_m2_anio'] = @$data_csv[$cont_columnas++];
                     $linedata['anio_construccion'] = @$data_csv[$cont_columnas++];
                     $linedata['nombre_estado'] = @$data_csv[$cont_columnas++];
                     $linedata['observaciones'] = @$data_csv[$cont_columnas++];
@@ -1781,6 +1798,7 @@ class Inmueble_model extends MY_Model
         $datos_inmueble['metros_utiles'] = $data['metros_utiles'];
         $datos_inmueble['habitaciones'] = $data['habitaciones'];
         $datos_inmueble['banios'] = $data['banios'];
+        $datos_inmueble['kwh_m2_anio'] = $data['kwh_m2_anio'];
         $datos_inmueble['anio_construccion'] = $data['anio_construccion'];
         $datos_inmueble['fecha_alta'] = $this->utilities->cambiafecha_form($data['fecha_alta']);
         $datos_inmueble['direccion'] = $data['direccion'];

@@ -1,0 +1,11 @@
+Referencia;Tipo;Fecha Alta;Provincia;Municipio;Zona;Dirección;Metros;Metros útiles;Hab.;Baños;Precio Compra;Precio Compra Anterior;Precio Alquiler;Precio Alquiler Anterior;Cert. Energ.;Kwh/m2 anual;Año Construcción;Estado;Observaciones
+REF0012;Vivienda piso;17/08/2017;Cádiz;Cádiz;;Calle García de Sola, 1;80;70;2;1;150000;0;0;0;Exento;;1950;Captación;
+REF0006;Vivienda unifamiliar;12/06/2017;Cádiz;Cádiz;;Avenida marconi, 10;60;50;1;1;125000;150000;0;0;En trámite;;1995;Captación;jur jur
+5944ea26a1ab8;Vivienda unifamiliar;17/06/2016;Cádiz;San Fernando;;Calle real, 1;60;52;1;1;0;0;600;0;En trámite;0;0;Captación;
+5943f77c20f59;Casa Grande;15/08/2017;Cádiz;Cádiz;Centro;Calle Chile, 2;60;50;1;1;100000;90000;0;0;D;0;1990;Captación;Correcto
+REF0011;Vivienda piso;17/08/2017;Cádiz;Cádiz;;Pablo Ruiz Picasso, 4, 4 J;120;105;4;2;360000;0;0;0;B;200;1981;Captación;
+REF0004;Casa Grande;05/06/2017;Cádiz;Cádiz;;Calle Benjumeda;90;84;2;1;50000;0;0;0;En trámite;0;2009;En construcción;
+REF0010;Casa Grande;15/06/2017;Cádiz;Cádiz;Centro;Calle Rosa;60;50;1;1;40000;0;0;0;D;;1990;Captación;Correcto
+DEM0200;Casa Grande;26/06/2017;Cádiz;Cádiz;;Calle Doctor Flemming, 11;100;90;3;2;450000;0;0;0;C;0;2009;Vendido;
+595f8dec1f807;Casa Grande;07/07/2017;Cádiz;Cádiz;Centro;Calle Chile, 2;60;50;1;1;100000;90000;0;0;D;0;1990;Captación;Correcto
+595225d56466d;Casa Grande;27/06/2017;Cádiz;Cádiz;Centro;Calle Rosa;60;50;1;1;40000;0;0;0;D;0;1990;Captación;Correcto

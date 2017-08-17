@@ -146,12 +146,20 @@ if(isset($cliente_id))
             <div class="form-group">            
                 <?php echo label('Certificación energética', 'certificacion_energetica_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_dropdown('certificacion_energetica_id',$tipos_certificacion_energetica,$certificacion_energetica_id, 'id="certificacion_energetica_id" onchange="mark_modified_field();" class="form-control"'); ?>        
+                    <?php echo form_dropdown('certificacion_energetica_id',$tipos_certificacion_energetica,$certificacion_energetica_id, 'id="certificacion_energetica_id" onchange="mark_modified_field(); check_show_kwh_m2_anio();" class="form-control"'); ?>        
                     <small class="blue">
                         De acuerdo al RD 235/2013, de 5 de abril, te recordamos que, en función del tipo de inmueble de que se trate y del consumo previsto, debes indicar su nivel de certificación de eficiencia energética en el desplegable de la ficha del anuncio. 
                         Para más información puede acceder <strong><a target="_blank" href="http://noticias.juridicas.com/base_datos/Admin/503283-real-decreto-235-2013-de-5-de-abril-por-el-que-se-aprueba-el-procedimiento.html"> aquí</a></strong>.
                     </small>
                 </div>                
+            </div>
+            <div id="kwh_m2_anio_div">
+                <div class="form-group">            
+                    <?php echo label('Consumo Kwh/m2 anual', 'kwh_m2_anio', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                    <div class="col-sm-9">
+                        <?php echo form_input($kwh_m2_anio, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                    </div>
+                </div>
             </div>
             <div class="form-group">            
                 <?php echo label('Año construcción', 'anio_construccion', 'class="col-sm-3 control-label no-padding-right"'); ?>
@@ -159,7 +167,7 @@ if(isset($cliente_id))
                     <?php echo form_input($anio_construccion, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                     <small class="blue">Introduzca el año en formato aaaa (por ejemplo; 1982)</small>
                 </div>
-            </div>
+            </div>            
         </div>
     </div>
 </div>
@@ -286,6 +294,9 @@ if(isset($cliente_id))
 
 <script type="text/javascript">
     $(document).ready(function(){
+        // Comprobamos si hay que mostrar kwh_m2_anio
+        check_show_kwh_m2_anio();
+        
         // Comprobamos si hay que mostrar mapa google maps
         check_google_maps();        
     });
@@ -317,6 +328,19 @@ if(isset($cliente_id))
         else
         {
             $('#google_maps_div').hide();
+        }
+    }
+    
+    function check_show_kwh_m2_anio() {
+        var certificacion_energetica_id=$('#certificacion_energetica_id').val();
+        if(certificacion_energetica_id!=8 && certificacion_energetica_id!=9) 
+        {
+            $('#kwh_m2_anio_div').show();
+        }
+        else
+        {
+            $('#kwh_m2_anio').val('');
+            $('#kwh_m2_anio_div').hide();
         }
     }
 

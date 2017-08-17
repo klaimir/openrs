@@ -43,6 +43,7 @@
                     <th>Precio<br>Alquiler</th>
                     <th>Precio<br>Alquiler Ant.</th>
                     <th>Cert. Energ.</th>
+                    <th>Kwh Anual</th>
                     <th>Año<br>Const.</th>
                     <th>Estado</th>
                     <th>Observaciones</th>
@@ -73,6 +74,7 @@
                             <td><?php echo $element['precio_alquiler']; ?></td>                            
                             <td><?php echo $element['precio_alquiler_anterior']; ?></td>
                             <td><?php echo $element['nombre_certificacion_energetica']; ?></td>
+                            <td><?php echo $element['kwh_m2_anio']; ?></td>
                             <td><?php echo $element['anio_construccion']; ?></td>
                             <td><?php echo $element['nombre_estado']; ?></td>
                             <td><?php echo $element['observaciones']; ?></td>
@@ -98,6 +100,7 @@
                 null,                
                 null,
                 {"sType": "date-euro"},
+                null,
                 null,
                 null,
                 null,

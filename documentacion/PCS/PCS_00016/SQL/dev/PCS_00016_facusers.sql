@@ -44,7 +44,7 @@ VIEW `v_inmuebles` AS
 		tipos_certificacion_energetica.nombre AS nombre_certificacion_energetica,
 		estados.nombre AS nombre_estado,
 		CONCAT_WS(', ',users.last_name,users.first_name) AS nombre_captador,
-		inmuebles_carteles.id as cartel_id
+		inmuebles_carteles.id as cartel_id,
 		inmuebles_carteles.impreso as cartel_impreso
     FROM
         inmuebles

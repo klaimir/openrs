@@ -1,7 +1,24 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.14
+-- http://www.phpmyadmin.net
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 27-06-2017 a las 17:33:31
+-- Versión del servidor: 5.6.17
+-- Versión de PHP: 5.5.12
 
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `openrs_dev`
+-- Base de datos: `openrs`
 --
 
 -- --------------------------------------------------------
@@ -15,24 +32,19 @@ CREATE TABLE IF NOT EXISTS `backup` (
   `backup_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `backup_name` varchar(255) NOT NULL,
   `backup_location` varchar(255) NOT NULL,
-  `backup_type` int(1) NOT NULL DEFAULT '1',
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `admin_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`backup_id`),
   UNIQUE KEY `backup_name_UNIQUE` (`backup_name`),
   KEY `FK_backup_admin_id` (`admin_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Volcado de datos para la tabla `backup`
 --
 
-INSERT INTO `backup` (`backup_id`, `backup_name`, `backup_location`, `backup_type`, `created_date`, `admin_id`) VALUES
-(5, 'fc42ea336ec42fd7347637ed593b9a16_09_08_2017_13_24_56_db.sql.gz', 'backups/databases/', 1, '2017-08-09 09:24:59', 2),
-(6, '6081f80f058c4793060a83f31bf2d477_09_08_2017_14_45_48_db.zip', 'backups/databases/', 1, '2017-08-09 10:45:51', 2),
-(8, '99f806389211c06bc1d79d9febabf308_site.zip', 'backups/sites/', 2, '2017-08-09 11:50:11', 2),
-(9, '9f7b7590dce40c89acb3c0be4d3bc791_09_08_2017_15_51_43_db.zip', 'backups/databases/', 1, '2017-08-09 11:51:47', 2),
-(10, '805eb4690b16f01af2a8d76b66c4e90d_site.zip', 'backups/sites/', 2, '2017-08-09 11:51:47', 2);
+INSERT INTO `backup` (`backup_id`, `backup_name`, `backup_location`, `created_date`, `admin_id`) VALUES
+(2, '25257baa8c1be7f83c4f4085546df82b_10_05_2017_09_21_56_db.zip', 'backups/databases/', '2017-05-10 07:21:58', 1);
 
 -- --------------------------------------------------------
 
@@ -116,10 +128,8 @@ CREATE TABLE IF NOT EXISTS `categorias_informacion_documentacion` (
   `nombre` varchar(100) NOT NULL,
   `referencia` varchar(100) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_cat_inf_doc_nombre` (`nombre`),
-  UNIQUE KEY `unique_cat_inf_doc_ref` (`referencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `categorias_informacion_documentacion`
@@ -130,9 +140,7 @@ INSERT INTO `categorias_informacion_documentacion` (`id`, `nombre`, `referencia`
 (2, 'Clientes', 'clientes', '-'),
 (3, 'Inmuebles', 'inmuebles', '-'),
 (4, 'Agentes Inmobiliarios', 'agentes', '-'),
-(5, 'Fichas de visita', 'fichas_visita', '-'),
-(6, 'Carteles', 'carteles', 'Carteles del inmueble'),
-(7, 'Demandas', 'demandas', '-');
+(5, 'Fichas visita', 'fichas_visita', '-');
 
 -- --------------------------------------------------------
 
@@ -171,62 +179,36 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `fecha_alta` datetime NOT NULL,
   `fecha_actualizacion` datetime DEFAULT NULL,
   `correo` varchar(250) NOT NULL,
+  `busca_vender` tinyint(4) NOT NULL DEFAULT '0',
+  `busca_comprar` tinyint(4) NOT NULL DEFAULT '0',
+  `busca_alquilar` tinyint(4) NOT NULL DEFAULT '0',
+  `busca_alquiler` tinyint(4) NOT NULL DEFAULT '0',
   `estado_id` int(11) unsigned NOT NULL DEFAULT '5',
+  `estado_civil` varchar(50) DEFAULT NULL COMMENT 'Puedo contener los valores: soltero/a o casodo/a',
   `agente_asignado_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_clientes_nif` (`nif`),
-  UNIQUE KEY `unique_clientes_correo` (`correo`),
   KEY `FK_clientes_poblacion_id` (`poblacion_id`),
   KEY `FK_clientes_agente_asignado_id` (`agente_asignado_id`),
   KEY `FK_clientes_pais_id` (`pais_id`),
   KEY `FK_clientes_estado_id` (`estado_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
 -- Volcado de datos para la tabla `clientes`
 --
 
-INSERT INTO `clientes` (`id`, `nombre`, `apellidos`, `fecha_nac`, `direccion`, `pais_id`, `poblacion_id`, `telefonos`, `nif`, `observaciones`, `fecha_alta`, `fecha_actualizacion`, `correo`, `estado_id`, `agente_asignado_id`) VALUES
-(1, 'Angel', 'Berasuain Ruiz', '1982-05-19', 'Calle pinito del Oro, número 4, 6 C', 64, 292, '956078391-659163979', '75777802R', 'Cliente inicial\r\n', '2017-05-26 14:15:01', '2017-08-08 14:53:43', 'angel.berasuain@gmail.com', 5, 4),
-(2, 'Diego', 'Guerrero', NULL, 'Calle mar del norte', 64, 1788, '', '31698990E', '', '2017-05-26 14:15:01', '0000-00-00 00:00:00', 'diego@fac.com', 5, 2),
-(4, 'Jose', 'Perez', '2000-10-20', 'Calle Obispo Orberá', 64, 3, '121212', '63053238A', 'uuuuuuuuuu', '2017-05-26 14:15:01', '2017-07-25 18:23:19', 'pepito@perez.com', 5, 3),
-(7, 'Jonh', 'Dahl', '1981-01-01', 'copenhague', 55, NULL, '(+65) 152645789', '33446605M', 'asssssssss\r\n', '2017-05-25 12:05:48', '2017-08-08 10:32:22', 'pepito2@perez.com', 6, 3),
-(8, 'David', 'Morato', '1975-02-01', 'Calle flamenco', 64, 329, '-', '14526680H', 'sdsdsd', '2017-05-26 14:15:01', '2017-07-25 18:22:24', 'cuniao@hotmail.com', 5, 3),
-(10, 'ULTIMO', 'Hombre', NULL, 'Calle Rosa', 64, 1780, '', '46300568G', '', '2017-05-31 19:23:21', NULL, 'test@test.com', 5, NULL),
-(21, 'Antonio', 'Escalante Pérez', '1982-05-19', 'Avenida marconi, 1', 64, 1780, '', '21017477P', 'Test fecha nac', '2017-06-02 12:00:12', '2017-07-25 18:23:44', 'test@fechanac.com', 5, NULL),
-(22, 'Antonio', 'Calvante Díaz', '1982-05-19', 'Calle Obispo Orberá', 64, 292, '-', '00346592M', '', '2017-06-02 12:00:12', '2017-07-25 18:22:47', 'sdasd@asasd.com', 5, NULL),
-(23, 'GUILLERMO', 'LEON SANCHEZ', NULL, 'Calle benjumeda, 10', 64, 1780, '956112233', '52357246T', '<p>\r\n	Test de importaci&oacute;n 1</p>\r\n', '2017-06-11 13:58:29', '2017-06-11 13:59:11', 'guillermo.leon@test.com', 6, NULL),
-(25, 'Raúl', 'López García', '1982-05-19', 'ecuador', 64, 1780, '', '72163238W', '', '2017-06-26 18:59:45', NULL, 'raul.lopez@test.com', 5, NULL),
-(27, 'Rosa', 'De Benito Díaz', '1952-05-19', 'Iglesia', 64, 1770, '', '15092216F', '', '2017-07-08 14:32:40', NULL, 'rosa.benito@test.com', 5, 2),
-(28, 'Antonio', 'Borrell Sánchez', '1981-01-01', 'Calle Huerta del obispo', 64, 1780, '956010203', '88406917T', '-', '2017-07-25 19:50:26', NULL, 'antonio.borrell@correo.com', 5, 2);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `clientes_fichas`
---
-
-DROP TABLE IF EXISTS `clientes_fichas`;
-CREATE TABLE IF NOT EXISTS `clientes_fichas` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `plantilla_id` int(11) unsigned NOT NULL,
-  `agente_id` int(11) unsigned NOT NULL,
-  `html` text NOT NULL,
-  `fecha` date NOT NULL,
-  `cliente_id` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `FK_clientes_fichas_cliente_id` (`cliente_id`),
-  KEY `FK_clientes_fichas_agente_id` (`agente_id`),
-  KEY `FK_clientes_fichas_plantilla_id` (`plantilla_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Volcado de datos para la tabla `clientes_fichas`
---
-
-INSERT INTO `clientes_fichas` (`id`, `plantilla_id`, `agente_id`, `html`, `fecha`, `cliente_id`) VALUES
-(3, 4, 2, '<p>\r\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">03/07/2017: Fecha actual en formato num&eacute;rico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">3 de julio del 2017: Fecha actual en formato texto</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Clientes:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">75777802R: NIF/NIE/CIF del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Angel: Nombre del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Berasuain Ruiz: Apellidos del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">19/05/1982: Fecha de nacimiento</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Espa&ntilde;a: Nombre del pa&iacute;s donde reside</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Almer&iacute;a: Nombre de la provincia</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Almer&iacute;a: Nombre del municipio</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Calle pinito del Oro, n&uacute;mero 4, 6 C: Domicilio donde reside el cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">angel.berasuain@gmail.com: Correo electr&oacute;nico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">956078391-659163979: Tel&eacute;fonos de contacto</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Activo: Estado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Berasuain Ruiz,&Aacute;ngel Luis : Nombre del agente asignado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Cliente inicial : Observaciones</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">&Aacute;ngel Luis : Nombre del agente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Berasuain Ruiz: Apellidos del agente</small></li>\r\n</ul>\r\n', '2017-07-03', 1),
-(4, 4, 2, '<p>\r\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">20/07/2017: Fecha actual en formato num&eacute;rico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">20 de julio del 2017: Fecha actual en formato texto</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Clientes:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">33446605M: NIF/NIE/CIF del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">aaaaaaa: Nombre del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">asdad: Apellidos del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">: Fecha de nacimiento</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Dinamarca: Nombre del pa&iacute;s donde reside</small></li>\r\n	<li>\r\n		<small class="col-sm-4">: Nombre de la provincia</small></li>\r\n	<li>\r\n		<small class="col-sm-4">: Nombre del municipio</small></li>\r\n	<li>\r\n		<small class="col-sm-4">copenhague: Domicilio donde reside el cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">pepito2@perez.com: Correo electr&oacute;nico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">956078391-659163979: Tel&eacute;fonos de contacto</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Activo: Estado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Empleado1,Nombre: Nombre del agente asignado</small></li>\r\n	<li>\r\n		<small class="col-sm-4"><p>\r\n	assssssssss</p>\r\n: Observaciones</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">Ángel Luis : Nombre del agente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Berasuain Ruiz: Apellidos del agente</small></li>\r\n</ul>\r\n', '2017-07-20', 7);
+INSERT INTO `clientes` (`id`, `nombre`, `apellidos`, `fecha_nac`, `direccion`, `pais_id`, `poblacion_id`, `telefonos`, `nif`, `observaciones`, `fecha_alta`, `fecha_actualizacion`, `correo`, `busca_vender`, `busca_comprar`, `busca_alquilar`, `busca_alquiler`, `estado_id`, `estado_civil`, `agente_asignado_id`) VALUES
+(1, 'Angel', 'Berasuain Ruiz', NULL, 'Calle pinito del Oro, número 4, 6 C', 64, 292, '956078391-659163979', '75777802R', '<p>\r\n	Cliente inicial</p>\r\n', '0000-00-00 00:00:00', '2017-06-06 20:33:59', 'angel.berasuain@gmail.com', 0, 0, 0, 0, 5, NULL, 2),
+(2, 'Diego', 'Guerrero', NULL, 'Calle mar del norte', 64, 1788, '', '31698990E', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'diego@fac.com', 0, 0, 0, 0, 5, NULL, 2),
+(4, 'Pepito', 'Perez', NULL, 'Calle Obispo Orberá', 64, 3, '121212', '63053238A', 'uuuuuuuuuu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'pepito@perez.com', 0, 0, 0, 0, 5, NULL, 3),
+(7, 'aaaaaaa', 'asdad', NULL, 'copenhague', 55, NULL, '956078391-659163979', '33446605M', '<p>\r\n	assssssssss</p>\r\n', '2017-05-25 12:05:48', '2017-06-13 15:00:57', 'pepito2@perez.com', 0, 0, 0, 0, 5, NULL, 3),
+(8, 'Mi', 'Cuñao', NULL, 'Calle flamenco', 64, 329, '-', '14526680H', 'sdsdsd', '2017-05-26 14:15:01', NULL, 'cuniao@hotmail.com', 0, 0, 0, 0, 5, NULL, 3),
+(10, 'ULTIMO', 'Hombre', NULL, 'Calle Rosa', 64, 1780, '', '46300568G', '', '2017-05-31 19:23:21', NULL, 'test@test.com', 0, 0, 0, 0, 5, NULL, NULL),
+(21, 'Test', 'Fecha nac', '1982-05-19', 'Avenida marconi, 1', 64, 1780, '', '21017477P', 'Test fecha nac', '2017-06-02 12:00:12', NULL, 'test@fechanac.com', 0, 0, 0, 0, 5, NULL, NULL),
+(22, 'asdsa', 'asdasdsa', '1982-05-19', 'Calle Obispo Orberá', 64, 292, '-', '00346592M', '', '2017-06-02 12:00:12', NULL, 'sdasd@asasd.com', 0, 0, 0, 0, 5, NULL, NULL),
+(23, 'GUILLERMO', 'LEON SANCHEZ', NULL, 'Calle benjumeda, 10', 64, 1780, '956112233', '52357246T', '<p>\r\n	Test de importaci&oacute;n 1</p>\r\n', '2017-06-11 13:58:29', '2017-06-11 13:59:11', 'guillermo.leon@test.com', 0, 0, 0, 0, 6, NULL, NULL),
+(24, 'Rosa', 'De Benito Díaz', '1952-05-19', 'Iglesia', 64, 1770, '', '15092216F', '', '2017-06-26 18:58:14', NULL, 'rosa.benito@test.com', 0, 0, 0, 0, 5, NULL, NULL),
+(25, 'Raúl', 'López García', '1982-05-19', 'ecuador', 64, 1780, '', '72163238W', '', '2017-06-26 18:59:45', NULL, 'raul.lopez@test.com', 0, 0, 0, 0, 5, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -240,9 +222,8 @@ CREATE TABLE IF NOT EXISTS `clientes_ficheros` (
   `cliente_id` int(11) unsigned NOT NULL,
   `texto_fichero` text,
   `fichero` varchar(255) NOT NULL,
-  `tipo_fichero_id` int(11) unsigned NOT NULL,
+  `tipo_fichero_id` int(11) unsigned NOT NULL DEFAULT '5',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_clientes_ficheros` (`cliente_id`,`texto_fichero`(150)),
   KEY `FK_clientes_ficheros_cliente_id` (`cliente_id`),
   KEY `FK_clientes_ficheros_tipo_fichero_id` (`tipo_fichero_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
@@ -267,10 +248,9 @@ CREATE TABLE IF NOT EXISTS `clientes_inmuebles` (
   `cliente_id` int(11) unsigned NOT NULL,
   `inmueble_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_clientes_inmuebles` (`cliente_id`,`inmueble_id`),
   KEY `FK_clientes_inmuebles_cliente_id` (`cliente_id`),
   KEY `FK_clientes_inmuebles_inmueble_id` (`inmueble_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Volcado de datos para la tabla `clientes_inmuebles`
@@ -278,12 +258,10 @@ CREATE TABLE IF NOT EXISTS `clientes_inmuebles` (
 
 INSERT INTO `clientes_inmuebles` (`id`, `cliente_id`, `inmueble_id`) VALUES
 (1, 1, 1),
-(7, 1, 3),
 (2, 1, 4),
-(13, 1, 26),
 (6, 2, 4),
-(11, 7, 15),
-(14, 8, 5);
+(7, 1, 3),
+(11, 7, 15);
 
 -- --------------------------------------------------------
 
@@ -413,7 +391,6 @@ CREATE TABLE IF NOT EXISTS `demandas` (
   `fecha_alta` date NOT NULL,
   `fecha_actualizacion` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_demandas_ref` (`referencia`),
   KEY `FK_demandas_agente_asignado_id` (`agente_asignado_id`),
   KEY `FK_demandas_certificacion_energetica_id` (`certificacion_energetica_id`),
   KEY `FK_demandas_provincia_id` (`provincia_id`),
@@ -427,38 +404,13 @@ CREATE TABLE IF NOT EXISTS `demandas` (
 --
 
 INSERT INTO `demandas` (`id`, `referencia`, `metros_desde`, `metros_hasta`, `habitaciones_desde`, `habitaciones_hasta`, `banios_desde`, `banios_hasta`, `precio_desde`, `precio_hasta`, `provincia_id`, `poblacion_id`, `observaciones`, `estado_id`, `certificacion_energetica_id`, `anio_construccion_desde`, `anio_construccion_hasta`, `agente_asignado_id`, `oferta_id`, `tipo_demanda_id`, `cliente_id`, `fecha_alta`, `fecha_actualizacion`) VALUES
-(1, 'DEM0001', 50, 120, 1, 2, 1, 1, 50000, 150000, 11, 1780, 'Desea un inmueble bonito y amplio', 7, 6, 1980, 2017, 2, 1, 2, 1, '2017-06-20', NULL),
+(1, 'DEM0001', 50, 60, 1, 2, 1, 1, 50000, 100000, 11, 1780, 'Desea un inmueble bonito y amplio', 7, 4, 1990, 2012, 2, 1, 2, 1, '2017-06-20', NULL),
 (3, 'DEM0002', 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, 'Oficina en el centro', 7, NULL, 0, 0, 2, 2, 1, 2, '2017-06-19', NULL),
+(6, '594a46cec90ca', 50, 60, 1, 2, 1, 1, 50000, 100000, 11, 1780, 'Desea un inmueble bonito y amplio', 7, 4, 1990, 2012, 2, 1, 2, 1, '2017-06-21', NULL),
 (8, 'DEM0003', 0, 0, 0, 0, 0, 0, 60000, 120000, NULL, NULL, 'uuuuuuuuuuuu', 7, NULL, 0, 0, 2, 1, 2, 8, '2017-06-21', NULL),
+(11, 'DEMALMERIA', 0, 0, 0, 0, 0, 0, 0, 0, 4, 292, '-', 7, NULL, 0, 0, 2, 1, 2, 1, '2017-06-21', NULL),
 (12, 'DEMALMERIA0001', 0, 0, 0, 0, 0, 0, 0, 0, 4, 292, '-', 7, NULL, 0, 0, 2, 1, 2, 10, '2017-06-21', NULL),
 (13, 'DEMINMUEBLE', 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, '-', 9, NULL, 0, 0, 2, 1, 1, 21, '2017-06-26', NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `demandas_fichas`
---
-
-DROP TABLE IF EXISTS `demandas_fichas`;
-CREATE TABLE IF NOT EXISTS `demandas_fichas` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `plantilla_id` int(11) unsigned NOT NULL,
-  `agente_id` int(11) unsigned NOT NULL,
-  `html` text NOT NULL,
-  `fecha` date NOT NULL,
-  `demanda_id` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `FK_demandas_fichas_demanda_id` (`demanda_id`),
-  KEY `FK_demandas_fichas_agente_id` (`agente_id`),
-  KEY `FK_demandas_fichas_plantilla_id` (`plantilla_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
---
--- Volcado de datos para la tabla `demandas_fichas`
---
-
-INSERT INTO `demandas_fichas` (`id`, `plantilla_id`, `agente_id`, `html`, `fecha`, `demanda_id`) VALUES
-(5, 8, 2, '<p>\r\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">04/07/2017: Fecha actual en formato num&eacute;rico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">4 de julio del 2017: Fecha actual en formato texto</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">Ángel Luis : Nombre del agente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Berasuain Ruiz: Apellidos del agente</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Demandas:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">DEM0001: Referencia de la demanda</small></li>\r\n	<li>\r\n		<small class="col-sm-4">20/06/2017: Fecha de alta de la demanda</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Venta: Oferta demandada</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Con filtros de búsqueda: Tipo de demanda</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Berasuain Ruiz, Angel: Nombre completo del cliente demandante</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Casa Grande, Garaje, Local comercial: Listado de tipos de inmuebles separados por comas</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Cádiz: Nombre de la provincia</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Cádiz: Nombre del municipio</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Centro: Listado de zonas separados por comas</small></li>\r\n	<li>\r\n		<small class="col-sm-4">50: Metros totales (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">60: Metros totales (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">1: N&uacute;mero de habitaciones (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">2: N&uacute;mero de habitaciones (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">1: N&uacute;mero de ba&ntilde;os (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">1: N&uacute;mero de ba&ntilde;os (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">50.000: Precio (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">100.000: Precio (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">1990: A&ntilde;o construcci&oacute;n (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">2012: A&ntilde;o construcci&oacute;n (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">D: Certificaci&oacute;n energ&eacute;tica m&iacute;nima</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Sin atender: Estado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Berasuain Ruiz, Ángel Luis : Nombre completo del agente asignado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">Desea un inmueble bonito y amplio: Observaciones</small></li>\r\n</ul>\r\n', '2017-07-04', 1);
 
 -- --------------------------------------------------------
 
@@ -474,7 +426,6 @@ CREATE TABLE IF NOT EXISTS `demandas_ficheros` (
   `fichero` varchar(255) NOT NULL,
   `tipo_fichero_id` int(11) unsigned NOT NULL DEFAULT '7',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_demandas_ficheros` (`demanda_id`,`texto_fichero`(150)),
   KEY `FK_demandas_ficheros_demanda_id` (`demanda_id`),
   KEY `FK_demandas_ficheros_tipo_fichero_id` (`tipo_fichero_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
@@ -498,17 +449,15 @@ CREATE TABLE IF NOT EXISTS `demandas_poblaciones_zonas` (
   `demanda_id` int(11) unsigned NOT NULL,
   `zona_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_demandas_poblaciones_zonas` (`demanda_id`,`zona_id`),
   KEY `FK_demandas_zonas_demanda_id` (`demanda_id`),
   KEY `FK_demandas_zonas_zona_id` (`zona_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Volcado de datos para la tabla `demandas_poblaciones_zonas`
 --
 
 INSERT INTO `demandas_poblaciones_zonas` (`id`, `demanda_id`, `zona_id`) VALUES
-(15, 1, 6),
 (3, 12, 4),
 (4, 12, 5);
 
@@ -524,22 +473,40 @@ CREATE TABLE IF NOT EXISTS `demandas_tipos_inmueble` (
   `demanda_id` int(11) unsigned NOT NULL,
   `tipo_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_demandas_tipos_inmueble` (`demanda_id`,`tipo_id`),
   KEY `FK_demandas_zonas_demanda_id` (`demanda_id`),
   KEY `FK_demandas_zonas_tipo_id` (`tipo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- Volcado de datos para la tabla `demandas_tipos_inmueble`
 --
 
 INSERT INTO `demandas_tipos_inmueble` (`id`, `demanda_id`, `tipo_id`) VALUES
-(45, 1, 1),
-(46, 1, 2),
-(44, 1, 9),
-(7, 8, 1),
 (6, 8, 3),
+(7, 8, 1),
+(8, 11, 1),
+(9, 11, 2),
 (13, 12, 9);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `documentos_generados`
+--
+
+DROP TABLE IF EXISTS `documentos_generados`;
+CREATE TABLE IF NOT EXISTS `documentos_generados` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tipo_plantilla_id` int(11) unsigned NOT NULL,
+  `agente_id` int(11) unsigned NOT NULL,
+  `HTML` text NOT NULL,
+  `fecha` date NOT NULL,
+  `cliente_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_documentos_generados_agente_id` (`agente_id`),
+  KEY `FK_documentos_generados_tipo_plantilla_id` (`tipo_plantilla_id`),
+  KEY `FK_documentos_generados_cliente_id` (`cliente_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -554,8 +521,7 @@ CREATE TABLE IF NOT EXISTS `estados` (
   `nombre` varchar(50) NOT NULL,
   `descripcion` varchar(120) NOT NULL,
   `historico` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_estados` (`ambito_id`,`nombre`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
@@ -585,10 +551,12 @@ CREATE TABLE IF NOT EXISTS `fichas_visita` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `demanda_id` int(11) unsigned NOT NULL,
   `agente_id` int(11) unsigned NOT NULL,
+  `documento_generado_id` int(11) unsigned DEFAULT NULL,
   `fecha` date NOT NULL,
   `visitado` tinyint(1) NOT NULL DEFAULT '0',
   `observaciones` text,
   PRIMARY KEY (`id`),
+  KEY `FK_fichas_visita_documento_generado_id` (`documento_generado_id`),
   KEY `FK_fichas_visita_demanda_id` (`demanda_id`),
   KEY `FK_fichas_visita_agente_id` (`agente_id`),
   KEY `ficha_visita_fecha` (`fecha`)
@@ -598,8 +566,8 @@ CREATE TABLE IF NOT EXISTS `fichas_visita` (
 -- Volcado de datos para la tabla `fichas_visita`
 --
 
-INSERT INTO `fichas_visita` (`id`, `demanda_id`, `agente_id`, `fecha`, `visitado`, `observaciones`) VALUES
-(3, 1, 3, '2017-06-27', 1, NULL);
+INSERT INTO `fichas_visita` (`id`, `demanda_id`, `agente_id`, `documento_generado_id`, `fecha`, `visitado`, `observaciones`) VALUES
+(3, 1, 3, NULL, '2017-06-27', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -616,7 +584,14 @@ CREATE TABLE IF NOT EXISTS `fichas_visita_inmuebles_demandas` (
   PRIMARY KEY (`id`),
   KEY `FK_inmuebles_fichas_visita_ficha_visita_id` (`ficha_visita_id`),
   KEY `FK_inmuebles_fichas_visita_inmueble_demanda_id` (`inmueble_demanda_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `fichas_visita_inmuebles_demandas`
+--
+
+INSERT INTO `fichas_visita_inmuebles_demandas` (`id`, `ficha_visita_id`, `inmueble_demanda_id`, `fecha_hora`) VALUES
+(1, 3, 11, '2017-06-23 10:00:00');
 
 -- --------------------------------------------------------
 
@@ -715,7 +690,6 @@ INSERT INTO `geocoding` (`address`, `latitude`, `longitude`) VALUES
 ('avenida marconi, 10, cadiz, cadiz, spain', 36.5083, -6.27665),
 ('avenida marconi, cadiz, cadiz, spain', 36.5077, -6.27339),
 ('benjumeda, cadiz, cadiz, spain', 36.5336, -6.30003),
-('cadiz, cadiz, spain', 36.5271, -6.2886),
 ('calle benjumeda, cadiz, cadiz, spain', 36.5336, -6.30003),
 ('calle chile, 2, cadiz, cadiz, spain', 36.5334, -6.30328),
 ('calle doctor flemming, 11, cadiz, cadiz, spain', 36.5087, -6.27877),
@@ -950,8 +924,15 @@ CREATE TABLE IF NOT EXISTS `inmuebles` (
   `direccion_publica` varchar(100) NOT NULL,
   `publicado` tinyint(1) NOT NULL DEFAULT '0',
   `estado_id` int(11) unsigned NOT NULL DEFAULT '1',
+  `obra_nueva` int(1) NOT NULL DEFAULT '1',
   `certificacion_energetica_id` int(11) unsigned NOT NULL DEFAULT '8',
+  `cuota_comunidad` double DEFAULT NULL,
+  `forma_pago` varchar(200) DEFAULT NULL,
+  `anejos` text,
+  `cargas_vivienda` text,
+  `descripcion_vivienda` text,
   `descripcion_edificio` text,
+  `antiguedad_edificio` varchar(200) DEFAULT NULL,
   `captador_id` int(11) unsigned DEFAULT NULL,
   `fecha_alta` date NOT NULL,
   `fecha_actualizacion` datetime DEFAULT NULL,
@@ -959,68 +940,32 @@ CREATE TABLE IF NOT EXISTS `inmuebles` (
   `oportunidad` tinyint(1) NOT NULL DEFAULT '0',
   `destacado` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_inmuebles_ref` (`referencia`),
-  KEY `inmuebles_precio_compra` (`precio_compra`),
-  KEY `inmuebles_precio_alquiler` (`precio_alquiler`),
-  KEY `inmuebles_busqueda` (`habitaciones`,`banios`),
   KEY `FK_inmuebles_captador_id` (`captador_id`),
   KEY `FK_inmuebles_poblacion_id` (`poblacion_id`),
   KEY `FK_inmuebles_tipo_id` (`tipo_id`),
   KEY `FK_inmuebles_certificacion_energetica_id` (`certificacion_energetica_id`),
   KEY `FK_inmuebles_zona_id` (`zona_id`),
   KEY `FK_inmuebles_estado_id` (`estado_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Volcado de datos para la tabla `inmuebles`
 --
 
-INSERT INTO `inmuebles` (`id`, `referencia`, `metros`, `metros_utiles`, `habitaciones`, `banios`, `precio_compra`, `precio_compra_anterior`, `precio_alquiler`, `precio_alquiler_anterior`, `poblacion_id`, `zona_id`, `tipo_id`, `observaciones`, `direccion`, `direccion_publica`, `publicado`, `estado_id`, `certificacion_energetica_id`, `descripcion_edificio`, `captador_id`, `fecha_alta`, `fecha_actualizacion`, `anio_construccion`, `oportunidad`, `destacado`) VALUES
-(1, 'REF0001', 50, 50, 2, 1, 200000, 0, 0, 0, 292, NULL, 1, NULL, 'calle granada', '', 0, 1, 8, '', 2, '2017-06-01', NULL, NULL, 0, 0),
-(2, 'REF0002', 70, 70, 3, 2, 300000, 0, 0, 0, 292, NULL, 1, NULL, 'carretera granada', '', 0, 1, 8, '', 2, '2017-06-02', NULL, NULL, 0, 0),
-(3, 'REF0003', 100, 100, 4, 3, 400000, 0, 0, 0, 292, NULL, 1, NULL, 'avenida del mediterraneo', '', 0, 1, 8, '', 2, '2017-06-03', NULL, NULL, 0, 0),
-(4, 'REF0004', 90, 84, 2, 1, 50000, 0, 0, 0, 1780, NULL, 9, '', 'Calle Benjumeda', 'Benjumeda', 0, 3, 9, NULL, 2, '2017-06-05', NULL, 2009, 1, 0),
-(5, 'REF0005', 400, 350, 4, 1, 135000, 140000, 500, 525, 292, 3, 4, 'Esta es una oficina en el centro', 'Calle Obispo Orberá, 5', 'Calle Obispo Orberá', 1, 1, 8, NULL, 2, '2017-06-09', '2017-06-01 00:00:00', 1982, 1, 1),
-(6, 'REF0006', 60, 50, 1, 1, 125000, 150000, 0, 0, 1780, NULL, 2, 'jur jur', 'Avenida marconi, 10', 'Avenida marconi', 0, 1, 9, NULL, 2, '2017-06-12', NULL, 1995, 0, 0),
-(7, 'REF0010', 60, 50, 1, 1, 40000, 0, 0, 0, 1780, 6, 9, 'Correcto', 'Calle Rosa', '', 0, 1, 4, NULL, 2, '2017-06-15', NULL, 1990, 0, 0),
-(10, '5944ea26a1ab8', 60, 52, 1, 1, 0, 0, 600, 0, 1799, NULL, 2, '', 'Calle real, 1', '', 0, 1, 9, NULL, 2, '2017-06-17', NULL, 0, 0, 0),
-(15, 'DEM0200', 100, 90, 3, 2, 450000, 0, 0, 0, 1780, NULL, 9, '', 'Calle Doctor Flemming, 11', '', 0, 2, 3, NULL, 2, '2017-06-26', NULL, 2009, 0, 0),
-(16, '59515d52a7091', 400, 350, 4, 1, 135000, 0, 500, 0, 292, 3, 4, 'Esta es una oficina en el centro', 'Calle Obispo Orberá,1, bajo', 'Calle Obispo Orberá', 0, 1, 8, NULL, 2, '2017-06-26', NULL, 1982, 1, 1),
-(17, '59515d6d021ea', 400, 350, 4, 1, 135000, 0, 500, 0, 292, 3, 4, 'Esta es una oficina en el centro', 'Calle Obispo Orberá,1, bajo', 'Calle Obispo Orberá', 0, 1, 8, NULL, 2, '2017-06-26', NULL, 1982, 1, 1),
-(19, '5943f77c20f59', 60, 50, 1, 1, 100000, 90000, 0, 0, 1780, 6, 9, 'Correcto', 'Calle Chile, 2', '', 0, 1, 4, NULL, 2, '2017-06-15', NULL, 1990, 0, 0),
-(23, '595f8dec1f807', 60, 50, 1, 1, 100000, 90000, 0, 0, 1780, 6, 9, 'Correcto', 'Calle Chile, 2', '', 0, 1, 4, NULL, 2, '2017-07-07', NULL, 1990, 0, 0),
-(26, '595225d56466d', 60, 50, 1, 1, 40000, 0, 0, 0, 1780, 6, 9, 'Correcto', 'Calle Rosa', '', 0, 1, 4, NULL, 2, '2017-06-27', NULL, 1990, 0, 0);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `inmuebles_carteles`
---
-
-DROP TABLE IF EXISTS `inmuebles_carteles`;
-CREATE TABLE IF NOT EXISTS `inmuebles_carteles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `plantilla_id` int(11) unsigned NOT NULL,
-  `agente_id` int(11) unsigned NOT NULL,
-  `html` text NOT NULL,
-  `fecha` date NOT NULL,
-  `inmueble_id` int(11) unsigned DEFAULT NULL,
-  `idioma_id` int(11) unsigned DEFAULT NULL,
-  `impreso` tinyint(1) NOT NULL DEFAULT '0',
-  `hash_qr_image` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `FK_inmuebles_carteles_inmueble_id` (`inmueble_id`),
-  KEY `FK_inmuebles_carteles_agente_id` (`agente_id`),
-  KEY `FK_inmuebles_carteles_plantilla_id` (`plantilla_id`),
-  KEY `FK_inmuebles_carteles_idioma_id` (`idioma_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
-
---
--- Volcado de datos para la tabla `inmuebles_carteles`
---
-
-INSERT INTO `inmuebles_carteles` (`id`, `plantilla_id`, `agente_id`, `html`, `fecha`, `inmueble_id`, `idioma_id`, `impreso`, `hash_qr_image`) VALUES
-(19, 6, 2, '<p>\r\n	<span style="float: left;"><img width="80" height="80" src="%base_url%uploads/inmuebles/5/595cae8f382c8.png" /></span><img alt="" src="%base_url%uploads/logo.jpg" style="width: 200px; height: 60px; float: right;" /></p>\r\n<p style="text-align: center;">\r\n	&nbsp;</p>\r\n<p style="text-align: center;">\r\n	&nbsp;</p>\r\n<p style="text-align: center;">\r\n	<strong><span style="font-size:20px;"><span style="font-family: lucida sans unicode,lucida grande,sans-serif;">Oficina en pleno centro de Almería</span></span></strong></p>\r\n<div>\r\n	<p style="text-align: center;">\r\n		<span style="font-size:16px;">4 habitaciones, 1 ba&ntilde;os, 135.000 &euro;</span></p>\r\n	<p style="text-align: center;">\r\n		<img width="600" height="400" src="%base_url%uploads/inmuebles/5/imagenes/002-armadale-house-mitsuori-architects-1050x700.jpg" /></p>\r\n	<p style="text-align: justify;">\r\n		<span style="font-size:16px;"><p>\r\n	Este <strong>amplio &aacute;tico</strong> nos recibe con un amplio sal&oacute;n comedor, una espaciosa cocina, y una amplia terraza con orientaci&oacute;n sur y oeste, desde esta terraza se tienen vistas al mar Mediterr&aacute;neo. La cocina es amplia, con un dise&ntilde;o abierto hacia el sal&oacute;n, y el &aacute;rea de comedor tiene grandes ventanas y acceso a la terraza. Las habitaciones est&aacute;n en un &aacute;rea independiente, ambas con orientaci&oacute;n al sur, y con posibilidad de incluir accesos directos a la terraza desde las habitaciones. Este &aacute;rea independiente la completa un ba&ntilde;o y un espacio de lavado.<br />\r\n	<br />\r\n	El &aacute;tico tiene una terraza-solarium privada de 43 metros cuadrados, con vistas al sur y al oeste. En esta terraza se disfrutan de espectaculares vistas al mar Mediterr&aacute;neo y a las monta&ntilde;as al norte de Torrox.<br />\r\n	<br />\r\n	La ubicaci&oacute;n permite disfrutar de las playas de Torrox Costa,que se encuentran a tan s&oacute;lo 50m., con la tranquilidad de estar en la zona de El Pe&ntilde;oncillo, y a solo 5 minutos de bancos, supermercados y todos los servicios necesarios.</p>\r\n</span></p>\r\n</div>\r\n<div>\r\n	&nbsp;</div>\r\n', '2017-07-05', 5, 1, 0, '595cae8f382c8');
+INSERT INTO `inmuebles` (`id`, `referencia`, `metros`, `metros_utiles`, `habitaciones`, `banios`, `precio_compra`, `precio_compra_anterior`, `precio_alquiler`, `precio_alquiler_anterior`, `poblacion_id`, `zona_id`, `tipo_id`, `observaciones`, `direccion`, `direccion_publica`, `publicado`, `estado_id`, `obra_nueva`, `certificacion_energetica_id`, `cuota_comunidad`, `forma_pago`, `anejos`, `cargas_vivienda`, `descripcion_vivienda`, `descripcion_edificio`, `antiguedad_edificio`, `captador_id`, `fecha_alta`, `fecha_actualizacion`, `anio_construccion`, `oportunidad`, `destacado`) VALUES
+(1, 'REF0001', 50, 50, 2, 1, 200000, 0, 0, 0, 292, NULL, 1, NULL, 'calle granada', '', 0, 1, 0, 8, 0, '', '', '', '', '', '', 2, '2017-06-01', NULL, NULL, 0, 0),
+(2, 'REF0002', 70, 70, 3, 2, 300000, 0, 0, 0, 292, NULL, 1, NULL, 'carretera granada', '', 0, 1, 0, 8, 0, '', '', '', '', '', '', 2, '2017-06-02', NULL, NULL, 0, 0),
+(3, 'REF0003', 100, 100, 4, 3, 400000, 0, 0, 0, 292, NULL, 1, NULL, 'avenida del mediterraneo', '', 0, 1, 0, 8, 0, '', '', '', '', '', '', 2, '2017-06-03', NULL, NULL, 0, 0),
+(4, 'REF0004', 90, 84, 2, 1, 50000, 0, 0, 0, 1780, NULL, 9, '', 'Calle Benjumeda', 'Benjumeda', 0, 3, 0, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-05', NULL, 2009, 1, 0),
+(5, 'REF0005', 400, 350, 4, 1, 135000, 0, 500, 0, 292, 3, 4, 'Esta es una oficina en el centro', 'Calle Obispo Orberá, 5', 'Calle Obispo Orberá', 1, 1, 1, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-09', '2017-06-01 00:00:00', 1982, 1, 1),
+(6, 'REF0006', 60, 50, 1, 1, 125000, 150000, 0, 0, 1780, NULL, 2, 'jur jur', 'Avenida marconi, 10', 'Avenida marconi', 0, 1, 1, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-12', NULL, 1995, 0, 0),
+(7, 'REF0010', 60, 50, 1, 1, 40000, 0, 0, 0, 1780, 6, 9, 'Correcto', 'Calle Rosa', '', 0, 1, 1, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-15', NULL, 1990, 0, 0),
+(10, '5944ea26a1ab8', 60, 52, 1, 1, 0, 0, 600, 0, 1780, 6, 2, '', 'Catedral', '', 0, 1, 1, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-17', NULL, 0, 0, 0),
+(15, 'DEM0200', 100, 90, 3, 2, 450000, 0, 0, 0, 1780, NULL, 9, '', 'Calle Doctor Flemming, 11', '', 0, 1, 1, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-26', NULL, 2009, 0, 0),
+(16, '59515d52a7091', 400, 350, 4, 1, 135000, 0, 500, 0, 292, 3, 4, 'Esta es una oficina en el centro', 'Calle Obispo Orberá,1, bajo', 'Calle Obispo Orberá', 0, 1, 1, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-26', NULL, 1982, 1, 1),
+(17, '59515d6d021ea', 400, 350, 4, 1, 135000, 0, 500, 0, 292, 3, 4, 'Esta es una oficina en el centro', 'Calle Obispo Orberá,1, bajo', 'Calle Obispo Orberá', 0, 1, 1, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-26', NULL, 1982, 1, 1),
+(18, '595225d56466d', 60, 50, 1, 1, 40000, 0, 0, 0, 1780, 6, 9, 'Correcto', 'Calle Rosa', '', 0, 1, 1, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2017-06-27', NULL, 1990, 0, 0),
+(19, '5943f77c20f59', 60, 50, 1, 1, 100000, 90000, 0, 0, 1780, 6, 9, 'Correcto', 'Calle Chile, 2', '', 0, 1, 1, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2017-06-15', NULL, 1990, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1038,10 +983,9 @@ CREATE TABLE IF NOT EXISTS `inmuebles_demandas` (
   `observaciones` varchar(255) NOT NULL,
   `fecha_asignacion` date NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_inmuebles_demandas` (`inmueble_id`,`demanda_id`),
   KEY `FK_inmuebles_demandas_inmueble_id` (`inmueble_id`),
   KEY `FK_inmuebles_demandas_demanda_id` (`demanda_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Volcado de datos para la tabla `inmuebles_demandas`
@@ -1049,12 +993,11 @@ CREATE TABLE IF NOT EXISTS `inmuebles_demandas` (
 
 INSERT INTO `inmuebles_demandas` (`id`, `inmueble_id`, `demanda_id`, `origen_id`, `evaluacion_id`, `observaciones`, `fecha_asignacion`) VALUES
 (1, 5, 3, 2, 2, 'Observaciones', '2017-06-22'),
+(10, 1, 1, 2, 2, '', '2017-06-23'),
+(11, 2, 1, 2, 2, 'Vamos pronto a verlo', '2017-06-23'),
+(12, 5, 1, 2, 2, '', '2017-06-23'),
 (15, 1, 3, 2, 2, '', '2017-06-24'),
-(16, 7, 13, 2, 2, '', '2017-06-26'),
-(20, 7, 1, 2, 2, '', '2017-07-07'),
-(26, 23, 1, 1, 3, '', '2017-07-07'),
-(27, 19, 1, 1, 1, '', '2017-07-31'),
-(28, 5, 1, 2, 2, '', '2017-08-01');
+(16, 7, 13, 2, 2, '', '2017-06-26');
 
 -- --------------------------------------------------------
 
@@ -1071,7 +1014,6 @@ CREATE TABLE IF NOT EXISTS `inmuebles_enlaces` (
   `publicado` tinyint(1) NOT NULL DEFAULT '1',
   `youtube` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_inmuebles_enlaces` (`inmueble_id`,`titulo`),
   KEY `FK_inmuebles_enlaces_inmueble_id` (`inmueble_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
@@ -1086,35 +1028,6 @@ INSERT INTO `inmuebles_enlaces` (`id`, `inmueble_id`, `titulo`, `url`, `publicad
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `inmuebles_fichas`
---
-
-DROP TABLE IF EXISTS `inmuebles_fichas`;
-CREATE TABLE IF NOT EXISTS `inmuebles_fichas` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `plantilla_id` int(11) unsigned NOT NULL,
-  `agente_id` int(11) unsigned NOT NULL,
-  `html` text NOT NULL,
-  `fecha` date NOT NULL,
-  `inmueble_id` int(11) unsigned DEFAULT NULL,
-  `idioma_id` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `FK_inmuebles_fichas_inmueble_id` (`inmueble_id`),
-  KEY `FK_inmuebles_fichas_agente_id` (`agente_id`),
-  KEY `FK_inmuebles_fichas_plantilla_id` (`plantilla_id`),
-  KEY `FK_inmuebles_fichas_idioma_id` (`idioma_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Volcado de datos para la tabla `inmuebles_fichas`
---
-
-INSERT INTO `inmuebles_fichas` (`id`, `plantilla_id`, `agente_id`, `html`, `fecha`, `inmueble_id`, `idioma_id`) VALUES
-(2, 7, 2, '<p>\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\n<ul>\n	<li>\n		<small class="col-sm-4">01/07/2017: Fecha actual en formato num&eacute;rico</small></li>\n	<li>\n		<small class="col-sm-4">1 de julio del 2017: Fecha actual en formato texto</small></li>\n</ul>\n<div>\n	<small class="col-sm-4"><small class="col-sm-4"><strong>Datos Inmuebles:</strong> </small></small>\n	<ul>\n		<li>\n			<small class="col-sm-4">REF0005: Referencia del inmueble</small></li>\n		<li>\n			<small class="col-sm-4">09/06/2017: Fecha de alta del inmueble</small></li>\n		<li>\n			<small class="col-sm-4">Oficina: Tipo del inmueble</small></li>\n		<li>\n			<small class="col-sm-4">Almería: Nombre de la provincia</small></li>\n		<li>\n			<small class="col-sm-4">Almería: Nombre del municipio</small></li>\n		<li>\n			<small class="col-sm-4">Centro: Nombre de la zona del municipio</small></li>\n		<li>\n			<small class="col-sm-4">Calle Obispo Orberá, 5: Direcci&oacute;n real del inmueble</small></li>\n		<li>\n			<small class="col-sm-4">400: Metros totales</small></li>\n		<li>\n			<small class="col-sm-4">350: Metros &uacute;tiles</small></li>\n		<li>\n			<small class="col-sm-4">4: N&uacute;mero de habitaciones</small></li>\n		<li>\n			<small class="col-sm-4">1: N&uacute;mero de ba&ntilde;os</small></li>\n		<li>\n			<small class="col-sm-4">135.000: Precio de compra</small></li>\n		<li>\n			<small class="col-sm-4">140.000: Precio de compra anterior</small></li>\n		<li>\n			<small class="col-sm-4">500: Precio alquiler</small></li>\n		<li>\n			<small class="col-sm-4">525: Precio alquiler anterior</small></li>\n		<li>\n			<small class="col-sm-4">Exento: Certificaci&oacute;n energ&eacute;tica</small></li>\n		<li>\n			<small class="col-sm-4">Calle Obispo Orberá: Direcci&oacute;n mostrada en la zona p&uacute;blica</small></li>\n		<li>\n			<small class="col-sm-4">Oficina en pleno centro de Almería: T&iacute;tulo mostrado en la zona p&uacute;blica</small></li>\n		<li>\n			<small class="col-sm-4"><p>\n	Este <strong>amplio &aacute;tico</strong> nos recibe con un amplio sal&oacute;n comedor, una espaciosa cocina, y una amplia terraza con orientaci&oacute;n sur y oeste, desde esta terraza se tienen vistas al mar Mediterr&aacute;neo. La cocina es amplia, con un dise&ntilde;o abierto hacia el sal&oacute;n, y el &aacute;rea de comedor tiene grandes ventanas y acceso a la terraza. Las habitaciones est&aacute;n en un &aacute;rea independiente, ambas con orientaci&oacute;n al sur, y con posibilidad de incluir accesos directos a la terraza desde las habitaciones. Este &aacute;rea independiente la completa un ba&ntilde;o y un espacio de lavado.<br />\n	<br />\n	El &aacute;tico tiene una terraza-solarium privada de 43 metros cuadrados, con vistas al sur y al oeste. En esta terraza se disfrutan de espectaculares vistas al mar Mediterr&aacute;neo y a las monta&ntilde;as al norte de Torrox.<br />\n	<br />\n	La ubicaci&oacute;n permite disfrutar de las playas de Torrox Costa,que se encuentran a tan s&oacute;lo 50m., con la tranquilidad de estar en la zona de El Pe&ntilde;oncillo, y a solo 5 minutos de bancos, supermercados y todos los servicios necesarios.</p>\n: Descripci&oacute;n extendida mostrada en la zona p&uacute;blica</small></li>\n		<li>\n			<small class="col-sm-4">oficina-en-pleno-centro-de-almeria: URL SEO</small></li>\n		<li>\n			<small class="col-sm-4">Oficina en pleno centro de almería con varias dependencias: Descripci&oacute;n SEO</small></li>\n		<li>\n			<small class="col-sm-4">oficina,centro,Álmería: Palabras clave para el SEO</small></li>\n		<li>\n			<small class="col-sm-4">Captación: Estado</small></li>\n		<li>\n			<small class="col-sm-4">Berasuain Ruiz, Ángel Luis : Nombre completo del captador</small></li>\n		<li>\n			<small class="col-sm-4">Esta es una oficina en el centro: Observaciones</small></li>\n	</ul>\n	<div>\n		<small class="col-sm-4"><img width="600" height="400" src="%base_url%uploads/inmuebles/5/imagenes/002-armadale-house-mitsuori-architects-1050x700.jpg" /></small></div>\n	<div>\n		&nbsp;</div>\n</div>\n<div>\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small>\n	<ul>\n		<li>\n			<small class="col-sm-4">Ángel Luis : Nombre del agente</small></li>\n		<li>\n			<small class="col-sm-4">Berasuain Ruiz: Apellidos del agente</small></li>\n	</ul>\n</div>\n<div>\n	&nbsp;</div>\n', '2017-07-01', 5, 1);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `inmuebles_ficheros`
 --
 
@@ -1124,9 +1037,8 @@ CREATE TABLE IF NOT EXISTS `inmuebles_ficheros` (
   `inmueble_id` int(11) unsigned NOT NULL,
   `fichero` varchar(200) NOT NULL,
   `texto_fichero` text,
-  `tipo_fichero_id` int(11) unsigned NOT NULL,
+  `tipo_fichero_id` int(11) unsigned NOT NULL DEFAULT '2',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_inmuebles_ficheros` (`inmueble_id`,`texto_fichero`(150)),
   KEY `FK_inmuebles_ficheros_inmueble_id` (`inmueble_id`),
   KEY `FK_inmuebles_ficheros_tipo_fichero_id` (`tipo_fichero_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
@@ -1166,9 +1078,9 @@ CREATE TABLE IF NOT EXISTS `inmuebles_idiomas` (
 --
 
 INSERT INTO `inmuebles_idiomas` (`id`, `titulo`, `descripcion`, `url_seo`, `descripcion_seo`, `keywords_seo`, `inmueble_id`, `idioma_id`) VALUES
-(1, 'Oficina en pleno centro de Almería', '<p>\r\n	Este <strong>amplio &aacute;tico</strong> nos recibe con un amplio sal&oacute;n comedor, una espaciosa cocina, y una amplia terraza con orientaci&oacute;n sur y oeste, desde esta terraza se tienen vistas al mar Mediterr&aacute;neo. La cocina es amplia, con un dise&ntilde;o abierto hacia el sal&oacute;n, y el &aacute;rea de comedor tiene grandes ventanas y acceso a la terraza. Las habitaciones est&aacute;n en un &aacute;rea independiente, ambas con orientaci&oacute;n al sur, y con posibilidad de incluir accesos directos a la terraza desde las habitaciones. Este &aacute;rea independiente la completa un ba&ntilde;o y un espacio de lavado.<br />\r\n	<br />\r\n	El &aacute;tico tiene una terraza-solarium privada de 43 metros cuadrados, con vistas al sur y al oeste. En esta terraza se disfrutan de espectaculares vistas al mar Mediterr&aacute;neo y a las monta&ntilde;as al norte de Torrox.<br />\r\n	<br />\r\n	La ubicaci&oacute;n permite disfrutar de las playas de Torrox Costa,que se encuentran a tan s&oacute;lo 50m., con la tranquilidad de estar en la zona de El Pe&ntilde;oncillo, y a solo 5 minutos de bancos, supermercados y todos los servicios necesarios.</p>\r\n', 'oficina-pleno-centro-almeria', 'Oficina en pleno centro de almería con varias dependencias', 'oficina,centro,Álmería', 5, 1),
+(1, 'Oficina en pleno centro de Almería', '<p>\r\n	Este <strong>amplio &aacute;tico</strong> nos recibe con un amplio sal&oacute;n comedor, una espaciosa cocina, y una amplia terraza con orientaci&oacute;n sur y oeste, desde esta terraza se tienen vistas al mar Mediterr&aacute;neo. La cocina es amplia, con un dise&ntilde;o abierto hacia el sal&oacute;n, y el &aacute;rea de comedor tiene grandes ventanas y acceso a la terraza. Las habitaciones est&aacute;n en un &aacute;rea independiente, ambas con orientaci&oacute;n al sur, y con posibilidad de incluir accesos directos a la terraza desde las habitaciones. Este &aacute;rea independiente la completa un ba&ntilde;o y un espacio de lavado.<br />\r\n	<br />\r\n	El &aacute;tico tiene una terraza-solarium privada de 43 metros cuadrados, con vistas al sur y al oeste. En esta terraza se disfrutan de espectaculares vistas al mar Mediterr&aacute;neo y a las monta&ntilde;as al norte de Torrox.<br />\r\n	<br />\r\n	La ubicaci&oacute;n permite disfrutar de las playas de Torrox Costa,que se encuentran a tan s&oacute;lo 50m., con la tranquilidad de estar en la zona de El Pe&ntilde;oncillo, y a solo 5 minutos de bancos, supermercados y todos los servicios necesarios.</p>\r\n', 'oficina-en-pleno-centro-de-almeria', 'Oficina en pleno centro de almería con varias dependencias', 'oficina,centro,Álmería', 5, 1),
 (2, 'Office in Almería centre', '<pre class="tw-data-text tw-ta tw-text-small" data-fulltext="" data-placeholder="Traducción" dir="ltr" id="tw-target-text" style="text-align: left; height: 720px;">\r\n<span lang="en">This spacious penthouse welcomes you with a spacious living room, a spacious kitchen, and a large terrace facing south and west, from this terrace you have views of the Mediterranean Sea. The kitchen is spacious, with an open design towards the living room, and the dining area has large windows and access to the terrace. The rooms are in a separate area, both facing south, with the possibility of including direct access to the terrace from the rooms. This independent area is completed by a bathroom and a washing space.\r\n\r\nThe penthouse has a private terrace-solarium of 43 square meters, with views to the south and west. On this terrace you can enjoy spectacular views of the Mediterranean Sea and the mountains north of Torrox.\r\n\r\nThe location allows you to enjoy the beaches of Torrox Costa, which are only 50m away, with the tranquility of being in the area of ​​El Pe&ntilde;oncillo, and only 5 minutes from banks, supermarkets and all necessary services.</span></pre>\r\n', 'office-in-almeria-centre', 'Short description', 'office,centre,Almería', 5, 53),
-(3, 'Casa grande en pleno centro de Cádiz', '<p>\r\n	<span style="color: rgb(32, 32, 32); font-family: ''Roboto Condensed'', sans-serif; font-size: 14px; line-height: 21px;">En esta vivienda podr&aacute;s disfrutar de la <strong>tranquilidad </strong>de saber que tus hijos juegan sin peligro, mientras te relajas viendo una pelicula en tu cine de verano particular que podr&aacute;s montarte en la terraza cubierta de la parte trasera de la vivienda. El exterior es perfecto para que tu tiempo lo vivas con los tuyos, y no para que te pases el tiempo manteniendo el jard&iacute;n, puesto que tan solo unas pinceladas de verde decoran la <u>amplia parcela</u>. </span></p>\r\n', 'casa-grande-en-pleno-centro-de-cadiz', 'asdasda', 'asdasd', 4, 1),
+(3, 'Casa grande en pleno centro de Cádiz', '<p>\r\n	aaaaaaaaaa</p>\r\n', 'casa-grande-en-pleno-centro-de-cadiz', 'asdasda', 'asdasd', 4, 1),
 (4, 'English tittle', '<p>\r\n	yyyyyyyyyyyyyyyyy</p>\r\n', 'odonnell-bar-im-glad', 'Short description', 'asdadad', 4, 53);
 
 -- --------------------------------------------------------
@@ -1185,9 +1097,8 @@ CREATE TABLE IF NOT EXISTS `inmuebles_imagenes` (
   `portada` tinyint(1) NOT NULL DEFAULT '0',
   `publicada` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_inmuebles_imagenes` (`inmueble_id`,`imagen`),
   KEY `FK_inmuebles_imagenes_inmueble_id` (`inmueble_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Volcado de datos para la tabla `inmuebles_imagenes`
@@ -1207,8 +1118,7 @@ INSERT INTO `inmuebles_imagenes` (`id`, `inmueble_id`, `imagen`, `portada`, `pub
 (13, 5, 'uploads/inmuebles/5/imagenes/1_entrada1.jpg', 0, 1),
 (14, 5, 'uploads/inmuebles/5/imagenes/2_salon1.jpg', 0, 1),
 (15, 5, 'uploads/inmuebles/5/imagenes/3_despacho1.jpg', 0, 1),
-(16, 16, 'uploads/inmuebles/16/imagenes/1_entrada.jpg', 1, 1),
-(17, 4, 'uploads/inmuebles/4/imagenes/entrada_vertical.jpg', 1, 1);
+(16, 16, 'uploads/inmuebles/16/imagenes/1_entrada.jpg', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1222,7 +1132,6 @@ CREATE TABLE IF NOT EXISTS `inmuebles_lugares_interes` (
   `inmueble_id` int(11) unsigned NOT NULL,
   `lugar_interes_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_inmuebles_lugares_interes` (`inmueble_id`,`lugar_interes_id`),
   KEY `FK_inmuebles_lugares_interes_inmueble_id` (`inmueble_id`),
   KEY `FK_inmuebles_lugares_interes_interes_id` (`lugar_interes_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
@@ -1246,7 +1155,6 @@ CREATE TABLE IF NOT EXISTS `inmuebles_opciones_extras` (
   `inmueble_id` int(11) unsigned NOT NULL,
   `opcion_extra_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_inmuebles_opciones_extras` (`inmueble_id`,`opcion_extra_id`),
   KEY `FK_inmuebles_opciones_extras_inmueble_id` (`inmueble_id`),
   KEY `FK_inmuebles_opciones_extras_extra_id` (`opcion_extra_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
@@ -1310,7 +1218,6 @@ CREATE TABLE IF NOT EXISTS `lugares_interes_idiomas` (
   `lugar_interes_id` int(11) unsigned NOT NULL,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_lugares_interes_idiomas` (`idioma_id`,`lugar_interes_id`),
   KEY `FK_lugares_interes_idiomas_idioma_id` (`idioma_id`),
   KEY `FK_lugares_interes_idiomas_lugar_interes_id` (`lugar_interes_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
@@ -1340,85 +1247,24 @@ CREATE TABLE IF NOT EXISTS `marcas_documentacion` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `referencia` varchar(100) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
-  `especial` tinyint(1) NOT NULL DEFAULT '0',
   `categoria_inf_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_marcas_documentacion` (`referencia`,`categoria_inf_id`),
   KEY `FK_marcas_documentacion_categoria_inf_id` (`categoria_inf_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=68 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Volcado de datos para la tabla `marcas_documentacion`
 --
 
-INSERT INTO `marcas_documentacion` (`id`, `referencia`, `descripcion`, `especial`, `categoria_inf_id`) VALUES
-(1, 'f_actual_numero', 'Fecha actual en formato numérico', 0, 1),
-(2, 'f_actual_texto', 'Fecha actual en formato texto', 0, 1),
-(3, 'nif', 'NIF/NIE/CIF del cliente', 0, 2),
-(4, 'nombre', 'Nombre del cliente', 0, 2),
-(5, 'apellidos', 'Apellidos del cliente', 0, 2),
-(6, 'fecha_nac', 'Fecha de nacimiento', 1, 2),
-(7, 'nombre_pais', 'Nombre del país donde reside', 0, 2),
-(8, 'nombre_provincia', 'Nombre de la provincia', 0, 2),
-(9, 'nombre_poblacion', 'Nombre del municipio', 0, 2),
-(10, 'direccion', 'Domicilio donde reside el cliente', 0, 2),
-(11, 'correo', 'Correo electrónico', 0, 2),
-(12, 'telefonos', 'Teléfonos de contacto', 0, 2),
-(13, 'nombre_estado', 'Estado', 0, 2),
-(14, 'nombre_agente_asignado', 'Nombre del agente asignado', 0, 2),
-(15, 'observaciones', 'Observaciones', 0, 2),
-(16, 'referencia', 'Referencia del inmueble', 0, 3),
-(17, 'fecha_alta', 'Fecha de alta del inmueble', 1, 3),
-(18, 'nombre_tipo', 'Tipo del inmueble', 0, 3),
-(19, 'nombre_provincia', 'Nombre de la provincia', 0, 3),
-(20, 'nombre_poblacion', 'Nombre del municipio', 0, 3),
-(21, 'nombre_zona', 'Nombre de la zona del municipio', 0, 3),
-(22, 'direccion', 'Dirección real del inmueble', 0, 3),
-(23, 'metros', 'Metros totales', 0, 3),
-(24, 'metros_utiles', 'Metros útiles', 0, 3),
-(25, 'habitaciones', 'Número de habitaciones', 0, 3),
-(26, 'banios', 'Número de baños', 0, 3),
-(27, 'precio_compra', 'Precio de compra', 1, 3),
-(28, 'precio_compra_anterior', 'Precio de compra anterior', 1, 3),
-(29, 'precio_alquiler', 'Precio alquiler', 1, 3),
-(30, 'precio_alquiler_anterior', 'Precio alquiler anterior', 1, 3),
-(31, 'nombre_certificacion_energetica', 'Certificación energética', 0, 3),
-(32, 'direccion_publica', 'Dirección mostrada en la zona pública', 0, 3),
-(33, 'titulo_publico', 'Título mostrado en la zona pública', 1, 3),
-(34, 'descripcion_publica', 'Descripción extendida mostrada en la zona pública', 1, 3),
-(35, 'url_seo', 'URL SEO', 1, 3),
-(36, 'descripcion_seo', 'Descripción SEO', 1, 3),
-(37, 'keywords_seo', 'Palabras clave para el SEO', 1, 3),
-(38, 'nombre_estado', 'Estado', 0, 3),
-(39, 'nombre_captador', 'Nombre completo del captador', 0, 3),
-(40, 'observaciones', 'Observaciones', 0, 3),
-(41, 'imagen_portada', 'Imagen de la portada pública', 1, 3),
-(42, 'codigo_qr', 'Código QR del URL SEO de la zona pública', 1, 6),
-(43, 'nombre', 'Nombre del agente', 1, 4),
-(44, 'apellidos', 'Apellidos del agente', 1, 4),
-(45, 'referencia', 'Referencia de la demanda', 0, 7),
-(46, 'fecha_alta', 'Fecha de alta de la demanda', 1, 7),
-(47, 'oferta', 'Oferta demandada', 0, 7),
-(48, 'tipo', 'Tipo de demanda', 0, 7),
-(49, 'nombre_cliente', 'Nombre completo del cliente demandante', 0, 7),
-(50, 'tipos_inmuebles', 'Listado de tipos de inmuebles separados por comas', 0, 7),
-(51, 'nombre_provincia', 'Nombre de la provincia', 0, 7),
-(52, 'nombre_poblacion', 'Nombre del municipio', 0, 7),
-(53, 'zonas', 'Listado de zonas separados por comas', 0, 7),
-(54, 'metros_desde', 'Metros totales (desde)', 0, 7),
-(55, 'metros_hasta', 'Metros totales (hasta)', 0, 7),
-(56, 'habitaciones_desde', 'Número de habitaciones (desde)', 0, 7),
-(57, 'habitaciones_hasta', 'Número de habitaciones (hasta)', 0, 7),
-(58, 'banios_desde', 'Número de baños (desde)', 0, 7),
-(59, 'banios_hasta', 'Número de baños (hasta)', 0, 7),
-(60, 'precio_desde', 'Precio (desde)', 1, 7),
-(61, 'precio_hasta', 'Precio (hasta)', 1, 7),
-(62, 'anio_construccion_desde', 'Año construcción (desde)', 0, 7),
-(63, 'anio_construccion_hasta', 'Año construcción (hasta)', 0, 7),
-(64, 'nombre_certificacion_energetica', 'Certificación energética mínima', 0, 7),
-(65, 'nombre_estado', 'Estado', 0, 7),
-(66, 'nombre_agente_asignado', 'Nombre completo del agente asignado', 0, 7),
-(67, 'observaciones', 'Observaciones', 0, 7);
+INSERT INTO `marcas_documentacion` (`id`, `referencia`, `descripcion`, `categoria_inf_id`) VALUES
+(1, 'f_actual_numero', 'Fecha actual en formato numérico', 1),
+(2, 'f_actual_texto', 'Fecha actual en formato texto', 1),
+(3, 'nombre', 'Nombre del cliente', 2),
+(4, 'apellidos', 'Apellidos del cliente', 2),
+(5, 'direccion', 'Dirección del cliente', 2),
+(6, 'municipio', 'Nombre del municipio del cliente', 2),
+(7, 'nombre', 'Nombre del agente', 4),
+(8, 'apellidos', 'Apellidos del agente', 4);
 
 -- --------------------------------------------------------
 
@@ -1456,7 +1302,6 @@ CREATE TABLE IF NOT EXISTS `opciones_extras_idiomas` (
   `opcion_extra_id` int(11) unsigned NOT NULL,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_marcas_documentacion` (`idioma_id`,`opcion_extra_id`),
   KEY `FK_opciones_extras_idiomas_idioma_id` (`idioma_id`),
   KEY `FK_opciones_extras_idiomas_opcion_extra_id` (`opcion_extra_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
@@ -1762,21 +1607,17 @@ CREATE TABLE IF NOT EXISTS `plantillas_documentacion` (
   `html` text NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_plantillas_nombre` (`nombre`),
   KEY `FK_plantillas_documentacion_tipo_plantilla_id` (`tipo_plantilla_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Volcado de datos para la tabla `plantillas_documentacion`
 --
 
 INSERT INTO `plantillas_documentacion` (`id`, `nombre`, `tipo_plantilla_id`, `html`, `descripcion`) VALUES
-(2, 'Test de Cartel', 3, '<p>\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\n<ul>\n	<li>\n		<small class="col-sm-4">%general.f_actual_numero%: Fecha actual en formato num&eacute;rico</small></li>\n	<li>\n		<small class="col-sm-4">%general.f_actual_texto%: Fecha actual en formato texto</small></li>\n</ul>\n<div>\n	<small class="col-sm-4"><strong><small class="col-sm-4"><strong>Datos Inmuebles:</strong> </small></strong></small>\n	<ul>\n		<li>\n			<small class="col-sm-4">%inmuebles.referencia%: Referencia del inmueble</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.fecha_alta%: Fecha de alta del inmueble</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.nombre_tipo%: Tipo del inmueble</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.nombre_provincia%: Nombre de la provincia</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.nombre_poblacion%: Nombre del municipio</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.nombre_zona%: Nombre de la zona del municipio</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.direccion%: Direcci&oacute;n real del inmueble</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.metros%: Metros totales</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.metros_utiles%: Metros &uacute;tiles</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.habitaciones%: N&uacute;mero de habitaciones</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.banios%: N&uacute;mero de ba&ntilde;os</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.precio_compra%: Precio de compra</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.precio_compra_anterior%: Precio de compra anterior</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.precio_alquiler%: Precio alquiler</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.precio_alquiler_anterior%: Precio alquiler anterior</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.nombre_certificacion_energetica%: Certificaci&oacute;n energ&eacute;tica</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.direccion_publica%: Direcci&oacute;n mostrada en la zona p&uacute;blica</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.titulo_publico%: T&iacute;tulo mostrado en la zona p&uacute;blica</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.descripcion_publica%: Descripci&oacute;n extendida mostrada en la zona p&uacute;blica</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.url_seo%: URL SEO</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.descripcion_seo%: Descripci&oacute;n SEO</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.keywords_seo%: Palabras clave para el SEO</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.nombre_estado%: Estado</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.nombre_captador%: Nombre completo del captador</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.observaciones%: Observaciones</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.imagen_portada%: Imagen de la portada p&uacute;blica</small></li>\n		<li>\n			<small class="col-sm-4">%inmuebles.codigo_qr%: C&oacute;digo QR del URL SEO de la zona p&uacute;blica</small></li>\n	</ul>\n</div>\n<div>\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small>\n	<ul>\n		<li>\n			<small class="col-sm-4">%agentes.nombre%: Nombre del agente</small></li>\n		<li>\n			<small class="col-sm-4">%agentes.apellidos%: Apellidos del agente</small></li>\n	</ul>\n</div>\n<div>\n	<img alt="" src="%base_url%uploads/general/1_entrada.jpg" style="width: 259px; height: 194px;" /></div>\n', 'Ejemplo con todos los campos posibles a aplicar en un cartel'),
+(2, 'Cartel', 3, '<p>\r\n	<strong>Esto es una maravilla&iexcl;&iexcl;</strong></p>\r\n<ul>\r\n	<li>\r\n		%clientes.nombre</li>\r\n	<li>\r\n		%clientes.apellidos</li>\r\n	<li>\r\n		%clientes.poblacion</li>\r\n</ul>\r\n<div>\r\n	Queisite juan&iexcl;</div>\r\n', 'maravilla'),
 (3, 'Ficha visita', 4, '<p>\n	<strong>Illoooooooooooooooo&iexcl;&iexcl;</strong></p>\n', 'asdasdasd'),
-(4, 'Test de ficha del cliente', 2, '<p>\r\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%general.f_actual_numero%: Fecha actual en formato num&eacute;rico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%general.f_actual_texto%: Fecha actual en formato texto</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Clientes:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.nif%: NIF/NIE/CIF del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.nombre%: Nombre del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.apellidos%: Apellidos del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.fecha_nac%: Fecha de nacimiento</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.nombre_pais%: Nombre del pa&iacute;s donde reside</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.nombre_provincia%: Nombre de la provincia</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.nombre_poblacion%: Nombre del municipio</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.direccion%: Domicilio donde reside el cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.correo%: Correo electr&oacute;nico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.telefonos%: Tel&eacute;fonos de contacto</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.nombre_estado%: Estado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.nombre_agente_asignado%: Nombre del agente asignado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.observaciones%: Observaciones</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%agentes.nombre%: Nombre del agente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%agentes.apellidos%: Apellidos del agente</small></li>\r\n</ul>\r\n', 'Ejemplo con todos los campos posibles a aplicar en una ficha de un cliente'),
-(6, 'Cartel Ejemplo', 3, '<p>\r\n	<span style="float: left;">%carteles.codigo_qr%</span><img alt="" src="%base_url%uploads/logo.jpg" style="width: 200px; height: 60px; float: right;" /></p>\r\n<p style="text-align: center;">\r\n	&nbsp;</p>\r\n<p style="text-align: center;">\r\n	&nbsp;</p>\r\n<p style="text-align: center;">\r\n	<strong><span style="font-size:20px;"><span style="font-family: lucida sans unicode,lucida grande,sans-serif;">%inmuebles.titulo_publico%</span></span></strong></p>\r\n<div>\r\n	<p style="text-align: center;">\r\n		<span style="font-size:16px;">%inmuebles.habitaciones% habitaciones, %inmuebles.banios% ba&ntilde;os, %inmuebles.precio_compra% &euro;</span></p>\r\n	<p style="text-align: center;">\r\n		%inmuebles.imagen_portada%</p>\r\n	<p style="text-align: justify;">\r\n		<span style="font-size:16px;">%inmuebles.descripcion_publica%</span></p>\r\n</div>\r\n<div>\r\n	&nbsp;</div>\r\n', 'Cartel con portada y pocos datos'),
-(7, 'Test de ficha de inmueble', 1, '<p>\r\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%general.f_actual_numero%: Fecha actual en formato num&eacute;rico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%general.f_actual_texto%: Fecha actual en formato texto</small></li>\r\n</ul>\r\n<div>\r\n	<small class="col-sm-4"><small class="col-sm-4"><strong>Datos Inmuebles:</strong> </small></small>\r\n	<ul>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.referencia%: Referencia del inmueble</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.fecha_alta%: Fecha de alta del inmueble</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.nombre_tipo%: Tipo del inmueble</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.nombre_provincia%: Nombre de la provincia</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.nombre_poblacion%: Nombre del municipio</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.nombre_zona%: Nombre de la zona del municipio</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.direccion%: Direcci&oacute;n real del inmueble</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.metros%: Metros totales</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.metros_utiles%: Metros &uacute;tiles</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.habitaciones%: N&uacute;mero de habitaciones</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.banios%: N&uacute;mero de ba&ntilde;os</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.precio_compra%: Precio de compra</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.precio_compra_anterior%: Precio de compra anterior</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.precio_alquiler%: Precio alquiler</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.precio_alquiler_anterior%: Precio alquiler anterior</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.nombre_certificacion_energetica%: Certificaci&oacute;n energ&eacute;tica</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.direccion_publica%: Direcci&oacute;n mostrada en la zona p&uacute;blica</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.titulo_publico%: T&iacute;tulo mostrado en la zona p&uacute;blica</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.descripcion_publica%: Descripci&oacute;n extendida mostrada en la zona p&uacute;blica</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.url_seo%: URL SEO</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.descripcion_seo%: Descripci&oacute;n SEO</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.keywords_seo%: Palabras clave para el SEO</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.nombre_estado%: Estado</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.nombre_captador%: Nombre completo del captador</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%inmuebles.observaciones%: Observaciones</small></li>\r\n	</ul>\r\n	<div>\r\n		<small class="col-sm-4">%inmuebles.imagen_portada%</small></div>\r\n	<div>\r\n		&nbsp;</div>\r\n</div>\r\n<div>\r\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small>\r\n	<ul>\r\n		<li>\r\n			<small class="col-sm-4">%agentes.nombre%: Nombre del agente</small></li>\r\n		<li>\r\n			<small class="col-sm-4">%agentes.apellidos%: Apellidos del agente</small></li>\r\n	</ul>\r\n</div>\r\n<div>\r\n	&nbsp;</div>\r\n', 'Ejemplo con todos los campos posibles a aplicar en una ficha de un inmueble'),
-(8, 'Test de ficha de demanda', 5, '<p>\r\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%general.f_actual_numero%: Fecha actual en formato num&eacute;rico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%general.f_actual_texto%: Fecha actual en formato texto</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%agentes.nombre%: Nombre del agente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%agentes.apellidos%: Apellidos del agente</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Demandas:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.referencia%: Referencia de la demanda</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.fecha_alta%: Fecha de alta de la demanda</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.oferta%: Oferta demandada</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.tipo%: Tipo de demanda</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.nombre_cliente%: Nombre completo del cliente demandante</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.tipos_inmuebles%: Listado de tipos de inmuebles separados por comas</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.nombre_provincia%: Nombre de la provincia</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.nombre_poblacion%: Nombre del municipio</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.zonas%: Listado de zonas separados por comas</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.metros_desde%: Metros totales (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.metros_hasta%: Metros totales (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.habitaciones_desde%: N&uacute;mero de habitaciones (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.habitaciones_hasta%: N&uacute;mero de habitaciones (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.banios_desde%: N&uacute;mero de ba&ntilde;os (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.banios_hasta%: N&uacute;mero de ba&ntilde;os (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.precio_desde%: Precio (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.precio_hasta%: Precio (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.anio_construccion_desde%: A&ntilde;o construcci&oacute;n (desde)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.anio_construccion_hasta%: A&ntilde;o construcci&oacute;n (hasta)</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.nombre_certificacion_energetica%: Certificaci&oacute;n energ&eacute;tica m&iacute;nima</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.nombre_estado%: Estado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.nombre_agente_asignado%: Nombre completo del agente asignado</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%demandas.observaciones%: Observaciones</small></li>\r\n</ul>\r\n', 'Ejemplo con todos los campos posibles a aplicar en una ficha de demanda');
+(4, 'Ficha del cliente', 2, '<p>\r\n	<small class="col-sm-4"><strong>Datos General:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%general.f_actual_numero%: Fecha actual en formato num&eacute;rico</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%general.f_actual_texto%: Fecha actual en formato texto</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Clientes:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.nombre%: Nombre del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.apellidos%: Apellidos del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.direccion%: Direcci&oacute;n del cliente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%clientes.municipio%: Nombre del municipio del cliente</small></li>\r\n</ul>\r\n<p>\r\n	<small class="col-sm-4"><strong>Datos Agentes Inmobiliarios:</strong> </small></p>\r\n<ul>\r\n	<li>\r\n		<small class="col-sm-4">%agentes.nombre%: Nombre del agente</small></li>\r\n	<li>\r\n		<small class="col-sm-4">%agentes.apellidos%: Apellidos del agente</small></li>\r\n</ul>\r\n<div>\r\n	&nbsp;</div>\r\n<div>\r\n	<small class="col-sm-4">Firma final</small></div>\r\n', '---');
 
 -- --------------------------------------------------------
 
@@ -1794,7 +1635,6 @@ CREATE TABLE IF NOT EXISTS `poblaciones` (
   `activa` int(1) NOT NULL DEFAULT '0',
   `defecto` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_poblaciones` (`poblacion`,`provincia_id`),
   KEY `FK_poblaciones_provincia_id` (`provincia_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8125 ;
 
@@ -10165,8 +10005,7 @@ DROP TABLE IF EXISTS `tipos_certificacion_energetica`;
 CREATE TABLE IF NOT EXISTS `tipos_certificacion_energetica` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_tipos_cert_energetica` (`nombre`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
@@ -10179,10 +10018,10 @@ INSERT INTO `tipos_certificacion_energetica` (`id`, `nombre`) VALUES
 (3, 'C'),
 (4, 'D'),
 (5, 'E'),
-(9, 'En trámite'),
-(8, 'Exento'),
 (6, 'F'),
-(7, 'G');
+(7, 'G'),
+(8, 'Exento'),
+(9, 'En trámite');
 
 -- --------------------------------------------------------
 
@@ -10196,8 +10035,7 @@ CREATE TABLE IF NOT EXISTS `tipos_ficheros` (
   `nombre` varchar(150) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
   `ambito_id` tinyint(1) NOT NULL COMMENT '1 para clientes, 2 para inmuebles y 3 para demandas',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_tipos_ficheros` (`nombre`,`ambito_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
@@ -10251,7 +10089,6 @@ CREATE TABLE IF NOT EXISTS `tipos_inmueble_idiomas` (
   `tipo_inmueble_id` int(11) unsigned NOT NULL,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_tipos_inmueble_idiomas` (`idioma_id`,`tipo_inmueble_id`),
   KEY `FK_tipos_inmueble_idiomas_idioma_id` (`idioma_id`),
   KEY `FK_tipos_inmueble_idiomas_tipo_inmueble_id` (`tipo_inmueble_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
@@ -10287,9 +10124,8 @@ CREATE TABLE IF NOT EXISTS `tipos_plantilla_documentacion` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_tipos_plantillas_doc` (`nombre`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Volcado de datos para la tabla `tipos_plantilla_documentacion`
@@ -10299,8 +10135,7 @@ INSERT INTO `tipos_plantilla_documentacion` (`id`, `nombre`, `descripcion`) VALU
 (1, 'Ficha del Inmueble', ''),
 (2, 'Ficha del Cliente', ''),
 (3, 'Cartel Publicitario', ''),
-(4, 'Ficha visita', ''),
-(5, 'Ficha demanda', '');
+(4, 'Ficha visita', '');
 
 -- --------------------------------------------------------
 
@@ -10314,32 +10149,28 @@ CREATE TABLE IF NOT EXISTS `tipos_plantilla_documentacion_categorias_asignadas` 
   `tipo_plantilla_id` int(11) unsigned NOT NULL,
   `categoria_inf_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_tip_pla_doc_cats_asig` (`tipo_plantilla_id`,`categoria_inf_id`),
   KEY `FK_tip_pla_doc_cats_asig_tipo_plantilla_id` (`tipo_plantilla_id`),
   KEY `FK_tip_pla_doc_cats_asig_categoria_inf_id` (`categoria_inf_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- Volcado de datos para la tabla `tipos_plantilla_documentacion_categorias_asignadas`
 --
 
 INSERT INTO `tipos_plantilla_documentacion_categorias_asignadas` (`id`, `tipo_plantilla_id`, `categoria_inf_id`) VALUES
-(4, 1, 1),
-(5, 1, 3),
-(6, 1, 4),
 (1, 2, 1),
 (2, 2, 2),
 (3, 2, 4),
+(4, 1, 1),
+(5, 1, 3),
+(6, 1, 4),
 (7, 3, 1),
+(8, 3, 2),
 (9, 3, 3),
 (10, 3, 4),
-(14, 3, 6),
 (11, 4, 1),
 (12, 4, 3),
-(13, 4, 4),
-(15, 5, 1),
-(16, 5, 4),
-(17, 5, 7);
+(13, 4, 4);
 
 -- --------------------------------------------------------
 
@@ -10351,8 +10182,7 @@ DROP TABLE IF EXISTS `tipo_bloque`;
 CREATE TABLE IF NOT EXISTS `tipo_bloque` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_tipo_bloque` (`nombre`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
@@ -10360,9 +10190,9 @@ CREATE TABLE IF NOT EXISTS `tipo_bloque` (
 --
 
 INSERT INTO `tipo_bloque` (`id`, `nombre`) VALUES
+(1, 'Texto'),
 (2, 'Carrusel'),
-(4, 'Iframe'),
-(1, 'Texto');
+(4, 'Iframe');
 
 -- --------------------------------------------------------
 
@@ -10389,20 +10219,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_name` varchar(50) DEFAULT NULL,
   `company` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `id_idioma` int(11) unsigned NOT NULL DEFAULT '1',
+  `id_idioma` int(11) unsigned NOT NULL DEFAULT '64',
   PRIMARY KEY (`id`),
   KEY `FK_users_id_idioma` (`id_idioma`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `id_idioma`) VALUES
-(1, '127.0.0.1', 'administrator', '$2y$08$ywqD0PxPxAjoDYdu48rV.uPRhLbx9E/jqZgo0UrShuCg00H200H.6', '', 'admin@admin.com', '', 'Zgv-Ds800Ipv5dUJ9W5voeb24faf75ba7d384864', 1497439234, '5WVn2K8m0Nh7QSejVqpsnu', 1268889823, 1502265124, 1, 'Admin', 'istrator', 'ADMIN', '0', 1),
-(2, '::1', '', '$2y$08$MvjHVNEhMHpf2qPcd43DI.iPf8VtwcyR3r339oRSrdl08F/Ca7qO2', NULL, 'angel.berasuain@gmail.com', NULL, 'IIMgdXv.YuLD-ywCP-18z.6fe2e75bc1bddb2698', 1497439970, 'HS/qG5yuVeJpNJVndL6dCO', 1439033987, 1502349655, 1, 'Ángel Luis ', 'Berasuain Ruiz', 'Casa', '956787897', 1),
-(3, '::1', '', '$2y$08$R1fViL1zYZ/ADEiI8Jowp.opD.M/QBEU9D9NxZCdsL.gkR8p0qv9S', NULL, 'klaimir@hotmail.com', NULL, '57gN.HY-.wzon54HAjqBHO184121eb879b1da196', 1494440437, NULL, 1439314022, NULL, 1, 'Nombre', 'Empleado', NULL, '956080808', 1),
-(4, '127.0.0.1', '', '$2y$08$BCorWRqb7vPex1TbII5b.uZPFHVWVdNlbH1GviL8JOhwfnN4GbwYi', NULL, 'mberasuain@gmail.com', NULL, NULL, NULL, NULL, 1502186002, NULL, 1, 'María Eugenía', 'Berasuain Ruiz', NULL, '956010203', 1);
+(1, '127.0.0.1', 'administrator', '$2y$08$AO52xJVfzoV6Rhjftk4AIuLXLDu7uz8yypvKrMAhSkGBbzCl09AAC', '', 'admin@admin.com', '', 'Zgv-Ds800Ipv5dUJ9W5voeb24faf75ba7d384864', 1497439234, '5WVn2K8m0Nh7QSejVqpsnu', 1268889823, 1497459345, 1, 'Admin', 'istrator', 'ADMIN', '0', 1),
+(2, '::1', '', '$2y$08$MvjHVNEhMHpf2qPcd43DI.iPf8VtwcyR3r339oRSrdl08F/Ca7qO2', NULL, 'angel.berasuain@gmail.com', NULL, 'IIMgdXv.YuLD-ywCP-18z.6fe2e75bc1bddb2698', 1497439970, 'uFnVcuta7/zWo0//7oipOe', 1439033987, 1498548910, 1, 'Ángel Luis ', 'Berasuain Ruiz', 'Casa', '956787897', 1),
+(3, '::1', '', '$2y$08$R1fViL1zYZ/ADEiI8Jowp.opD.M/QBEU9D9NxZCdsL.gkR8p0qv9S', NULL, 'klaimir@hotmail.com', NULL, '57gN.HY-.wzon54HAjqBHO184121eb879b1da196', 1494440437, NULL, 1439314022, NULL, 1, 'Nombre', 'Empleado1', NULL, '956080808', 1);
 
 -- --------------------------------------------------------
 
@@ -10419,37 +10248,19 @@ CREATE TABLE IF NOT EXISTS `users_groups` (
   UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
   KEY `fk_users_groups_users1_idx` (`user_id`),
   KEY `fk_users_groups_groups1_idx` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Volcado de datos para la tabla `users_groups`
 --
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
-(22, 1, 1),
-(23, 1, 2),
-(25, 2, 1),
-(26, 2, 2),
-(15, 3, 2),
-(14, 4, 2);
+(8, 1, 1),
+(9, 2, 1),
+(7, 2, 2),
+(11, 3, 1),
+(12, 3, 2);
 
--- --------------------------------------------------------
-
---
--- Estructura Stand-in para la vista `v_backups`
---
-DROP VIEW IF EXISTS `v_backups`;
-CREATE TABLE IF NOT EXISTS `v_backups` (
-`backup_id` int(11) unsigned
-,`backup_name` varchar(255)
-,`backup_location` varchar(255)
-,`backup_type` int(1)
-,`created_date` timestamp
-,`admin_id` int(11) unsigned
-,`tipo_backup` varchar(13)
-,`fecha_hora` varchar(24)
-,`nombre_admin` varchar(102)
-);
 -- --------------------------------------------------------
 
 --
@@ -10470,7 +10281,12 @@ CREATE TABLE IF NOT EXISTS `v_clientes` (
 ,`fecha_alta` datetime
 ,`fecha_actualizacion` datetime
 ,`correo` varchar(250)
+,`busca_vender` tinyint(4)
+,`busca_comprar` tinyint(4)
+,`busca_alquilar` tinyint(4)
+,`busca_alquiler` tinyint(4)
 ,`estado_id` int(11) unsigned
+,`estado_civil` varchar(50)
 ,`agente_asignado_id` int(11) unsigned
 ,`nombre_poblacion` varchar(100)
 ,`provincia_id` int(11) unsigned
@@ -10492,20 +10308,6 @@ CREATE TABLE IF NOT EXISTS `v_clientes_ficheros` (
 ,`fichero` varchar(255)
 ,`tipo_fichero_id` int(11) unsigned
 ,`nombre_tipo` varchar(150)
-);
--- --------------------------------------------------------
-
---
--- Estructura Stand-in para la vista `v_clientes_inmuebles`
---
-DROP VIEW IF EXISTS `v_clientes_inmuebles`;
-CREATE TABLE IF NOT EXISTS `v_clientes_inmuebles` (
-`id` int(11) unsigned
-,`cliente_id` int(11) unsigned
-,`inmueble_id` int(11) unsigned
-,`precio_compra` int(10) unsigned
-,`precio_alquiler` int(7) unsigned
-,`historico` tinyint(1)
 );
 -- --------------------------------------------------------
 
@@ -10541,7 +10343,6 @@ CREATE TABLE IF NOT EXISTS `v_demandas` (
 ,`nombre_provincia` varchar(255)
 ,`nombre_certificacion_energetica` varchar(10)
 ,`nombre_estado` varchar(50)
-,`historico` tinyint(1)
 ,`nombre_agente_asignado` varchar(102)
 ,`nombre_cliente` varchar(252)
 );
@@ -10598,8 +10399,15 @@ CREATE TABLE IF NOT EXISTS `v_inmuebles` (
 ,`direccion_publica` varchar(100)
 ,`publicado` tinyint(1)
 ,`estado_id` int(11) unsigned
+,`obra_nueva` int(1)
 ,`certificacion_energetica_id` int(11) unsigned
+,`cuota_comunidad` double
+,`forma_pago` varchar(200)
+,`anejos` text
+,`cargas_vivienda` text
+,`descripcion_vivienda` text
 ,`descripcion_edificio` text
+,`antiguedad_edificio` varchar(200)
 ,`captador_id` int(11) unsigned
 ,`fecha_alta` date
 ,`fecha_actualizacion` datetime
@@ -10614,9 +10422,7 @@ CREATE TABLE IF NOT EXISTS `v_inmuebles` (
 ,`idioma_id` int(11) unsigned
 ,`nombre_certificacion_energetica` varchar(10)
 ,`nombre_estado` varchar(50)
-,`nombre_captador` varchar(102)
-,`cartel_id` int(11) unsigned
-,`cartel_impreso` tinyint(1)
+,`nombre_captador` varchar(101)
 );
 -- --------------------------------------------------------
 
@@ -10632,9 +10438,7 @@ CREATE TABLE IF NOT EXISTS `v_inmuebles_demandas` (
 ,`habitaciones` int(2)
 ,`banios` int(2)
 ,`precio_compra` int(10) unsigned
-,`precio_compra_anterior` int(10) unsigned
 ,`precio_alquiler` int(7) unsigned
-,`precio_alquiler_anterior` int(10) unsigned
 ,`poblacion_id` int(11) unsigned
 ,`zona_id` int(11) unsigned
 ,`tipo_id` int(11) unsigned
@@ -10643,8 +10447,15 @@ CREATE TABLE IF NOT EXISTS `v_inmuebles_demandas` (
 ,`direccion_publica` varchar(100)
 ,`publicado` tinyint(1)
 ,`estado_id` int(11) unsigned
+,`obra_nueva` int(1)
 ,`certificacion_energetica_id` int(11) unsigned
+,`cuota_comunidad` double
+,`forma_pago` varchar(200)
+,`anejos` text
+,`cargas_vivienda` text
+,`descripcion_vivienda` text
 ,`descripcion_edificio` text
+,`antiguedad_edificio` varchar(200)
 ,`captador_id` int(11) unsigned
 ,`fecha_alta` date
 ,`fecha_actualizacion` datetime
@@ -10659,9 +10470,7 @@ CREATE TABLE IF NOT EXISTS `v_inmuebles_demandas` (
 ,`idioma_id` int(11) unsigned
 ,`nombre_certificacion_energetica` varchar(10)
 ,`nombre_estado` varchar(50)
-,`nombre_captador` varchar(102)
-,`cartel_id` int(11) unsigned
-,`cartel_impreso` tinyint(1)
+,`nombre_captador` varchar(101)
 ,`cliente_id` int(11) unsigned
 ,`agente_asignado_id` int(11) unsigned
 ,`demanda_id` int(11) unsigned
@@ -10711,20 +10520,11 @@ CREATE TABLE IF NOT EXISTS `v_tipos_ficheros` (
 -- --------------------------------------------------------
 
 --
--- Estructura para la vista `v_backups`
---
-DROP TABLE IF EXISTS `v_backups`;
-
-CREATE OR REPLACE  VIEW `v_backups` AS select `backup`.`backup_id` AS `backup_id`,`backup`.`backup_name` AS `backup_name`,`backup`.`backup_location` AS `backup_location`,`backup`.`backup_type` AS `backup_type`,`backup`.`created_date` AS `created_date`,`backup`.`admin_id` AS `admin_id`,(case `backup`.`backup_type` when 1 then 'Base de datos' when 2 then 'Ficheros' when 3 then 'Completa' end) AS `tipo_backup`,date_format(`backup`.`created_date`,'%d/%m/%Y %H:%i:%s') AS `fecha_hora`,concat_ws(', ',`users`.`last_name`,`users`.`first_name`) AS `nombre_admin` from (`backup` join `users` on((`backup`.`admin_id` = `users`.`id`)));
-
--- --------------------------------------------------------
-
---
 -- Estructura para la vista `v_clientes`
 --
 DROP TABLE IF EXISTS `v_clientes`;
 
-CREATE OR REPLACE  VIEW `v_clientes` AS select `clientes`.`id` AS `id`,`clientes`.`nombre` AS `nombre`,`clientes`.`apellidos` AS `apellidos`,`clientes`.`fecha_nac` AS `fecha_nac`,`clientes`.`direccion` AS `direccion`,`clientes`.`pais_id` AS `pais_id`,`clientes`.`poblacion_id` AS `poblacion_id`,`clientes`.`telefonos` AS `telefonos`,`clientes`.`nif` AS `nif`,`clientes`.`observaciones` AS `observaciones`,`clientes`.`fecha_alta` AS `fecha_alta`,`clientes`.`fecha_actualizacion` AS `fecha_actualizacion`,`clientes`.`correo` AS `correo`,`clientes`.`estado_id` AS `estado_id`,`clientes`.`agente_asignado_id` AS `agente_asignado_id`,`poblaciones`.`poblacion` AS `nombre_poblacion`,`poblaciones`.`provincia_id` AS `provincia_id`,`provincias`.`provincia` AS `nombre_provincia`,`paises`.`nombre` AS `nombre_pais`,`estados`.`nombre` AS `nombre_estado`,concat_ws(',',`users`.`last_name`,`users`.`first_name`) AS `nombre_agente_asignado` from (((((`clientes` join `estados` on((`clientes`.`estado_id` = `estados`.`id`))) left join `poblaciones` on((`clientes`.`poblacion_id` = `poblaciones`.`id`))) left join `provincias` on((`poblaciones`.`provincia_id` = `provincias`.`id`))) join `paises` on((`clientes`.`pais_id` = `paises`.`id`))) left join `users` on((`clientes`.`agente_asignado_id` = `users`.`id`)));
+CREATE OR REPLACE VIEW `v_clientes` AS select `clientes`.`id` AS `id`,`clientes`.`nombre` AS `nombre`,`clientes`.`apellidos` AS `apellidos`,`clientes`.`fecha_nac` AS `fecha_nac`,`clientes`.`direccion` AS `direccion`,`clientes`.`pais_id` AS `pais_id`,`clientes`.`poblacion_id` AS `poblacion_id`,`clientes`.`telefonos` AS `telefonos`,`clientes`.`nif` AS `nif`,`clientes`.`observaciones` AS `observaciones`,`clientes`.`fecha_alta` AS `fecha_alta`,`clientes`.`fecha_actualizacion` AS `fecha_actualizacion`,`clientes`.`correo` AS `correo`,`clientes`.`busca_vender` AS `busca_vender`,`clientes`.`busca_comprar` AS `busca_comprar`,`clientes`.`busca_alquilar` AS `busca_alquilar`,`clientes`.`busca_alquiler` AS `busca_alquiler`,`clientes`.`estado_id` AS `estado_id`,`clientes`.`estado_civil` AS `estado_civil`,`clientes`.`agente_asignado_id` AS `agente_asignado_id`,`poblaciones`.`poblacion` AS `nombre_poblacion`,`poblaciones`.`provincia_id` AS `provincia_id`,`provincias`.`provincia` AS `nombre_provincia`,`paises`.`nombre` AS `nombre_pais`,`estados`.`nombre` AS `nombre_estado`,concat_ws(',',`users`.`last_name`,`users`.`first_name`) AS `nombre_agente_asignado` from (((((`clientes` join `estados` on((`clientes`.`estado_id` = `estados`.`id`))) left join `poblaciones` on((`clientes`.`poblacion_id` = `poblaciones`.`id`))) left join `provincias` on((`poblaciones`.`provincia_id` = `provincias`.`id`))) join `paises` on((`clientes`.`pais_id` = `paises`.`id`))) left join `users` on((`clientes`.`agente_asignado_id` = `users`.`id`)));
 
 -- --------------------------------------------------------
 
@@ -10733,16 +10533,7 @@ CREATE OR REPLACE  VIEW `v_clientes` AS select `clientes`.`id` AS `id`,`clientes
 --
 DROP TABLE IF EXISTS `v_clientes_ficheros`;
 
-CREATE OR REPLACE  VIEW `v_clientes_ficheros` AS select `clientes_ficheros`.`id` AS `id`,`clientes_ficheros`.`cliente_id` AS `cliente_id`,`clientes_ficheros`.`texto_fichero` AS `texto_fichero`,`clientes_ficheros`.`fichero` AS `fichero`,`clientes_ficheros`.`tipo_fichero_id` AS `tipo_fichero_id`,`tipos_ficheros`.`nombre` AS `nombre_tipo` from (`clientes_ficheros` join `tipos_ficheros` on((`clientes_ficheros`.`tipo_fichero_id` = `tipos_ficheros`.`id`)));
-
--- --------------------------------------------------------
-
---
--- Estructura para la vista `v_clientes_inmuebles`
---
-DROP TABLE IF EXISTS `v_clientes_inmuebles`;
-
-CREATE OR REPLACE  VIEW `v_clientes_inmuebles` AS select `clientes_inmuebles`.`id` AS `id`,`clientes_inmuebles`.`cliente_id` AS `cliente_id`,`clientes_inmuebles`.`inmueble_id` AS `inmueble_id`,`inmuebles`.`precio_compra` AS `precio_compra`,`inmuebles`.`precio_alquiler` AS `precio_alquiler`,`estados`.`historico` AS `historico` from ((`clientes_inmuebles` join `inmuebles` on((`clientes_inmuebles`.`inmueble_id` = `inmuebles`.`id`))) join `estados` on((`inmuebles`.`estado_id` = `estados`.`id`)));
+CREATE OR REPLACE VIEW `v_clientes_ficheros` AS select `clientes_ficheros`.`id` AS `id`,`clientes_ficheros`.`cliente_id` AS `cliente_id`,`clientes_ficheros`.`texto_fichero` AS `texto_fichero`,`clientes_ficheros`.`fichero` AS `fichero`,`clientes_ficheros`.`tipo_fichero_id` AS `tipo_fichero_id`,`tipos_ficheros`.`nombre` AS `nombre_tipo` from (`clientes_ficheros` join `tipos_ficheros` on((`clientes_ficheros`.`tipo_fichero_id` = `tipos_ficheros`.`id`)));
 
 -- --------------------------------------------------------
 
@@ -10751,7 +10542,7 @@ CREATE OR REPLACE  VIEW `v_clientes_inmuebles` AS select `clientes_inmuebles`.`i
 --
 DROP TABLE IF EXISTS `v_demandas`;
 
-CREATE OR REPLACE  VIEW `v_demandas` AS select `demandas`.`id` AS `id`,`demandas`.`referencia` AS `referencia`,`demandas`.`metros_desde` AS `metros_desde`,`demandas`.`metros_hasta` AS `metros_hasta`,`demandas`.`habitaciones_desde` AS `habitaciones_desde`,`demandas`.`habitaciones_hasta` AS `habitaciones_hasta`,`demandas`.`banios_desde` AS `banios_desde`,`demandas`.`banios_hasta` AS `banios_hasta`,`demandas`.`precio_desde` AS `precio_desde`,`demandas`.`precio_hasta` AS `precio_hasta`,`demandas`.`provincia_id` AS `provincia_id`,`demandas`.`poblacion_id` AS `poblacion_id`,`demandas`.`observaciones` AS `observaciones`,`demandas`.`estado_id` AS `estado_id`,`demandas`.`certificacion_energetica_id` AS `certificacion_energetica_id`,`demandas`.`anio_construccion_desde` AS `anio_construccion_desde`,`demandas`.`anio_construccion_hasta` AS `anio_construccion_hasta`,`demandas`.`agente_asignado_id` AS `agente_asignado_id`,`demandas`.`oferta_id` AS `oferta_id`,`demandas`.`tipo_demanda_id` AS `tipo_demanda_id`,`demandas`.`cliente_id` AS `cliente_id`,`demandas`.`fecha_alta` AS `fecha_alta`,`demandas`.`fecha_actualizacion` AS `fecha_actualizacion`,`poblaciones`.`poblacion` AS `nombre_poblacion`,`provincias`.`provincia` AS `nombre_provincia`,`tipos_certificacion_energetica`.`nombre` AS `nombre_certificacion_energetica`,`estados`.`nombre` AS `nombre_estado`,`estados`.`historico` AS `historico`,concat_ws(', ',`users`.`last_name`,`users`.`first_name`) AS `nombre_agente_asignado`,concat_ws(', ',`clientes`.`apellidos`,`clientes`.`nombre`) AS `nombre_cliente` from ((((((`demandas` join `estados` on((`demandas`.`estado_id` = `estados`.`id`))) left join `poblaciones` on((`demandas`.`poblacion_id` = `poblaciones`.`id`))) left join `provincias` on((`demandas`.`provincia_id` = `provincias`.`id`))) join `clientes` on((`demandas`.`cliente_id` = `clientes`.`id`))) left join `tipos_certificacion_energetica` on((`demandas`.`certificacion_energetica_id` = `tipos_certificacion_energetica`.`id`))) left join `users` on((`demandas`.`agente_asignado_id` = `users`.`id`)));
+CREATE OR REPLACE VIEW `v_demandas` AS select `demandas`.`id` AS `id`,`demandas`.`referencia` AS `referencia`,`demandas`.`metros_desde` AS `metros_desde`,`demandas`.`metros_hasta` AS `metros_hasta`,`demandas`.`habitaciones_desde` AS `habitaciones_desde`,`demandas`.`habitaciones_hasta` AS `habitaciones_hasta`,`demandas`.`banios_desde` AS `banios_desde`,`demandas`.`banios_hasta` AS `banios_hasta`,`demandas`.`precio_desde` AS `precio_desde`,`demandas`.`precio_hasta` AS `precio_hasta`,`demandas`.`provincia_id` AS `provincia_id`,`demandas`.`poblacion_id` AS `poblacion_id`,`demandas`.`observaciones` AS `observaciones`,`demandas`.`estado_id` AS `estado_id`,`demandas`.`certificacion_energetica_id` AS `certificacion_energetica_id`,`demandas`.`anio_construccion_desde` AS `anio_construccion_desde`,`demandas`.`anio_construccion_hasta` AS `anio_construccion_hasta`,`demandas`.`agente_asignado_id` AS `agente_asignado_id`,`demandas`.`oferta_id` AS `oferta_id`,`demandas`.`tipo_demanda_id` AS `tipo_demanda_id`,`demandas`.`cliente_id` AS `cliente_id`,`demandas`.`fecha_alta` AS `fecha_alta`,`demandas`.`fecha_actualizacion` AS `fecha_actualizacion`,`poblaciones`.`poblacion` AS `nombre_poblacion`,`provincias`.`provincia` AS `nombre_provincia`,`tipos_certificacion_energetica`.`nombre` AS `nombre_certificacion_energetica`,`estados`.`nombre` AS `nombre_estado`,concat_ws(', ',`users`.`last_name`,`users`.`first_name`) AS `nombre_agente_asignado`,concat_ws(', ',`clientes`.`apellidos`,`clientes`.`nombre`) AS `nombre_cliente` from ((((((`demandas` join `estados` on((`demandas`.`estado_id` = `estados`.`id`))) left join `poblaciones` on((`demandas`.`poblacion_id` = `poblaciones`.`id`))) left join `provincias` on((`demandas`.`provincia_id` = `provincias`.`id`))) join `clientes` on((`demandas`.`cliente_id` = `clientes`.`id`))) left join `tipos_certificacion_energetica` on((`demandas`.`certificacion_energetica_id` = `tipos_certificacion_energetica`.`id`))) left join `users` on((`demandas`.`agente_asignado_id` = `users`.`id`)));
 
 -- --------------------------------------------------------
 
@@ -10760,7 +10551,7 @@ CREATE OR REPLACE  VIEW `v_demandas` AS select `demandas`.`id` AS `id`,`demandas
 --
 DROP TABLE IF EXISTS `v_demandas_ficheros`;
 
-CREATE OR REPLACE  VIEW `v_demandas_ficheros` AS select `demandas_ficheros`.`id` AS `id`,`demandas_ficheros`.`demanda_id` AS `demanda_id`,`demandas_ficheros`.`texto_fichero` AS `texto_fichero`,`demandas_ficheros`.`fichero` AS `fichero`,`demandas_ficheros`.`tipo_fichero_id` AS `tipo_fichero_id`,`tipos_ficheros`.`nombre` AS `nombre_tipo` from (`demandas_ficheros` join `tipos_ficheros` on((`demandas_ficheros`.`tipo_fichero_id` = `tipos_ficheros`.`id`)));
+CREATE OR REPLACE VIEW `v_demandas_ficheros` AS select `demandas_ficheros`.`id` AS `id`,`demandas_ficheros`.`demanda_id` AS `demanda_id`,`demandas_ficheros`.`texto_fichero` AS `texto_fichero`,`demandas_ficheros`.`fichero` AS `fichero`,`demandas_ficheros`.`tipo_fichero_id` AS `tipo_fichero_id`,`tipos_ficheros`.`nombre` AS `nombre_tipo` from (`demandas_ficheros` join `tipos_ficheros` on((`demandas_ficheros`.`tipo_fichero_id` = `tipos_ficheros`.`id`)));
 
 -- --------------------------------------------------------
 
@@ -10769,7 +10560,7 @@ CREATE OR REPLACE  VIEW `v_demandas_ficheros` AS select `demandas_ficheros`.`id`
 --
 DROP TABLE IF EXISTS `v_estados`;
 
-CREATE OR REPLACE  VIEW `v_estados` AS select `estados`.`id` AS `id`,`estados`.`ambito_id` AS `ambito_id`,`estados`.`nombre` AS `nombre`,`estados`.`descripcion` AS `descripcion`,`estados`.`historico` AS `historico`,(case `estados`.`ambito_id` when 1 then 'Clientes' when 2 then 'Inmuebles' when 3 then 'Demandas' end) AS `nombre_ambito` from `estados`;
+CREATE OR REPLACE VIEW `v_estados` AS select `estados`.`id` AS `id`,`estados`.`ambito_id` AS `ambito_id`,`estados`.`nombre` AS `nombre`,`estados`.`descripcion` AS `descripcion`,`estados`.`historico` AS `historico`,(case `estados`.`ambito_id` when 1 then 'Clientes' when 2 then 'Inmuebles' when 3 then 'Demandas' end) AS `nombre_ambito` from `estados`;
 
 -- --------------------------------------------------------
 
@@ -10778,7 +10569,7 @@ CREATE OR REPLACE  VIEW `v_estados` AS select `estados`.`id` AS `id`,`estados`.`
 --
 DROP TABLE IF EXISTS `v_inmuebles`;
 
-CREATE OR REPLACE  VIEW `v_inmuebles` AS select `inmuebles`.`id` AS `id`,`inmuebles`.`referencia` AS `referencia`,`inmuebles`.`metros` AS `metros`,`inmuebles`.`metros_utiles` AS `metros_utiles`,`inmuebles`.`habitaciones` AS `habitaciones`,`inmuebles`.`banios` AS `banios`,`inmuebles`.`precio_compra` AS `precio_compra`,`inmuebles`.`precio_compra_anterior` AS `precio_compra_anterior`,`inmuebles`.`precio_alquiler` AS `precio_alquiler`,`inmuebles`.`precio_alquiler_anterior` AS `precio_alquiler_anterior`,`inmuebles`.`poblacion_id` AS `poblacion_id`,`inmuebles`.`zona_id` AS `zona_id`,`inmuebles`.`tipo_id` AS `tipo_id`,`inmuebles`.`observaciones` AS `observaciones`,`inmuebles`.`direccion` AS `direccion`,`inmuebles`.`direccion_publica` AS `direccion_publica`,`inmuebles`.`publicado` AS `publicado`,`inmuebles`.`estado_id` AS `estado_id`,`inmuebles`.`certificacion_energetica_id` AS `certificacion_energetica_id`,`inmuebles`.`descripcion_edificio` AS `descripcion_edificio`,`inmuebles`.`captador_id` AS `captador_id`,`inmuebles`.`fecha_alta` AS `fecha_alta`,`inmuebles`.`fecha_actualizacion` AS `fecha_actualizacion`,`inmuebles`.`anio_construccion` AS `anio_construccion`,`inmuebles`.`oportunidad` AS `oportunidad`,`inmuebles`.`destacado` AS `destacado`,`poblaciones`.`poblacion` AS `nombre_poblacion`,`poblaciones`.`provincia_id` AS `provincia_id`,`provincias`.`provincia` AS `nombre_provincia`,`poblaciones_zonas`.`nombre` AS `nombre_zona`,`tipos_inmueble_idiomas`.`nombre` AS `nombre_tipo`,`tipos_inmueble_idiomas`.`idioma_id` AS `idioma_id`,`tipos_certificacion_energetica`.`nombre` AS `nombre_certificacion_energetica`,`estados`.`nombre` AS `nombre_estado`,concat_ws(', ',`users`.`last_name`,`users`.`first_name`) AS `nombre_captador`,`inmuebles_carteles`.`id` AS `cartel_id`,`inmuebles_carteles`.`impreso` AS `cartel_impreso` from (((((((((`inmuebles` join `estados` on((`inmuebles`.`estado_id` = `estados`.`id`))) join `poblaciones` on((`inmuebles`.`poblacion_id` = `poblaciones`.`id`))) join `provincias` on((`poblaciones`.`provincia_id` = `provincias`.`id`))) left join `poblaciones_zonas` on((`inmuebles`.`zona_id` = `poblaciones_zonas`.`id`))) join `tipos_inmueble` on((`inmuebles`.`tipo_id` = `tipos_inmueble`.`id`))) join `tipos_inmueble_idiomas` on((`tipos_inmueble_idiomas`.`tipo_inmueble_id` = `tipos_inmueble`.`id`))) left join `tipos_certificacion_energetica` on((`inmuebles`.`certificacion_energetica_id` = `tipos_certificacion_energetica`.`id`))) left join `users` on((`inmuebles`.`captador_id` = `users`.`id`))) left join `inmuebles_carteles` on((`inmuebles_carteles`.`inmueble_id` = `inmuebles`.`id`)));
+CREATE OR REPLACE VIEW `v_inmuebles` AS select `inmuebles`.`id` AS `id`,`inmuebles`.`referencia` AS `referencia`,`inmuebles`.`metros` AS `metros`,`inmuebles`.`metros_utiles` AS `metros_utiles`,`inmuebles`.`habitaciones` AS `habitaciones`,`inmuebles`.`banios` AS `banios`,`inmuebles`.`precio_compra` AS `precio_compra`,`inmuebles`.`precio_compra_anterior` AS `precio_compra_anterior`,`inmuebles`.`precio_alquiler` AS `precio_alquiler`,`inmuebles`.`precio_alquiler_anterior` AS `precio_alquiler_anterior`,`inmuebles`.`poblacion_id` AS `poblacion_id`,`inmuebles`.`zona_id` AS `zona_id`,`inmuebles`.`tipo_id` AS `tipo_id`,`inmuebles`.`observaciones` AS `observaciones`,`inmuebles`.`direccion` AS `direccion`,`inmuebles`.`direccion_publica` AS `direccion_publica`,`inmuebles`.`publicado` AS `publicado`,`inmuebles`.`estado_id` AS `estado_id`,`inmuebles`.`obra_nueva` AS `obra_nueva`,`inmuebles`.`certificacion_energetica_id` AS `certificacion_energetica_id`,`inmuebles`.`cuota_comunidad` AS `cuota_comunidad`,`inmuebles`.`forma_pago` AS `forma_pago`,`inmuebles`.`anejos` AS `anejos`,`inmuebles`.`cargas_vivienda` AS `cargas_vivienda`,`inmuebles`.`descripcion_vivienda` AS `descripcion_vivienda`,`inmuebles`.`descripcion_edificio` AS `descripcion_edificio`,`inmuebles`.`antiguedad_edificio` AS `antiguedad_edificio`,`inmuebles`.`captador_id` AS `captador_id`,`inmuebles`.`fecha_alta` AS `fecha_alta`,`inmuebles`.`fecha_actualizacion` AS `fecha_actualizacion`,`inmuebles`.`anio_construccion` AS `anio_construccion`,`inmuebles`.`oportunidad` AS `oportunidad`,`inmuebles`.`destacado` AS `destacado`,`poblaciones`.`poblacion` AS `nombre_poblacion`,`poblaciones`.`provincia_id` AS `provincia_id`,`provincias`.`provincia` AS `nombre_provincia`,`poblaciones_zonas`.`nombre` AS `nombre_zona`,`tipos_inmueble_idiomas`.`nombre` AS `nombre_tipo`,`tipos_inmueble_idiomas`.`idioma_id` AS `idioma_id`,`tipos_certificacion_energetica`.`nombre` AS `nombre_certificacion_energetica`,`estados`.`nombre` AS `nombre_estado`,concat_ws(',',`users`.`last_name`,`users`.`first_name`) AS `nombre_captador` from ((((((((`inmuebles` join `estados` on((`inmuebles`.`estado_id` = `estados`.`id`))) join `poblaciones` on((`inmuebles`.`poblacion_id` = `poblaciones`.`id`))) join `provincias` on((`poblaciones`.`provincia_id` = `provincias`.`id`))) left join `poblaciones_zonas` on((`inmuebles`.`zona_id` = `poblaciones_zonas`.`id`))) join `tipos_inmueble` on((`inmuebles`.`tipo_id` = `tipos_inmueble`.`id`))) join `tipos_inmueble_idiomas` on((`tipos_inmueble_idiomas`.`tipo_inmueble_id` = `tipos_inmueble`.`id`))) left join `tipos_certificacion_energetica` on((`inmuebles`.`certificacion_energetica_id` = `tipos_certificacion_energetica`.`id`))) left join `users` on((`inmuebles`.`captador_id` = `users`.`id`)));
 
 -- --------------------------------------------------------
 
@@ -10787,7 +10578,7 @@ CREATE OR REPLACE  VIEW `v_inmuebles` AS select `inmuebles`.`id` AS `id`,`inmueb
 --
 DROP TABLE IF EXISTS `v_inmuebles_demandas`;
 
-CREATE OR REPLACE  VIEW `v_inmuebles_demandas` AS select `v_inmuebles`.`id` AS `id`,`v_inmuebles`.`referencia` AS `referencia`,`v_inmuebles`.`metros` AS `metros`,`v_inmuebles`.`metros_utiles` AS `metros_utiles`,`v_inmuebles`.`habitaciones` AS `habitaciones`,`v_inmuebles`.`banios` AS `banios`,`v_inmuebles`.`precio_compra` AS `precio_compra`,`v_inmuebles`.`precio_compra_anterior` AS `precio_compra_anterior`,`v_inmuebles`.`precio_alquiler` AS `precio_alquiler`,`v_inmuebles`.`precio_alquiler_anterior` AS `precio_alquiler_anterior`,`v_inmuebles`.`poblacion_id` AS `poblacion_id`,`v_inmuebles`.`zona_id` AS `zona_id`,`v_inmuebles`.`tipo_id` AS `tipo_id`,`v_inmuebles`.`observaciones` AS `observaciones`,`v_inmuebles`.`direccion` AS `direccion`,`v_inmuebles`.`direccion_publica` AS `direccion_publica`,`v_inmuebles`.`publicado` AS `publicado`,`v_inmuebles`.`estado_id` AS `estado_id`,`v_inmuebles`.`certificacion_energetica_id` AS `certificacion_energetica_id`,`v_inmuebles`.`descripcion_edificio` AS `descripcion_edificio`,`v_inmuebles`.`captador_id` AS `captador_id`,`v_inmuebles`.`fecha_alta` AS `fecha_alta`,`v_inmuebles`.`fecha_actualizacion` AS `fecha_actualizacion`,`v_inmuebles`.`anio_construccion` AS `anio_construccion`,`v_inmuebles`.`oportunidad` AS `oportunidad`,`v_inmuebles`.`destacado` AS `destacado`,`v_inmuebles`.`nombre_poblacion` AS `nombre_poblacion`,`v_inmuebles`.`provincia_id` AS `provincia_id`,`v_inmuebles`.`nombre_provincia` AS `nombre_provincia`,`v_inmuebles`.`nombre_zona` AS `nombre_zona`,`v_inmuebles`.`nombre_tipo` AS `nombre_tipo`,`v_inmuebles`.`idioma_id` AS `idioma_id`,`v_inmuebles`.`nombre_certificacion_energetica` AS `nombre_certificacion_energetica`,`v_inmuebles`.`nombre_estado` AS `nombre_estado`,`v_inmuebles`.`nombre_captador` AS `nombre_captador`,`v_inmuebles`.`cartel_id` AS `cartel_id`,`v_inmuebles`.`cartel_impreso` AS `cartel_impreso`,`demandas`.`cliente_id` AS `cliente_id`,`demandas`.`agente_asignado_id` AS `agente_asignado_id`,`inmuebles_demandas`.`demanda_id` AS `demanda_id`,`inmuebles_demandas`.`origen_id` AS `origen_id`,`inmuebles_demandas`.`evaluacion_id` AS `evaluacion_id`,`inmuebles_demandas`.`observaciones` AS `observaciones_demanda`,`inmuebles_demandas`.`fecha_asignacion` AS `fecha_asignacion`,date_format(`inmuebles_demandas`.`fecha_asignacion`,'%d/%m/%Y') AS `fecha_asignacion_formateada`,`inmuebles_demandas`.`id` AS `inmueble_demanda_id`,(case `inmuebles_demandas`.`origen_id` when 1 then 'OPENRS' when 2 then 'Agente' end) AS `nombre_origen`,(case `inmuebles_demandas`.`evaluacion_id` when 1 then 'Pendiente evaluar' when 2 then 'Propuesto para visita' when 3 then 'Descartado por agente' when 4 then 'Interesa cliente' when 5 then 'No Interesa cliente' end) AS `nombre_evaluacion`,`fichas_visita_inmuebles_demandas`.`ficha_visita_id` AS `ficha_visita_id`,`fichas_visita`.`visitado` AS `visitado`,date_format(`fichas_visita`.`fecha`,'%d/%m/%Y') AS `fecha_visita_formateada`,`fichas_visita`.`fecha` AS `fecha_visita`,date_format(`fichas_visita_inmuebles_demandas`.`fecha_hora`,'%H:%i') AS `hora_visita_formateada`,date_format(`fichas_visita_inmuebles_demandas`.`fecha_hora`,'%d/%m/%Y %H:%i') AS `fecha_hora_visita_formateada`,`fichas_visita_inmuebles_demandas`.`fecha_hora` AS `fecha_hora_visita` from ((((`v_inmuebles` join `inmuebles_demandas` on((`inmuebles_demandas`.`inmueble_id` = `v_inmuebles`.`id`))) join `demandas` on((`inmuebles_demandas`.`demanda_id` = `demandas`.`id`))) left join `fichas_visita_inmuebles_demandas` on((`fichas_visita_inmuebles_demandas`.`inmueble_demanda_id` = `inmuebles_demandas`.`id`))) left join `fichas_visita` on((`fichas_visita_inmuebles_demandas`.`ficha_visita_id` = `fichas_visita`.`id`)));
+CREATE OR REPLACE VIEW `v_inmuebles_demandas` AS select `v_inmuebles`.`id` AS `id`,`v_inmuebles`.`referencia` AS `referencia`,`v_inmuebles`.`metros` AS `metros`,`v_inmuebles`.`metros_utiles` AS `metros_utiles`,`v_inmuebles`.`habitaciones` AS `habitaciones`,`v_inmuebles`.`banios` AS `banios`,`v_inmuebles`.`precio_compra` AS `precio_compra`,`v_inmuebles`.`precio_alquiler` AS `precio_alquiler`,`v_inmuebles`.`poblacion_id` AS `poblacion_id`,`v_inmuebles`.`zona_id` AS `zona_id`,`v_inmuebles`.`tipo_id` AS `tipo_id`,`v_inmuebles`.`observaciones` AS `observaciones`,`v_inmuebles`.`direccion` AS `direccion`,`v_inmuebles`.`direccion_publica` AS `direccion_publica`,`v_inmuebles`.`publicado` AS `publicado`,`v_inmuebles`.`estado_id` AS `estado_id`,`v_inmuebles`.`obra_nueva` AS `obra_nueva`,`v_inmuebles`.`certificacion_energetica_id` AS `certificacion_energetica_id`,`v_inmuebles`.`cuota_comunidad` AS `cuota_comunidad`,`v_inmuebles`.`forma_pago` AS `forma_pago`,`v_inmuebles`.`anejos` AS `anejos`,`v_inmuebles`.`cargas_vivienda` AS `cargas_vivienda`,`v_inmuebles`.`descripcion_vivienda` AS `descripcion_vivienda`,`v_inmuebles`.`descripcion_edificio` AS `descripcion_edificio`,`v_inmuebles`.`antiguedad_edificio` AS `antiguedad_edificio`,`v_inmuebles`.`captador_id` AS `captador_id`,`v_inmuebles`.`fecha_alta` AS `fecha_alta`,`v_inmuebles`.`fecha_actualizacion` AS `fecha_actualizacion`,`v_inmuebles`.`anio_construccion` AS `anio_construccion`,`v_inmuebles`.`oportunidad` AS `oportunidad`,`v_inmuebles`.`destacado` AS `destacado`,`v_inmuebles`.`nombre_poblacion` AS `nombre_poblacion`,`v_inmuebles`.`provincia_id` AS `provincia_id`,`v_inmuebles`.`nombre_provincia` AS `nombre_provincia`,`v_inmuebles`.`nombre_zona` AS `nombre_zona`,`v_inmuebles`.`nombre_tipo` AS `nombre_tipo`,`v_inmuebles`.`idioma_id` AS `idioma_id`,`v_inmuebles`.`nombre_certificacion_energetica` AS `nombre_certificacion_energetica`,`v_inmuebles`.`nombre_estado` AS `nombre_estado`,`v_inmuebles`.`nombre_captador` AS `nombre_captador`,`demandas`.`cliente_id` AS `cliente_id`,`demandas`.`agente_asignado_id` AS `agente_asignado_id`,`inmuebles_demandas`.`demanda_id` AS `demanda_id`,`inmuebles_demandas`.`origen_id` AS `origen_id`,`inmuebles_demandas`.`evaluacion_id` AS `evaluacion_id`,`inmuebles_demandas`.`observaciones` AS `observaciones_demanda`,`inmuebles_demandas`.`fecha_asignacion` AS `fecha_asignacion`,date_format(`inmuebles_demandas`.`fecha_asignacion`,'%d/%m/%Y') AS `fecha_asignacion_formateada`,`inmuebles_demandas`.`id` AS `inmueble_demanda_id`,(case `inmuebles_demandas`.`origen_id` when 1 then 'OPENRS' when 2 then 'Agente' end) AS `nombre_origen`,(case `inmuebles_demandas`.`evaluacion_id` when 1 then 'Pendiente evaluar' when 2 then 'Proponer para visita' when 3 then 'Descartado por agente' when 4 then 'Interesa cliente' when 5 then 'No Interesa cliente' end) AS `nombre_evaluacion`,`fichas_visita_inmuebles_demandas`.`ficha_visita_id` AS `ficha_visita_id`,`fichas_visita`.`visitado` AS `visitado`,date_format(`fichas_visita`.`fecha`,'%d/%m/%Y') AS `fecha_visita_formateada`,`fichas_visita`.`fecha` AS `fecha_visita`,date_format(`fichas_visita_inmuebles_demandas`.`fecha_hora`,'%H:%i') AS `hora_visita_formateada`,date_format(`fichas_visita_inmuebles_demandas`.`fecha_hora`,'%d/%m/%Y %H:%i') AS `fecha_hora_visita_formateada`,`fichas_visita_inmuebles_demandas`.`fecha_hora` AS `fecha_hora_visita` from ((((`v_inmuebles` join `inmuebles_demandas` on((`inmuebles_demandas`.`inmueble_id` = `v_inmuebles`.`id`))) join `demandas` on((`inmuebles_demandas`.`demanda_id` = `demandas`.`id`))) left join `fichas_visita_inmuebles_demandas` on((`fichas_visita_inmuebles_demandas`.`inmueble_demanda_id` = `inmuebles_demandas`.`id`))) left join `fichas_visita` on((`fichas_visita_inmuebles_demandas`.`ficha_visita_id` = `fichas_visita`.`id`)));
 
 -- --------------------------------------------------------
 
@@ -10796,7 +10587,7 @@ CREATE OR REPLACE  VIEW `v_inmuebles_demandas` AS select `v_inmuebles`.`id` AS `
 --
 DROP TABLE IF EXISTS `v_inmuebles_ficheros`;
 
-CREATE OR REPLACE  VIEW `v_inmuebles_ficheros` AS select `inmuebles_ficheros`.`id` AS `id`,`inmuebles_ficheros`.`inmueble_id` AS `inmueble_id`,`inmuebles_ficheros`.`fichero` AS `fichero`,`inmuebles_ficheros`.`texto_fichero` AS `texto_fichero`,`inmuebles_ficheros`.`tipo_fichero_id` AS `tipo_fichero_id`,`tipos_ficheros`.`nombre` AS `nombre_tipo` from (`inmuebles_ficheros` join `tipos_ficheros` on((`inmuebles_ficheros`.`tipo_fichero_id` = `tipos_ficheros`.`id`)));
+CREATE OR REPLACE VIEW `v_inmuebles_ficheros` AS select `inmuebles_ficheros`.`id` AS `id`,`inmuebles_ficheros`.`inmueble_id` AS `inmueble_id`,`inmuebles_ficheros`.`fichero` AS `fichero`,`inmuebles_ficheros`.`texto_fichero` AS `texto_fichero`,`inmuebles_ficheros`.`tipo_fichero_id` AS `tipo_fichero_id`,`tipos_ficheros`.`nombre` AS `nombre_tipo` from (`inmuebles_ficheros` join `tipos_ficheros` on((`inmuebles_ficheros`.`tipo_fichero_id` = `tipos_ficheros`.`id`)));
 
 -- --------------------------------------------------------
 
@@ -10805,7 +10596,7 @@ CREATE OR REPLACE  VIEW `v_inmuebles_ficheros` AS select `inmuebles_ficheros`.`i
 --
 DROP TABLE IF EXISTS `v_tipos_ficheros`;
 
-CREATE OR REPLACE  VIEW `v_tipos_ficheros` AS select `tipos_ficheros`.`id` AS `id`,`tipos_ficheros`.`nombre` AS `nombre`,`tipos_ficheros`.`descripcion` AS `descripcion`,`tipos_ficheros`.`ambito_id` AS `ambito_id`,(case `tipos_ficheros`.`ambito_id` when 1 then 'Clientes' when 2 then 'Inmuebles' when 3 then 'Demandas' end) AS `nombre_ambito` from `tipos_ficheros`;
+CREATE OR REPLACE VIEW `v_tipos_ficheros` AS select `tipos_ficheros`.`id` AS `id`,`tipos_ficheros`.`nombre` AS `nombre`,`tipos_ficheros`.`descripcion` AS `descripcion`,`tipos_ficheros`.`ambito_id` AS `ambito_id`,(case `tipos_ficheros`.`ambito_id` when 1 then 'Clientes' when 2 then 'Inmuebles' when 3 then 'Demandas' end) AS `nombre_ambito` from `tipos_ficheros`;
 
 --
 -- Restricciones para tablas volcadas
@@ -10825,14 +10616,6 @@ ALTER TABLE `clientes`
   ADD CONSTRAINT `FK_clientes_estado_id` FOREIGN KEY (`estado_id`) REFERENCES `estados` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_clientes_pais_id` FOREIGN KEY (`pais_id`) REFERENCES `paises` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_clientes_poblacion_id` FOREIGN KEY (`poblacion_id`) REFERENCES `poblaciones` (`id`) ON DELETE SET NULL;
-
---
--- Filtros para la tabla `clientes_fichas`
---
-ALTER TABLE `clientes_fichas`
-  ADD CONSTRAINT `FK_clientes_fichas_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_clientes_fichas_cliente_id` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_clientes_fichas_plantilla_id` FOREIGN KEY (`plantilla_id`) REFERENCES `plantillas_documentacion` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `clientes_ficheros`
@@ -10860,14 +10643,6 @@ ALTER TABLE `demandas`
   ADD CONSTRAINT `FK_demandas_provincia_id` FOREIGN KEY (`provincia_id`) REFERENCES `provincias` (`id`) ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `demandas_fichas`
---
-ALTER TABLE `demandas_fichas`
-  ADD CONSTRAINT `FK_demandas_fichas_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_demandas_fichas_demanda_id` FOREIGN KEY (`demanda_id`) REFERENCES `demandas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_demandas_fichas_plantilla_id` FOREIGN KEY (`plantilla_id`) REFERENCES `plantillas_documentacion` (`id`) ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `demandas_ficheros`
 --
 ALTER TABLE `demandas_ficheros`
@@ -10888,11 +10663,20 @@ ALTER TABLE `demandas_tipos_inmueble`
   ADD CONSTRAINT `FK_demandas_tipos_inmueble_tipo_id` FOREIGN KEY (`tipo_id`) REFERENCES `tipos_inmueble` (`id`) ON DELETE CASCADE;
 
 --
+-- Filtros para la tabla `documentos_generados`
+--
+ALTER TABLE `documentos_generados`
+  ADD CONSTRAINT `FK_documentos_generados_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_documentos_generados_cliente_id` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_documentos_generados_tipo_plantilla_id` FOREIGN KEY (`tipo_plantilla_id`) REFERENCES `tipos_plantilla_documentacion` (`id`) ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `fichas_visita`
 --
 ALTER TABLE `fichas_visita`
   ADD CONSTRAINT `FK_fichas_visita_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_fichas_visita_demanda_id` FOREIGN KEY (`demanda_id`) REFERENCES `demandas` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `FK_fichas_visita_demanda_id` FOREIGN KEY (`demanda_id`) REFERENCES `demandas` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_fichas_visita_documento_generado_id` FOREIGN KEY (`documento_generado_id`) REFERENCES `documentos_generados` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `fichas_visita_inmuebles_demandas`
@@ -10913,15 +10697,6 @@ ALTER TABLE `inmuebles`
   ADD CONSTRAINT `FK_inmuebles_zona_id` FOREIGN KEY (`zona_id`) REFERENCES `poblaciones_zonas` (`id`) ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `inmuebles_carteles`
---
-ALTER TABLE `inmuebles_carteles`
-  ADD CONSTRAINT `FK_inmuebles_carteles_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_inmuebles_carteles_idioma_id` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`id_idioma`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_inmuebles_carteles_inmueble_id` FOREIGN KEY (`inmueble_id`) REFERENCES `inmuebles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_inmuebles_carteles_plantilla_id` FOREIGN KEY (`plantilla_id`) REFERENCES `plantillas_documentacion` (`id`) ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `inmuebles_demandas`
 --
 ALTER TABLE `inmuebles_demandas`
@@ -10933,15 +10708,6 @@ ALTER TABLE `inmuebles_demandas`
 --
 ALTER TABLE `inmuebles_enlaces`
   ADD CONSTRAINT `FK_inmuebles_enlaces_inmueble_id` FOREIGN KEY (`inmueble_id`) REFERENCES `inmuebles` (`id`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `inmuebles_fichas`
---
-ALTER TABLE `inmuebles_fichas`
-  ADD CONSTRAINT `FK_inmuebles_fichas_agente_id` FOREIGN KEY (`agente_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_inmuebles_fichas_idioma_id` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`id_idioma`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_inmuebles_fichas_inmueble_id` FOREIGN KEY (`inmueble_id`) REFERENCES `inmuebles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_inmuebles_fichas_plantilla_id` FOREIGN KEY (`plantilla_id`) REFERENCES `plantillas_documentacion` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `inmuebles_ficheros`
@@ -11041,4 +10807,8 @@ ALTER TABLE `tipos_plantilla_documentacion_categorias_asignadas`
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_groups` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_users_groups_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+SET FOREIGN_KEY_CHECKS=1;
 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
