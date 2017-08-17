@@ -1106,6 +1106,8 @@ class Inmueble_model extends MY_Model
         }
         // Idioma
         $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        // Evaluación
+        $this->db->where('evaluacion_id', $evaluacion_id);
         // Consulta
         $this->db->from('v_inmuebles_demandas');
         return $this->db->get()->result();
