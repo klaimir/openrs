@@ -37,8 +37,6 @@
                     <th>Estado</th>
                     <th>Fecha asig.</th>
                     <th>Obs.</th>
-                    <th>Fecha <br> visita</th>
-                    <th>Visitado</th>
                     <th>Ref.</th>
                     <th>Tipología</th>
                     <th>Municipio</th>
@@ -62,20 +60,6 @@
                         <td><?php echo $inmueble->nombre_evaluacion; ?></td>
                         <td><?php echo $inmueble->fecha_asignacion_formateada; ?></td>
                         <td><?php echo $this->utilities->cortar_texto($inmueble->observaciones_demanda,50); ?></td>
-                        <td>
-                            <?php if($inmueble->ficha_visita_id) { ?>
-                                <a href="<?php echo site_url("demandas_fichas_visita/edit/" . $inmueble->ficha_visita_id); ?>" title="Editar ficha visita"><?php echo $inmueble->fecha_hora_visita_formateada; ?></a>
-                            <?php } else { ?>
-                                -
-                            <?php } ?>
-                        </td>
-                        <td>
-                            <?php if($inmueble->visitado) { ?>
-                                <i class="ace-icon fa fa-check-square"></i>
-                            <?php } else { ?>
-                                <i class="ace-icon fa fa-close"></i>
-                            <?php } ?>
-                        </td>
                         <td><a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" title="Editar inmueble"><?php echo $inmueble->referencia; ?></a></td>
                         <td><?php echo $inmueble->nombre_tipo; ?></td>
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>
@@ -181,8 +165,6 @@
             "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
             "aoColumns": [
                 null,                
-                null,
-                {"sType": "date-euro"},
                 null,
                 {"sType": "date-euro"},
                 null,
