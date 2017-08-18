@@ -58,10 +58,10 @@ p {
 <body>
 	<div id="container">
             <h1><?php echo $heading; ?></h1>
-            <?php if(ENVIRONMENT=='development') { ?>		
-		<?php echo $message; ?>
-            <?php } else { ?>
+            <?php if(ENVIRONMENT!='production') { ?>
                 <p>Se ha producido un error. Consulte el fichero de logs para más información.</p>
+            <?php } else { ?>
+                <?php echo $message; ?>
             <?php } ?>
 	</div>
 </body>

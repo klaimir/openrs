@@ -308,5 +308,11 @@ class General extends MY_Controller
         $this->email->send();
         echo $this->email->print_debugger();
     }
+    
+    function error_db(){
+        $this->db->select();
+        $this->db->from('tabla_no_existe');
+        $query = $this->db->get();
+    }
 
 }
