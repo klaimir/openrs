@@ -229,6 +229,7 @@ function menu_demandas($demanda_id,$active_section)
                     <b class="arrow"></b>
                 </li>
                 
+                <?php /*
                 <li class="hover <?php echo set_active_option($active_section, "demandas_fichas_visita"); ?>">
                     <a href="<?php echo site_url('demandas_fichas_visita/index/'.$demanda_id); ?>">
                         <i class="menu-icon fa fa-calendar"></i>
@@ -243,6 +244,9 @@ function menu_demandas($demanda_id,$active_section)
 
                     <b class="arrow"></b>
                 </li>
+                 * 
+                 */
+                ?>                
 
                 <li class="hover <?php echo set_active_option($active_section, "demandas_ficheros"); ?>">
                     <a href="<?php echo site_url('demandas_ficheros/index/'.$demanda_id); ?>">
