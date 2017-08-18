@@ -98,6 +98,15 @@
 
             <b class="arrow"></b>
         </li>
+        
+        <li class="<?php echo set_active_option($_active_section,'medios_captacion'); ?>">
+            <a href="<?php echo site_url('medios_captacion'); ?>" onClick="return show_confirm_exit_message();">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Medios de Captación </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
     </ul>
 </li>
 

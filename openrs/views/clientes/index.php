@@ -34,7 +34,6 @@
 </div>
 
 <div class="space-10"></div>
-
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
         <table class="table table-striped table-bordered table-hover" id="tabgrid_clientes">
@@ -43,10 +42,10 @@
                     <th>Nombre Completo</th>
                     <th>CIF/NIE/NIF</th>
                     <th>Provincia</th>
-                    <th>Municipio</th>
-                    <th>Dirección</th>
+                    <th>Municipio</th>                    
                     <th>Teléfono</th>
                     <th>E-mail</th>
+                    <th>Estado</th>
                     <th>Fecha alta</th>
                     <th>Ofe.</th>
                     <th>Dem.</th>
@@ -65,9 +64,9 @@
                         <td><?php echo $element->nif; ?></td>
                         <td><?php echo $element->nombre_provincia; ?></td>
                         <td><?php echo $element->nombre_poblacion; ?></td>
-                        <td><?php echo $element->direccion; ?></td>
                         <td><?php echo $element->telefonos; ?></td>
                         <td><?php echo $element->correo; ?></td>
+                        <td><?php echo $element->nombre_estado; ?></td>
                         <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
                         <td><?php echo $element->num_propiedades; ?></td>
                         <td><?php echo $element->num_inmuebles_demandados; ?></td>
@@ -135,6 +134,7 @@
     function reset_form() {
         $('#pais_id').val('-1');
         $('#estado_id').val('-1');
+        $('#medio_captacion_id').val('-1');
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
         $('#agente_asignado_id').val('-1');

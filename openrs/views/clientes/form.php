@@ -122,6 +122,12 @@ if(isset($inmueble_id))
                 </div>                
             </div>
             <div class="form-group">            
+                <?php echo label('Medio captación', 'medio_captacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div class="col-sm-9">
+                    <?php echo form_dropdown('medio_captacion_id',$medios_captacion,$medio_captacion_id, 'id="medio_captacion_id" onchange="mark_modified_field();" class="form-control"'); ?>        
+                </div>                
+            </div>
+            <div class="form-group">            
                 <?php echo label('Agente Asignado', 'agente_asignado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('agente_asignado_id',$agentes,$agente_asignado_id, 'onchange="mark_modified_field();" class="form-control" id="agente_asignado_id"'); ?>

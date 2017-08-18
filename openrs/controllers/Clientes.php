@@ -32,6 +32,9 @@ class Clientes extends CRUD_controller
         
         // Selector de estados
         $this->data['estados'] = $this->Estado_model->get_estados_dropdown(1,-1);
+        
+        // Selector de medios_captacion
+        $this->data['medios_captacion'] = $this->Medio_captacion_model->get_medios_captacion_dropdown(-1);
 
         // Selector de agentes
         $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
@@ -56,6 +59,9 @@ class Clientes extends CRUD_controller
         
         // Filtro estado_id
         $this->utilities->set_value_session_filter('clientes_buscador', 'estado_id');
+        
+        // Filtro medio_captacion_id
+        $this->utilities->set_value_session_filter('clientes_buscador', 'medio_captacion_id');
 
         // Filtro agente_asignado_id
         $this->utilities->set_value_session_filter('clientes_buscador', 'agente_asignado_id');
@@ -79,6 +85,7 @@ class Clientes extends CRUD_controller
 
         $filtros['pais_id'] = $this->session->userdata('clientes_buscador_pais_id');
         $filtros['estado_id'] = $this->session->userdata('clientes_buscador_estado_id');
+        $filtros['medio_captacion_id'] = $this->session->userdata('clientes_buscador_medio_captacion_id');
         $filtros['provincia_id'] = $this->session->userdata('clientes_buscador_provincia_id');
         $filtros['poblacion_id'] = $this->session->userdata('clientes_buscador_poblacion_id');
         $filtros['agente_asignado_id'] = $this->session->userdata('clientes_buscador_agente_asignado_id');
@@ -367,7 +374,7 @@ class Clientes extends CRUD_controller
             
             // Cabecera
             $cabecera = array('CIF/NIE/NIF','Nombre','Apellidos','Fecha Nac.','Dirección','E-mail','Teléfono','Pais','Provincia','Municipio',
-                'Estado','Observaciones','Agente Asignado','Fecha alta','Oferta','Inm. Demandados');
+                'Estado','Medio Captación','Observaciones','Agente Asignado','Fecha alta','Oferta','Inm. Demandados');
             $array[] = $this->utilities->encoding_array($cabecera);
              
             // Resto de datos
@@ -386,6 +393,7 @@ class Clientes extends CRUD_controller
                 $datos_formateado[] = $element->nombre_provincia;
                 $datos_formateado[] = $element->nombre_poblacion;
                 $datos_formateado[] = $element->nombre_estado;
+                $datos_formateado[] = $element->nombre_medio_captacion;
                 $datos_formateado[] = $element->observaciones;
                 $datos_formateado[] = $element->nombre_agente_asignado;
                 $datos_formateado[] = $this->utilities->cambiafecha_bd($element->fecha_alta);

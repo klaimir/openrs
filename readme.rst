@@ -2,7 +2,7 @@
 ¿Qué es OPENRS?
 ###################
 
-OPENRS viene a dar un proporcionar un soplo de aire fresco al sector inmobiliario, siendo el primer software libre de uso exclusivo para PYMES inmobiliarias que abarca tanto el aspecto de la gestión del negocio como la promoción del mismo, y lo más importante, la propia empresa tendrá absoluta libertad para adaptar y modificar su funcionamiento.
+OPENRS viene a proporcionar un soplo de aire fresco al sector inmobiliario, siendo el primer software libre de uso exclusivo para PYMES inmobiliarias que abarca tanto el aspecto de la gestión del negocio como la promoción del mismo, y lo más importante, la propia empresa tendrá absoluta libertad para adaptar y modificar su funcionamiento.
 
 La inmobiliaria que implante OPENRS en su negocio contará con:
 - Un sitio web público, en el que podrá publicar los inmuebles que desee en diferentes categorías y visualizar una amplia gama de detalles, así como disponer de algunas secciones predefinidas, útiles para la promoción de la empresa, como noticias, contacto o el buscador de inmuebles, pero tendrá la libertad de agregar cualquier otra que considere apropiada.

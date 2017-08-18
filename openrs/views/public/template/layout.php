@@ -61,7 +61,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col s12">
-                        <h5 class="white-text">Bienvenido a OPENRS¡</h5>
+                        <h5 class="white-text">Bienvenido a OPENRS</h5>
                         <p class="grey-text text-lighten-4">Empieza a disfrutar de las ventajas de usar este software pensado para PYMES inmobiliarias españolas y 
                             define tu web corporativa así como todos los datos necesarios para la gestión de tu negocio.</p>
                     </div>
