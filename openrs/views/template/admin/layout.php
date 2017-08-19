@@ -380,7 +380,7 @@
                 ?>
                 
                 <ul class="nav nav-list">
-                    <li>
+                    <li class="<?php echo set_active_option($_active_section,"inicio"); ?>">
                         <a href="<?php echo site_url('usuarios/dashboard'); ?>" onClick="return show_confirm_exit_message();">
                             <i class="menu-icon fa fa-home"></i>
                             <span class="menu-text"> Inicio </span>
@@ -388,6 +388,7 @@
 
                         <b class="arrow"></b>
                     </li>
+                    
                     <?php
                     if($session_es_agente) {
                         $this->load->view('template/admin/agente_menu', $this->data);

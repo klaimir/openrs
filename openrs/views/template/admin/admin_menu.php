@@ -1,4 +1,4 @@
-<li class="<?php echo set_active_menu($_active_section,array("auth")); ?>">
+<li class="<?php echo set_active_option($_active_section,"auth"); ?>">
     <a href="<?php echo site_url('auth'); ?>" onClick="return show_confirm_exit_message();">
         <i class="menu-icon fa fa-users"></i>
         <span class="menu-text"> Usuarios </span>
@@ -7,7 +7,7 @@
     <b class="arrow"></b>
 </li>
 
-<li class="<?php echo set_active_menu($_active_section,array("backup")); ?>">
+<li class="<?php echo set_active_option($_active_section,"backup"); ?>">
     <a href="<?php echo site_url('backup'); ?>" onClick="return show_confirm_exit_message();">
         <i class="menu-icon fa fa-database"></i>
         <span class="menu-text"> Copias Seguridad </span>
@@ -16,7 +16,7 @@
     <b class="arrow"></b>
 </li>
 
-<li class="<?php echo set_active_menu($_active_section,array("estados","tipos_ficheros","tipos_inmueble","plantillas_documentacion","opciones_extras","lugares_interes","provincias")); ?>">
+<li class="<?php echo set_active_menu($_active_section,array("estados","tipos_ficheros","tipos_inmueble","plantillas_documentacion","opciones_extras","lugares_interes","provincias","medios_captacion")); ?>">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-building"></i>
         <span class="menu-text"> Configuración </span>
@@ -110,7 +110,7 @@
     </ul>
 </li>
 
-<li class="">
+<li class="<?php echo set_active_menu($_active_section,array("idiomas","cabecera","pie","secciones","Noticias")); ?>">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-globe"></i>
         <span class="menu-text"> Zona Pública </span>
