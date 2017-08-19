@@ -62,5 +62,21 @@ class Estadisticas extends MY_Controller
         var_dump($this->Inmueble_model->get_ultimos_inmuebles_registrados($personal));
     }
     
+    function get_stats_clientes_by_estado()
+    { 
+        $this->load->model('Cliente_model');
+        var_dump($this->Cliente_model->get_stats_by_estado());
+    }
     
+    function get_stats_clientes_by_alta($anio,$personal=1)
+    { 
+        $this->load->model('Cliente_model');
+        var_dump($this->Cliente_model->get_stats_plot_by_alta($anio,$personal));
+    }
+    
+    function intereses_clientes($tipo_interes=0,$personal=1,$historico=0)
+    { 
+        $this->load->model('Cliente_model');
+        var_dump($this->Cliente_model->get_stats_by_interes($tipo_interes,$personal,$historico));
+    }
 }

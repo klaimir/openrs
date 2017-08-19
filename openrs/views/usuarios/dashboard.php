@@ -112,7 +112,8 @@
                 tickLength: 0
             },
             yaxis: {
-                tickDecimals: 0
+                tickDecimals: 0,
+                ticks: 6
             },
             grid: {
                 backgroundColor: {colors: ["#fff", "#fff"]},
@@ -136,7 +137,7 @@
             <?php $this->load->view('estadisticas/inmuebles', $this->data); ?>
         </div>
         <div class="tab-pane" id="tab_clientes">
-            <?php //$this->load->view('estadisticas/clientes', $this->data); ?>
+            <?php $this->load->view('estadisticas/clientes', $this->data); ?>
         </div>
         <div class="tab-pane" id="tab_demandas">
 <?php //$this->load->view('estadisticas/demandas', $this->data);   ?>

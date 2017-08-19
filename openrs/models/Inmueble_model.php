@@ -2489,6 +2489,7 @@ class Inmueble_model extends MY_Model
         {
             $this->db->where('historico_estado', $historico);
         }
+        $this->db->where('captador_id is not null');
         // Idioma
         $this->db->where('idioma_id', $this->data['session_id_idioma']);
         $this->db->group_by($this->view.'.captador_id');

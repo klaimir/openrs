@@ -24,6 +24,8 @@ class Estadisticas extends MY_Controller
         }
     }
     
+    /******************** INMUEBLES *****************************/
+    
     function estados_inmuebles($personal=1,$historico=0)
     {
         $this->load->model('Inmueble_model');
@@ -115,6 +117,78 @@ class Estadisticas extends MY_Controller
         if($inmuebles)
         {
             echo json_encode($inmuebles);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    /******************** CLIENTES *****************************/
+        
+    function estados_clientes($personal=1,$historico=0)
+    {
+        $this->load->model('Cliente_model');
+        $clientes = $this->Cliente_model->get_stats_by_estado($personal,$historico);
+        if($clientes)
+        {
+            echo json_encode($clientes);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    function intereses_clientes($personal=1,$historico=0,$tipo_interes=0)
+    {
+        $this->load->model('Cliente_model');
+        $clientes = $this->Cliente_model->get_stats_by_interes($personal,$historico,$tipo_interes);
+        if($clientes)
+        {
+            echo json_encode($clientes);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+
+    function medios_captacion_clientes($personal=1,$historico=0)
+    {
+        $this->load->model('Cliente_model');
+        $clientes = $this->Cliente_model->get_stats_by_medio_captacion($personal,$historico);
+        if($clientes)
+        {
+            echo json_encode($clientes);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    function altas_clientes($personal,$anio)
+    {
+        $this->load->model('Cliente_model');
+        $clientes = $this->Cliente_model->get_stats_plot_by_alta($anio,$personal);
+        if($clientes)
+        {
+            echo json_encode($clientes);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    function agentes_clientes($historico=0)
+    {
+        $this->load->model('Cliente_model');
+        $clientes = $this->Cliente_model->get_stats_by_agente($historico);
+        if($clientes)
+        {
+            echo json_encode($clientes);
         }
         else
         {

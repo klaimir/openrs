@@ -18,6 +18,10 @@ class Usuarios extends MY_Controller
     // dashboard
     function dashboard($personal=1)
     {
+        // Sección activa
+        $this->data['_active_section'] = 'inicio';
+        
+        // INMUEBLES
         $this->load->model('Inmueble_model');
         // Inmuebles por estado
         $this->data['inmuebles_estados'] = $this->Inmueble_model->get_stats_by_estado($personal);
@@ -40,10 +44,7 @@ class Usuarios extends MY_Controller
         // Últimos Inmuebles pendientes de evaluar
         $this->data['pendientes_evaluar']=$this->Inmueble_model->get_inmuebles_demandas($personal,1);
         // Últimos Inmuebles propuestos para visita
-        $this->data['propuestos_visita']=$this->Inmueble_model->get_inmuebles_demandas($personal,2);
-        // Tipo de estadística
-        $this->data['personal']=$personal;
-        $this->data['texto_titulo']= $personal ? 'Personales' : 'Generales';
+        $this->data['propuestos_visita']=$this->Inmueble_model->get_inmuebles_demandas($personal,2);        
         // Inmuebles por agente
         if(!$personal)
         {
@@ -54,6 +55,35 @@ class Usuarios extends MY_Controller
         {
             $this->data['inmuebles_agentes']=array();
         }
+        // CLIENTES
+        $this->load->model('Cliente_model');
+        // Clientes por estado
+        $this->data['clientes_estados'] = $this->Cliente_model->get_stats_by_estado($personal);
+        // Evolución de clientes registrados
+        $this->data['clientes_altas'] = $this->Cliente_model->get_stats_plot_by_alta($this->data['anio_actual'],$personal);
+        $this->data['dropdown_anios_clientes']=$this->Cliente_model->get_dropdown_anios_stats($personal);
+        // Clientes por medio_captacion
+        $this->data['clientes_medios_captacion'] = $this->Cliente_model->get_stats_by_medio_captacion($personal);
+        // Clientes por interes
+        $this->data['clientes_intereses'] = $this->Cliente_model->get_stats_by_interes($personal);
+        // Últimos Clientes registrados
+        $this->data['ultimos_clientes_registrados']=$this->Cliente_model->get_ultimos_clientes_registrados($personal);
+        // Últimos Clientes modificados
+        $this->data['ultimos_clientes_modificados']=$this->Cliente_model->get_ultimos_clientes_modificados($personal);
+  
+        // Clientes por agente
+        if(!$personal)
+        {
+            $clientes_agentes = $this->Cliente_model->get_stats_by_agente();
+            $this->data['clientes_agentes']=$clientes_agentes;
+        }
+        else
+        {
+            $this->data['clientes_agentes']=array();
+        }        
+        // Tipo de estadística
+        $this->data['personal']=$personal;
+        $this->data['texto_titulo']= $personal ? 'Personales' : 'Generales';
         // Render
         $this->render_private('usuarios/dashboard', $this->data);
     }

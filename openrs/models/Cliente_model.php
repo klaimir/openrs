@@ -352,14 +352,16 @@ class Cliente_model extends MY_Model
         // Parent update
         return $this->update($formatted_datas, $id);
     }
-
+    
     /**
-     * Lee los clientes en formato vista según los filtros indicados
+     * Aplica los filtros a una determinada consulta
      *
-     * @return array de datos de plantilla
+     * @param [$filtros]                  Filtros a aplicar
+     *
+     * @return void
      */
-    function get_by_filtros($filtros=NULL)
-    {        
+    function procesar_filtros_generales($filtros)
+    {
         // Filtro Intereses
         if (isset($filtros['interes_id']) && $filtros['interes_id'] > 0)
         {
@@ -459,9 +461,17 @@ class Cliente_model extends MY_Model
         {
             $this->db->where('fecha_alta <=', $this->utilities->cambiafecha_form($filtros['fecha_hasta']));
         }
-        // Consulta
-        $this->db->from($this->view);
-        $results=$this->db->get()->result();
+    }
+    
+    /**
+     * Aplica datos adicionales
+     *
+     * @param [$results]                  Clientes 
+     *
+     * @return void
+     */
+    function set_datos_adicionales_listado($results)
+    {
         if($results)
         {
             // Modelos axiliares
@@ -474,6 +484,23 @@ class Cliente_model extends MY_Model
                 $result->num_inmuebles_demandados = count($this->Demanda_model->get_inmuebles_demandados($result->id));
             }
         }
+    }
+
+    /**
+     * Lee los inmuebles en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_by_filtros($filtros = NULL)
+    {
+        // Filtros generales
+        $this->procesar_filtros_generales($filtros);
+        // Consulta
+        $this->db->from($this->view);
+        $results=$this->db->get()->result();
+        // Set datos adicionales
+        $this->set_datos_adicionales_listado($results);
+        // Return
         return $results;
     }
 
@@ -524,10 +551,13 @@ class Cliente_model extends MY_Model
      *
      * @return array de intereses en formato dropdown
      */
-    function get_intereses_dropdown($default = "")
+    function get_intereses_dropdown($default = "",$get_default=TRUE)
     {
         $intereses = array();
-        $intereses[$default] = '- Seleccione interés -';
+        if($get_default)
+        {
+            $intereses[$default] = '- Seleccione interés -';
+        }
         $intereses[1] = 'Ofrece algún inmueble en venta';
         $intereses[2] = 'Ofrece algún inmueble en alquiler';
         $intereses[3] = 'Demanda inmuebles en alquiler';
@@ -1051,6 +1081,270 @@ class Cliente_model extends MY_Model
         }
         // Devolvemos resultados importados
         return $importdata;
+    }        
+    
+    /**
+     * Calcula el número de clientes agrupados por estado
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_estado($personal=1,$historico=0)
+    {
+        $this->db->select('estados.nombre as label,count(*) as data');
+        $this->db->from($this->table);
+        $this->db->join('estados', $this->table.'.estado_id=estados.id');    
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        $this->db->group_by($this->table.'.estado_id');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de clientes agrupados por interes
+     *
+     * @param [$tipo_interes]      Indica el tipo de interés (si es vigente o histórico)
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_interes($personal=1,$historico=0,$tipo_interes=0)
+    {
+        $intereses=$this->get_intereses_dropdown("",FALSE);
+        $array=array();
+        foreach ($intereses as $key => $value)
+        {
+            $row['label']=$value;
+            $row['data']=$this->get_num_stats_by_interes_id($key,$tipo_interes,$personal,$historico);
+            if($row['data'])
+            {
+                array_push($array, $row);
+            }
+        }
+        // Hay que devolver NULL si no hay datos que mostrar
+        if(count($array)==0)
+        {
+            return NULL;
+        }
+        return $array;
+    }
+    
+    /**
+     * Calcula el número de clientes agrupados por interes
+     *
+     * @param [$interes_id]         Indica la interes a consulta
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_num_stats_by_interes_id($interes_id,$tipo_interes_id,$personal=1,$historico=0)
+    {
+        // Filtros
+        $filtros['interes_id']=$interes_id;
+        $filtros['tipo_interes_id']=$tipo_interes_id;
+         // Filtros generales
+        $this->procesar_filtros_generales($filtros);
+        // Select
+        $this->db->select($this->view.'.id');
+        $this->db->from($this->view);   
+        if($historico!=2)
+        {
+            $this->db->where($this->view.'.historico_estado', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where($this->view.'.agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Consulta
+        return $this->db->get()->num_rows();
+    }
+    
+    /**
+     * Calcula el número de clientes por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_stats_by_alta($anio,$personal=1)
+    {
+        $this->db->select('mes_alta,count(*) as total');
+        $this->db->from($this->view);
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        $this->db->where('anio_alta', $anio);
+        $this->db->group_by($this->view.'.mes_alta');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de clientes por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_anios_stats($personal=1)
+    {
+        $this->db->select('distinct(anio_alta) as anio');
+        $this->db->from($this->view);
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de clientes por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_dropdown_anios_stats($personal=1)
+    {
+        $result=$this->get_anios_stats($personal);
+        if($result)
+        {
+            return $this->utilities->dropdown($result, 'anio', 'anio');
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+    
+    /**
+     * Devuelve el número de clientes por mes con un array en formato plot
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_stats_plot_by_alta($anio,$personal=1)
+    {
+        $result=$this->get_stats_by_alta($anio,$personal);
+        $result_dropdown=$this->utilities->dropdown($result, 'mes_alta', 'total');  
+        for($cont=1;$cont<=12;$cont++)
+        {
+            if(isset($result_dropdown[$cont]))
+            {
+                $total=intval($result_dropdown[$cont]);
+            }
+            else
+            {
+                $total=0;
+            }
+            $array[] = array($cont, $total);
+        }
+        return $array;
+    }
+    
+    /**
+     * Calcula el número de clientes agrupados por medio_captacion
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_medio_captacion($personal=1,$historico=0)
+    {
+        $this->db->select('nombre_medio_captacion as label,count(*) as data');
+        $this->db->from($this->view);   
+        if($historico!=2)
+        {
+            $this->db->where('historico_estado', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->group_by($this->view.'.nombre_medio_captacion');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de clientes agrupados por agente
+     *
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_agente($historico=0)
+    {
+        $this->db->select('nombre_agente_asignado as label,count(*) as data');
+        $this->db->from($this->view);   
+        if($historico!=2)
+        {
+            $this->db->where('historico_estado', $historico);
+        }
+        $this->db->where('agente_asignado_id is not null');
+        // Idioma
+        $this->db->group_by($this->view.'.agente_asignado_id');
+        return $this->db->get()->result();
+    }    
+    
+    /**
+     * Lee los clientes en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_ultimos_clientes_modificados($personal = 1, $limit = 5)
+    {
+        // Captador
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Fecha
+        $this->db->where('fecha_actualizacion is not null');
+        // Consulta
+        $this->db->from($this->view);
+        $this->db->order_by('fecha_actualizacion', 'desc');
+        $this->db->limit($limit);
+        $results=$this->db->get()->result();
+        // Set datos adicionales
+        $this->set_datos_adicionales_listado($results);
+        // Return
+        return $results;
+    }
+    
+    /**
+     * Lee los clientes en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_ultimos_clientes_registrados($personal = 1, $limit = 5)
+    {
+        // Captador
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Consulta
+        $this->db->from($this->view);
+        $this->db->order_by('fecha_alta', 'desc');
+        $this->db->limit($limit);
+        $results=$this->db->get()->result();
+        // Set datos adicionales
+        $this->set_datos_adicionales_listado($results);
+        // Return
+        return $results;
     }
 
 }
