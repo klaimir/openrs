@@ -1627,7 +1627,14 @@ class Demanda_model extends MY_Model
     
     function get_view_demandas_inmueble($inmueble_id)
     {
-        $this->db->select($this->view.'.*');
+        $this->db->select("$this->view.*, DATE_FORMAT(inmuebles_demandas.fecha_asignacion, '%d/%m/%Y') as fecha_asignacion_formateada, CASE inmuebles_demandas.evaluacion_id
+		  WHEN 1 THEN 'Pendiente evaluar'
+		  WHEN 2 THEN 'Propuesto para visita'
+		  WHEN 3 THEN 'Pendiente decisión cliente'
+		  WHEN 4 THEN 'Descartado por agente'
+		  WHEN 5 THEN 'Interesa cliente'
+		  WHEN 6 THEN 'No Interesa cliente'
+		END as 'nombre_evaluacion'");
         $this->db->from($this->view);
         $this->db->join('inmuebles_demandas', 'inmuebles_demandas.demanda_id='.$this->view.'.id');        
         $this->db->where("inmueble_id",$inmueble_id);

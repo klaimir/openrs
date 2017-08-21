@@ -31,7 +31,8 @@
                     <th>Hab.</th>
                     <th>Baños</th>
                     <th>Observaciones</th>
-                    <th>Fecha alta</th>
+                    <th>Estado<br>Evaluación</th>
+                    <th>Fecha asig.</th>                    
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -65,7 +66,8 @@
                         <td><?php echo format_interval($demanda->habitaciones_desde,$demanda->habitaciones_hasta); ?></td>
                         <td><?php echo format_interval($demanda->banios_desde,$demanda->banios_hasta); ?></td>
                         <td><?php echo $this->utilities->cortar_texto($demanda->observaciones,50); ?></td>
-                        <td><?php echo $this->utilities->cambiafecha_bd($demanda->fecha_alta); ?></td>    
+                        <td><?php echo $demanda->nombre_evaluacion; ?></td>
+                        <td><?php echo $demanda->fecha_asignacion_formateada; ?></td>                         
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
                                 <a class="green" href="<?php echo site_url("demandas/edit/" . $demanda->id); ?>" title="Editar cliente">
@@ -145,8 +147,9 @@
                 null,
                 null,
                 null,
-                null,                
-                {"sType": "date-euro"},
+                null, 
+                null,
+                {"sType": "date-euro"},                
                 null
             ]
         });
