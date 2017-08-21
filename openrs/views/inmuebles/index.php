@@ -69,7 +69,7 @@
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
         $('#zona_id').val('');
-        $('#captador_id').val('-1');
+        $('#captador_id').val(<?php echo $this->data['session_user_id']; ?>);
         $('#oferta_id').val('-1');
         $('#modificacion_precio_id').val('-1');   
         $('#publicado_id').val('-1');

@@ -49,7 +49,7 @@
         $('#medio_captacion_id').val('-1');
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
-        $('#agente_asignado_id').val('-1');
+        $('#agente_asignado_id').val(<?php echo $this->data['session_user_id']; ?>);
         $('#interes_id').val('-1');
         $('#tipo_interes_id').val('-1');
         $('#fecha_desde').val('');

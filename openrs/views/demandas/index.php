@@ -54,7 +54,7 @@
         $('#provincia_id').val('-1');
         $('#poblacion_id').val('');
         $('#zona_id').val('');
-        $('#agente_asignado_id').val('-1');
+        $('#agente_asignado_id').val(<?php echo $this->data['session_user_id']; ?>);
         $('#cliente_id').val('-1');
         $('#oferta_id').val('-1');   
         $('#tipo_demanda_id').val('-1');  

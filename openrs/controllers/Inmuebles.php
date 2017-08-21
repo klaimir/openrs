@@ -141,7 +141,7 @@ class Inmuebles extends CRUD_controller
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'estado_id');
 
         // Filtro captador_id
-        $this->utilities->set_value_session_filter('inmuebles_buscador', 'captador_id');
+        $this->utilities->set_value_session_filter('inmuebles_buscador', 'captador_id', $this->data['session_user_id']);
         
         // Filtro oferta_id
         $this->utilities->set_value_session_filter('inmuebles_buscador', 'oferta_id');

@@ -110,7 +110,7 @@ class Demandas extends CRUD_controller
         $this->utilities->set_value_session_filter('demandas_buscador', 'estado_id');
 
         // Filtro agente_asignado_id
-        $this->utilities->set_value_session_filter('demandas_buscador', 'agente_asignado_id');
+        $this->utilities->set_value_session_filter('demandas_buscador', 'agente_asignado_id', $this->data['session_user_id']);
         
          // Filtro cliente_id
         $this->utilities->set_value_session_filter('demandas_buscador', 'cliente_id');

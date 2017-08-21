@@ -64,7 +64,7 @@ class Clientes extends CRUD_controller
         $this->utilities->set_value_session_filter('clientes_buscador', 'medio_captacion_id');
 
         // Filtro agente_asignado_id
-        $this->utilities->set_value_session_filter('clientes_buscador', 'agente_asignado_id');
+        $this->utilities->set_value_session_filter('clientes_buscador', 'agente_asignado_id', $this->data['session_user_id']);
 
         // Filtro interes_id
         $this->utilities->set_value_session_filter('clientes_buscador', 'interes_id');
