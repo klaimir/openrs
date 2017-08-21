@@ -301,6 +301,7 @@
     </div>
 </div>
 <?php } ?>
+<?php if($show_lists) { ?>
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
         <div class="widget-box">
@@ -311,8 +312,17 @@
                 </h5>                
             </div>
         </div><!-- /.widget-box -->    
-        
-        <?php $this->data['elements']=$ultimos_clientes_registrados; $this->load->view('clientes/list_buscador', $this->data); ?>
+        <?php 
+        if(count($ultimos_clientes_registrados)>0)
+        {
+            $this->data['elements']=$ultimos_clientes_registrados; $this->data['show_fecha_modificacion']=FALSE;
+            $this->load->view('clientes/list_buscador', $this->data);
+        }
+        else
+        {
+            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay clientes registrados con los criterios seleccionados </p>';
+        }
+        ?>
     </div>
 </div>
 <div class="row">
@@ -325,11 +335,20 @@
                 </h5>                
             </div>
         </div><!-- /.widget-box -->    
-        
-        <?php $this->data['elements']=$ultimos_clientes_modificados; $this->data['show_fecha_modificacion']=TRUE; $this->load->view('clientes/list_buscador', $this->data); ?>
+        <?php 
+        if(count($ultimos_clientes_modificados)>0)
+        {
+            $this->data['elements']=$ultimos_clientes_modificados; $this->data['show_fecha_modificacion']=TRUE; 
+            $this->load->view('clientes/list_buscador', $this->data); 
+        }
+        else
+        {
+            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay clientes modificados con los criterios seleccionados </p>';
+        }
+        ?>
     </div>
 </div>
-
+<?php } ?>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function ($) {

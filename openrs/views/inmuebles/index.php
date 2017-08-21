@@ -56,7 +56,7 @@
 
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
-        <?php $this->data['tabgrid']='tabgrid'; $this->load->view('inmuebles/list_buscador', $this->data); ?>
+        <?php $this->data['tabgrid']='tabgrid_inmuebles'; $this->load->view('inmuebles/list_buscador', $this->data); ?>
     </div>
 </div>
 
@@ -150,6 +150,28 @@
                     window.location = '<?php echo site_url($_controller); ?>/delete/' + id;
                 }
             });
+        });
+        
+        $('#tabgrid_inmuebles').dataTable({
+            "iDisplayLength": 100,
+            "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
+            "aoColumns": [
+                null, 
+                null,
+                null,                
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {"sType": "date-euro"},
+                null,
+                null,
+                null,
+                null
+            ]
         });
     })
 </script>

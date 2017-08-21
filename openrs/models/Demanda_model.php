@@ -1637,6 +1637,42 @@ class Demanda_model extends MY_Model
     }
     
     /**
+     * Devuelve las demandas en formato vista que tienen inmuebles en un determinado estado
+     *
+     * @param [$personal]               Indica si la estadística es personal
+     * @param [$evaluacion_id]		Estado de evaluación del inmueble
+     * 
+     * @return Array con la información de las demandas asociada
+     */
+    
+    function get_view_demandas_estado_inmueble($personal=1,$evaluacion_id=1)
+    {
+        // Modelos axiliares
+        $this->load->model('Inmueble_demanda_model');
+        // Consulta estados
+        $ids_demandas=$this->Inmueble_demanda_model->get_ids_demandas_by_evaluacion($evaluacion_id);
+        // Consulta demandas
+        $this->db->select($this->view.'.*');
+        $this->db->from($this->view);        
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Comparamos los ids de cliente obtenidos
+        if(count($ids_demandas))
+        {
+            $this->db->where_in($this->view.'.id', $ids_demandas);
+        }
+        else
+        {
+            $this->db->where($this->view.'.id', 0);
+        }
+        $results=$this->db->get()->result();
+        // Obtenemos datos auxiliares
+        return $this->get_datos_auxiliares_view($results);
+    }
+    
+    /**
      * Devuelve las demandas de un cliente en formato vista
      *
      * @param [$cliente_id]		Identificador del cliente
@@ -1649,6 +1685,282 @@ class Demanda_model extends MY_Model
         $this->db->select($this->view.'.*');
         $this->db->from($this->view);       
         $this->db->where("cliente_id",$cliente_id);
+        $results=$this->db->get()->result();
+        // Obtenemos datos auxiliares
+        return $this->get_datos_auxiliares_view($results);
+    }    
+    
+    /**
+     * Calcula el número de demandas agrupados por estado
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_estado($personal=1,$historico=0)
+    {
+        $this->db->select('estados.nombre as label,count(*) as data');
+        $this->db->from($this->table);
+        $this->db->join('estados', $this->table.'.estado_id=estados.id');    
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        $this->db->group_by($this->table.'.estado_id');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de demandas por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_stats_by_alta($anio,$personal=1)
+    {
+        $this->db->select('mes_alta,count(*) as total');
+        $this->db->from($this->view);
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        $this->db->where('anio_alta', $anio);
+        $this->db->group_by($this->view.'.mes_alta');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de demandas por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_anios_stats($personal=1)
+    {
+        $this->db->select('distinct(anio_alta) as anio');
+        $this->db->from($this->view);
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de demandas por mes
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_dropdown_anios_stats($personal=1)
+    {
+        $result=$this->get_anios_stats($personal);
+        if($result)
+        {
+            return $this->utilities->dropdown($result, 'anio', 'anio');
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+    
+    /**
+     * Devuelve el número de demandas por mes con un array en formato plot
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * 
+     * @return array
+     */
+    function get_stats_plot_by_alta($anio,$personal=1)
+    {
+        $result=$this->get_stats_by_alta($anio,$personal);
+        $result_dropdown=$this->utilities->dropdown($result, 'mes_alta', 'total');  
+        for($cont=1;$cont<=12;$cont++)
+        {
+            if(isset($result_dropdown[$cont]))
+            {
+                $total=intval($result_dropdown[$cont]);
+            }
+            else
+            {
+                $total=0;
+            }
+            $array[] = array($cont, $total);
+        }
+        return $array;
+    }
+    
+    /**
+     * Calcula el número de demandas agrupados por oferta
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_oferta($personal=1,$historico=0)
+    {
+        $this->db->select('nombre_oferta as label,count(*) as data');
+        $this->db->from($this->view);   
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->group_by($this->view.'.nombre_oferta');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de demandas agrupados por tipo_demanda
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_tipo_demanda($personal=1,$historico=0)
+    {
+        $this->db->select('nombre_tipo_demanda as label,count(*) as data');
+        $this->db->from($this->view);   
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->group_by($this->view.'.nombre_tipo_demanda');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de demandas agrupados por tipo_inmueble
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_tipo_inmueble($personal=1,$historico=0)
+    {
+        $this->db->select('nombre_tipo_inmueble as label,count(*) as data');
+        $this->db->from('v_demandas_tipos_inmueble');   
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        $this->db->group_by('v_demandas_tipos_inmueble.nombre_tipo_inmueble');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de demandas agrupados por evaluacion_inmueble
+     *
+     * @param [$personal]          Indica si la estadística es personal
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_evaluacion_inmueble($personal=1,$historico=0)
+    {
+        $this->db->select('nombre_evaluacion as label,count(*) as data');
+        $this->db->from('v_inmuebles_demandas');   
+        if($historico!=2)
+        {
+            $this->db->where('historico_demanda', $historico);
+        }
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Idioma
+        $this->db->where('idioma_id', $this->data['session_id_idioma']);
+        $this->db->group_by('v_inmuebles_demandas.nombre_evaluacion');
+        return $this->db->get()->result();
+    }
+    
+    /**
+     * Calcula el número de demandas agrupados por agente
+     *
+     * @param [$historico]         Indica si la estadística pertenece al histórico, está vigente o son todas
+     * 
+     * @return array
+     */
+    function get_stats_by_agente($historico=0)
+    {
+        $this->db->select('nombre_agente_asignado as label,count(*) as data');
+        $this->db->from($this->view);   
+        if($historico!=2)
+        {
+            $this->db->where('historico', $historico);
+        }
+        $this->db->where('agente_asignado_id is not null');
+        // Idioma
+        $this->db->group_by($this->view.'.agente_asignado_id');
+        return $this->db->get()->result();
+    }    
+    
+    /**
+     * Lee los demandas en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_ultimos_demandas_modificados($personal = 1, $limit = 5)
+    {
+        // Captador
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Fecha
+        $this->db->where('fecha_actualizacion is not null');
+        // Consulta
+        $this->db->from($this->view);
+        $this->db->order_by('fecha_actualizacion', 'desc');
+        $this->db->limit($limit);
+        $results=$this->db->get()->result();
+        // Obtenemos datos auxiliares
+        return $this->get_datos_auxiliares_view($results);
+    }
+    
+    /**
+     * Lee los demandas en formato vista según los filtros indicados
+     *
+     * @return array de datos de plantilla
+     */
+    function get_ultimos_demandas_registrados($personal = 1, $limit = 5)
+    {
+        // Captador
+        if($personal)
+        {
+            $this->db->where('agente_asignado_id', $this->data['session_user_id']);
+        }
+        // Consulta
+        $this->db->from($this->view);
+        $this->db->order_by('fecha_alta', 'desc');
+        $this->db->limit($limit);
         $results=$this->db->get()->result();
         // Obtenemos datos auxiliares
         return $this->get_datos_auxiliares_view($results);

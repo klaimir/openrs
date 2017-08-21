@@ -195,5 +195,105 @@ class Estadisticas extends MY_Controller
             echo 1;
         }
     }
+    
+    /******************** DEMANDAS *****************************/
+        
+    function estados_demandas($personal=1,$historico=0)
+    {
+        $this->load->model('Demanda_model');
+        $demandas = $this->Demanda_model->get_stats_by_estado($personal,$historico);
+        if($demandas)
+        {
+            echo json_encode($demandas);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    function tipos_demandas_demandas($personal=1,$historico=0)
+    {
+        $this->load->model('Demanda_model');
+        $demandas = $this->Demanda_model->get_stats_by_tipo_demanda($personal,$historico);
+        if($demandas)
+        {
+            echo json_encode($demandas);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+
+    function ofertas_demandas($personal=1,$historico=0)
+    {
+        $this->load->model('Demanda_model');
+        $demandas = $this->Demanda_model->get_stats_by_oferta($personal,$historico);
+        if($demandas)
+        {
+            echo json_encode($demandas);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    function tipos_inmuebles_demandas($personal=1,$historico=0)
+    {
+        $this->load->model('Demanda_model');
+        $demandas = $this->Demanda_model->get_stats_by_tipo_inmueble($personal,$historico);
+        if($demandas)
+        {
+            echo json_encode($demandas);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    function evaluacion_inmuebles_demandas($personal=1,$historico=0)
+    {
+        $this->load->model('Demanda_model');
+        $demandas = $this->Demanda_model->get_stats_by_evaluacion_inmueble($personal,$historico);
+        if($demandas)
+        {
+            echo json_encode($demandas);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    function altas_demandas($personal,$anio)
+    {
+        $this->load->model('Demanda_model');
+        $demandas = $this->Demanda_model->get_stats_plot_by_alta($anio,$personal);
+        if($demandas)
+        {
+            echo json_encode($demandas);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
+    
+    function agentes_demandas($historico=0)
+    {
+        $this->load->model('Demanda_model');
+        $demandas = $this->Demanda_model->get_stats_by_agente($historico);
+        if($demandas)
+        {
+            echo json_encode($demandas);
+        }
+        else
+        {
+            echo 1;
+        }
+    }
 
 }

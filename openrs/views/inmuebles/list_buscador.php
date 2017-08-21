@@ -11,6 +11,11 @@
             <th>Metros</th>
             <th>Hab.</th>
             <th>Bañ.</th>
+            <?php if(isset($show_fecha_modificacion) && $show_fecha_modificacion) { ?>
+                <th>Fecha mod.</th>
+            <?php } else { ?>
+                <th>Fecha alta</th>
+            <?php } ?>
             <th>Img.</th>
             <th>Dem.</th>
             <th>Pend.</th>
@@ -35,6 +40,11 @@
                 <td><?php echo $element->metros; ?></td>
                 <td><?php echo $element->habitaciones; ?></td>
                 <td><?php echo $element->banios; ?></td>
+                <?php if(isset($show_fecha_modificacion) && $show_fecha_modificacion) { ?>
+                    <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_actualizacion); ?></td>
+                <?php } else { ?>
+                    <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
+                <?php } ?> 
                 <td>
                     <?php
                     if($element->num_imagenes>0)

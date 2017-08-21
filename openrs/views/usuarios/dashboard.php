@@ -6,14 +6,17 @@
                     <i class="ace-icon fa fa-angle-double-right"></i>
                     Estadísticas <?php echo $texto_titulo; ?> 
                  <small>
-                    (
-                    <?php if ($personal)
-                    {
-                    ?>- <a href="<?php echo site_url('usuarios/dashboard/0'); ?>" class="blue">Ver Generales</a> -<?php
-                    }
-                    else
-                    {
-                    ?>- <a href="<?php echo site_url('usuarios/dashboard/1'); ?>" class="blue">Ver Personales</a> -<?php } ?>)
+                    <?php if ($show_options) { ?>
+                        (
+                        <?php if ($personal)
+                        {
+                        ?>- <a href="<?php echo site_url('usuarios/dashboard/0'); ?>" class="blue">Ver Generales</a> -<?php
+                        }
+                        else
+                        {
+                        ?>- <a href="<?php echo site_url('usuarios/dashboard/1'); ?>" class="blue">Ver Personales</a> -<?php } ?>
+                        )
+                    <?php } ?>
                 </small>
             </h1>
         </div>
@@ -140,7 +143,7 @@
             <?php $this->load->view('estadisticas/clientes', $this->data); ?>
         </div>
         <div class="tab-pane" id="tab_demandas">
-<?php //$this->load->view('estadisticas/demandas', $this->data);   ?>
+            <?php $this->load->view('estadisticas/demandas', $this->data);   ?>
         </div>
     </div>    
 </div>

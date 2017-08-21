@@ -170,6 +170,23 @@ class Inmueble_demanda_model extends MY_Model
     }
     
     /**
+     * Devuelve los ids inmuebles en estado
+     *
+     * @param [$evaluacion_id]		Estado de evaluación del inmueble
+     * 
+     * @return Array con la información de las demandas asociada
+     */
+    
+    function get_ids_demandas_by_evaluacion($evaluacion_id)
+    {
+        $this->db->select('distinct(demanda_id) as demanda_id');
+        $this->db->from('inmuebles_demandas');
+        $this->db->where("evaluacion_id",$evaluacion_id);
+        $result=$this->db->get()->result();
+        return $this->utilities->get_keys_objects_array($result,'demanda_id');
+    }
+    
+    /**
      * Elimina los inmuebles de origen OPENRS y pendientes de REVISAR asignados a una demanda
      *
      * @param [$demanda_id]                  Indentificador de la demanda

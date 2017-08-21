@@ -16,8 +16,57 @@ class Usuarios extends MY_Controller
     }
 
     // dashboard
-    function dashboard($personal=1)
+    function dashboard($option='default')
     {
+        if($option=='default')
+        {
+            if ($this->data['session_es_agente'])
+            {
+                $personal=1;
+            }
+            else
+            {
+                $personal=0;
+            }
+        }
+        else
+        {
+            $personal=intval($option);
+        }
+        
+        // Bloque de estadísticas para agentes
+        if($personal==1 || $personal==0)
+        {
+            if(!$this->data['session_es_agente'] && $this->data['session_es_admin'] && $personal==1)
+            {
+                show_error("No tiene permiso para consultar estadísticas personales");
+                return;
+            }
+        }
+        else
+        {
+            show_error("Error en los parámetros de la página");
+            return;
+        }
+        
+        // Si es ambos perfiles se debe poder elegir
+        if($this->data['session_es_agente'])
+        {
+            $this->data['show_options']=TRUE;
+        }
+        else
+        {
+            $this->data['show_options']=FALSE;
+        }
+        // Debe poder ver los listados
+        if($this->data['session_es_agente'])
+        {
+            $this->data['show_lists']=TRUE;
+        }
+        else
+        {
+            $this->data['show_lists']=FALSE;
+        }        
         // Sección activa
         $this->data['_active_section'] = 'inicio';
         
@@ -69,8 +118,7 @@ class Usuarios extends MY_Controller
         // Últimos Clientes registrados
         $this->data['ultimos_clientes_registrados']=$this->Cliente_model->get_ultimos_clientes_registrados($personal);
         // Últimos Clientes modificados
-        $this->data['ultimos_clientes_modificados']=$this->Cliente_model->get_ultimos_clientes_modificados($personal);
-  
+        $this->data['ultimos_clientes_modificados']=$this->Cliente_model->get_ultimos_clientes_modificados($personal);  
         // Clientes por agente
         if(!$personal)
         {
@@ -80,7 +128,40 @@ class Usuarios extends MY_Controller
         else
         {
             $this->data['clientes_agentes']=array();
-        }        
+        }
+        // DEMANDAS
+        $this->load->model('Demanda_model');
+        // Demandas por estado
+        $this->data['demandas_estados'] = $this->Demanda_model->get_stats_by_estado($personal);
+        // Evolución de demandas registrados
+        $this->data['demandas_altas'] = $this->Demanda_model->get_stats_plot_by_alta($this->data['anio_actual'],$personal);
+        $this->data['dropdown_anios_demandas']=$this->Demanda_model->get_dropdown_anios_stats($personal);
+        // Demandas por oferta
+        $this->data['demandas_ofertas'] = $this->Demanda_model->get_stats_by_oferta($personal);
+        // Demandas por tipo_demanda
+        $this->data['demandas_tipos_demandas'] = $this->Demanda_model->get_stats_by_tipo_demanda($personal);
+        // Demandas por tipo_inmueble
+        $this->data['demandas_tipos_inmuebles'] = $this->Demanda_model->get_stats_by_tipo_inmueble($personal);
+        // Demandas por evaluacion
+        $this->data['demandas_evaluacion_inmuebles'] = $this->Demanda_model->get_stats_by_evaluacion_inmueble($personal);
+        // Últimos Demandas registrados
+        $this->data['ultimos_demandas_registrados']=$this->Demanda_model->get_ultimos_demandas_registrados($personal);
+        // Últimos Demandas modificados
+        $this->data['ultimos_demandas_modificados']=$this->Demanda_model->get_ultimos_demandas_modificados($personal);
+        // Demandas con Inmuebles pendientes de evaluar
+        $this->data['demandas_pendientes_evaluar']=$this->Demanda_model->get_view_demandas_estado_inmueble($personal,1);
+        // Demandas con Inmuebles propuestos para visita
+        $this->data['demandas_propuestos_visita']=$this->Demanda_model->get_view_demandas_estado_inmueble($personal,2);
+        // Demandas por agente
+        if(!$personal)
+        {
+            $demandas_agentes = $this->Demanda_model->get_stats_by_agente();
+            $this->data['demandas_agentes']=$demandas_agentes;
+        }
+        else
+        {
+            $this->data['demandas_agentes']=array();
+        }
         // Tipo de estadística
         $this->data['personal']=$personal;
         $this->data['texto_titulo']= $personal ? 'Personales' : 'Generales';

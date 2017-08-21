@@ -1,22 +1,26 @@
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
-        <table class="table table-striped table-bordered table-hover" <?php if(isset($tabgrid)) { echo 'id="'.$tabgrid.'"'; }?>>
+        <table class="table table-striped table-bordered table-hover" <?php if(isset($tabgrid)) { echo 'id="'.$tabgrid.'"'; }?> >
             <thead>
                 <tr>
-                    <th>Nombre Completo</th>
-                    <th>CIF/NIE/NIF</th>
-                    <th>Provincia</th>
-                    <th>Municipio</th>                    
-                    <th>Teléfono</th>
-                    <th>E-mail</th>
-                    <th>Estado</th>
+                    <th>Ref.</th>
+                    <th>Cliente</th>
+                    <th>Tipos<br>Inmuebles</th>
+                    <th>Lugar</th>
+                    <th>Precios</th>
+                    <th>Metros</th>
+                    <th>Hab.</th>
+                    <th>Baños</th>
+                    <th>Observaciones</th>
                     <?php if(isset($show_fecha_modificacion) && $show_fecha_modificacion) { ?>
                         <th>Fecha mod.</th>
                     <?php } else { ?>
                         <th>Fecha alta</th>
                     <?php } ?>
-                    <th>Ofe.</th>
-                    <th>Dem.</th>
+                    <?php if(!isset($ocultar_datos_adicionales)) { ?>
+                    <th>Pro.</th>
+                    <th>Pend.</th>
+                    <?php } ?>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -28,23 +32,36 @@
                     {
                     ?>
                     <tr>
-                        <td><?php echo $element->apellidos.", ".$element->nombre; ?></td>
-                        <td><?php echo $element->nif; ?></td>
-                        <td><?php echo $element->nombre_provincia; ?></td>
-                        <td><?php echo $element->nombre_poblacion; ?></td>
-                        <td><?php echo $element->telefonos; ?></td>
-                        <td><?php echo $element->correo; ?></td>
-                        <td><?php echo $element->nombre_estado; ?></td>
+                        <td><?php echo $element->referencia; ?></td>
+                        <td>
+                            <a href="<?php echo site_url("clientes/edit/" . $element->id); ?>" class="blue" title="Ver datos del cliente">
+                                <?php echo $element->nombre_cliente; ?>
+                            </a>              
+                        </td>
+                        <td><?php if($element->tipos_inmuebles) { echo $element->tipos_inmuebles; } else { echo "-"; } ?></td>
+                        <td>
+                            <?php
+                                echo $element->nombre_poblacion;
+                                if($element->zonas) { echo "<br>(". $element->zonas . ")";  }
+                             ?>
+                        </td>
+                        <td><?php echo format_interval(number_format($element->precio_desde, 0, ",", "."),number_format($element->precio_hasta, 0, ",", ".")); ?></td>
+                        <td><?php echo format_interval($element->metros_desde,$element->metros_hasta); ?></td>
+                        <td><?php echo format_interval($element->habitaciones_desde,$element->habitaciones_hasta); ?></td>
+                        <td><?php echo format_interval($element->banios_desde,$element->banios_hasta); ?></td>
+                        <td><?php echo $this->utilities->cortar_texto($element->observaciones,50); ?></td>
                         <?php if(isset($show_fecha_modificacion) && $show_fecha_modificacion) { ?>
                             <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_actualizacion); ?></td>
                         <?php } else { ?>
                             <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
-                        <?php } ?>                        
-                        <td><?php echo $element->num_propiedades; ?></td>
-                        <td><?php echo $element->num_inmuebles_demandados; ?></td>
+                        <?php } ?> 
+                        <?php if(!isset($ocultar_datos_adicionales)) { ?>
+                        <td><?php echo $element->num_inmuebles_propuestos; ?></td>
+                        <td><?php echo $element->num_inmuebles_pendientes; ?></td>
+                        <?php } ?>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
-                                <a class="green" href="<?php echo site_url("clientes/edit/" . $element->id); ?>" title="Editar">
+                                <a class="green" href="<?php echo site_url("demandas/edit/" . $element->id); ?>" title="Editar">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
 
@@ -52,7 +69,7 @@
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                 </a>
                                 
-                                <a class="blue" href="<?php echo site_url("clientes/duplicar/" . $element->id); ?>" title="Duplicar">
+                                <a class="blue" href="<?php echo site_url("demandas/duplicar/" . $element->id); ?>" title="Duplicar">
                                     <i class="ace-icon fa fa-copy bigger-130"></i>
                                 </a>
                             </div>
@@ -65,7 +82,7 @@
 
                                     <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                         <li>
-                                            <a href="<?php echo site_url("clientes/edit/" . $element->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar">
+                                            <a href="<?php echo site_url("demandas/edit/" . $element->id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar">
                                                 <span class="green">
                                                     <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                                 </span>
@@ -81,7 +98,7 @@
                                         </li>
                                         
                                         <li>
-                                            <a href="<?php echo site_url("clientes/duplicar/" . $element->id); ?>" class="tooltip-success" data-rel="tooltip" title="Duplicar">
+                                            <a href="<?php echo site_url("demandas/duplicar/" . $element->id); ?>" class="tooltip-success" data-rel="tooltip" title="Duplicar">
                                                 <span class="blue">
                                                     <i class="ace-icon fa fa-copy bigger-120"></i>
                                                 </span>

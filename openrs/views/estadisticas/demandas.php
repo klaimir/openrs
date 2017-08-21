@@ -11,19 +11,19 @@
                 <div class="widget-toolbar no-border">
                     <div class="inline dropdown-hover">
                         <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_altas_selected"><?php echo $anio_actual; ?></span>
+                            <span id="demandas_altas_selected"><?php echo $anio_actual; ?></span>
                             <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
                         </button>
                         <?php 
-                        if(count($dropdown_anios)>1) {                             
+                        if(count($dropdown_anios_demandas)>1) {                             
                         ?>
                             <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
                             <?php
-                            foreach($dropdown_anios as $anio)
+                            foreach($dropdown_anios_demandas as $anio)
                             {
                             ?>
                                 <li>
-                                    <a data-anio="<?php echo $anio; ?>" href="#altas" class="inmuebles_altas">
+                                    <a data-anio="<?php echo $anio; ?>" href="#demandas_altas" class="demandas_altas">
                                         <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                         <?php echo $anio; ?>
                                     </a>
@@ -40,9 +40,9 @@
             </div>
 
             <div class="widget-body">
-                <a name=”altas”></a>
-                <div class="widget-main">
-                    <div id="plot_inmuebles_altas"></div>
+                <a name="demandas_altas"></a>
+                <div class="widget-main" style="height: 223px;">
+                    <div id="plot_demandas_altas"></div>
                 </div><!-- /.widget-main -->
             </div><!-- /.widget-body -->
 
@@ -62,27 +62,27 @@
                 <div class="widget-toolbar no-border">
                     <div class="inline dropdown-hover">
                         <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_estados_selected">Vigentes</span>
+                            <span id="demandas_estados_selected">Vigentes</span>
                             <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
                             <li>
-                                <a data-valor="0" href="#estados" class="inmuebles_estados">
+                                <a data-valor="0" href="#demandas_estados" class="demandas_estados">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Vigentes
                                 </a>
                             </li>
 
                             <li>
-                                <a data-valor="1" class="inmuebles_estados" href="#estados">
+                                <a data-valor="1" class="demandas_estados" href="#demandas_estados">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Histórico
                                 </a>
                             </li>
 
                             <li>
-                                <a data-valor="2" class="inmuebles_estados" href="#estados">
+                                <a data-valor="2" class="demandas_estados" href="#demandas_estados">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Todas
                                 </a>
@@ -93,41 +93,9 @@
             </div>
 
             <div class="widget-body">
-                <a name=”estados”></a>
+                <a name=”demandas_estados”></a>
                 <div class="widget-main">
-                    <div id="piechart_inmuebles_estados"></div>
-
-                    <?php /*
-                      <div class="hr hr8 hr-double"></div>
-
-                      <div class="clearfix">
-                      <div class="grid3">
-                      <span class="grey">
-                      <i class="ace-icon fa fa-facebook-square fa-2x blue"></i>
-                      &nbsp; likes
-                      </span>
-                      <h4 class="bigger pull-right">1,255</h4>
-                      </div>
-
-                      <div class="grid3">
-                      <span class="grey">
-                      <i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
-                      &nbsp; tweets
-                      </span>
-                      <h4 class="bigger pull-right">941</h4>
-                      </div>
-
-                      <div class="grid3">
-                      <span class="grey">
-                      <i class="ace-icon fa fa-pinterest-square fa-2x red"></i>
-                      &nbsp; pins
-                      </span>
-                      <h4 class="bigger pull-right">1,050</h4>
-                      </div>
-                      </div>
-                     * 
-                     */
-                    ?>
+                    <div id="piechart_demandas_estados"></div>
                 </div><!-- /.widget-main -->
             </div><!-- /.widget-body -->
 
@@ -137,59 +105,6 @@
 </div><!-- /.row -->
 
 <div class="row">
-    <div class="col-lg-6 col-xs-12">
-
-        <div class="widget-box">
-            <div class="widget-header widget-header-flat widget-header-small">
-                <h5 class="widget-title">
-                    <i class="ace-icon fa fa-signal"></i>
-                    Tipo
-                </h5>
-
-                <div class="widget-toolbar no-border">
-                    <div class="inline dropdown-hover">
-                        <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_tipos_selected">Vigentes</span>
-                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
-                            <li>
-                                <a data-valor="0" href="#tipos" class="inmuebles_tipos">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Vigentes
-                                </a>
-                            </li>
-
-                            <li>
-                                <a data-valor="1" class="inmuebles_tipos" href="#tipos">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Histórico
-                                </a>
-                            </li>
-
-                            <li>
-                                <a data-valor="2" class="inmuebles_tipos" href="#tipos">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Todas
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="widget-body">
-                <a name=”tipos”></a>
-                <div class="widget-main">
-                    <div id="piechart_inmuebles_tipos"></div>
-                </div><!-- /.widget-main -->
-            </div><!-- /.widget-body -->
-
-        </div><!-- /.widget-box -->
-
-    </div><!-- /.col -->
-
     <div class="col-lg-6 col-xs-12">
 
         <div class="widget-box">
@@ -202,27 +117,27 @@
                 <div class="widget-toolbar no-border">
                     <div class="inline dropdown-hover">
                         <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_ofertas_selected">Vigentes</span>
+                            <span id="demandas_ofertas_selected">Vigentes</span>
                             <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
                             <li>
-                                <a data-valor="0" href="#ofertas" class="inmuebles_ofertas">
+                                <a data-valor="0" href="#demandas_ofertas" class="demandas_ofertas">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Vigentes
                                 </a>
                             </li>
 
                             <li>
-                                <a data-valor="1" class="inmuebles_ofertas" href="#ofertas">
+                                <a data-valor="1" class="demandas_ofertas" href="#demandas_ofertas">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Histórico
                                 </a>
                             </li>
 
                             <li>
-                                <a data-valor="2" class="inmuebles_ofertas" href="#ofertas">
+                                <a data-valor="2" class="demandas_ofertas" href="#demandas_ofertas">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Todas
                                 </a>
@@ -233,64 +148,9 @@
             </div>
 
             <div class="widget-body">
-                <a name=”ofertas”></a>
+                <a name=”demandas_ofertas”></a>
                 <div class="widget-main">
-                    <div id="piechart_inmuebles_ofertas"></div>
-                </div><!-- /.widget-main -->
-            </div><!-- /.widget-body -->
-
-        </div><!-- /.widget-box -->
-
-    </div><!-- /.col -->
-</div><!-- /.row -->
-
-<div class="row">
-    <div class="col-lg-6 col-xs-12">
-
-        <div class="widget-box">
-            <div class="widget-header widget-header-flat widget-header-small">
-                <h5 class="widget-title">
-                    <i class="ace-icon fa fa-signal"></i>
-                    Publicación
-                </h5>
-                
-                <div class="widget-toolbar no-border">
-                    <div class="inline dropdown-hover">
-                        <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_publicacion_selected">Vigentes</span>
-                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
-                            <li>
-                                <a data-valor="0" href="#publicacion" class="inmuebles_publicacion">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Vigentes
-                                </a>
-                            </li>
-
-                            <li>
-                                <a data-valor="1" class="inmuebles_publicacion" href="#publicacion">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Histórico
-                                </a>
-                            </li>
-
-                            <li>
-                                <a data-valor="2" class="inmuebles_publicacion" href="#publicacion">
-                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
-                                    Todas
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="widget-body">
-                <a name=”publicacion”></a>
-                <div class="widget-main">
-                    <div id="piechart_inmuebles_publicacion"></div>
+                    <div id="piechart_demandas_ofertas"></div>
                 </div><!-- /.widget-main -->
             </div><!-- /.widget-body -->
 
@@ -304,33 +164,33 @@
             <div class="widget-header widget-header-flat widget-header-small">
                 <h5 class="widget-title">
                     <i class="ace-icon fa fa-signal"></i>
-                    Carteles
+                    Tipos de Demanda
                 </h5>
-                
+
                 <div class="widget-toolbar no-border">
                     <div class="inline dropdown-hover">
                         <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_cartel_selected">Vigentes</span>
+                            <span id="demandas_tipos_demandas_selected">Vigentes</span>
                             <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
                             <li>
-                                <a data-valor="0" href="#cartel" class="inmuebles_cartel">
+                                <a data-valor="0" href="#demandas_tipos_demandas" class="demandas_tipos_demandas">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Vigentes
                                 </a>
                             </li>
 
                             <li>
-                                <a data-valor="1" class="inmuebles_cartel" href="#cartel">
+                                <a data-valor="1" class="demandas_tipos_demandas" href="#demandas_tipos_demandas">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Histórico
                                 </a>
                             </li>
 
                             <li>
-                                <a data-valor="2" class="inmuebles_cartel" href="#cartel">
+                                <a data-valor="2" class="demandas_tipos_demandas" href="#demandas_tipos_demandas">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Todas
                                 </a>
@@ -341,9 +201,9 @@
             </div>
 
             <div class="widget-body">
-                <a name=”cartel”></a>
+                <a name=”demandas_tipos_demandas”></a>
                 <div class="widget-main">
-                    <div id="piechart_inmuebles_cartel"></div>
+                    <div id="piechart_demandas_tipos_demandas"></div>
                 </div><!-- /.widget-main -->
             </div><!-- /.widget-body -->
 
@@ -351,40 +211,41 @@
 
     </div><!-- /.col -->
 </div><!-- /.row -->
-<?php if(!$personal) { ?>
+
 <div class="row">    
     <div class="col-lg-6 col-xs-12">
+
         <div class="widget-box">
             <div class="widget-header widget-header-flat widget-header-small">
                 <h5 class="widget-title">
                     <i class="ace-icon fa fa-signal"></i>
-                    Captadores
+                    Tipos de Inmuebles
                 </h5>
 
                 <div class="widget-toolbar no-border">
                     <div class="inline dropdown-hover">
                         <button class="btn btn-minier btn-primary">
-                            <span id="inmuebles_agentes_selected">Vigentes</span>
+                            <span id="demandas_tipos_inmuebles_selected">Vigentes</span>
                             <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
                             <li>
-                                <a data-valor="0" href="#agentes" class="inmuebles_agentes">
+                                <a data-valor="0" href="#demandas_tipos_inmuebles" class="demandas_tipos_inmuebles">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Vigentes
                                 </a>
                             </li>
 
                             <li>
-                                <a data-valor="1" class="inmuebles_agentes" href="#agentes">
+                                <a data-valor="1" class="demandas_tipos_inmuebles" href="#demandas_tipos_inmuebles">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Histórico
                                 </a>
                             </li>
 
                             <li>
-                                <a data-valor="2" class="inmuebles_agentes" href="#agentes">
+                                <a data-valor="2" class="demandas_tipos_inmuebles" href="#demandas_tipos_inmuebles">
                                     <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
                                     Todas
                                 </a>
@@ -395,9 +256,117 @@
             </div>
 
             <div class="widget-body">
-                <a name=”agentes”></a>
+                <a name=”demandas_tipos_inmuebles”></a>
                 <div class="widget-main">
-                    <div id="piechart_inmuebles_agentes"></div>
+                    <div id="piechart_demandas_tipos_inmuebles"></div>
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+
+        </div><!-- /.widget-box -->
+
+    </div><!-- /.col -->
+    
+    <div class="col-lg-6 col-xs-12">
+
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-signal"></i>
+                    Estado de Evaluación de Inmuebles
+                </h5>
+
+                <div class="widget-toolbar no-border">
+                    <div class="inline dropdown-hover">
+                        <button class="btn btn-minier btn-primary">
+                            <span id="demandas_evaluacion_inmuebles_selected">Vigentes</span>
+                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                            <li>
+                                <a data-valor="0" href="#demandas_evaluacion_inmuebles" class="demandas_evaluacion_inmuebles">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Vigentes
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="1" class="demandas_evaluacion_inmuebles" href="#demandas_evaluacion_inmuebles">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Histórico
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="2" class="demandas_evaluacion_inmuebles" href="#demandas_evaluacion_inmuebles">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Todas
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <a name=”demandas_evaluacion_inmuebles”></a>
+                <div class="widget-main">
+                    <div id="piechart_demandas_evaluacion_inmuebles"></div>
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+
+        </div><!-- /.widget-box -->
+
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<?php if(!$personal) { ?>
+<div class="row">    
+    <div class="col-lg-6 col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-flat widget-header-small">
+                <h5 class="widget-title">
+                    <i class="ace-icon fa fa-signal"></i>
+                    Agentes asignados
+                </h5>
+
+                <div class="widget-toolbar no-border">
+                    <div class="inline dropdown-hover">
+                        <button class="btn btn-minier btn-primary">
+                            <span id="demandas_agentes_selected">Vigentes</span>
+                            <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                            <li>
+                                <a data-valor="0" href="#demandas_agentes" class="demandas_agentes">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Vigentes
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="1" class="demandas_agentes" href="#demandas_agentes">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Histórico
+                                </a>
+                            </li>
+
+                            <li>
+                                <a data-valor="2" class="demandas_agentes" href="#demandas_agentes">
+                                    <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                    Todas
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <a name=”demandas_agentes”></a>
+                <div class="widget-main">
+                    <div id="piechart_demandas_agentes"></div>
                 </div><!-- /.widget-main -->
             </div><!-- /.widget-body -->
 
@@ -416,16 +385,16 @@
                     Últimos Registrados
                 </h5>                
             </div>
-        </div> 
+        </div>
         <?php 
-        if(count($ultimos_registrados)>0)
+        if(count($ultimos_demandas_registrados)>0)
         {
-            $this->data['elements']=$ultimos_registrados;
-            $this->load->view('inmuebles/list_buscador', $this->data);
+            $this->data['elements']=$ultimos_demandas_registrados; $this->data['show_fecha_modificacion']=FALSE;
+            $this->load->view('demandas/list_buscador', $this->data);
         }
         else
         {
-            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay inmuebles registrados con los criterios seleccionados </p>';
+            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay demandas registradas con los criterios seleccionados </p>';
         }
         ?>
     </div>
@@ -441,242 +410,148 @@
             </div>
         </div>
         <?php 
-        if(count($ultimos_modificados)>0)
+        if(count($ultimos_demandas_modificados)>0)
         {
-            $this->data['elements']=$ultimos_modificados; $this->data['show_fecha_modificacion']=TRUE; 
-            $this->load->view('inmuebles/list_buscador', $this->data); 
+            $this->data['elements']=$ultimos_demandas_modificados; $this->data['show_fecha_modificacion']=TRUE; 
+            $this->load->view('demandas/list_buscador', $this->data); 
         }
         else
         {
-            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay inmuebles modificados con los criterios seleccionados </p>';
+            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay demandas modificadas con los criterios seleccionados </p>';
         }
         ?>
     </div>
-</div>   
+</div>
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
         <div class="widget-box">
             <div class="widget-header widget-header-flat widget-header-small">
                 <h5 class="widget-title">
                     <i class="ace-icon fa fa-building"></i>
-                    Pendientes de evaluar en demandas
+                    Demandas con inmuebles pendientes de evaluar
                 </h5>                
             </div>
-        </div><!-- /.widget-box -->    
+        </div>
         <?php 
-        if(count($pendientes_evaluar)>0)
+        if(count($demandas_pendientes_evaluar)>0)
         {
-            $this->data['elements']=$pendientes_evaluar;
-            $this->load->view('estadisticas/list_inmuebles_demandas', $this->data);
+            $this->data['elements']=$demandas_pendientes_evaluar; $this->data['show_fecha_modificacion']=FALSE;  $this->data['ocultar_datos_adicionales']=TRUE; 
+            $this->load->view('demandas/list_buscador', $this->data); 
         }
         else
         {
-            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay inmuebles pendientes de evaluar en demandas con los criterios seleccionados </p>';
+            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay demandas con inmuebles pendientes de evaluar con los criterios seleccionados </p>';
         }
         ?>
     </div>
-</div> 
+</div>
 <div class="row">
     <div class="col-xs-12" style="overflow-y:auto">
         <div class="widget-box">
             <div class="widget-header widget-header-flat widget-header-small">
                 <h5 class="widget-title">
                     <i class="ace-icon fa fa-building"></i>
-                    Propuesto para visita en demandas
+                    Demandas con inmuebles propuestos para visita
                 </h5>                
             </div>
-        </div><!-- /.widget-box -->    
+        </div>
         <?php 
-        if(count($propuestos_visita)>0)
+        if(count($demandas_propuestos_visita)>0)
         {
-            $this->data['elements']=$propuestos_visita;
-            $this->load->view('estadisticas/list_inmuebles_demandas', $this->data);
+            $this->data['elements']=$demandas_propuestos_visita; $this->data['show_fecha_modificacion']=FALSE;  $this->data['ocultar_datos_adicionales']=TRUE; 
+            $this->load->view('demandas/list_buscador', $this->data); 
         }
         else
         {
-            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay inmuebles propuestos para visita en demandas con los criterios seleccionados </p>';
+            echo '<div class="space-10"></div><p><i class="ace-icon fa fa-info-circle"></i> No hay demandas con inmuebles propuestos para visita con los criterios seleccionados </p>';
         }
         ?>
     </div>
-</div> 
+</div>
 <?php } ?>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function ($) {
-        
+
         $('.borrar-elemento').click(function () {
             var id = $(this).data("id");
             bootbox.confirm("¿Estás seguro/a?", function (result) {
                 if (result) {
-                    window.location = 'inmuebles/delete/' + id;
+                    window.location = 'demandas/delete/' + id;
+                }
+            });
+        });
+        
+        // Plot altas
+        var placeholder = $('#plot_demandas_altas').css({'width': '100%', 'height': '180px'});
+        var data = <?php echo json_encode($demandas_altas); ?>;
+        drawPlot(placeholder, 'Altas', data);        
+        drawTootipPlot(placeholder);
+        
+        $('.demandas_altas').on('click', function () {
+            var anio = $(this).data('anio');
+            $.ajax({
+                url: '<?php echo site_url('estadisticas/altas_demandas/' . $personal . '/'); ?>' + anio,
+                success: function (data) {
+                    // Texto
+                    $('#demandas_altas_selected').html(anio);
+                    // Respuesta
+                    if (data == 1)
+                    {
+                        $('#plot_demandas_altas').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                    }
+                    else
+                    {
+                        var placeholder = $('#plot_demandas_altas').css({'width': '100%', 'height': '180px'});
+                        drawPlot(placeholder, 'Altas', JSON.parse(data));
+                        drawTootipPlot(placeholder);
+                    }
                 }
             });
         });
 
         // Plot estados
-        var num_inmuebles_estados = <?php echo count($inmuebles_estados); ?>;
-        if (num_inmuebles_estados > 0)
+        var num_demandas_estados = <?php echo count($demandas_estados); ?>;
+        if (num_demandas_estados > 0)
         {
-            var placeholder = $('#piechart_inmuebles_estados').css({'width': '90%', 'min-height': '200px'});
-            var data = <?php echo json_encode($inmuebles_estados); ?>;
+            var placeholder = $('#piechart_demandas_estados').css({'width': '90%', 'height': '200px'});
+            var data = <?php echo json_encode($demandas_estados); ?>;
             drawPieChart(placeholder, data);
             drawTootip(placeholder);
         }
         else
         {
-            $('#piechart_inmuebles_estados').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+            $('#piechart_demandas_estados').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
         }
 
-        $('.inmuebles_estados').on('click', function () {
+        $('.demandas_estados').on('click', function () {
             var tipo_consulta = $(this).data('valor');
             $.ajax({
-                url: '<?php echo site_url('estadisticas/estados_inmuebles/' . $personal . '/'); ?>' + tipo_consulta,
+                url: '<?php echo site_url('estadisticas/estados_demandas/' . $personal . '/'); ?>' + tipo_consulta,
                 success: function (data) {
                     // Texto
                     if (tipo_consulta == 0)
                     {
-                        $('#inmuebles_estados_selected').html('Vigentes');
+                        $('#demandas_estados_selected').html('Vigentes');
                     }
                     else if (tipo_consulta == 1)
                     {
-                        $('#inmuebles_estados_selected').html('Histórico');
+                        $('#demandas_estados_selected').html('Histórico');
                     }
                     else
                     {
-                        $('#inmuebles_estados_selected').html('Todas');
+                        $('#demandas_estados_selected').html('Todas');
                     }
                     // Respuesta
                     if (data == 1)
                     {
-                        $('#piechart_inmuebles_estados').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                        $('#piechart_demandas_estados').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
                     }
                     else
                     {
-                        var placeholder = $('#piechart_inmuebles_estados').css({'width': '90%', 'min-height': '200px'});
+                        var placeholder = $('#piechart_demandas_estados').css({'width': '90%', 'height': '200px'});
                         drawPieChart(placeholder, JSON.parse(data));
                         drawTootip(placeholder);
-                    }
-                }
-            });
-        });
-
-        // Plot ofertas
-        var num_inmuebles_ofertas = <?php echo count($inmuebles_ofertas); ?>;
-        if (num_inmuebles_ofertas > 0)
-        {
-            var placeholder = $('#piechart_inmuebles_ofertas').css({'width': '90%', 'min-height': '200px'});
-            var data = <?php echo json_encode($inmuebles_ofertas); ?>;
-            drawPieChart(placeholder, data);
-            drawTootip(placeholder);
-        }
-        else
-        {
-            $('#piechart_inmuebles_ofertas').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
-        }
-
-        $('.inmuebles_ofertas').on('click', function () {
-            var tipo_consulta = $(this).data('valor');
-            $.ajax({
-                url: '<?php echo site_url('estadisticas/ofertas_inmuebles/' . $personal . '/'); ?>' + tipo_consulta,
-                success: function (data) {
-                    // Texto
-                    if (tipo_consulta == 0)
-                    {
-                        $('#inmuebles_ofertas_selected').html('Vigentes');
-                    }
-                    else if (tipo_consulta == 1)
-                    {
-                        $('#inmuebles_ofertas_selected').html('Histórico');
-                    }
-                    else
-                    {
-                        $('#inmuebles_ofertas_selected').html('Todas');
-                    }
-                    // Respuesta
-                    if (data == 1)
-                    {
-                        $('#piechart_inmuebles_ofertas').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
-                    }
-                    else
-                    {
-                        var placeholder = $('#piechart_inmuebles_ofertas').css({'width': '90%', 'min-height': '200px'});
-                        drawPieChart(placeholder, JSON.parse(data));
-                        drawTootip(placeholder);
-                    }
-                }
-            });
-        });
-
-        // Plot tipos
-        var num_inmuebles_tipos = <?php echo count($inmuebles_tipos); ?>;
-        if (num_inmuebles_tipos > 0)
-        {
-            var placeholder = $('#piechart_inmuebles_tipos').css({'width': '90%', 'min-height': '200px'});
-            var data = <?php echo json_encode($inmuebles_tipos); ?>;
-            drawPieChart(placeholder, data);
-            drawTootip(placeholder);
-        }
-        else
-        {
-            $('#piechart_inmuebles_tipos').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
-        }
-
-        $('.inmuebles_tipos').on('click', function () {
-            var tipo_consulta = $(this).data('valor');
-            $.ajax({
-                url: '<?php echo site_url('estadisticas/tipos_inmuebles/' . $personal . '/'); ?>' + tipo_consulta,
-                success: function (data) {
-                    // Texto
-                    if (tipo_consulta == 0)
-                    {
-                        $('#inmuebles_tipos_selected').html('Vigentes');
-                    }
-                    else if (tipo_consulta == 1)
-                    {
-                        $('#inmuebles_tipos_selected').html('Histórico');
-                    }
-                    else
-                    {
-                        $('#inmuebles_tipos_selected').html('Todas');
-                    }
-                    // Respuesta
-                    if (data == 1)
-                    {
-                        $('#piechart_inmuebles_tipos').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
-                    }
-                    else
-                    {
-                        var placeholder = $('#piechart_inmuebles_tipos').css({'width': '90%', 'min-height': '200px'});
-                        drawPieChart(placeholder, JSON.parse(data));
-                        drawTootip(placeholder);
-                    }
-                }
-            });
-        });
-
-        // Plot altas
-        var placeholder = $('#plot_inmuebles_altas').css({'width': '100%', 'min-height': '200px'});
-        var data = <?php echo json_encode($inmuebles_altas); ?>;
-        drawPlot(placeholder, 'Altas', data);        
-        drawTootipPlot(placeholder);
-        
-        $('.inmuebles_altas').on('click', function () {
-            var anio = $(this).data('anio');
-            $.ajax({
-                url: '<?php echo site_url('estadisticas/altas_inmuebles/' . $personal . '/'); ?>' + anio,
-                success: function (data) {
-                    // Texto
-                    $('#inmuebles_altas_selected').html(anio);
-                    // Respuesta
-                    if (data == 1)
-                    {
-                        $('#plot_inmuebles_altas').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
-                    }
-                    else
-                    {
-                        var placeholder = $('#plot_inmuebles_altas').css({'width': '100%', 'min-height': '200px'});
-                        drawPlot(placeholder, 'Altas', JSON.parse(data));
-                        drawTootipPlot(placeholder);
                     }
                 }
             });
@@ -687,45 +562,45 @@
         // La estadística de agente sólo es general
         if(!personal)
         {
-            var num_inmuebles_agentes = <?php echo count($inmuebles_agentes); ?>;
-            if (num_inmuebles_agentes > 0)
+            var num_demandas_agentes = <?php echo count($demandas_agentes); ?>;
+            if (num_demandas_agentes > 0)
             {
-                var placeholder = $('#piechart_inmuebles_agentes').css({'width': '90%', 'min-height': '200px'});
-                var data = <?php echo json_encode($inmuebles_agentes); ?>;
+                var placeholder = $('#piechart_demandas_agentes').css({'width': '90%', 'height': '200px'});
+                var data = <?php echo json_encode($demandas_agentes); ?>;
                 drawPieChart(placeholder, data);
                 drawTootip(placeholder);
             }
             else
             {
-                $('#piechart_inmuebles_agentes').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                $('#piechart_demandas_agentes').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
             }
 
-            $('.inmuebles_agentes').on('click', function () {
+            $('.demandas_agentes').on('click', function () {
                 var agente_consulta = $(this).data('valor');
                 $.ajax({
-                    url: '<?php echo site_url('estadisticas/agentes_inmuebles/'); ?>' + agente_consulta,
+                    url: '<?php echo site_url('estadisticas/agentes_demandas/'); ?>' + agente_consulta,
                     success: function (data) {
                         // Texto
                         if (agente_consulta == 0)
                         {
-                            $('#inmuebles_agentes_selected').html('Vigentes');
+                            $('#demandas_agentes_selected').html('Vigentes');
                         }
                         else if (agente_consulta == 1)
                         {
-                            $('#inmuebles_agentes_selected').html('Histórico');
+                            $('#demandas_agentes_selected').html('Histórico');
                         }
                         else
                         {
-                            $('#inmuebles_agentes_selected').html('Todas');
+                            $('#demandas_agentes_selected').html('Todas');
                         }
                         // Respuesta
                         if (data == 1)
                         {
-                            $('#piechart_inmuebles_agentes').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                            $('#piechart_demandas_agentes').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
                         }
                         else
                         {
-                            var placeholder = $('#piechart_inmuebles_agentes').css({'width': '90%', 'min-height': '200px'});
+                            var placeholder = $('#piechart_demandas_agentes').css({'width': '90%', 'height': '200px'});
                             drawPieChart(placeholder, JSON.parse(data));
                             drawTootip(placeholder);
                         }
@@ -733,47 +608,47 @@
                 });
             });
         }
-        
-        // Plot publicacion
-        var num_inmuebles_publicacion = <?php echo count($inmuebles_publicacion); ?>;
-        if (num_inmuebles_publicacion > 0)
+
+        // Plot ofertas
+        var num_demandas_ofertas = <?php echo count($demandas_ofertas); ?>;
+        if (num_demandas_ofertas > 0)
         {
-            var placeholder = $('#piechart_inmuebles_publicacion').css({'width': '90%', 'min-height': '200px'});
-            var data = <?php echo json_encode($inmuebles_publicacion); ?>;
+            var placeholder = $('#piechart_demandas_ofertas').css({'width': '90%', 'height': '200px'});
+            var data = <?php echo json_encode($demandas_ofertas); ?>;
             drawPieChart(placeholder, data);
             drawTootip(placeholder);
         }
         else
         {
-            $('#piechart_inmuebles_publicacion').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+            $('#piechart_demandas_ofertas').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
         }
 
-        $('.inmuebles_publicacion').on('click', function () {
+        $('.demandas_ofertas').on('click', function () {
             var tipo_consulta = $(this).data('valor');
             $.ajax({
-                url: '<?php echo site_url('estadisticas/publicacion_inmuebles/' . $personal . '/'); ?>' + tipo_consulta,
+                url: '<?php echo site_url('estadisticas/ofertas_demandas/' . $personal . '/'); ?>' + tipo_consulta,
                 success: function (data) {
                     // Texto
                     if (tipo_consulta == 0)
                     {
-                        $('#inmuebles_publicacion_selected').html('Vigentes');
+                        $('#demandas_ofertas_selected').html('Vigentes');
                     }
                     else if (tipo_consulta == 1)
                     {
-                        $('#inmuebles_publicacion_selected').html('Histórico');
+                        $('#demandas_ofertas_selected').html('Histórico');
                     }
                     else
                     {
-                        $('#inmuebles_publicacion_selected').html('Todas');
+                        $('#demandas_ofertas_selected').html('Todas');
                     }
                     // Respuesta
                     if (data == 1)
                     {
-                        $('#piechart_inmuebles_publicacion').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                        $('#piechart_demandas_ofertas').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
                     }
                     else
                     {
-                        var placeholder = $('#piechart_inmuebles_publicacion').css({'width': '90%', 'min-height': '200px'});
+                        var placeholder = $('#piechart_demandas_ofertas').css({'width': '90%', 'height': '200px'});
                         drawPieChart(placeholder, JSON.parse(data));
                         drawTootip(placeholder);
                     }
@@ -781,46 +656,140 @@
             });
         });
         
-        // Plot cartel
-        var num_inmuebles_cartel = <?php echo count($inmuebles_cartel); ?>;
-        if (num_inmuebles_cartel > 0)
+        // Plot tipos_demandas
+        var num_demandas_tipos_demandas = <?php echo count($demandas_tipos_demandas); ?>;
+        if (num_demandas_tipos_demandas > 0)
         {
-            var placeholder = $('#piechart_inmuebles_cartel').css({'width': '90%', 'min-height': '200px'});
-            var data = <?php echo json_encode($inmuebles_cartel); ?>;
+            var placeholder = $('#piechart_demandas_tipos_demandas').css({'width': '90%', 'height': '200px'});
+            var data = <?php echo json_encode($demandas_tipos_demandas); ?>;
             drawPieChart(placeholder, data);
             drawTootip(placeholder);
         }
         else
         {
-            $('#piechart_inmuebles_cartel').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+            $('#piechart_demandas_tipos_demandas').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
         }
 
-        $('.inmuebles_cartel').on('click', function () {
+        $('.demandas_tipos_demandas').on('click', function () {
             var tipo_consulta = $(this).data('valor');
             $.ajax({
-                url: '<?php echo site_url('estadisticas/cartel_inmuebles/' . $personal . '/'); ?>' + tipo_consulta,
+                url: '<?php echo site_url('estadisticas/tipos_demandas_demandas/' . $personal . '/'); ?>' + tipo_consulta,
                 success: function (data) {
                     // Texto
                     if (tipo_consulta == 0)
                     {
-                        $('#inmuebles_cartel_selected').html('Vigentes');
+                        $('#demandas_tipos_demandas_selected').html('Vigentes');
                     }
                     else if (tipo_consulta == 1)
                     {
-                        $('#inmuebles_cartel_selected').html('Histórico');
+                        $('#demandas_tipos_demandas_selected').html('Histórico');
                     }
                     else
                     {
-                        $('#inmuebles_cartel_selected').html('Todas');
+                        $('#demandas_tipos_demandas_selected').html('Todas');
                     }
                     // Respuesta
                     if (data == 1)
                     {
-                        $('#piechart_inmuebles_cartel').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                        $('#piechart_demandas_tipos_demandas').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
                     }
                     else
                     {
-                        var placeholder = $('#piechart_inmuebles_cartel').css({'width': '90%', 'min-height': '200px'});
+                        var placeholder = $('#piechart_demandas_tipos_demandas').css({'width': '90%', 'height': '200px'});
+                        drawPieChart(placeholder, JSON.parse(data));
+                        drawTootip(placeholder);
+                    }
+                }
+            });
+        });
+        
+        // Plot tipos_inmuebles
+        var num_demandas_tipos_inmuebles = <?php echo count($demandas_tipos_inmuebles); ?>;
+        if (num_demandas_tipos_inmuebles > 0)
+        {
+            var placeholder = $('#piechart_demandas_tipos_inmuebles').css({'width': '90%', 'height': '200px'});
+            var data = <?php echo json_encode($demandas_tipos_inmuebles); ?>;
+            drawPieChart(placeholder, data);
+            drawTootip(placeholder);
+        }
+        else
+        {
+            $('#piechart_demandas_tipos_inmuebles').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+        }
+
+        $('.demandas_tipos_inmuebles').on('click', function () {
+            var tipo_consulta = $(this).data('valor');
+            $.ajax({
+                url: '<?php echo site_url('estadisticas/tipos_inmuebles_demandas/' . $personal . '/'); ?>' + tipo_consulta,
+                success: function (data) {
+                    // Texto
+                    if (tipo_consulta == 0)
+                    {
+                        $('#demandas_tipos_inmuebles_selected').html('Vigentes');
+                    }
+                    else if (tipo_consulta == 1)
+                    {
+                        $('#demandas_tipos_inmuebles_selected').html('Histórico');
+                    }
+                    else
+                    {
+                        $('#demandas_tipos_inmuebles_selected').html('Todas');
+                    }
+                    // Respuesta
+                    if (data == 1)
+                    {
+                        $('#piechart_demandas_tipos_inmuebles').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                    }
+                    else
+                    {
+                        var placeholder = $('#piechart_demandas_tipos_inmuebles').css({'width': '90%', 'height': '200px'});
+                        drawPieChart(placeholder, JSON.parse(data));
+                        drawTootip(placeholder);
+                    }
+                }
+            });
+        });
+        
+        // Plot evaluacion_inmuebles
+        var num_demandas_evaluacion_inmuebles = <?php echo count($demandas_evaluacion_inmuebles); ?>;
+        if (num_demandas_evaluacion_inmuebles > 0)
+        {
+            var placeholder = $('#piechart_demandas_evaluacion_inmuebles').css({'width': '90%', 'height': '200px'});
+            var data = <?php echo json_encode($demandas_evaluacion_inmuebles); ?>;
+            drawPieChart(placeholder, data);
+            drawTootip(placeholder);
+        }
+        else
+        {
+            $('#piechart_demandas_evaluacion_inmuebles').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+        }
+
+        $('.demandas_evaluacion_inmuebles').on('click', function () {
+            var tipo_consulta = $(this).data('valor');
+            $.ajax({
+                url: '<?php echo site_url('estadisticas/evaluacion_inmuebles_demandas/' . $personal . '/'); ?>' + tipo_consulta,
+                success: function (data) {
+                    // Texto
+                    if (tipo_consulta == 0)
+                    {
+                        $('#demandas_evaluacion_inmuebles_selected').html('Vigentes');
+                    }
+                    else if (tipo_consulta == 1)
+                    {
+                        $('#demandas_evaluacion_inmuebles_selected').html('Histórico');
+                    }
+                    else
+                    {
+                        $('#demandas_evaluacion_inmuebles_selected').html('Todas');
+                    }
+                    // Respuesta
+                    if (data == 1)
+                    {
+                        $('#piechart_demandas_evaluacion_inmuebles').html('<p><i class="ace-icon fa fa-info-circle"></i> No hay datos para mostrar con el criterio seleccionado </p>');
+                    }
+                    else
+                    {
+                        var placeholder = $('#piechart_demandas_evaluacion_inmuebles').css({'width': '90%', 'height': '200px'});
                         drawPieChart(placeholder, JSON.parse(data));
                         drawTootip(placeholder);
                     }

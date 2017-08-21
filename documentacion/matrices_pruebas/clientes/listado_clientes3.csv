@@ -1,0 +1,17 @@
+CIF/NIE/NIF;Nombre;Apellidos;"Fecha Nac.";Dirección;E-mail;Teléfono;Pais;Provincia;Municipio;Estado;"Medio Captación";Observaciones;"Agente Asignado";"Fecha alta";Oferta;"Inm. Demandados"
+31698990E;Diego;Guerrero;;"Calle mar del norte";diego@fac.com;;España;Cádiz;"Jerez de la Frontera";Activo;Idealista;;"Berasuain Ruiz, Ángel Luis ";26/05/2017;1;2
+15092216F;Rosa;"De Benito Díaz";19/05/1952;Iglesia;rosa.benito@test.com;;España;Cádiz;Algar;Activo;Facebook;;"Berasuain Ruiz, Ángel Luis ";08/07/2017;0;0
+88406917T;Antonio;"Borrell Sánchez";01/01/1981;"Calle Huerta del obispo";antonio.borrell@correo.com;956010203;España;Cádiz;Cádiz;Activo;Twitter;-;"Berasuain Ruiz, Ángel Luis ";25/07/2017;0;0
+01125672Y;Manuel;"Losantos Gómez";01/12/1975;"Calle García de Sola, 2";manuel.losantos@prueba.com;956010259;España;Cádiz;Cádiz;Activo;Pisos.com;"Pendiente llamar al cliente para recoger llaves";"Berasuain Ruiz, Ángel Luis ";18/08/2017;0;0
+63053238A;Jose;Perez;20/10/2000;"Calle Obispo Orberá";pepito@perez.com;121212;España;Alava;Amurrio;Activo;Idealista;uuuuuuuuuu;"Empleado, Nombre";26/05/2017;0;0
+14526680H;David;Morato;01/02/1975;"Calle flamenco";cuniao@hotmail.com;-;España;Almería;"Huércal de Almería";Activo;Idealista;sdsdsd;"Empleado, Nombre";26/05/2017;1;0
+33446605M;Jonh;Dahl;01/01/1981;copenhague;pepito2@perez.com;"(+65) 152645789";Dinamarca;;;Histórico;"Amigos o Conocidos";;"Empleado, Nombre";25/05/2017;1;0
+75777802R;Angel;"Berasuain Ruiz";19/05/1982;"Calle pinito del Oro, número 4, 6 C";angel.berasuain@gmail.com;956078391-659163979;España;Almería;Almería;Activo;Idealista;"Cliente inicial
+";"Berasuain Ruiz, María Eugenía";26/05/2017;4;4
+46300568G;ULTIMO;Hombre;;"Calle Rosa";test@test.com;;España;Cádiz;Cádiz;Activo;Fotocasa;;;31/05/2017;0;0
+21017477P;Antonio;"Escalante Pérez";19/05/1982;"Avenida marconi, 1";test@fechanac.com;;España;Cádiz;Cádiz;Activo;Facebook;"Test fecha nac";;02/06/2017;0;1
+00346592M;Antonio;"Calvante Díaz";19/05/1982;"Calle Obispo Orberá";sdasd@asasd.com;-;España;Almería;Almería;Activo;Facebook;;;02/06/2017;0;0
+72163238W;Raúl;"López García";19/05/1982;ecuador;raul.lopez@test.com;;España;Cádiz;Cádiz;Activo;Facebook;;;26/06/2017;0;0
+52357246T;GUILLERMO;"LEON SANCHEZ";;"Calle benjumeda, 10";guillermo.leon@test.com;956112233;España;Cádiz;Cádiz;Histórico;Facebook;"<p>
+	Test de importaci&oacute;n 1</p>
+";;11/06/2017;0;0
