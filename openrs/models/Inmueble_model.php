@@ -366,7 +366,7 @@ class Inmueble_model extends MY_Model
             'name' => 'anio_construccion',
             'id' => 'anio_construccion',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('anio_construccion', is_object($datos) ? $datos->anio_construccion : ""),
+            'value' => $this->form_validation->set_value('anio_construccion', is_object($datos) ? $this->utilities->get_sql_value_string($datos->anio_construccion, "int_cero") : ""),
         );
 
         $data['fecha_alta'] = array(
