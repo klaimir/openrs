@@ -12,6 +12,7 @@
             <th>Metros</th>
             <th>Hab.</th>
             <th>Bañ.</th>
+            <th>Estado</th>
             <th>Opciones</th>
         </tr>
     </thead>
@@ -34,6 +35,7 @@
                 <td><?php echo $element->metros; ?></td>
                 <td><?php echo $element->habitaciones; ?></td>
                 <td><?php echo $element->banios; ?></td>
+                <td><?php echo $element->nombre_estado; ?></td>
                 <td>
                     <div class="hidden-sm hidden-xs action-buttons">
                         <a class="green" href="<?php echo site_url("inmuebles/edit/" . $element->id); ?>" title="Editar">

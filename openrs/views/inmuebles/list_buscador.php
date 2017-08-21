@@ -8,9 +8,10 @@
             <th>Dirección</th>
             <th>Precio<br> Compra</th>
             <th>Precio<br> Alquiler</th>
-            <th>Metros</th>
+            <th>Met.</th>
             <th>Hab.</th>
             <th>Bañ.</th>
+            <th>Estado</th>
             <?php if(isset($show_fecha_modificacion) && $show_fecha_modificacion) { ?>
                 <th>Fecha mod.</th>
             <?php } else { ?>
@@ -40,6 +41,7 @@
                 <td><?php echo $element->metros; ?></td>
                 <td><?php echo $element->habitaciones; ?></td>
                 <td><?php echo $element->banios; ?></td>
+                <td><?php echo $element->nombre_estado; ?></td>
                 <?php if(isset($show_fecha_modificacion) && $show_fecha_modificacion) { ?>
                     <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_actualizacion); ?></td>
                 <?php } else { ?>

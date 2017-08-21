@@ -8,10 +8,11 @@
                     <th>Tipos<br>Inmuebles</th>
                     <th>Lugar</th>
                     <th>Precios</th>
-                    <th>Metros</th>
+                    <th>Met.</th>
                     <th>Hab.</th>
                     <th>Baños</th>
                     <th>Observaciones</th>
+                    <th>Estado</th>
                     <?php if(isset($show_fecha_modificacion) && $show_fecha_modificacion) { ?>
                         <th>Fecha mod.</th>
                     <?php } else { ?>
@@ -21,7 +22,7 @@
                     <th>Pro.</th>
                     <th>Pend.</th>
                     <?php } ?>
-                    <th>Opciones</th>
+                    <th>Opc.</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +51,7 @@
                         <td><?php echo format_interval($element->habitaciones_desde,$element->habitaciones_hasta); ?></td>
                         <td><?php echo format_interval($element->banios_desde,$element->banios_hasta); ?></td>
                         <td><?php echo $this->utilities->cortar_texto($element->observaciones,50); ?></td>
+                        <td><?php echo $element->nombre_estado; ?></td>
                         <?php if(isset($show_fecha_modificacion) && $show_fecha_modificacion) { ?>
                             <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_actualizacion); ?></td>
                         <?php } else { ?>
