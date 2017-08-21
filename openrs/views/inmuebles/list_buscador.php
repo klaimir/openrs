@@ -16,10 +16,10 @@
                 <th>Fecha mod.</th>
             <?php } else { ?>
                 <th>Fecha alta</th>
-            <?php } ?>
-            <th>Img.</th>
+            <?php } ?>            
             <th>Dem.</th>
             <th>Pend.</th>
+            <th>Visita</th>
             <th>Opciones</th>
         </tr>
     </thead>
@@ -47,24 +47,9 @@
                 <?php } else { ?>
                     <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
                 <?php } ?> 
-                <td>
-                    <?php
-                    if($element->num_imagenes>0)
-                    {
-                    ?>
-                        <a href="<?php echo site_url('inmuebles_imagenes/index/'.$element->id); ?>"><?php echo $element->num_imagenes; ?></a>
-                    <?php
-                    }
-                    else
-                    {
-                    ?>
-                        <a href="<?php echo site_url('inmuebles_imagenes/insert/'.$element->id); ?>"><?php echo $element->num_imagenes; ?></a>
-                    <?php
-                    }
-                    ?>
-                </td>
                 <td><?php echo $element->num_demandas_totales; ?></td>
                 <td><?php echo $element->num_demandas_pendientes; ?></td>
+                <td><?php echo $element->num_demandas_propuestas_visita; ?></td>
                 <td>
                     <div class="hidden-sm hidden-xs action-buttons">
                         <a class="green" href="<?php echo site_url("inmuebles/edit/" . $element->id); ?>" title="Editar">

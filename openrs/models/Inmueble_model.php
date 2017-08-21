@@ -1022,6 +1022,8 @@ class Inmueble_model extends MY_Model
                 // Consulta de demandas
                 $result->num_demandas_totales = count($this->Demanda_model->get_demandas_inmueble($result->id));
                 $result->num_demandas_pendientes = count($this->Demanda_model->get_demandas_inmueble($result->id,1));
+                // Propuestas para visita
+                $result->num_demandas_propuestas_visita = count($this->Demanda_model->get_demandas_inmueble($result->id,2));
             }
         }
     }
