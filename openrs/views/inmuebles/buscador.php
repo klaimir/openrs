@@ -31,7 +31,7 @@
         </div>
         <div class="col-xs-12 col-md-6 col-lg-6">
             <div class="form-group">            
-                <?php echo label('Captadores', 'captador_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('Agentes Asignados', 'captador_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('captador_id',$agentes,$filtros['captador_id'], 'class="form-control" id="captador_id"'); ?>
                 </div>

@@ -276,8 +276,8 @@ if(isset($cliente_id))
                     <?php echo form_dropdown('estado_id',$estados,$estado_id, 'id="estado_id" onchange="mark_modified_field();" class="form-control"'); ?>        
                 </div>                
             </div>
-            <div class="form-group">            
-                <?php echo label('Captador', 'captador_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+            <div class="form-group">
+                <?php echo label('Agente Asignado', 'captador_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('captador_id',$agentes,$captador_id, 'onchange="mark_modified_field();" class="form-control" id="captador_id"'); ?>
                 </div>

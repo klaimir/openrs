@@ -253,7 +253,7 @@
             <div class="widget-header widget-header-flat widget-header-small">
                 <h5 class="widget-title">
                     <i class="ace-icon fa fa-signal"></i>
-                    Agentes asignados
+                    Agentes Asignados
                 </h5>
 
                 <div class="widget-toolbar no-border">

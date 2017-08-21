@@ -130,7 +130,7 @@ class Inmueble_model extends MY_Model
         $this->form_validation->set_rules('kwh_m2_anio', 'Consumo Kwh/m2 anual', $rules_kwh_m2_anio . 'xss_clean');        
         $this->form_validation->set_rules('estado_id', 'Estado', 'required');
         // Cuidado que hay que poner reglas a los campos para que se puedan aplicar los helpers
-        $this->form_validation->set_rules('captador_id', 'Captador', 'xss_clean');
+        $this->form_validation->set_rules('captador_id', 'Agente Asignado', 'xss_clean');
 
         // Datos de la zona pública   
         if ($id)
