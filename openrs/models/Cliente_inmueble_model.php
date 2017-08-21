@@ -2,7 +2,7 @@
 
 require_once APPPATH . 'core/MY_Model.php';
 
-class Cliente_Inmueble_model extends MY_Model
+class Cliente_inmueble_model extends MY_Model
 {
 
     public function __construct()

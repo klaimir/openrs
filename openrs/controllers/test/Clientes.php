@@ -36,8 +36,8 @@ class Clientes extends MY_Controller
     
     function propietarios($tipo_oferta,$historico=0)
     {
-        $this->load->model('Cliente_Inmueble_model');
-        var_dump($this->Cliente_Inmueble_model->get_ids_clientes($tipo_oferta,$historico));
+        $this->load->model('Cliente_inmueble_model');
+        var_dump($this->Cliente_inmueble_model->get_ids_clientes($tipo_oferta,$historico));
     }
 
     function general()

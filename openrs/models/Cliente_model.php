@@ -390,14 +390,14 @@ class Cliente_model extends MY_Model
             switch ($filtros['interes_id'])
             {
                 case 1:
-                    $this->load->model('Cliente_Inmueble_model');
+                    $this->load->model('Cliente_inmueble_model');
                     // Devuelve los ids de los clientes que tienen propiedades en venta
-                    $ids_clientes = $this->Cliente_Inmueble_model->get_ids_clientes(1, $filtros['tipo_interes_id']);
+                    $ids_clientes = $this->Cliente_inmueble_model->get_ids_clientes(1, $filtros['tipo_interes_id']);
                     break;
                 case 2:
-                    $this->load->model('Cliente_Inmueble_model');
+                    $this->load->model('Cliente_inmueble_model');
                     // Devuelve los ids de los clientes que tienen propiedades en alquiler
-                    $ids_clientes = $this->Cliente_Inmueble_model->get_ids_clientes(2, $filtros['tipo_interes_id']);
+                    $ids_clientes = $this->Cliente_inmueble_model->get_ids_clientes(2, $filtros['tipo_interes_id']);
                     break;
                 case 3:
                     $this->load->model('Demanda_model');
@@ -731,9 +731,9 @@ class Cliente_model extends MY_Model
      */
     function check_asociar_inmuebles($cliente_id,$inmuebles)
     {
-        $this->load->model('Cliente_Inmueble_model');
+        $this->load->model('Cliente_inmueble_model');
         // Consulta
-        $exists=$this->Cliente_Inmueble_model->check_exists_inmuebles_cliente($cliente_id,$inmuebles);
+        $exists=$this->Cliente_inmueble_model->check_exists_inmuebles_cliente($cliente_id,$inmuebles);
          // Si existen
         if ($exists)
         {

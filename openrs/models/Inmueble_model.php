@@ -1344,9 +1344,9 @@ class Inmueble_model extends MY_Model
      */
     function check_asociar_clientes($inmueble_id,$clientes)
     {
-        $this->load->model('Cliente_Inmueble_model');
+        $this->load->model('Cliente_inmueble_model');
         // Consulta
-        $exists=$this->Cliente_Inmueble_model->check_exists_clientes_inmueble($inmueble_id,$clientes);
+        $exists=$this->Cliente_inmueble_model->check_exists_clientes_inmueble($inmueble_id,$clientes);
          // Si existen
         if ($exists)
         {
