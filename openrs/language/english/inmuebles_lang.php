@@ -21,3 +21,5 @@ $lang['inmuebles_infowindow_portada_title'] = 'Property main image';
 $lang['inmuebles_infowindow_portada_no_exist'] = 'No main image';
 $lang['inmuebles_infowindow_view_details'] = 'View details';
 $lang['inmuebles_infowindow_description_no_exist'] = 'No description';
+$lang['inmuebles_infowindow_banios'] = 'Bath:';
+$lang['inmuebles_infowindow_habitaciones'] = 'Rooms:';

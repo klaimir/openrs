@@ -205,12 +205,13 @@ class Inmueble_model extends MY_Model
     /**
      * Calcula los datos necesarios para imprimir un inmueble en un mapa de google maps en un determinado idioma
      *
-     * @param [id]                  Indentificador del elemento
+     * @param [inmueble]                  Datos del inmueble
      *
      * @return array con los datos de un inmueble en un mapa de google maps
      */
-    private function _get_datos_google_maps($id)
+    private function _get_datos_google_maps($inmueble)
     {
+        $id=$inmueble->id;
         // Rescatamos los parámetros del idioma
         $id_idioma = $this->infowindow_language;
         $idioma_nombre_seo = $this->infowindow_nombre_seo;
@@ -232,6 +233,28 @@ class Inmueble_model extends MY_Model
         {
             $datos['image_path']=base_url($foto_portada->imagen);
         }
+        // Precios
+        $texto_precios="";
+        if($inmueble->precio_compra)
+        {
+            $texto_precios.=" - ".number_format($inmueble->precio_compra, 0, ",", ".")." €";
+        }
+        if($inmueble->precio_alquiler)
+        {
+            $texto_precios.=" - ".number_format($inmueble->precio_alquiler, 0, ",", ".")." €";
+        }
+        $datos['datos_generales_1']="Ref: ".$inmueble->referencia.$texto_precios;
+        // Datos generales
+        $datos_generales_2=$inmueble->metros." m2";
+        if($inmueble->habitaciones)
+        {
+            $datos_generales_2.=" - ".lang('inmuebles_infowindow_habitaciones')." ".$inmueble->habitaciones;
+        }
+        if($inmueble->banios)
+        {
+            $datos_generales_2.=" - ".lang('inmuebles_infowindow_banios')." ".$inmueble->banios;
+        }
+        $datos['datos_generales_2']=$datos_generales_2;
         return $datos;
     }
         
@@ -1885,7 +1908,7 @@ class Inmueble_model extends MY_Model
     public function get_infowindow_content_private($inmueble)
     {
         // Calculamos datos
-        $datos=$this->_get_datos_google_maps($inmueble->id);
+        $datos=$this->_get_datos_google_maps($inmueble);
         // Incluimos los datos en un infowindow
         if($datos['image_path'])
         {
@@ -1897,7 +1920,8 @@ class Inmueble_model extends MY_Model
         }
         $infowindow_content= $html_image                  
             . '<br>'. $datos['description']
-            . '<br>'. $inmueble->direccion
+            . '<br>'. $datos['datos_generales_1']
+            . '<br>'. $datos['datos_generales_2']
             . '<br><a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
         // Devolvemos el infowindow
         return $infowindow_content;
@@ -1906,7 +1930,7 @@ class Inmueble_model extends MY_Model
     public function get_infowindow_content_public($inmueble)
     {
         // Calculamos datos
-        $datos=$this->_get_datos_google_maps($inmueble->id);
+        $datos=$this->_get_datos_google_maps($inmueble);
         // Incluimos los datos en un infowindow
         if($datos['image_path'])
         {
@@ -1915,10 +1939,22 @@ class Inmueble_model extends MY_Model
         else
         {
             $html_image=lang('inmuebles_infowindow_portada_no_exist');
+        }      
+        // Url-SEO
+        if($datos['url_seo'])
+        {
+            $url_seo='<a href="'.  site_url($datos['url_seo']) .'">'.lang('inmuebles_infowindow_view_details').'</a>';
         }
+        else
+        {
+            $url_seo='URL-SEO sin especificar';
+        }
+        // Contenido
         $infowindow_content= $html_image                  
             . '<br>'. $datos['description']
-            . '<br><a href="'.  site_url($datos['url_seo']) .'">'.lang('inmuebles_infowindow_view_details').'</a>';
+            . '<br>'. $datos['datos_generales_1']
+            . '<br>'. $datos['datos_generales_2']
+            . '<br>'.$url_seo;
         // Añadir editar si está logueado como agente inmobiliario
         if($this->data["session_es_agente"])
         {
@@ -2011,33 +2047,6 @@ class Inmueble_model extends MY_Model
         // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
         $this->googlemaps->initialize($config);
 
-        // Añadir markers con rutas formateados
-        /*
-        foreach ($inmuebles as $inmueble)
-        {            
-            $marker=array();
-            // Formateamos la posición
-            $marker['position']=$this->format_google_map_path($inmueble);
-            // Calculamos datos
-            $datos=$this->_get_datos_google_maps($inmueble->id);
-            // Incluimos los datos en un infowindow
-            if($datos['image_path'])
-            {
-                $html_image='<img width="225" height="150" class="nav-user-photo" src="'.  $datos['image_path'] .'" alt="Imagen principal del inmueble">';
-            }
-            else
-            {
-                $html_image='Portada sin especificar';
-            }
-            $marker['infowindow_content']= $html_image                  
-                . '<br>'. $datos['description']
-                . '<br>'. $inmueble->direccion
-                . '<br><a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
-            // Añadimos el marker
-            $this->googlemaps->add_marker($marker);
-        }
-         * 
-         */
         // Hay que unificar antes los markers repetidos
         $markers=$this->calculate_unique_markers($inmuebles);
         foreach($markers as $marker)
