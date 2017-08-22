@@ -77,9 +77,40 @@ class Inmueble_enlace_model extends MY_Model
         $this->set_rules($id);
 
         // Other functions validations
+        if($this->form_validation->run())
+        {
+            return $this->check_exists_youtube_publicado($id,$this->inmueble_id,$this->form_validation->get_validation_data('youtube'),$this->form_validation->get_validation_data('publicado'));
+        }
+        // En caso contrario, los errores son los de las reglas definidas
+        else
+        {
+            $this->set_error(validation_errors());
+            return FALSE;
+        }
+    }
+    
+    /**
+     * Comprueba que ya existe otro enlace publicado de youtube
+     *
+     * @param [id]                 Indentificador del elemento
+     * @param [inmueble_id]        identificador del inmueble
+     * @param [youtube]            1 si es youtube, 0 en caso contrario
+     * @param [publicado]          1 si está publicado, 0 en caso contrario
+     *
+     * @return TRUE OR FALSE
+     */            
+    public function check_exists_youtube_publicado($id,$inmueble_id,$youtube,$publicado)
+    {
+        if ($inmueble_id && $youtube && $publicado)
+        {
+            if($this->check_youtube_publicado($id,$inmueble_id))
+            {
+                $this->set_error('Ya existe otro enlace publicado de Youtube');
+                return FALSE;
+            }
+        }
         
-        // Run form validation        
-        return $this->form_validation->run();
+        return TRUE;
     }
 
     /**
@@ -192,4 +223,25 @@ class Inmueble_enlace_model extends MY_Model
         return $this->db->get()->result();
     } 
 
+    /**
+     * Comprueba si existe otro enlace publicado de youtube en el inmueble
+     *
+     * @param [id]                  Indentificador del enlace
+     * @param [inmueble_id]         Indentificador del inmueble
+     *
+     * @return void
+     */
+    function check_youtube_publicado($id, $inmueble_id)
+    {
+        $this->db->from($this->table);
+        if(!empty($id))
+        {
+            $this->db->where('id <>', $id);
+        }
+        $this->db->where('inmueble_id', $inmueble_id);
+        $this->db->where('publicado', 1);
+        $this->db->where('youtube', 1);
+        return $this->db->get()->row();
+    } 
+    
 }

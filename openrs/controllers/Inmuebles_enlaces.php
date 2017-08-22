@@ -67,7 +67,7 @@ class Inmuebles_enlaces extends CRUD_controller
             }
             else
             {
-                $this->data['message'] = validation_errors();
+                $this->data['message'] = $this->{$this->_model}->get_error();
             }
         }
         
@@ -109,7 +109,7 @@ class Inmuebles_enlaces extends CRUD_controller
             }
             else
             {
-                $this->data['message'] = validation_errors();
+                $this->data['message'] = $this->{$this->_model}->get_error();
             }
         }
         
