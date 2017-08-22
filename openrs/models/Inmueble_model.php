@@ -1991,6 +1991,19 @@ class Inmueble_model extends MY_Model
         $config['loadAsynchronously'] = TRUE;
         // Activamos geocoding para mejorar rendimiento
         $config['geocodeCaching'] = TRUE;
+        // Establecemos marcas de mapa        
+        if($infowindow_type=="public")
+        {
+            $map_name='map_one';
+            $map_div_id='google_maps1';
+        }
+        else
+        {
+            $map_name='map_two';
+            $map_div_id='google_maps2';
+        }
+        $config['map_name'] = $map_name;
+        $config['map_div_id'] = $map_div_id;        
         // Si hay filtros de provincia o población establecidos, los usamos, en caso contrario será nuestra posición actual (auto)
         $config['center']=$this->format_google_map_center($filtros);
         $config['zoom']=12;        

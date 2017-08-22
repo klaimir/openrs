@@ -202,9 +202,14 @@ if(isset($cliente_id))
             <div class="form-group">            
                 <?php echo label('Dirección pública', 'direccion_publica', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
-                    <?php echo form_input($direccion_publica, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                    <?php echo form_input($direccion_publica, '', 'class="form-control" onchange="check_google_maps(1); mark_modified_field();"'); ?>
                 </div>
-            </div>            
+            </div>  
+            <div class="form-group" id="google_maps_div_public">            
+                <?php echo label('Ubicación Google Maps', 'google_maps_label', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <div id="google_maps_public" class="col-sm-9">
+                </div>
+            </div>
             <div class="form-group"> 
                 <ul class="nav nav-tabs">
                         <?php foreach($idiomas_activos as $idioma) { ?>
@@ -298,36 +303,55 @@ if(isset($cliente_id))
         check_show_kwh_m2_anio();
         
         // Comprobamos si hay que mostrar mapa google maps
-        check_google_maps();        
+        <?php if(isset($element) && !empty($element->direccion_publica)) { ?>
+            check_google_maps(1);  
+        <?php } ?>
+        check_google_maps();  
     });
 
-    function check_google_maps() {
+    function check_google_maps(tipo) {
         var pais_id=64;      
-        var direccion=$('#direccion').val();
+        
+        if(tipo==1)
+        {
+            var campo_direccion='#direccion_publica';
+            var capa_div='#google_maps_div_public';
+            var capa_mapa='#google_maps_public';
+            var number_map=2;
+        }
+        else
+        {
+            var campo_direccion='#direccion';
+            var capa_div='#google_maps_div';
+            var capa_mapa='#google_maps';
+            var number_map=1;
+        }
+        
+        var direccion=$(campo_direccion).val();
 
         if(pais_id!='' && direccion!='')
         {
-            $('#google_maps_div').show();     
+            $(capa_div).show();     
             
             var poblacion_id=$('#poblacion_id').val();
             var provincia_id=$('#provincia_id').val();
 
             if(poblacion_id!='' && provincia_id!='')
             {
-                var url='/common/single_google_map?direccion='+direccion+'&provincia_id='+provincia_id+'&poblacion_id='+poblacion_id+'&pais_id='+pais_id;
+                var url='/common/single_google_map/'+number_map+'?direccion='+direccion+'&provincia_id='+provincia_id+'&poblacion_id='+poblacion_id+'&pais_id='+pais_id;
             }
             else
             {
-                var url='/common/single_google_map?direccion='+direccion+'&pais_id='+pais_id;
+                var url='/common/single_google_map/'+number_map+'?direccion='+direccion+'&pais_id='+pais_id;
             }
             
             var url_encode = encodeURI(url);
 
-            $('#google_maps').load('<?php echo site_url();?>'+url_encode);
+            $(capa_mapa).load('<?php echo site_url();?>'+url_encode);
         }
         else
         {
-            $('#google_maps_div').hide();
+            $(capa_div).hide();
         }
     }
     

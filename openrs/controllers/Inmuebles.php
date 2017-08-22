@@ -76,7 +76,7 @@ class Inmuebles extends CRUD_controller
         // Check
         if($inmuebles)
         {
-            // Create the map.
+            // Create the map
             $this->data['map'] = $this->{$this->_model}->create_google_map($inmuebles,$filtros,$infowindow_type);
             // Load our view, passing the map data that has just been created
             $this->load->view('common/google_maps', $this->data);

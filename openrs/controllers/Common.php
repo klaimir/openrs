@@ -59,7 +59,8 @@ class Common extends MY_Controller
         return $this->utilities->cleantext($direccion_formateada);
     }
     
-    function single_google_map()
+    // Le añadimos el número de mapa para que se puedan concatenar varios en una misma página si se desea
+    function single_google_map($map_number=1)
     {
          // Load the library
         $this->load->library('googlemaps');
@@ -68,10 +69,11 @@ class Common extends MY_Controller
         $direccion_formateada=$this->_format_google_map_path();
         
         // Config
-        $config=array();
         $config['loadAsynchronously'] = TRUE;
         $config['center']=$direccion_formateada;
         $config['zoom']=15;        
+        $config['map_name'] = 'map_name_'.$map_number;
+        $config['map_div_id'] = 'map_div_id_'.$map_number;
         // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
         $this->googlemaps->initialize($config);
         

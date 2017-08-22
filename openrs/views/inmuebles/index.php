@@ -43,13 +43,28 @@
     </div>
 </div>
 
-<div class="row" id="google_maps_div" style="display:none;">      
-    <div class="space-10"></div>
+<div class="space-10"></div>
+
+<div class="row" id="google_maps_div" style="display:none;">
+    <h2 align="center">Mapa con direcciones reales</h2>
     <div class="col-xs-12">
         <div id="google_maps">
-        </div>
-        <small class="blue">El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en su posición actual. Esta opción sólo funcionará si tiene habilitado en su dispositivo la geolocalización y no está bloqueado para el navegador web actual.</small>
+        </div>        
     </div>
+    
+<small class="blue">El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en su posición actual. Esta opción sólo funcionará si tiene habilitado en su dispositivo la geolocalización y no está bloqueado para el navegador web actual.</small>
+
+</div>
+
+<div class="row" id="google_maps_public_div" style="display:none;">  
+    <h2 align="center">Mapa con direcciones pública (vista web corporativa)</h2>
+    <div class="col-xs-12">
+        <div id="google_maps_public">
+        </div>
+    </div>
+    
+<small class="blue">El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en su posición actual. Esta opción sólo funcionará si tiene habilitado en su dispositivo la geolocalización y no está bloqueado para el navegador web actual.</small>
+
 </div>
 
 <div class="space-10"></div>
@@ -127,8 +142,17 @@
     ?>
         
     function check_multiple_google_maps(infowindow_type) {
-        $('#google_maps_div').toggle('slow');
-        $('#google_maps').load('<?php echo site_url('inmuebles/multiple_google_map/');?>'+infowindow_type);
+        if(infowindow_type=='public')
+        {
+            $('#google_maps_public_div').toggle('slow');     
+            $('#google_maps_public').load('<?php echo site_url('inmuebles/multiple_google_map/');?>'+infowindow_type);
+        }
+        else
+        {
+            $('#google_maps_div').toggle('slow');
+            $('#google_maps').load('<?php echo site_url('inmuebles/multiple_google_map/');?>'+infowindow_type);
+        }
+        
     }
     
     jQuery(function ($) {
