@@ -123,24 +123,28 @@ if(isset($cliente_id))
                 <?php echo label('Precio compra', 'precio_compra', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_compra, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                    <small class="blue">Sin decimales y signos de puntuación</small>
                 </div>
             </div>
             <div class="form-group">
                 <?php echo label('Precio compra anterior', 'precio_compra', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_compra_anterior, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                    <small class="blue">Sin decimales y signos de puntuación</small>
                 </div>
             </div>
             <div class="form-group">
                 <?php echo label('Precio Alquiler', 'precio_alquiler', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_alquiler, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                    <small class="blue">Sin decimales y signos de puntuación</small>
                 </div>
             </div>
             <div class="form-group">
                 <?php echo label('Precio alquiler anterior', 'precio_alquiler', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_alquiler_anterior, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                    <small class="blue">Sin decimales y signos de puntuación</small>
                 </div>
             </div>
             <div class="form-group">            
@@ -244,18 +248,22 @@ if(isset($cliente_id))
                                         <div class="col-sm-9">
                                             <?php echo form_input($datos_idioma[$idioma->id_idioma]['url_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
                                             <?php echo form_hidden($datos_idioma[$idioma->id_idioma]['url_seo_anterior']['name'], $datos_idioma[$idioma->id_idioma]['url_seo_anterior']['value']); ?>
+                                            <small class="blue">Si deja este campo sin rellenar se creará a partir del título indicado</small>
                                         </div>
                                     </div>
                                     <div class="form-group">            
                                         <?php echo label('Descripción SEO', 'descripcion_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
                                         <div class="col-sm-9">
                                             <?php echo form_input($datos_idioma[$idioma->id_idioma]['descripcion_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                                            
+                                            <small class="blue">Utilice una descripción corta del inmueble (max. 150 caracteres)</small>
                                         </div>
                                     </div>
                                     <div class="form-group">            
                                         <?php echo label('Palabras clave SEO', 'keywords_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
                                         <div class="col-sm-9">
                                             <?php echo form_input($datos_idioma[$idioma->id_idioma]['keywords_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+                                            <small class="blue">Introduzca las palabras separadas por comas ","</small>
                                         </div>
                                     </div>
                                 </div>
