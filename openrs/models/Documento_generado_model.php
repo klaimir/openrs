@@ -123,7 +123,7 @@ class Documento_generado_model extends MY_Model
     {
          // Calculamos el texto qr
         $idioma=$this->Idioma_model->get_idioma($idioma_id);
-        $qr_text=site_url($idioma->nombre_seo.'/'.$url_seo);
+        $qr_text=site_url($idioma->nombre_seo.'/'.$inmueble_id.'-'.$url_seo);
         // Limpiamos ficheros
         $this->utilities->clean_files(FCPATH . 'uploads/inmuebles/' . $inmueble_id,"png");
         // Imprimimos el qr
@@ -157,8 +157,9 @@ class Documento_generado_model extends MY_Model
                 {
                     case "imagen_portada":
                         $this->load->model('Inmueble_imagen_model');
-                        $imagen=$this->Inmueble_imagen_model->get_portada($this->inmueble_id);                        
-                        if($imagen->portada)
+                        $imagen=$this->Inmueble_imagen_model->get_portada($this->inmueble_id);     
+                        // Hay que comprobar que existe la imagen
+                        if($imagen && $imagen->portada)
                         {
                             // Calculamos dimensiones para mantenter ratio
                             $dimensiones_imagen=$this->utilities->redimensionar_fotografia(FCPATH.$imagen->imagen,600,600);
