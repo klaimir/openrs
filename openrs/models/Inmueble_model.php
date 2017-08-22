@@ -187,10 +187,11 @@ class Inmueble_model extends MY_Model
                     $required_rules.="required|";
                 }
                 // Reglas
-                $titulo_rules = 'is_unique_global[inmuebles_idiomas;' . $id_inmuebles_idiomas . ';titulo;id]|';
+                //$titulo_rules = 'is_unique_global[inmuebles_idiomas;' . $id_inmuebles_idiomas . ';titulo;id]|';
                 $this->form_validation->set_rules('titulo_' . $idioma->id_idioma, 'Título en ' . $idioma->nombre, $required_rules . $titulo_rules . 'max_length[70]|xss_clean');
                 $this->form_validation->set_rules('descripcion_' . $idioma->id_idioma, 'Descripción del inmueble en ' . $idioma->nombre, $required_rules . 'trim');
-                $url_seo_rules = 'is_unique_global[inmuebles_idiomas;' . $id_inmuebles_idiomas . ';url_seo;id]|';
+                //$url_seo_rules = 'is_unique_global[inmuebles_idiomas;' . $id_inmuebles_idiomas . ';url_seo;id]|';
+                $url_seo_rules = '';
                 $this->form_validation->set_rules('url_seo_' . $idioma->id_idioma, 'URL SEO en ' . $idioma->nombre, $url_seo_rules . 'max_length[50]|xss_clean');
                 $this->form_validation->set_rules('descripcion_seo_' . $idioma->id_idioma, 'Descripción SEO en ' . $idioma->nombre, $required_rules . 'max_length[150]|xss_clean');
                 $this->form_validation->set_rules('keywords_seo_' . $idioma->id_idioma, 'Palabras clave SEO en ' . $idioma->nombre, $required_rules . 'max_length[255]|xss_clean');
