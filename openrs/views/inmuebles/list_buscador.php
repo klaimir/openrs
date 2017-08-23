@@ -16,10 +16,11 @@
                 <th>Fecha mod.</th>
             <?php } else { ?>
                 <th>Fecha alta</th>
-            <?php } ?>            
+            <?php } ?>   
+            <th>Ofe.</th>
             <th>Dem.</th>
             <th>Pend.</th>
-            <th>Visita</th>
+            <th>Vis.</th>
             <th>Opciones</th>
         </tr>
     </thead>
@@ -47,6 +48,7 @@
                 <?php } else { ?>
                     <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
                 <?php } ?> 
+                <td><?php echo $element->num_propietarios; ?></td>
                 <td><?php echo $element->num_demandas_totales; ?></td>
                 <td><?php echo $element->num_demandas_pendientes; ?></td>
                 <td><?php echo $element->num_demandas_propuestas_visita; ?></td>

@@ -1072,6 +1072,10 @@ class Inmueble_model extends MY_Model
                     $result->num_demandas_pendientes = count($this->Demanda_model->get_demandas_inmueble($result->id,1));
                     // Propuestas para visita
                     $result->num_demandas_propuestas_visita = count($this->Demanda_model->get_demandas_inmueble($result->id,2));
+                    // Modelo Inmueble_idioma_model
+                    $this->load->model('Cliente_model');
+                    // Consulta de propietarios
+                    $result->num_propietarios = count($this->Cliente_model->get_propietarios_inmueble($result->id));
                 }
             }
         }
