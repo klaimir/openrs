@@ -111,6 +111,7 @@
                 {"sType": "date-euro"},
                 null,
                 null,
+                null,
                 null
             ]
         });

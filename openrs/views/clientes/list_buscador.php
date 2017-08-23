@@ -17,6 +17,7 @@
                     <?php } ?>
                     <th>Ofe.</th>
                     <th>Dem.</th>
+                    <th>Inm.<br> Dem.</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -41,6 +42,7 @@
                             <td><?php echo $this->utilities->cambiafecha_bd($element->fecha_alta); ?></td>
                         <?php } ?>                        
                         <td><?php echo $element->num_propiedades; ?></td>
+                        <td><?php echo $element->num_demandas; ?></td>
                         <td><?php echo $element->num_inmuebles_demandados; ?></td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">

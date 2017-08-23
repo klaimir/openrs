@@ -482,6 +482,7 @@ class Cliente_model extends MY_Model
             {
                 $result->num_propiedades = count($this->Inmueble_model->get_propiedades_cliente($result->id));
                 $result->num_inmuebles_demandados = count($this->Demanda_model->get_inmuebles_demandados($result->id));
+                $result->num_demandas = count($this->Demanda_model->get_view_demandas_cliente($result->id));
             }
         }
     }
