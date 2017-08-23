@@ -19,6 +19,7 @@ if(isset($inmueble_id))
                 <?php echo label('NIF/NIE/CIF', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($nif, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                    <small class="blue">Introduzca el número sin guiones y todo en maýuscula (por ejemplo 75777802R o G32843955)</small>
                 </div>
             </div>
             <div class="form-group">            
