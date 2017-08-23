@@ -743,6 +743,7 @@ class Demanda_model extends MY_Model
                 // Consulta de inmuebles
                 $result->num_inmuebles_propuestos = count($this->get_inmuebles_demanda($result->id));
                 $result->num_inmuebles_pendientes = count($this->get_inmuebles_demanda($result->id,1));
+                $result->num_inmuebles_propuestos_visita = count($this->get_inmuebles_demanda($result->id,2));
             }
         }
         return $results;

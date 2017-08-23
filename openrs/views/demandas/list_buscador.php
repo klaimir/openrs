@@ -21,6 +21,7 @@
                     <?php if(!isset($ocultar_datos_adicionales)) { ?>
                     <th>Pro.</th>
                     <th>Pend.</th>
+                    <th>Vis.</th>
                     <?php } ?>
                     <th>Opc.</th>
                 </tr>
@@ -60,6 +61,7 @@
                         <?php if(!isset($ocultar_datos_adicionales)) { ?>
                         <td><?php echo $element->num_inmuebles_propuestos; ?></td>
                         <td><?php echo $element->num_inmuebles_pendientes; ?></td>
+                        <td><?php echo $element->num_inmuebles_propuestos_visita; ?></td>
                         <?php } ?>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">

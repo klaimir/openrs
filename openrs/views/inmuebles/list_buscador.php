@@ -17,7 +17,7 @@
             <?php } else { ?>
                 <th>Fecha alta</th>
             <?php } ?>   
-            <th>Ofe.</th>
+            <th>Prop.</th>
             <th>Dem.</th>
             <th>Pend.</th>
             <th>Vis.</th>

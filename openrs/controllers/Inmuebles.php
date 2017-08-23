@@ -664,7 +664,7 @@ class Inmuebles extends CRUD_controller
             // Cabecera
             $cabecera = array('Referencia','Tipo','Fecha Alta','Provincia','Municipio','Zona','Dirección','Metros','Metros útiles','Hab.','Baños'
                 ,'Precio Compra','Precio Compra Anterior','Precio Alquiler','Precio Alquiler Anterior','Cert. Energ.','Kwh/m2 anual','Año Construcción','Estado'
-                ,'Observaciones','Agente Asignado','Propiedades','Dem. totales','Dem. pendientes','Dem. Pro. Visita');
+                ,'Observaciones','Agente Asignado','Propietarios','Dem. totales','Dem. pendientes','Dem. Pro. Visita');
             $array[] = $this->utilities->encoding_array($cabecera);
              
             // Resto de datos
@@ -693,7 +693,7 @@ class Inmuebles extends CRUD_controller
                 $datos_formateado[] = $element->nombre_estado;
                 $datos_formateado[] = $element->observaciones;
                 $datos_formateado[] = $element->nombre_captador;    
-                $datos_formateado[] = $element->num_propiedades;
+                $datos_formateado[] = $element->num_propietarios;
                 $datos_formateado[] = $element->num_demandas_totales;
                 $datos_formateado[] = $element->num_demandas_pendientes;  
                 $datos_formateado[] = $element->num_demandas_propuestas_visita;
