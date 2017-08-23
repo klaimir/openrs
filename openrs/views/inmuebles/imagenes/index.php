@@ -63,7 +63,7 @@
                                 <i class="ace-icon fa fa-pinterest-square"></i>
                             </a>
                         <?php } ?>
-                        <?php if($element->publicada) { ?>
+                        <?php if($element->publicada || $element->portada) { ?>
                             <a href="<?php echo site_url('inmuebles_imagenes/publicar/'.$element->id.'/0'); ?>" title="Quitar publicación">
                                 <i class="ace-icon fa fa-times red"></i>
                             </a>

@@ -133,16 +133,10 @@ class Inmuebles_imagenes extends CRUD_controller
         $this->Inmueble_model->check_access($this->data['inmueble']);
         
         $error=FALSE;
-        // Check de acciones
-        if($publicar && $this->data['element']->publicada)
+        // Check de acciones        
+        if(!$publicar && $this->data['element']->portada)
         {
-            $this->session->set_flashdata('message', 'La imagen seleccionada ya estaba publicada');
-            $error=TRUE;
-        }
-        
-        if(!$publicar && !$this->data['element']->publicada)
-        {
-            $this->session->set_flashdata('message', 'La imagen seleccionada no estaba publicada');
+            $this->session->set_flashdata('message', 'No puedes despublicar la portada');
             $error=TRUE;
         }
            
