@@ -34,7 +34,18 @@
                 <td><?php echo $element->nombre_tipo; ?></td>
                 <td><?php echo $element->nombre_poblacion; ?></td>
                 <td><?php echo $element->nombre_zona; ?></td>
-                <td><?php echo $element->direccion_publica; ?></td>
+                <td>
+                    <?php 
+                    if(trim($element->direccion_publica)==trim($element->direccion))
+                    {
+                        echo "<strong>".$element->direccion_publica."</strong>"; 
+                    }
+                    else
+                    {
+                        echo $element->direccion_publica;
+                    }
+                    ?>
+                </td>
                 <td><?php echo number_format($element->precio_compra, 0, ",", "."); ?></td>
                 <td><?php echo number_format($element->precio_alquiler, 0, ",", "."); ?></td>
                 <td><?php echo $element->metros; ?></td>
