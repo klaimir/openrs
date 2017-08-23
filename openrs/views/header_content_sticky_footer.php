@@ -44,7 +44,22 @@
 	<!--[if lt IE 9]>
 		<script src="<?php echo base_url('dist/html5shiv.js');?>"></script>
 	<![endif]-->
-        
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+  <script>
+       function onSubmit(token) {
+         document.getElementById("frmContacto").submit();
+       }
+     </script>
+<script>
+       function onSubmitmv(token) {
+         document.getElementById("frmContactomv").submit();
+       }
+     </script>
+     <script>
+       function onSubmitInmueble(token) {
+         document.getElementById("frmInmueble").submit();
+       }
+     </script>
         <?php include_once(APPPATH.'third_party/analyticstracking.php'); ?>
 </head>
 

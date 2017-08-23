@@ -52,23 +52,6 @@
 							<?php endif; ?>
 							</li>
 						<?php endforeach; ?>
-						<?php if($this->ion_auth->logged_in()){?>
-							<?php /*if($this->simple_sessions->es_usuario()){?>
-								<li class="elemento-header">
-									<a href="<?php echo site_url('usuario-mi-cuenta'); ?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $this->lang->line('admin_mi_cuenta');?></a>
-								</li>	
-							<?php }*/?>
-							<li>
-								<a href="<?php echo site_url('logout'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><span class="glyphicon glyphicon-off"></span></a>
-							</li>
-						<?php }else{?>
-							<li>
-								<a href="<?php echo site_url('login'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo "LOGIN";?></a>
-							</li>
-							<!-- <li>
-								<a href="<?php echo site_url('registro');?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo "Regístrate."; ?></a>
-							</li> -->
-						<?php }?>
 					 <?php }else{
 						foreach ($secciones_header as $sh):?>
 							<li>
@@ -102,33 +85,7 @@
 								<?php }?>
 							<?php endif; ?>
 							</li>
-						<?php endforeach;
-						if($seccion == 'mi_cuenta'){ ?>
-							<li class="elemento-header active">
-								<a href="<?php echo site_url('usuario-mi-cuenta'); ?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $this->lang->line('admin_mi_cuenta');?></a>
-							</li>
-							<li>
-								<a href="<?php echo site_url('logout'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><span class="glyphicon glyphicon-off"></span></a>
-							</li>				
-						<?php }elseif($seccion == 'error'){ ?>
-							<?php if($this->ion_auth->logged_in()){?>
-								<?php /*if($this->simple_sessions->es_usuario()){?>
-									<li class="elemento-header">
-										<a href="<?php echo site_url('usuario-mi-cuenta'); ?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $this->lang->line('admin_mi_cuenta');?></a>
-									</li>
-								<?php }*/?>
-								<li>
-									<a href="<?php echo site_url('logout'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><span class="glyphicon glyphicon-off"></span></a>
-								</li>
-							<?php }else{?>
-								<li>
-									<a href="<?php echo site_url('login'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo "LOGIN";?></a>
-								</li>
-								<!-- <li>
-									<a href="<?php echo site_url('registro');?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo "Regístrate."; ?></a>
-								</li> -->
-							<?php }?>
-						<?php }?>	
+						<?php endforeach;?>
 					<?php }?>
 					<?php if(count($cargar_idiomas) > 1){?>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo strtoupper($idioma_actual->nombre_seo2);?> <b class="caret"></b></a>

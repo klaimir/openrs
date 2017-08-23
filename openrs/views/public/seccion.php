@@ -662,7 +662,7 @@ $mensaje = array(
 			<?php endforeach; ?>
 			<?php if($seccion->tipo_seccion == 4){?>
 				<div class="col-sm-12 margin-top-20">
-					<?php echo form_open('',array('class'=>'form-horizontal')); ?>
+					<?php echo form_open('',array('class'=>'form-horizontal','id'=>'frmContacto')); ?>
 					<div class="col-sm-6">
 						<div class="form-group margin-right-0">
 								<?php echo form_input($nombre); ?>
@@ -675,12 +675,12 @@ $mensaje = array(
 								<p></p>
 						</div>
 						<div class="form-group margin-right-0">
-							<?php echo form_input($mensaje); ?>
+							<?php echo form_textarea($mensaje); ?>
 							<span><?php echo form_error('mensaje'); ?></span>
 							<p></p>
 						</div>
-						<div class="form-group row">
-							<?php echo form_submit(array('name'=>'submit_cat','value'=>'Enviar','class'=>'btn-contacto')); ?>
+                                                <div class="form-group row">
+							<button class="g-recaptcha btn-contacto" data-sitekey="6LdIfh4UAAAAAJXul7Q7JWfUnz-IcuOdv-fIHDfp" data-callback="onSubmit">Enviar</button>
 						</div>
 					</div>
 					<div class="col-sm-6">

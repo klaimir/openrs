@@ -65,7 +65,7 @@ class Blog extends MY_Controller
 	
 	function listar_categorias(){
 		$this->data = $this->inicializar_con_logeo(-3, $this->lang->line('blog_c_ver_categorias'), $this->lang->line('blog_c_blog'));
-		$this->data['categorias'] = $this->Articulo_model->get_categorias($this->simple_sessions->get_value('id_usuario'), $this->data['idioma_actual']->id_idioma);
+		$this->data['categorias'] = $this->Articulo_model->get_categorias($this->ion_auth->user()->row()->id, $this->data['idioma_actual']->id_idioma);
 	
                 $this->render_private('blog/listar_categorias_view', $this->data);
 	
@@ -74,7 +74,7 @@ class Blog extends MY_Controller
 	function crear_categoria(){
 		$this->data = $this->inicializar_con_logeo(-3, $this->lang->line('blog_c_crear_articulo'));
 		$this->data['max_prioridad_seccion'] = $this->General_model->maximo('seccion','prioridad');
-		$conf = $this->General_model->get_config($this->simple_sessions->get_value('id_usuario'));
+		$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
 		if($this->input->post()){
 			$this->form_validation->set_rules('nombre_'.$conf->idioma_defecto,$this->lang->line('blog_nombre_categoria'),'trim|xss_clean|required|max_length[50]');
 			$this->form_validation->set_rules('url_seo_'.$conf->idioma_defecto,$this->lang->line('blog_url_seo'),'trim|xss_clean|required|max_length[50]|callback_url_seo_valida|alpha_dash');
@@ -121,7 +121,7 @@ class Blog extends MY_Controller
 						$categoria_data = array(
 								'creada'=>date("Y-m-d H:i:s"),
 								'modificada'=>date("Y-m-d H:i:s"),
-								'id_creador'=> $this->simple_sessions->get_value('id_usuario')
+								'id_creador'=> $this->ion_auth->user()->row()->id
 						);
 						$id_categoria = $this->Articulo_model->insert_categoria($categoria_data);
 					}
@@ -157,7 +157,7 @@ class Blog extends MY_Controller
 			}
 		}
 		if($this->input->post()){
-			$conf = $this->General_model->get_config($this->simple_sessions->get_value('id_usuario'));
+			$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
 			$this->form_validation->set_rules('nombre_'.$conf->idioma_defecto,$this->lang->line('blog_nombre_categoria'),'trim|xss_clean|required|max_length[50]');
 			$this->form_validation->set_rules('url_seo_'.$conf->idioma_defecto,$this->lang->line('blog_url_seo'),'trim|xss_clean|required|max_length[50]|callback_url_seo_valida|alpha_dash');
 			$idiomas = $this->input->post('idiomas');
@@ -229,7 +229,7 @@ class Blog extends MY_Controller
 	function crear_articulo(){
 		$this->data = $this->inicializar_con_logeo(-3, $this->lang->line('blog_c_crear_articulo'));
 		$this->data['max_prioridad_seccion'] = $this->General_model->maximo('seccion','prioridad');
-		$conf = $this->General_model->get_config($this->simple_sessions->get_value('id_usuario'));
+		$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
 		$this->data['categorias'][$conf->idioma_defecto]=$this->Articulo_model->get_categorias($conf->idioma_defecto);
 		if($this->input->post()){
 			$this->form_validation->set_rules('titulo_'.$conf->idioma_defecto,$this->lang->line('blog_titulo'),'trim|xss_clean|required|max_length[200]');
@@ -271,7 +271,7 @@ class Blog extends MY_Controller
 						$articulo_data = array(
 							'creado'=>date("Y-m-d H:i:s"),
 							'modificado'=>date("Y-m-d H:i:s"),
-							'id_autor'=> $this->simple_sessions->get_value('id_usuario')
+							'id_autor'=> $this->ion_auth->user()->row()->id
 						);
 						$id_articulo = $this->Articulo_model->insertArticulo($articulo_data);
 						$datos_articulo = array(
@@ -468,7 +468,7 @@ class Blog extends MY_Controller
 			}
 		}	
 		if($this->input->post()){
-			$conf = $this->General_model->get_config($this->simple_sessions->get_value('id_usuario'));
+			$conf = $this->General_model->get_config($this->ion_auth->user()->row()->id);
 			$this->form_validation->set_rules('titulo_'.$conf->idioma_defecto,$this->lang->line('blog_titulo'),'trim|xss_clean|required|max_length[200]');
 			$this->form_validation->set_rules('creado_'.$conf->idioma_defecto,$this->lang->line('blog_fecha_creacion'),'trim|xss_clean|required');
 			$this->form_validation->set_rules('contenido_'.$conf->idioma_defecto,$this->lang->line('blog_contenido'),'trim|xss_clean|required');

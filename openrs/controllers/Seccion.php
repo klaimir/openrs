@@ -162,7 +162,21 @@ class Seccion extends MY_Controller_Front
 			$this->form_validation->set_rules('email','Email','trim|xss_clean|required|valid_email');
 			$this->form_validation->set_rules('telefono','Teléfono','trim|xss_clean|required|is_natural');
 	
-			if ($this->form_validation->run()){
+			$data = array(
+					'secret' => "6LdIfh4UAAAAAMMbwtFVtrZ2Dmsmq4WkRvzLrVIM",
+					'response' => $this->input->post('g-recaptcha-response')
+			);
+			
+			$verify = curl_init();
+			curl_setopt($verify, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+			curl_setopt($verify, CURLOPT_POST, true);
+			curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
+			curl_setopt($verify, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+			$response = curl_exec($verify);
+			
+			$respuesta = json_decode($response);
+			if ($this->form_validation->run() && $respuesta->success){
 	
 				$this->load->library('email');
 	
@@ -172,15 +186,16 @@ class Seccion extends MY_Controller_Front
 				$config['wordwrap'] = TRUE;
 	
 				$this->email->initialize($config);
-	
-				$this->email->from('noreply@lojident.com', 'Email de contacto');
-				$this->email->to('desarrollos@tipycos.com');
+                                $this->load->model('Config_model');
+                                $dataconfig = $this->Config_model->get_config();
+				$this->email->from('noreply@openrs.es', 'Email de contacto');
+				$this->email->to($dataconfig->email_contacto);
 	
 				$this->email->subject('Correo entrante de la WEB');
 				$this->email->message('
 						<html>
 						<head>
-						<title>Contacto Lojident</title>
+						<title>Contacto Openrs</title>
 						</head>
 						<body>
 						<p>Detalles del formulario de contacto:</p>
@@ -193,7 +208,7 @@ class Seccion extends MY_Controller_Front
 						</html>'
 				);
 				$this->email->send();
-				redirect('site/envio/'.$seccion);
+				redirect('seccion/envio/'.$seccion);
 			}
 		}
 	
@@ -207,9 +222,9 @@ class Seccion extends MY_Controller_Front
 		$idseccion = $this->seccion_model->get_seccion_nombre(1, $seccion)->id;
 		$data = $this->inicializar($idseccion);
 		$data['nseccion']=$seccion;
-		$this->template->write_view('header','templates/header',$data);
-		$this->template->write_view('content_center','site/envio',$data);
-		$this->template->write_view('footer','templates/footer',$data);
+		$this->template->write_view('header','public/templates/header',$data);
+		$this->template->write_view('content_center','public/envio',$data);
+		$this->template->write_view('footer','public/templates/footer',$data);
 		$this->template->render();
 	}
         
@@ -365,19 +380,94 @@ class Seccion extends MY_Controller_Front
         function ver_inmueble($url_seo){
             $url = explode('-',$url_seo);
             $data = $this->inicializar(1, $url[1]);
-            
-            $data['inmueble'] = $this->Buscador_model->getInmuebleById($data['idioma_actual']->id_idioma, $url[0]);
+            if($this->ion_auth->user()->row()->id){
+                $session_es_agente = $this->Usuario_model->is_agente($this->ion_auth->user()->row()->id);
+                if($session_es_agente){
+                    $data['inmueble'] = $this->Buscador_model->getInmuebleById($data['idioma_actual']->id_idioma, $url[0]);
+                }else{
+                    $data['inmueble'] = $this->Buscador_model->getInmuebleById($data['idioma_actual']->id_idioma, $url[0], 1);
+                }
+            }else{
+                $data['inmueble'] = $this->Buscador_model->getInmuebleById($data['idioma_actual']->id_idioma, $url[0], 1);
+            }
             $data['imagenes']=$this->Buscador_model->getImagenesInmueble($url[0]);
             $data['extras']=$this->Buscador_model->getExtrasInmueble($data['idioma_actual']->id_idioma, $url[0]);
             $data['lugares']=$this->Buscador_model->getLugaresInmueble($data['idioma_actual']->id_idioma, $url[0]);
             $data['video']=$this->Buscador_model->getVideoInmueble($url[0]);
             $data['enlaces']=$this->Buscador_model->getEnlacesInmueble($url[0]);
             $data['ce']=$this->Buscador_model->getCEInmueble($url[0]);
+            //correo
+            if($this->input->post()){
+                $cadena = str_replace("\r\n", "<br />", $this->input->post('mensaje'));
+                $this->form_validation->set_rules('nombre', 'Nombre', 'trim|xss_clean|required');
+                $this->form_validation->set_rules('email', 'Email', 'trim|xss_clean|required|valid_email');
+                $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|xss_clean|required|is_natural');
+
+                $data = array(
+                    'secret' => "6LdIfh4UAAAAAMMbwtFVtrZ2Dmsmq4WkRvzLrVIM",
+                    'response' => $this->input->post('g-recaptcha-response')
+                );
+
+                $verify = curl_init();
+                curl_setopt($verify, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+                curl_setopt($verify, CURLOPT_POST, true);
+                curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
+                curl_setopt($verify, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($verify);
+
+                $respuesta = json_decode($response);
+                if ($this->form_validation->run() && $respuesta->success) {
+
+                    $this->load->library('email');
+
+                    $config['protocol'] = 'mail';
+                    //$config['mailpath'] = '/usr/sbin/sendmail';
+                    //$config['charset'] = 'iso-8859-1';
+                    $config['wordwrap'] = TRUE;
+
+                    $this->email->initialize($config);
+
+                    $this->load->model('Config_model');
+                    $dataconfig = $this->Config_model->get_config();
+                    $this->email->from('noreply@openrs.es', 'Email de contacto');
+                    $this->email->to($dataconfig->email_contacto);
+
+                    $this->email->subject('Correo entrante de la WEB');
+                    $this->email->message('
+                                                    <html>
+                                                    <head>
+                                                    <title>Contacto Inmueble Openrs</title>
+                                                    </head>
+                                                    <body>
+                                                    <p>Detalles del formulario de contacto:</p>
+                                                    <p><b>Inmueble</b>: ' . $this->input->post('inmueble') . '</p>' . '
+                                                    <p><b>Nombre</b>: ' . $this->input->post('nombre') . '</p>' . '
+                                                    <p><b>Empresa</b>: ' . $this->input->post('empresa') . '</p>' . '
+                                                    <p><b>Email</b>: ' . $this->input->post('email') . '</p>' . '
+                                                    <p><b>Teléfono</b>: ' . $this->input->post('telefono') . '</p>' . '
+                                                    <p><b>Mensaje</b>: ' . $this->input->post('mensaje') . '</p>' . '
+                                                    </body>
+                                                    </html>'
+                    );
+                    $this->email->send();
+                    redirect('seccion/envioinmueble/'.$url_seo);
+                }
+            }
             $this->template->write_view('header','public/template/header',$data);
             $this->template->write_view('content_center','public/ver_inmueble',$data);
             $this->template->write_view('footer','public/template/footer',$data);
             $this->template->render();
         }
+        
+        function envioinmueble($url_seo){
+		$data = $this->inicializar(1);
+		$data['url_seo']=$url_seo;
+		$this->template->write_view('header','public/templates/header',$data);
+		$this->template->write_view('content_center','public/envio_inmueble',$data);
+		$this->template->write_view('footer','public/templates/footer',$data);
+		$this->template->render();
+	}
         
         function devolver_idioma(){
             if($this->ion_auth->logged_in())

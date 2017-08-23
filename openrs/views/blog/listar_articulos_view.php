@@ -2,10 +2,14 @@
 <?php $this->load->view('javascript/global');?>
 <div class="container admin-content">
 	<div class="row">
-		<section class="span12">		
-			<article>				
+		<section class="col-sm-12">		
+			<div class="col-sm-8">				
 				<h4><?php echo $this->lang->line('blog_listado_articulos');?></h4>
-			</article>
+			</div>
+                        <div class="col-sm-4">
+                            <a href="<?php echo site_url('blog/crear_articulo'); ?>" class="btn btn-primary pull-right">Nuevo artículo </a>
+                            <a href="<?php echo site_url('blog/listar_categorias'); ?>" class="btn btn-default pull-right">Listar categorías</a>
+                        </div>
 			<article>
 			<?php if (count($articulos) > 0): ?>
 				<table class="table table-bordered table-striped table-condensed a_datatable">

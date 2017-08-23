@@ -78,7 +78,8 @@ $mensaje = array(
 );?>
 <div class="inicio-seccion hidden-xs"></div>
 <div class="inicio-seccion-movil hidden-sm hidden-md hidden-lg"></div>
-<div class="container-fluid background-color-f9">
+<?php if($inmueble){?>
+    <div class="container-fluid background-color-f9">
 	<div class="container">
 		<div id="aviso-compra"></div>
 		<h1><?php echo $inmueble->titulo; ?></h1>
@@ -101,7 +102,7 @@ $mensaje = array(
 				<?php $primero=true; $cont=0;?>
 			    	<?php foreach($imagenes as $it):?>
 			    		<figure data-target="#carrusel-img-producto" data-slide-to="<?php echo $cont;?>" class="mini-producto col-xs-2 <?php echo ($primero==true)?'active':'';?>">
-			    			<img src="<?php echo base_url($it->imagen)?>" class="img-responsive" />
+			    			<img src="<?php echo base_url($it->imagen)?>" class="img-responsive" style="width:164px; height:102px;"/>
 			    		</figure>
 		    		<?php $primero=false; $cont++;?>
 				<?php endforeach;?>
@@ -181,84 +182,91 @@ $mensaje = array(
 			</ul>
 		</div>
 	</div>
-</div>
-<div class="container-fluid">
-    <div class="col-sm-12 margin-top-20">
-        <h3><?php echo 'Ref. '.$inmueble->referencia;?></h3>
     </div>
-    <div class="col-sm-12 margin-top-20">
-        <h3><?php echo $this->lang->line('tienda_descripcion_inmueble');?></h3>
-        <?php echo $inmueble->descripcion;?>
-    </div>
-    <div class="col-sm-12 margin-top-20">
-        <?php if($inmueble->precio_compra > 0){?>
-            <div class="col-sm-6 maring-top-10">
-                <h3>Precio compra</h3>
-                    <?php
-                    if ($inmueble->precio_compra_anterior > 0) {
-                        echo '<h2><s>' . number_format($inmueble->precio_compra_anterior, 2, ",", ".") . ' &euro;</s></h2>';
-                        echo '<h2>'.number_format($inmueble->precio_compra, 2, ",", ".") . ' &euro;</h2>';
-                    } else {
-                        echo '<h2>'.number_format($inmueble->precio_compra, 2, ",", ".") . ' &euro;</h2>';
-                    }
-                    ?>
-            </div>
-        <?php } ?>
-        <?php if ($inmueble->precio_alquiler > 0) { ?>
-            <div class="col-sm-6 maring-top-10">
-                <h3>Precio alquiler</h3>
-                    <?php
-                    if ($inmueble->precio_alquiler_anterior > 0) {
-                        echo '<h2><s>' . number_format($inmueble->precio_alquiler_anterior, 2, ",", ".") . ' &euro; / mes</s></h2>';
-                        echo '<h2>'.number_format($inmueble->precio_alquiler, 2, ",", ".") . ' &euro; / mes</h2>';
-                    } else {
-                        echo '<h2>'.number_format($inmueble->precio_alquiler, 2, ",", ".") . ' &euro; / mes</h2>';
-                    }
-                    ?> 
-            </div>
-        <?php } ?>
-    </div>
-    <div class="col-sm-12 margin-top-20">
-        <h3><?php echo $this->lang->line('tienda_caracteristicas_inmueble');?></h3>
-        <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_tipo_propiedad');?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->tipo_inmueble; ?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_superficie_construida'); ?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->metros; ?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_superficie_util'); ?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->metros_utiles; ?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_banos'); ?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->banios; ?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_dormitorios'); ?></div>
-        <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->habitaciones; ?></div>
-    </div>
-    <?php if($extras){?>
+    <div class="container-fluid">
         <div class="col-sm-12 margin-top-20">
-            <h3><?php echo $this->lang->line('tienda_extras_inmueble');?></h3>
-            <?php foreach($extras as $extra){?>
-                <div class="col-sm-4 text-center"><?php echo $extra->nombre;?></div>
-            <?php }?>
+            <h3><?php echo 'Ref. '.$inmueble->referencia;?></h3>
         </div>
-    <?php }?>
-    <?php if($lugares){?>
         <div class="col-sm-12 margin-top-20">
-            <h3><?php echo $this->lang->line('tienda_lugares_inmueble');?></h3>
-            <?php foreach($lugares as $lugar){?>
-                <div class="col-sm-4 text-center"><?php echo $lugar->nombre;?></div>
-            <?php }?>
+            <h3><?php echo $this->lang->line('tienda_descripcion_inmueble');?></h3>
+            <?php echo $inmueble->descripcion;?>
         </div>
-    <?php }?>
-    <div class="col-sm-12 margin-top-20">
-        <h3><?php echo $this->lang->line('tienda_cenergetica_inmueble');?></h3>
-        <?php if($ce->id != 8 && $ce->id != 9){?>
-            <img src="<?php echo base_url('uploads/general/img/ce_'.$ce->nombre.'.png');?>" class="img-responsive"/>
-        <?php }else{
-            echo '<h4>'.$ce->nombre.'</h4>';
-        }?>
+        <div class="col-sm-12 margin-top-20">
+            <?php if($inmueble->precio_compra > 0){?>
+                <div class="col-sm-6 maring-top-10">
+                    <h3>Precio compra</h3>
+                        <?php
+                        if ($inmueble->precio_compra_anterior > 0) {
+                            echo '<h2><s>' . number_format($inmueble->precio_compra_anterior, 2, ",", ".") . ' &euro;</s></h2>';
+                            echo '<h2>'.number_format($inmueble->precio_compra, 2, ",", ".") . ' &euro;</h2>';
+                        } else {
+                            echo '<h2>'.number_format($inmueble->precio_compra, 2, ",", ".") . ' &euro;</h2>';
+                        }
+                        ?>
+                </div>
+            <?php } ?>
+            <?php if ($inmueble->precio_alquiler > 0) { ?>
+                <div class="col-sm-6 maring-top-10">
+                    <h3>Precio alquiler</h3>
+                        <?php
+                        if ($inmueble->precio_alquiler_anterior > 0) {
+                            echo '<h2><s>' . number_format($inmueble->precio_alquiler_anterior, 2, ",", ".") . ' &euro; / mes</s></h2>';
+                            echo '<h2>'.number_format($inmueble->precio_alquiler, 2, ",", ".") . ' &euro; / mes</h2>';
+                        } else {
+                            echo '<h2>'.number_format($inmueble->precio_alquiler, 2, ",", ".") . ' &euro; / mes</h2>';
+                        }
+                        ?> 
+                </div>
+            <?php } ?>
+        </div>
+        <div class="col-sm-12 margin-top-20">
+            <h3><?php echo $this->lang->line('tienda_caracteristicas_inmueble');?></h3>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_tipo_propiedad');?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->tipo_inmueble; ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_superficie_construida'); ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->metros; ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_superficie_util'); ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->metros_utiles; ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_banos'); ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->banios; ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_dormitorios'); ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->habitaciones; ?></div>
+        </div>
+        <?php if($extras){?>
+            <div class="col-sm-12 margin-top-20">
+                <h3><?php echo $this->lang->line('tienda_extras_inmueble');?></h3>
+                <ul style="margin-left:20px;">
+                <?php foreach($extras as $extra){?>
+                    <li><?php echo $extra->nombre;?></li>
+                <?php }?>
+                </ul>
+            </div>
+        <?php }?>
+        <?php if($lugares){?>
+            <div class="col-sm-12 margin-top-20">
+                <h3><?php echo $this->lang->line('tienda_lugares_inmueble');?></h3>
+                <ul style="margin-left:20px;">
+                <?php foreach($lugares as $lugar){?>
+                    <li><?php echo $lugar->nombre;?></li>
+                <?php }?>
+                </ul>
+            </div>
+        <?php }?>
+        <div class="col-sm-12 margin-top-20">
+            <h3><?php echo $this->lang->line('tienda_cenergetica_inmueble');?></h3>
+            <?php if($ce->id != 8 && $ce->id != 9){?>
+                <img src="<?php echo base_url('uploads/general/img/ce_'.$ce->nombre.'.png');?>" class="img-responsive"/>
+            <?php }else{
+                echo '<h4>'.$ce->nombre.'</h4>';
+            }?>
+        </div>
     </div>
-</div>
-<input type="hidden" id="base_url" value="<?php echo base_url();?>" />
-<input type="hidden" id="site_url" value="<?php echo site_url();?>" />
-<input type="hidden" id="site_idioma" value="<?php echo $this->uri->segment(1);?>" />
+    <input type="hidden" id="base_url" value="<?php echo base_url();?>" />
+    <input type="hidden" id="site_url" value="<?php echo site_url();?>" />
+    <input type="hidden" id="site_idioma" value="<?php echo $this->uri->segment(1);?>" />
+<?php }else{?>
+    <h3>Inmueble inexistente o no publicado</h3>
+<?php }?>
 <script>
 $(document).ready(function(){
         // Comprobamos si hay que mostrar mapa google maps
