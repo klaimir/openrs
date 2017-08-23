@@ -31,6 +31,34 @@ function label($line, $for, $attributes = array())
     return $line;
 }
 
+function format_cartel_impreso($impreso)
+{
+    if(is_null($impreso))
+    {
+        return 'Pendiente generar';
+    }
+    else if($impreso)
+    {
+        return 'Impreso';
+    }
+    else
+    {
+        return 'Pendiente imprimir';
+    }
+}
+
+function format_si_no($valor)
+{
+    if($valor)
+    {
+        return 'SÍ';
+    }
+    else
+    {
+        return 'NO';
+    }
+}
+
 function format_interval($min, $max)
 {
     if(!empty($min) && !empty($max))
@@ -177,6 +205,15 @@ function menu_inmuebles($inmueble_id,$active_section)
 
                     <b class="arrow"></b>
                 </li>
+                
+                <li class="hover <?php echo set_active_option($active_section, "inmuebles_carteles"); ?>">
+                    <a href="<?php echo site_url('inmuebles_carteles/index/'.$inmueble_id); ?>">
+                        <i class="menu-icon fa fa-qrcode"></i>
+                        <span class="menu-text"> CARTEL </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
 
                 <li class="hover <?php echo set_active_option($active_section, "inmuebles_ficheros"); ?>">
                     <a href="<?php echo site_url('inmuebles_ficheros/index/'.$inmueble_id); ?>">
@@ -195,14 +232,6 @@ function menu_inmuebles($inmueble_id,$active_section)
                     <b class="arrow"></b>
                 </li>
                 
-                <li class="hover <?php echo set_active_option($active_section, "inmuebles_carteles"); ?>">
-                    <a href="<?php echo site_url('inmuebles_carteles/index/'.$inmueble_id); ?>">
-                        <i class="menu-icon fa fa-qrcode"></i>
-                        <span class="menu-text"> CARTEL </span>
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
             </ul><!-- /.nav-list -->
         </div><!-- .sidebar -->
     </div>

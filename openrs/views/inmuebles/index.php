@@ -14,20 +14,24 @@
 
 <div class="row">
     <div class="col-xs-12">
+        <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/insert'); ?>">
+            <i class="menu-icon fa fa-plus-circle"></i>
+            <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
+        </a>
         <?php if($elements) { ?>
             <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('private');">
                 <i class="menu-icon fa fa-map-marker"></i>
                 <span class="menu-text"> Ver mapa real</span>
             </a>
-        <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('public');">
+            <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('public');">
                 <i class="menu-icon fa fa-map-marker"></i>
                 <span class="menu-text"> Ver mapa público</span>
             </a>
-        <?php } ?>
-        <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/insert'); ?>">
-            <i class="menu-icon fa fa-plus-circle"></i>
-            <span class="menu-text"> <?php echo lang('common_btn_insert'); ?> </span>
-        </a>
+            <a class="btn btn-info pull-right" onclick="ver_datos_publicacion('public');">
+                <i class="menu-icon fa fa-newspaper-o"></i>
+                <span class="menu-text"> Ver datos publicación</span>
+            </a>
+        <?php } ?>        
         <a class="btn btn-info pull-right" href="<?php echo site_url($_controller.'/import'); ?>">
             <i class="menu-icon fa fa-upload"></i>
             <span class="menu-text"> Importar CSV </span>
@@ -65,6 +69,15 @@
     
 <small class="blue">El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en su posición actual. Esta opción sólo funcionará si tiene habilitado en su dispositivo la geolocalización y no está bloqueado para el navegador web actual.</small>
 
+</div>
+
+<div class="space-10"></div>
+
+<div class="row" id="datos_publicacion_div" style="display:none;">
+    <div class="col-xs-12">
+        <div id="datos_publicacion">
+        </div>
+    </div>    
 </div>
 
 <div class="space-10"></div>
@@ -153,6 +166,11 @@
             $('#google_maps').load('<?php echo site_url('inmuebles/multiple_google_map/');?>'+infowindow_type);
         }
         
+    }
+    
+    function ver_datos_publicacion() {
+        $('#datos_publicacion_div').toggle('slow');
+        $('#datos_publicacion').load('<?php echo site_url('inmuebles/load_datos_publicacion');?>');        
     }
     
     jQuery(function ($) {

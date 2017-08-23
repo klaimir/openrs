@@ -107,5 +107,25 @@ class Inmueble_idiomas_model extends MY_Model
         $this->db->where('idioma_id',$idioma_id);
         return $this->db->get()->row();
     }
-
+    
+    /**
+     * Obtiene la url pública de un inmueble
+     *
+     * @return array de datos
+     */
+    
+    function get_url_publica($inmueble_id,$idioma_id)
+    {
+        $info_idioma=$this->get_info($inmueble_id,$idioma_id);
+        $idioma=$this->Idioma_model->get_idioma($idioma_id);
+        if($info_idioma)
+        {
+            return base_url($idioma->nombre_seo.'/'.$inmueble_id.'-'.$info_idioma->url_seo);
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+    
 }

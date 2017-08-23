@@ -222,6 +222,39 @@ class Inmueble_enlace_model extends MY_Model
         $this->db->order_by('enlace');
         return $this->db->get()->result();
     } 
+    
+    /**
+     * Obtiene el número de enlaces de un inmueble
+     * 
+     * @param [$inmueble_id]              Identificador del inmueble
+     * @param [$publicado]                Determina si está publicada
+     *
+     * @return int con el número de enlaces del inmueble
+     */
+    function get_num_enlaces_inmueble($inmueble_id, $publicado=1)
+    {
+        $this->db->from($this->table);
+        $this->db->where('inmueble_id', $inmueble_id);
+        $this->db->where('publicado', $publicado);
+        $this->db->where('youtube', 0);
+        return $this->db->get()->num_rows();
+    }
+    
+    /**
+     * Devuelve el video de youtube de determinado inmueble
+     *
+     * @param [inmueble_id]                  Indentificador del inmueble
+     *
+     * @return void
+     */
+    function get_video_youtube($inmueble_id)
+    {
+        $this->db->from($this->table);
+        $this->db->where('inmueble_id', $inmueble_id);
+        $this->db->where('publicado', 1);
+        $this->db->where('youtube', 1);
+        return $this->db->get()->row();
+    }
 
     /**
      * Comprueba si existe otro enlace publicado de youtube en el inmueble

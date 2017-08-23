@@ -1028,11 +1028,12 @@ class Inmueble_model extends MY_Model
     /**
      * Aplica datos adicionales
      *
-     * @param [$results]                  Inmuebles 
+     * @param [$results]                        Inmuebles 
+     * @param [$get_datos_publicacion]          Determina si deben consultarse los datos de publicación
      *
      * @return void
      */
-    function set_datos_adicionales_listado($results)
+    function set_datos_adicionales_listado($results, $get_datos_publicacion=FALSE)
     {
         if($results)
         {
@@ -1041,13 +1042,34 @@ class Inmueble_model extends MY_Model
             // Datos adicionales de cada inmueble
             foreach ($results as $result)
             {
-                // Obtenemos el número de imágenes de cada inmueble
-                $result->num_imagenes=$this->get_num_imagenes($result->id);
-                // Consulta de demandas
-                $result->num_demandas_totales = count($this->Demanda_model->get_demandas_inmueble($result->id));
-                $result->num_demandas_pendientes = count($this->Demanda_model->get_demandas_inmueble($result->id,1));
-                // Propuestas para visita
-                $result->num_demandas_propuestas_visita = count($this->Demanda_model->get_demandas_inmueble($result->id,2));
+                // Datos de publicación
+                if($get_datos_publicacion)
+                {
+                    // Modelo Inmueble_imagen_model
+                    $this->load->model('Inmueble_imagen_model');
+                    // Obtenemos el número de imágenes de cada inmueble
+                    $result->num_imagenes=$this->Inmueble_imagen_model->get_num_imagenes_inmueble($result->id);
+                    // Obtenemos la portada
+                    $result->portada=$this->Inmueble_imagen_model->get_portada($result->id);
+                    // Modelo Inmueble_imagen_model
+                    $this->load->model('Inmueble_enlace_model');
+                    // Obtenemos el número de enlaces que no son videos
+                    $result->num_enlaces=$this->Inmueble_enlace_model->get_num_enlaces_inmueble($result->id);
+                    // Obtenemos el video
+                    $result->video=$this->Inmueble_enlace_model->get_video_youtube($result->id);
+                    // Modelo Inmueble_idioma_model
+                    $this->load->model('Inmueble_idiomas_model');
+                    // Obtenemos la url pública
+                    $result->url_publica=$this->Inmueble_idiomas_model->get_url_publica($result->id,$this->data['session_id_idioma']);
+                }
+                else
+                {
+                    // Consulta de demandas
+                    $result->num_demandas_totales = count($this->Demanda_model->get_demandas_inmueble($result->id));
+                    $result->num_demandas_pendientes = count($this->Demanda_model->get_demandas_inmueble($result->id,1));
+                    // Propuestas para visita
+                    $result->num_demandas_propuestas_visita = count($this->Demanda_model->get_demandas_inmueble($result->id,2));
+                }
             }
         }
     }
@@ -1057,7 +1079,7 @@ class Inmueble_model extends MY_Model
      *
      * @return array de datos de plantilla
      */
-    function get_by_filtros($filtros = NULL)
+    function get_by_filtros($filtros = NULL, $get_datos_publicacion=FALSE)
     {
         // Filtros generales
         $this->procesar_filtros_generales($filtros);
@@ -1074,7 +1096,7 @@ class Inmueble_model extends MY_Model
         $this->db->from($this->view);
         $results=$this->db->get()->result();
         // Set datos adicionales
-        $this->set_datos_adicionales_listado($results);
+        $this->set_datos_adicionales_listado($results, $get_datos_publicacion);
         // Return
         return $results;
     }
@@ -1179,19 +1201,6 @@ class Inmueble_model extends MY_Model
      * 
      */
     
-    /**
-     * Obtiene el número de imágenes de un inmueble
-     * 
-     * @param [$inmueble_id]                Devuelve el número de imágenes de un inmueble
-     *
-     * @return int con el número de imágenes del inmueble
-     */
-    function get_num_imagenes($inmueble_id)
-    {
-        $this->load->model('Inmueble_imagen_model');
-        return $this->Inmueble_imagen_model->get_num_imagenes_inmueble($inmueble_id);
-    }
-
     /**
      * Duplica los datos de un inmueble
      *

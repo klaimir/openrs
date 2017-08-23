@@ -131,7 +131,7 @@ class Inmueble_imagen_model extends MY_Model
     /**
      * Devuelve la imagen de portada de determinado inmueble
      *
-     * @param [inmueble_id]                  Indentificador del elemento
+     * @param [inmueble_id]                  Indentificador del inmueble
      *
      * @return void
      */
@@ -161,16 +161,18 @@ class Inmueble_imagen_model extends MY_Model
     /**
      * Obtiene el número de imágenes de un inmueble
      * 
-     * @param [$inmueble_id]                Devuelve el número de imágenes de un inmueble
+     * @param [$inmueble_id]              Identificador del inmueble
+     * @param [$publicada]                Determina si está publicada
      *
      * @return int con el número de imágenes del inmueble
      */
-    function get_num_imagenes_inmueble($inmueble_id)
+    function get_num_imagenes_inmueble($inmueble_id, $publicada=1)
     {
         $this->db->from($this->table);
         $this->db->where('inmueble_id', $inmueble_id);
+        $this->db->where('publicada', $publicada);
         return $this->db->get()->num_rows();
-    } 
+    }
     
     /**
      * Elimina el imagen del sistema de imagenes y de la bd

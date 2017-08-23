@@ -86,6 +86,25 @@ class Inmuebles extends CRUD_controller
             echo "No hay inmuebles para mostrar en el mapa de Google";
         }
     }
+    
+    // Ajax method
+    function load_datos_publicacion()
+    {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if(!$this->input->is_ajax_request())
+        {
+            echo 'Petición no realizada a través de AJAX';
+            return;
+        }        
+        // Valores de los filtros de búsqueda
+        $filtros = $this->_generar_filtros_busqueda();
+        // Búsqueda
+        $this->data['elements']=$this->{$this->_model}->get_by_filtros($filtros,TRUE);         
+        // Render
+        $this->load->view($this->_view . '/list_publicacion', $this->data);
+    }
 
     private function _load_filtros()
     {
