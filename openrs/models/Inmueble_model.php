@@ -475,6 +475,9 @@ class Inmueble_model extends MY_Model
         // Sólo para la edición (Datos de la zona pública)
         if ($datos)
         {
+            // Consultamos url pública
+            $data['url_publica']=$this->Inmueble_idiomas_model->get_url_publica($datos->id,$this->data['session_id_idioma']);
+            
             // Datos no dependientes del idioma
             $data['direccion_publica'] = array(
                 'name' => 'direccion_publica',
