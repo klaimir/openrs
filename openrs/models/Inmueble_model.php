@@ -1985,30 +1985,34 @@ class Inmueble_model extends MY_Model
             $marker=array();
             // Formateamos la posición
             $address=$this->format_google_map_path($inmueble,$this->infowindow_type);
-            $position=$this->googlemaps->get_lat_long_from_address($address);
-            // Calculamos la ventana de información
-            if($this->infowindow_type=="private")
+            // Hay que comprobar que existen direcciones
+            if($address)
             {
-                $infowindow_content=$this->get_infowindow_content_private($inmueble);
+                $position=$this->googlemaps->get_lat_long_from_address($address);
+                // Calculamos la ventana de información
+                if($this->infowindow_type=="private")
+                {
+                    $infowindow_content=$this->get_infowindow_content_private($inmueble);
+                }
+                else
+                {
+                    $infowindow_content=$this->get_infowindow_content_public($inmueble);
+                }
+                // Si existe marker, entonces hay que anidar el infowindow content con el marker detectado
+                $array_key=$this->exists_marker($position);            
+                // Si existe el marker se anida al existente
+                if($array_key)
+                {
+                    $this->add_infowindow_content($infowindow_content,$array_key);
+                }
+                // En caso contrario, creamos uno nuevo
+                else
+                {
+                    $marker['position']=$position[0].','.$position[1];
+                    $marker['infowindow_content']=$infowindow_content;
+                    array_push($this->markers, $marker);
+                }     
             }
-            else
-            {
-                $infowindow_content=$this->get_infowindow_content_public($inmueble);
-            }
-            // Si existe marker, entonces hay que anidar el infowindow content con el marker detectado
-            $array_key=$this->exists_marker($position);            
-            // Si existe el marker se anida al existente
-            if($array_key)
-            {
-                $this->add_infowindow_content($infowindow_content,$array_key);
-            }
-            // En caso contrario, creamos uno nuevo
-            else
-            {
-                $marker['position']=$position[0].','.$position[1];
-                $marker['infowindow_content']=$infowindow_content;
-                array_push($this->markers, $marker);
-            }            
         }
         // For testing
         //var_dump($this->markers); die();
@@ -2058,10 +2062,13 @@ class Inmueble_model extends MY_Model
 
         // Hay que unificar antes los markers repetidos
         $markers=$this->calculate_unique_markers($inmuebles);
-        foreach($markers as $marker)
+        if(count($markers)>0)
         {
-            // Añadimos el marker
-            $this->googlemaps->add_marker($marker);
+            foreach($markers as $marker)
+            {
+                // Añadimos el marker
+                $this->googlemaps->add_marker($marker);
+            }
         }
 
         // Para entornos que no sean development es necesario una API-KEY
@@ -2084,9 +2091,16 @@ class Inmueble_model extends MY_Model
         {
             $direccion=$inmueble->direccion_publica;
         }
-        $direccion_formateada = "$direccion, $inmueble->nombre_poblacion, $inmueble->nombre_provincia, Spain";
-        // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
-        return $this->utilities->cleantext($direccion_formateada);
+        if(empty($direccion))
+        {
+            return NULL;
+        }
+        else
+        {
+            $direccion_formateada = "$direccion, $inmueble->nombre_poblacion, $inmueble->nombre_provincia, Spain";
+            // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
+            return $this->utilities->cleantext($direccion_formateada);
+        }
     }
 
     public function format_google_map_center($filtros)

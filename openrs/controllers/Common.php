@@ -68,31 +68,38 @@ class Common extends MY_Controller
         // Formateo de datos
         $direccion_formateada=$this->_format_google_map_path();
         
-        // Config
-        $config['loadAsynchronously'] = TRUE;
-        $config['center']=$direccion_formateada;
-        $config['zoom']=15;        
-        $config['map_name'] = 'map_name_'.$map_number;
-        $config['map_div_id'] = 'map_div_id_'.$map_number;
-        // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
-        $this->googlemaps->initialize($config);
-        
-        // Para entornos que no sean development es necesario una API-KEY
-        $this->load->model('Config_model');
-        $config=$this->Config_model->get_config();
-        $this->googlemaps->apiKey=$config->google_api_key;
-        
-        // Marker
-        $marker=array();
-        $marker['position']=$direccion_formateada;
-        $this->googlemaps->add_marker($marker);
-        
-        // Create the map. This will return the Javascript to be included in our pages <head></head> section and the HTML code to be
-        // placed where we want the map to appear.
-        $this->data['map'] = $this->googlemaps->create_map();
-        
-        // Load our view, passing the map data that has just been created
-        $this->load->view('common/google_maps', $this->data);
+        if($direccion_formateada)
+        {
+            // Config
+            $config['loadAsynchronously'] = TRUE;
+            $config['center']=$direccion_formateada;
+            $config['zoom']=15;        
+            $config['map_name'] = 'map_name_'.$map_number;
+            $config['map_div_id'] = 'map_div_id_'.$map_number;
+            // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
+            $this->googlemaps->initialize($config);
+
+            // Para entornos que no sean development es necesario una API-KEY
+            $this->load->model('Config_model');
+            $config=$this->Config_model->get_config();
+            $this->googlemaps->apiKey=$config->google_api_key;
+
+            // Marker
+            $marker=array();
+            $marker['position']=$direccion_formateada;
+            $this->googlemaps->add_marker($marker);
+
+            // Create the map. This will return the Javascript to be included in our pages <head></head> section and the HTML code to be
+            // placed where we want the map to appear.
+            $this->data['map'] = $this->googlemaps->create_map();
+
+            // Load our view, passing the map data that has just been created
+            $this->load->view('common/google_maps', $this->data);
+        }
+        else
+        {
+            echo "Debe introducir una dirección para que se pueda posicionar en Google Maps";
+        }
     }
 
 }
