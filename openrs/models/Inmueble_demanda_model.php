@@ -101,9 +101,10 @@ class Inmueble_demanda_model extends MY_Model
         $evaluaciones = array();
         $evaluaciones[1] = 'Pendiente evaluar';
         $evaluaciones[2] = 'Proponer para visita';
-        $evaluaciones[3] = 'Descartado por agente';
-        $evaluaciones[4] = 'Interesa cliente';
-        $evaluaciones[5] = 'No Interesa cliente';
+        $evaluaciones[3] = 'Pendiente decisión cliente';
+        $evaluaciones[4] = 'Descartado por agente';
+        $evaluaciones[5] = 'Interesa cliente';
+        $evaluaciones[6] = 'No Interesa cliente';
         return $evaluaciones;
     }
     
