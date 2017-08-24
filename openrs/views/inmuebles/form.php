@@ -311,7 +311,7 @@ if(isset($cliente_id))
         check_show_kwh_m2_anio();
         
         // Comprobamos si hay que mostrar mapa google maps
-        <?php if(isset($element) && !empty($element->direccion_publica)) { ?>
+        <?php if(isset($element)) { ?>
             check_google_maps(1);  
         <?php } ?>
         check_google_maps();  

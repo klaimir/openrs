@@ -75,7 +75,7 @@ class Common extends MY_Controller
             $config['center']=$direccion_formateada;
             $config['zoom']=15;        
             // Activamos geocoding para mejorar rendimiento
-            $config['geocodeCaching'] = TRUE;
+            //$config['geocodeCaching'] = TRUE;
             $config['map_name'] = 'map_name_'.$map_number;
             $config['map_div_id'] = 'map_div_id_'.$map_number;
             // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
