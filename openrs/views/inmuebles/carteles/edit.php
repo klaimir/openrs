@@ -27,7 +27,11 @@
 	$config_mini['filebrowserImageUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=inmuebles";	
 	echo $this->ckeditor->editor($html['name'], $html['value'], $config_mini);
         ?>
+        <small class="blue">Si desea agregar imágenes debe seleccionar el icono de imagen y posteriormente "ver servidor". A continuación visualizará un menú con todas las carpetas de los diferentes inmuebles. Las imágenes de este inmueble se encuentran
+    en la carpeta "<?php echo $inmueble->id; ?>/imagenes". Si lo desea, también puede adjuntar un fichero que ya haya adjuntado entrando en la carpeta "<?php echo $inmueble->id; ?>/adjuntos". Si lo desea puede agregar imágenes adicionales pero
+    se recomienda que utilice la sección de imágenes del menú superior para tal efecto, ya que al hacerlo por aquí no quedará registrado en la base de datos ni podrá publicarse, sólo quedará almacenado en el sistema de ficheros.</small>
     </div>
+    
 </div>
 
 <div class="form-group">            

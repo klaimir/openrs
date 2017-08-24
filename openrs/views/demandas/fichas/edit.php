@@ -27,6 +27,8 @@
 	$config_mini['filebrowserImageUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=demandas";	
 	echo $this->ckeditor->editor($html['name'], $html['value'], $config_mini);
         ?>
+        <small class="blue">Si desea agregar imágenes debe seleccionar el icono de imagen y posteriormente "ver servidor". A continuación visualizará un menú con todas las carpetas de las diferentes demandas. Los ficheros adjuntos de esta demanda se encuentran
+    en la carpeta "<?php echo $demanda->id; ?>". Si lo desea puede agregar imágenes adicionales pero se recomienda que utilice la sección de ficheros adjuntos del menú superior para tal efecto, ya que al hacerlo por aquí no quedará registrado en la base de datos, sólo quedará almacenado en el sistema de ficheros.</small>
     </div>
 </div>
 

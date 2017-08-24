@@ -191,7 +191,7 @@ function menu_inmuebles($inmueble_id,$active_section)
                 <li class="hover <?php echo set_active_option($active_section, "inmuebles_imagenes"); ?>">
                     <a href="<?php echo site_url('inmuebles_imagenes/index/'.$inmueble_id); ?>">
                         <i class="menu-icon fa fa-image"></i>
-                        <span class="menu-text"> IMAGENES </span>
+                        <span class="menu-text"> IMÁGENES </span>
                     </a>
 
                     <b class="arrow"></b>
