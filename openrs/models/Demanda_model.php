@@ -342,12 +342,17 @@ class Demanda_model extends MY_Model
         $datas['estado_id'] = $this->input->post('estado_id');
         $datas['provincia_id'] = $this->utilities->get_sql_value_string($this->input->post('provincia_id'), "defined",$this->input->post('provincia_id'),NULL);
         $datas['poblacion_id'] = $this->utilities->get_sql_value_string($this->input->post('poblacion_id'), "defined",$this->input->post('poblacion_id'),NULL);
-        //$datas['zona_id'] = $this->utilities->get_sql_value_string($this->input->post('zona_id'), "defined", $this->input->post('zona_id'), NULL);
         $datas['agente_asignado_id'] = $this->utilities->get_sql_value_string($this->input->post('agente_asignado_id'), "defined", $this->input->post('agente_asignado_id'), NULL);
         $datas['cliente_id'] = $this->input->post('cliente_id');
         $datas['oferta_id'] = $this->input->post('oferta_id');
         $datas['tipo_demanda_id'] = $this->input->post('tipo_demanda_id');
-
+        // Transformaciones sólo para le edición
+        if($id)
+        {
+            // Fecha de actualización
+            $datas['fecha_actualizacion'] = date("Y-m-d H:i:s");
+        }
+        // Asignación de datos de demanda
         $datos_formateados['demanda']=$datas;
         
         // Datos de tipos de inmuebles
@@ -372,7 +377,7 @@ class Demanda_model extends MY_Model
         
         // Inmueble asociado
         $datos_formateados['inmueble_id']=$this->input->post('inmueble_id');
-        
+                
         return $datos_formateados;
     }
 

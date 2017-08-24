@@ -611,6 +611,8 @@ class Inmueble_model extends MY_Model
             $datas['publicado'] = $this->utilities->get_sql_value_string($this->input->post('publicado'), 'defined', $this->input->post('publicado'), 0);
             $datas['oportunidad'] = $this->utilities->get_sql_value_string($this->input->post('oportunidad'), 'defined', $this->input->post('oportunidad'), 0);
             $datas['destacado'] = $this->utilities->get_sql_value_string($this->input->post('destacado'), 'defined', $this->input->post('destacado'), 0);
+            // Fecha de actualización
+            $datas['fecha_actualizacion'] = date("Y-m-d H:i:s");
         }
 
         return $datas;
