@@ -39,33 +39,6 @@ class Poblaciones extends CRUD_controller
         $this->render_private($this->_view.'/index', $this->data);
     }
     
-    public function activar($id,$activar) {
-        // Deshabilitar profiler
-        $this->output->enable_profiler(FALSE);
-        // Comprobación de petición por AJAX
-        if($this->input->is_ajax_request())
-        {
-            // Datos federado
-            $check_activar = $this->Poblacion_model->activar($id,$activar);            
-            // Actualización de datos        
-            if($check_activar)
-            {
-                echo 1;
-            }
-            else
-            {
-                if($activar)
-                {
-                    echo "Error al activar la población. Inténtelo más tarde";
-                }
-                else
-                {
-                    echo "Error al desactivar la población. Inténtelo más tarde";
-                }
-            }
-        }
-    }
-    
     // insert
     public function insert($provincia_id)
     {        

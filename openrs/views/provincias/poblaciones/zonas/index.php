@@ -8,7 +8,7 @@
     <ul class="breadcrumb">
         <li>
             <i class="ace-icon fa fa-home home-icon"></i>
-            <a href="<?php echo site_url('poblacions'); ?>">Provincias</a>
+            <a href="<?php echo site_url('provincias'); ?>">Provincias</a>
         </li>
         <li>
             <a href="<?php echo site_url('poblaciones/index/'.$provincia->id); ?>"><?php echo $provincia->provincia; ?></a>
@@ -42,7 +42,8 @@
 <div class="space-10"></div>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-lg-4 col-md-3"></div>
+    <div class="center col-lg-4 col-md-6 col-xs-12">
         <table class="table table-striped table-bordered table-hover" id="tabgrid">
             <thead>
                 <tr>

@@ -138,45 +138,6 @@ class Poblacion_model extends MY_Model
         // Parent update
         return $this->update($formatted_datas, $id);
     }
-
-    /**
-     * Activa\desactiva todos los municipios asociados a la provincia indicada
-     *
-     * @param [id]                  Indentificador de la provincia
-     * @param [activar]             Acción
-     *
-     * @return void
-     */
-    function activar_all($provincia_id, $activar)
-    {
-        // Datos personales
-        $poblaciones = $this->where('provincia_id', $provincia_id)->get_all();
-        $datos = array();
-        $cont = 0;
-        // Es mejor implementar un batch por eficiencia, debido al número elevado de municipios que hay por provincia
-        foreach ($poblaciones as $poblacion)
-        {
-            $datos[$cont]['id'] = $poblacion->id;
-            $datos[$cont]['activa'] = $activar;
-            $cont++;
-        }
-        // Update Batch
-        return $this->db->update_batch($this->table, $datos, 'id');
-    }
-
-    /**
-     * Activa\desactiva el municipio indicado
-     *
-     * @param [id]                  Indentificador del municipio
-     * @param [activar]             Acción
-     *
-     * @return void
-     */
-    function activar($id, $activar)
-    {
-        // Activación de provincia
-        return $this->update(array("activa" => $activar), $id);
-    }
     
     /**
      * Consulta las poblaciones de una provincia
@@ -235,14 +196,7 @@ class Poblacion_model extends MY_Model
         }
         else
         {
-            if(is_null($activa))
-            {
-                $poblaciones=$this->as_dropdown('poblacion')->where('provincia_id',$provincia_id)->get_all();  
-            }
-            else
-            {
-                $poblaciones=$this->as_dropdown('poblacion')->where('provincia_id',$provincia_id)->where('activa',1)->get_all();  
-            }
+            $poblaciones=$this->as_dropdown('poblacion')->where('provincia_id',$provincia_id)->get_all();
         }
         // Selección inicial
         $seleccion[$default_value]="- Seleccione población -";

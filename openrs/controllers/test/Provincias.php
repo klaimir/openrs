@@ -32,23 +32,4 @@ class Provincias extends MY_Controller
         $this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
     }
 
-    function activar($id,$activar)
-    {
-        // Realizamos test con todas las combinaciones porque el validation fallaba
-        $this->load->model('Provincia_model');
-        
-        $this->Provincia_model->activar($id,$activar);
-        
-        $this->load->model('Poblacion_model');
-        
-        $poblaciones_activas=$this->Poblacion_model->where('provincia_id',$id)->where('activa',$activar)->get_all();
-        $poblaciones_provincia=$this->Poblacion_model->where('provincia_id',$id)->get_all();
-
-        // Delete
-        $this->unit->run($poblaciones_activas, $poblaciones_provincia, 'Test de Poblaciones');
-
-        // The report will be formatted in an HTML table for viewing. If you prefer the raw data you can retrieve an array using:
-        var_dump($this->unit->result());
-    }
-
 }

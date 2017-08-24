@@ -39,12 +39,12 @@
 <div class="space-10"></div>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-lg-4 col-md-3"></div>
+    <div class="center col-lg-4 col-md-6 col-xs-12">
         <table class="table table-striped table-bordered table-hover" id="tabgrid">
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Activar</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -55,21 +55,7 @@
                     ?>
                     <tr>
                         <td>
-                            <?php 
-                            if($element->activa) 
-                            {
-                            ?>
-                                <a class="green" href="<?php echo site_url("zonas/index/" . $element->id); ?>" title="Ver Zonas de <?php echo $element->poblacion; ?>"><?php echo $element->poblacion; ?></a>
-                            <?php
-                            } 
-                            else 
-                            { 
-                                echo $element->poblacion;
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <input type="checkbox" class="activar" name="poblacion_<?php echo $element->id; ?>" <?php if ($element->activa) echo 'checked="checked"'; ?> data-id="<?php echo $element->id; ?>">
+                            <a class="blue" href="<?php echo site_url("zonas/index/" . $element->id); ?>" title="Ver Zonas de <?php echo $element->poblacion; ?>"><?php echo $element->poblacion; ?></a>
                         </td>
                         <td>
                             <div class="hidden-sm hidden-xs action-buttons">
@@ -109,7 +95,7 @@
                             </div>                    
                         </td>
                     </tr>
-<?php } ?>
+                <?php } ?>
             </tbody>
         </table>
     </div>
@@ -127,26 +113,5 @@
                 }
             });
         });
-
-        $('.activar').on('change', function () {
-            var id = $(this).data("id");
-            if ($(this).is(':checked'))
-            {
-                var validar = 1;
-            }
-            else
-            {
-                var validar = 0;
-            }
-            $.ajax({
-                url: '<?php echo site_url(); ?>/poblaciones/activar/' + id + '/' + validar,
-                success: function (e) {
-                    if (e != 1) {
-                        alert(e);
-                    }
-                }
-            });
-        });
-
     })
 </script>

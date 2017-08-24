@@ -24,41 +24,16 @@ class Provincia_model extends MY_Model
         return TRUE;
     }
     
-    
-    /**
-     * Activa\desactiva la provincia y todos los municipios asociados
-     *
-     * @param [id]                  Indentificador de la provincia
-     * @param [activar]             Acción
-     *
-     * @return void
-     */
-    
-    function activar($id,$activar)
-    {
-        // Activación de provincia
-        $this->update(array("activa" => $activar),$id);          
-        // Activación de municipios
-        return $this->Poblacion_model->activar_all($id,$activar);
-    }    
-    
     /**
      * Devuelve un array de provincias en formato dropdown
      *
      * @return array de provincias en formato dropdown
      */
     
-    function get_provincias_dropdown($default_value="",$activa=NULL)
+    function get_provincias_dropdown($default_value="")
     {
         // Array de provincias
-        if(is_null($activa))
-        {
-            $provincias=$this->as_dropdown('provincia')->get_all();  
-        }
-        else
-        {
-            $provincias=$this->as_dropdown('provincia')->where_in('activa',1)->get_all();  
-        }
+        $provincias=$this->as_dropdown('provincia')->get_all();
         // Selección inicial
         $seleccion[$default_value]="- Seleccione provincia -";
         // Si devolvemos un merge se pierden las claves numéricas
