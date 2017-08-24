@@ -44,11 +44,11 @@
                                         <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
                                     </button>
 
-                                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">                                        
                                         <li>
                                             <a href="<?php echo site_url("backup/download/" . $element->backup_id); ?>" class="tooltip-success" data-rel="tooltip" title="Editar">
                                                 <span class="green">
-                                                    <i class="ace-icon fa fa-download-square-o bigger-120"></i>
+                                                    <i class="ace-icon fa fa-download bigger-120"></i>
                                                 </span>
                                             </a>
                                         </li>
@@ -83,6 +83,7 @@ $this->session->set_flashdata($key, $back_url);
     <div class="col-xs-12">
         <?php
         echo form_open($this->uri->uri_string(), 'class="form-horizontal"');
+        /*
         ?>
         <div class="form-group">
             <label class="col-sm-3 control-label no-padding-right" for="backup_type"> Tipo de copia de seguridad </label>
@@ -95,6 +96,10 @@ $this->session->set_flashdata($key, $back_url);
                 </select>
             </div>
         </div>
+         * 
+         */
+        ?>
+        <input name="backup_type" type="hidden" value="3">
 
         <div class="form-group">
             <label class="col-sm-3 control-label no-padding-right" for="file_type"> Tipo de compresión </label>
