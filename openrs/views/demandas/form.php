@@ -16,13 +16,13 @@ if(isset($inmueble_id))
     <div class="widget-body">
         <div class="widget-main">
             <div class="form-group">            
-                <?php echo label('Referencia', 'referencia', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Referencia', 'referencia', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($referencia, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Cliente', 'cliente_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*)  Cliente', 'cliente_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php 
                     echo form_dropdown('cliente_id',$clientes,$cliente_id, 'onchange="mark_modified_field();" class="form-control chosen-select" id="cliente_id"'); 
@@ -37,19 +37,19 @@ if(isset($inmueble_id))
                 </div>
             </div> 
             <div class="form-group">            
-                <?php echo label('Oferta', 'oferta_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Oferta', 'oferta_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('oferta_id',$ofertas,$oferta_id, 'onchange="mark_modified_field();" class="form-control" id="oferta_id"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Tipo demanda', 'tipo_demanda_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Tipo demanda', 'tipo_demanda_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('tipo_demanda_id',$tipos_demandas,$tipo_demanda_id, 'onchange="mark_modified_field(); check_show_filtros();" class="form-control" id="tipo_demanda_id"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Fecha de alta', 'fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Fecha de alta', 'fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($fecha_alta, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                     <small class="blue">Introduzca la fecha en formato dd/mm/aaaa (por ejemplo; 19/05/1982)</small>
@@ -58,6 +58,10 @@ if(isset($inmueble_id))
         </div>
     </div>
 </div>
+    
+<small id="leyenda_filtros" class="blue">A continuación podrá introducir los filtros de búsqueda que desee. No debe seleccionarlos todos ni tampoco se aconseja dejarlos vacíos para que la búsqueda no sea muy amplía.
+Introduzca un número de campos los suficientemente relevante para que le sea útil. El software se encargará, automáticamente, de encuadrar todos los inmuebles vigentes (que esten en algún estado NO HISTÓRICO) cada vez que se den de alta, 
+se editen o dupliquen cruzándolos con los filtros especificados siempre y cuando la demanda esté en un estado NO HISTÓRICO. Los inmuebles que encuentre el software vendrán reflejados en el listado de inmuebles propuesto con origen "OPENRS".</small>
 
 <div class="widget-box" id="ubicacion">
     <div class="widget-header">
@@ -233,6 +237,7 @@ if(isset($inmueble_id))
         var tipo_demanda_id=$('#tipo_demanda_id').val();
         if(tipo_demanda_id==2) 
         {
+            $('#leyenda_filtros').show();
             $('#ubicacion').show();
             $('#datos_especificos').show();
         }
@@ -257,6 +262,7 @@ if(isset($inmueble_id))
             $('#anio_construccion_hasta').val('');
             $('#ubicacion').hide();
             $('#datos_especificos').hide();
+            $('#leyenda_filtros').hide();
             // Resetear los valores no es suficiente para los chosen select, hay que hacer esto tb
             $('#poblacion_id').html('<span>- Seleccione -</span><div><b></b></div>');
             $('#zonas_id').html('<span>- Seleccione -</span><div><b></b></div>');

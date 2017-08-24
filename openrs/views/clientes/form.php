@@ -16,20 +16,20 @@ if(isset($inmueble_id))
     <div class="widget-body">
         <div class="widget-main">
             <div class="form-group">            
-                <?php echo label('NIF/NIE/CIF', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) NIF/NIE/CIF', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($nif, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                     <small class="blue">Introduzca el número sin guiones y todo en maýuscula (por ejemplo 75777802R o G32843955)</small>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Nombre', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Nombre', 'nombre', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($nombre, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Apellidos', 'apellidos', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Apellidos', 'apellidos', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($apellidos, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
@@ -55,7 +55,7 @@ if(isset($inmueble_id))
         <div class="widget-main">
             <div class="space-4"></div>
             <div class="form-group">            
-                <?php echo label('País de residencia', 'pais_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) País de residencia', 'pais_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('pais_id',$paises,$pais_id, 'id="pais_id" class="chosen-select form-control" onchange="mark_modified_field(); check_show_provincias();"'); ?>        
                 </div>
@@ -63,7 +63,7 @@ if(isset($inmueble_id))
             <div id="provincia_div"> 
                 <div class="space-4"></div>
                 <div class="form-group">            
-                    <?php echo label('Provincia', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                    <?php echo label('(*1) Provincia', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div class="col-sm-9">
                         <?php echo form_dropdown('provincia_id',$provincias,$provincia_id, 'class="chosen-select form-control" id="provincia_id" onchange="mark_modified_field(); show_poblaciones();"'); ?>
                     </div>
@@ -72,7 +72,7 @@ if(isset($inmueble_id))
             <div id="poblacion_div"> 
                 <div class="space-4"></div>
                 <div class="form-group">            
-                    <?php echo label('Población', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                    <?php echo label('(*1) Población', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div id="poblaciones" class="col-sm-9">
                         <?php echo form_dropdown('poblacion_id',$poblaciones,$poblacion_id, 'onchange="mark_modified_field();" class="chosen-select form-control" id="poblacion_id""'); ?>
                     </div>
@@ -80,14 +80,19 @@ if(isset($inmueble_id))
             </div>
             <div class="space-4"></div>
             <div class="form-group">            
-                <?php echo label('Dirección', 'direccion', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Dirección', 'direccion', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($direccion, '', 'class="form-control" onchange="mark_modified_field(); check_google_maps();"'); ?>
+                    <small class="blue">
+                        Deberá introducir la dirección especificando el tipo de vía al principio, si lo desea, el nombre de la vía, el número de portal, piso, etc. No utilice símbolos ordinales como º o ª. Todo separado por un especio y comas simples ",". 
+                        Si lo desea agregue el C.P. al final, también separado por ",". Por ejemplo, Calle Pinito del Oro, 4, 6 C, 04009. La población y la provincia no deben escribirse si introduce una dirección Española, ya que se tomarán de los datos introducidos anteriormente.
+                        En caso contrario, agregue la población y/o región extranjera al final de la dirección. Por ejemplo Kastanievej, 1, Copenhague.
+                    </small>
                 </div>
             </div>
             <div class="space-4"></div>
             <div class="form-group">            
-                <?php echo label('E-mail', 'correo', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) E-mail', 'correo', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($correo, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
@@ -117,13 +122,13 @@ if(isset($inmueble_id))
     <div class="widget-body">
         <div class="widget-main">
             <div class="form-group">            
-                <?php echo label('Estado', 'estado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Estado', 'estado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('estado_id',$estados,$estado_id, 'id="estado_id" onchange="mark_modified_field();" class="form-control"'); ?>        
                 </div>                
             </div>
             <div class="form-group">            
-                <?php echo label('Medio captación', 'medio_captacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Medio captación', 'medio_captacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('medio_captacion_id',$medios_captacion,$medio_captacion_id, 'id="medio_captacion_id" onchange="mark_modified_field();" class="form-control"'); ?>        
                 </div>                
@@ -143,6 +148,10 @@ if(isset($inmueble_id))
         </div>
     </div>
 </div>
+    
+<small class="blue">
+    Los campos marcados con (*) son obligatorios. Los campos marcados con (*1) son obligatorios si el país de residencia es España.
+</small>
 
 <script type="text/javascript">
     $(document).ready(function(){

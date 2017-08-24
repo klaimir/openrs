@@ -15,19 +15,20 @@ if(isset($cliente_id))
     <div class="widget-body">
         <div class="widget-main">
             <div class="form-group">            
-                <?php echo label('Referencia', 'referencia', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Referencia', 'referencia', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($referencia, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
+                    <small class="blue">Puede introducir cualquier secuencia de caracteres alfanumérica que no esté ya registrada en el sistema</small>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Tipo', 'tipo_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Tipo', 'tipo_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('tipo_id',$tipos_inmuebles,$tipo_id, 'id="tipo_id" onchange="mark_modified_field();" class="chosen-select form-control"'); ?>        
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Fecha de alta', 'fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Fecha de alta', 'fecha_alta', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($fecha_alta, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                     <small class="blue">Introduzca la fecha en formato dd/mm/aaaa (por ejemplo; 19/05/1982)</small>
@@ -48,7 +49,7 @@ if(isset($cliente_id))
             <div id="provincia_div"> 
                 <div class="space-4"></div>
                 <div class="form-group">            
-                    <?php echo label('Provincia', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                    <?php echo label('(*) Provincia', 'provincia_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div class="col-sm-9">
                         <?php echo form_dropdown('provincia_id',$provincias,$provincia_id, 'onchange="mark_modified_field(); show_poblaciones();" class="chosen-select form-control" id="provincia_id"'); ?>
                     </div>
@@ -57,7 +58,7 @@ if(isset($cliente_id))
             <div id="poblacion_div"> 
                 <div class="space-4"></div>
                 <div class="form-group">            
-                    <?php echo label('Población', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                    <?php echo label('(*) Población', 'poblacion_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div id="poblaciones" class="col-sm-9">
                         <?php echo form_dropdown('poblacion_id',$poblaciones,$poblacion_id, 'onchange="mark_modified_field();" class="chosen-select form-control" id="poblacion_id""'); ?>
                     </div>
@@ -73,9 +74,13 @@ if(isset($cliente_id))
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Dirección', 'direccion', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Dirección', 'direccion', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($direccion, '', 'class="form-control" onchange="check_google_maps(); mark_modified_field();"'); ?>
+                    <small class="blue">
+                        Deberá introducir la dirección especificando el tipo de vía al principio, si lo desea, el nombre de la vía, el número de portal, piso, etc. No utilice símbolos ordinales como º o ª. Todo separado por un especio y comas simples ",". 
+                        Si lo desea agregue el C.P. al final, también separado por ",". Por ejemplo, Calle Pinito del Oro, 4, 6 C, 04009. La población y la provincia no deben escribirse, ya que se tomarán de los datos introducidos anteriormente.
+                    </small>
                 </div>
             </div>
             <div class="form-group" id="google_maps_div">            
@@ -96,25 +101,25 @@ if(isset($cliente_id))
     <div class="widget-body">
         <div class="widget-main">
             <div class="form-group">            
-                <?php echo label('Metros', 'metros', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Metros', 'metros', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($metros, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Metros útiles', 'metros_utiles', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Metros útiles', 'metros_utiles', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($metros_utiles, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Habitaciones', 'habitaciones', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Habitaciones', 'habitaciones', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($habitaciones, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Baños', 'banios', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Baños', 'banios', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($banios, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                 </div>
@@ -123,32 +128,35 @@ if(isset($cliente_id))
                 <?php echo label('Precio compra', 'precio_compra', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_compra, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
-                    <small class="blue">Sin decimales y signos de puntuación</small>
+                    <small class="blue">Sin decimales ni signos de puntuación. Si especifica un precio positivo el inmueble estará en venta.</small>
                 </div>
             </div>
             <div class="form-group">
                 <?php echo label('Precio compra anterior', 'precio_compra', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_compra_anterior, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
-                    <small class="blue">Sin decimales y signos de puntuación</small>
+                    <small class="blue">Sin decimales ni signos de puntuación. Si especifica un precio positivo mayor que el de compra estará reflejando una bajada de precio. Si especifica un precio menor será una subida. 
+                        Si no desea especificar ni subida ni bajada deje el campo a 0 o vacío</small>
                 </div>
             </div>
             <div class="form-group">
                 <?php echo label('Precio Alquiler', 'precio_alquiler', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_alquiler, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
-                    <small class="blue">Sin decimales y signos de puntuación</small>
+                    <small class="blue">Sin decimales ni signos de puntuación. Si especifica un precio positivo el inmueble estará en alguiler. El precio sólo puede ser mensual a no ser que especifique usted lo contrario en la descripción.
+                    Si además el precio de compra el positivo, el inmueble está a la venta o en alguiler.</small>
                 </div>
             </div>
             <div class="form-group">
                 <?php echo label('Precio alquiler anterior', 'precio_alquiler', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($precio_alquiler_anterior, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
-                    <small class="blue">Sin decimales y signos de puntuación</small>
+                    <small class="blue">Sin decimales ni signos de puntuación. Si especifica un precio positivo mayor que el de alquiler estará reflejando una bajada de precio. Si especifica un precio menor será una subida. 
+                        Si no desea especificar ni subida ni bajada deje el campo a 0 o vacío</small>
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Certificación energética', 'certificacion_energetica_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Certificación energética', 'certificacion_energetica_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('certificacion_energetica_id',$tipos_certificacion_energetica,$certificacion_energetica_id, 'id="certificacion_energetica_id" onchange="mark_modified_field(); check_show_kwh_m2_anio();" class="form-control"'); ?>        
                     <small class="blue">
@@ -159,7 +167,7 @@ if(isset($cliente_id))
             </div>
             <div id="kwh_m2_anio_div">
                 <div class="form-group">            
-                    <?php echo label('Consumo Kwh/m2 anual', 'kwh_m2_anio', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                    <?php echo label('(*1) Consumo Kwh/m2 anual', 'kwh_m2_anio', 'class="col-sm-3 control-label no-padding-right"'); ?>
                     <div class="col-sm-9">
                         <?php echo form_input($kwh_m2_anio, '', 'onchange="mark_modified_field();" class="form-control"'); ?>
                     </div>
@@ -204,9 +212,10 @@ if(isset($cliente_id))
                 </div>
             </div>
             <div class="form-group">            
-                <?php echo label('Dirección pública', 'direccion_publica', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*2) Dirección pública', 'direccion_publica', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_input($direccion_publica, '', 'class="form-control" onchange="check_google_maps(1); mark_modified_field();"'); ?>
+                    
                 </div>
             </div>  
             <div class="form-group" id="google_maps_div_public">            
@@ -232,13 +241,13 @@ if(isset($cliente_id))
                                 <div class="tab-pane" id="tab_<?php echo $idioma->id_idioma;?>">
                         <?php }?>
                                     <div class="form-group">            
-                                        <?php echo label('Título', 'titulo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <?php echo label('(*2) Título', 'titulo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
                                         <div class="col-sm-9">
                                             <?php echo form_input($datos_idioma[$idioma->id_idioma]['titulo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
                                         </div>
                                     </div>
                                     <div class="form-group">            
-                                        <?php echo label('Descripción', 'descripcion_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <?php echo label('(*2) Descripción', 'descripcion_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
                                         <div class="col-sm-9">
                                             <?php echo form_textarea($datos_idioma[$idioma->id_idioma]['descripcion'],'','onchange="mark_modified_field();" class="ckeditor"'); ?>
                                         </div>
@@ -252,7 +261,7 @@ if(isset($cliente_id))
                                         </div>
                                     </div>
                                     <div class="form-group">            
-                                        <?php echo label('Descripción SEO', 'descripcion_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <?php echo label('(*2) Descripción SEO', 'descripcion_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
                                         <div class="col-sm-9">
                                             <?php echo form_input($datos_idioma[$idioma->id_idioma]['descripcion_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
                                             
@@ -260,7 +269,7 @@ if(isset($cliente_id))
                                         </div>
                                     </div>
                                     <div class="form-group">            
-                                        <?php echo label('Palabras clave SEO', 'keywords_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
+                                        <?php echo label('(*2) Palabras clave SEO', 'keywords_seo_'.$idioma->id_idioma, 'class="col-sm-3 control-label no-padding-right"'); ?>
                                         <div class="col-sm-9">
                                             <?php echo form_input($datos_idioma[$idioma->id_idioma]['keywords_seo'], '', 'class="form-control" onchange="mark_modified_field();"'); ?>
                                             <small class="blue">Introduzca las palabras separadas por comas ","</small>
@@ -284,7 +293,7 @@ if(isset($cliente_id))
     <div class="widget-body">
         <div class="widget-main">
             <div class="form-group">            
-                <?php echo label('Estado', 'estado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
+                <?php echo label('(*) Estado', 'estado_id', 'class="col-sm-3 control-label no-padding-right"'); ?>
                 <div class="col-sm-9">
                     <?php echo form_dropdown('estado_id',$estados,$estado_id, 'id="estado_id" onchange="mark_modified_field();" class="form-control"'); ?>        
                 </div>                
@@ -304,6 +313,11 @@ if(isset($cliente_id))
         </div>
     </div>
 </div>
+    
+<small class="blue">
+    Los campos marcados con (*) son obligatorios. Los campos marcados con (*1) son obligatorios sólo si se ha seleccionado un tipo concreto de certificado energético. 
+    Los campos marcados con (*2) son obligatorios sólo si se ha publicado el inmueble.
+</small>
 
 <script type="text/javascript">
     $(document).ready(function(){
