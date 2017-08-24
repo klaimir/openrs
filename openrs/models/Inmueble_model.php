@@ -2092,11 +2092,11 @@ class Inmueble_model extends MY_Model
         // Obtenemos la dirección de otro lugar
         if($infowindow_type=='private')
         {
-            $direccion=$inmueble->direccion;
+            $direccion=trim($inmueble->direccion);
         }
         else
         {
-            $direccion=$inmueble->direccion_publica;
+            $direccion=trim($inmueble->direccion_publica);
         }
         if(empty($direccion))
         {
