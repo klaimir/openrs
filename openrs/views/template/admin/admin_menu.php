@@ -39,7 +39,7 @@
         <li class="<?php echo set_active_option($_active_section,'plantillas_documentacion'); ?>">
             <a href="<?php echo site_url('plantillas_documentacion'); ?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Plantillas Documentación </span>
+                <span class="menu-text"> Plantillas Doc. </span>
             </a>
 
             <b class="arrow"></b>
@@ -52,34 +52,7 @@
             </a>
 
             <b class="arrow"></b>
-        </li>
-
-        <li class="<?php echo set_active_option($_active_section,'tipos_inmueble'); ?>" onClick="return show_confirm_exit_message();">
-            <a href="<?php echo site_url('tipos_inmueble'); ?>">
-                <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Tipos inmueble </span>
-            </a>
-
-            <b class="arrow"></b>
-        </li>
-        
-        <li class="<?php echo set_active_option($_active_section,'opciones_extras'); ?>" onClick="return show_confirm_exit_message();">
-            <a href="<?php echo site_url('opciones_extras'); ?>">
-                <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Opciones extras </span>
-            </a>
-
-            <b class="arrow"></b>
-        </li>
-        
-        <li class="<?php echo set_active_option($_active_section,'lugares_interes'); ?>" onClick="return show_confirm_exit_message();">
-            <a href="<?php echo site_url('lugares_interes'); ?>">
-                <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Lugares Interés </span>
-            </a>
-
-            <b class="arrow"></b>
-        </li>
+        </li>        
         
         <li class="<?php echo set_active_option($_active_section,'provincias'); ?>" onClick="return show_confirm_exit_message();">
             <a href="<?php echo site_url('provincias'); ?>">
@@ -99,13 +72,65 @@
             <b class="arrow"></b>
         </li>
         
-        <li class="<?php echo set_active_option($_active_section,'medios_captacion'); ?>">
-            <a href="<?php echo site_url('medios_captacion'); ?>" onClick="return show_confirm_exit_message();">
+        <li class="<?php echo set_active_menu($_active_section,array("medios_captacion")); ?>">
+            <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fa-caret-right"></i>
-                <span class="menu-text"> Medios de Captación </span>
+                Clientes
+                <b class="arrow fa fa-angle-down"></b>
             </a>
 
             <b class="arrow"></b>
+
+            <ul class="submenu">                
+                <li class="<?php echo set_active_option($_active_section,'medios_captacion'); ?>">
+                    <a href="<?php echo site_url('medios_captacion'); ?>" onClick="return show_confirm_exit_message();">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        <span class="menu-text"> Medios Captación </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+        
+        <li class="<?php echo set_active_menu($_active_section,array("tipos_inmueble","opciones_extras","lugares_interes")); ?>">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Inmuebles
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+
+            <b class="arrow"></b>
+
+            <ul class="submenu">                
+
+                <li class="<?php echo set_active_option($_active_section,'tipos_inmueble'); ?>" onClick="return show_confirm_exit_message();">
+                    <a href="<?php echo site_url('tipos_inmueble'); ?>">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        <span class="menu-text"> Tipos </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+
+                <li class="<?php echo set_active_option($_active_section,'opciones_extras'); ?>" onClick="return show_confirm_exit_message();">
+                    <a href="<?php echo site_url('opciones_extras'); ?>">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        <span class="menu-text"> Características </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+
+                <li class="<?php echo set_active_option($_active_section,'lugares_interes'); ?>" onClick="return show_confirm_exit_message();">
+                    <a href="<?php echo site_url('lugares_interes'); ?>">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        <span class="menu-text"> Sitios cercanos </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>  
+            </ul>
         </li>
     </ul>
 </li>
