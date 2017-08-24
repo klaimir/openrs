@@ -18,7 +18,7 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="#tab_demandas" data-toggle="tab">DEMANDAS</a></li>
         <li><a href="#tab_propietarios" data-toggle="tab">PROPIETARIOS</a></li>
-        <li><a href="#tab_opciones_extras" data-toggle="tab">CARACTERISTICAS</a></li>
+        <li><a href="#tab_opciones_extras" data-toggle="tab">CARACTERÍSTICAS</a></li>
         <li><a href="#tab_lugares_interes" data-toggle="tab">SITIOS CERCANOS</a></li>
     </ul>
     <div class="tab-content">

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                Lugares de interés de inmuebles
+                Sitios cercanos de inmuebles
             </h1>
         </div>
     </div>

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                Opciones extras de inmuebles
+                Características de inmuebles
             </h1>
         </div>
     </div>
