@@ -920,7 +920,14 @@ class Inmueble_model extends MY_Model
         // Filtro Agente Asignado
         if (isset($filtros['captador_id']) && $filtros['captador_id'] >= 0)
         {
-            $this->db->where('captador_id', $filtros['captador_id']);
+            if($filtros['captador_id']==0)
+            {
+                $this->db->where('captador_id IS NULL');
+            }
+            else
+            {
+                $this->db->where('captador_id', $filtros['captador_id']);
+            }            
         }
         // Filtro certificación energética
         if (isset($filtros['certificacion_energetica_id']) && $filtros['certificacion_energetica_id'] >= 0)

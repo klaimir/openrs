@@ -37,7 +37,7 @@ class Clientes extends CRUD_controller
         $this->data['medios_captacion'] = $this->Medio_captacion_model->get_medios_captacion_dropdown(-1);
 
         // Selector de agentes
-        $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
+        $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1, TRUE);
 
         // selector de intereses
         $this->data['intereses'] = $this->Cliente_model->get_intereses_dropdown(-1);

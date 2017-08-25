@@ -121,7 +121,7 @@ class Inmuebles extends CRUD_controller
         $this->data['estados'] = $this->Estado_model->get_estados_dropdown(2,-1);
 
         // Selector de agentes
-        $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1);
+        $this->data['agentes'] = $this->Usuario_model->get_agentes_dropdown(-1, TRUE);
         
         // selector de ofertas
         $this->data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1);

@@ -365,27 +365,7 @@ class Cliente_model extends MY_Model
         // Filtro Intereses
         if (isset($filtros['interes_id']) && $filtros['interes_id'] > 0)
         {
-            // Intereses  
-            /*
-            switch ($filtros['interes_id'])
-            {
-                case 1:
-                    $this->db->where('busca_vender', 1);
-                    break;
-                case 2:
-                    $this->db->where('busca_alquilar', 1);
-                    break;
-                case 3:
-                    $this->db->where('busca_alquiler', 1);
-                    break;
-                case 4:
-                    $this->db->where('busca_comprar', 1);
-                    break;
-                default:
-                    break;
-            }
-             * 
-             */            
+            // Intereses          
             $ids_clientes=array();
             switch ($filtros['interes_id'])
             {
@@ -440,7 +420,14 @@ class Cliente_model extends MY_Model
         // Filtro Agente Asignado
         if (isset($filtros['agente_asignado_id']) && $filtros['agente_asignado_id'] >= 0)
         {
-            $this->db->where('agente_asignado_id', $filtros['agente_asignado_id']);
+            if($filtros['agente_asignado_id']==0)
+            {
+                $this->db->where('agente_asignado_id IS NULL');
+            }
+            else
+            {
+                $this->db->where('agente_asignado_id', $filtros['agente_asignado_id']);
+            }            
         }
         // Filtro estado
         if (isset($filtros['estado_id']) && $filtros['estado_id'] >= 0)

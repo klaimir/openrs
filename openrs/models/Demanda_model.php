@@ -636,7 +636,14 @@ class Demanda_model extends MY_Model
         // Filtro Agente Asignado
         if (isset($filtros['agente_asignado_id']) && $filtros['agente_asignado_id'] >= 0)
         {
-            $this->db->where('agente_asignado_id', $filtros['agente_asignado_id']);
+            if($filtros['agente_asignado_id']==0)
+            {
+                $this->db->where('agente_asignado_id IS NULL');
+            }
+            else
+            {
+                $this->db->where('agente_asignado_id', $filtros['agente_asignado_id']);
+            } 
         }
         // Filtro certificación energética
         if (isset($filtros['certificacion_energetica_id']) && $filtros['certificacion_energetica_id'] >= 0)

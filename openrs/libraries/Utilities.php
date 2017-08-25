@@ -69,7 +69,9 @@ class Utilities
         else
         {
             $clientes_buscador_fecha_hasta = $this->CI->session->userdata($prefix . '_' . $field);
-            if (empty($clientes_buscador_fecha_hasta))
+            //if (empty($clientes_buscador_fecha_hasta))
+            // Es mejor ponerlo así para poder asignar valores iguales a 0 los campos (como para los agentes sin asignar por ejemplo)
+            if ($clientes_buscador_fecha_hasta=='')
             {
                 $this->CI->session->set_userdata($prefix . '_' . $field, $default_value);
             }

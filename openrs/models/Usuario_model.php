@@ -185,7 +185,7 @@ class Usuario_model extends MY_Model
      * @return array de agentes en formato dropdown
      */
     
-    function get_agentes_dropdown($default_value="")
+    function get_agentes_dropdown($default_value="", $agentes_sin_asignar=FALSE)
     {
         // Array de agentes
         $agentes=$this->db->select($this->ion_auth_model->tables['users'].'.*')
@@ -197,6 +197,10 @@ class Usuario_model extends MY_Model
         $array_agentes=$this->dropdown($agentes);
         // Selección inicial
         $seleccion[$default_value]="- Seleccione agente -";
+        if($agentes_sin_asignar)
+        {
+            $seleccion[0]="- Sin asignar agente -";
+        }
         // Suma de ambos
         return ($seleccion+$array_agentes);
     }  
