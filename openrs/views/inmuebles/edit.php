@@ -6,6 +6,13 @@
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             <?php echo lang('common_btn_edit'); ?>
+            <?php 
+            // Imprimimos última fecha de actualización
+            if(!is_null($element->fecha_actualizacion))
+            {
+                echo " (<strong>Última vez actualizado: ".$this->utilities->cambiafecha_bd($element->fecha_actualizacion)."</strong>)"; 
+            }
+            ?>
         </small>
     </h1>
 </div>
