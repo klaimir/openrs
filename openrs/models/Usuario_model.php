@@ -48,6 +48,49 @@ class Usuario_model extends MY_Model
     }
     
     /**
+     * Comprueba que el usuario especificado puede almacenarse con los permisos establecidos
+     *
+     * @param [id]			Identificador del usuario
+     * @param [groups]                  Grupos de usuario
+     *
+     * @return TRUE OR FALSE
+     */
+    function check_user($id, $groups)
+    {
+        if($this->check_unique_admin($id, $groups) && $this->check_user_datas($id, $groups))
+        {
+            return TRUE;
+        }
+        
+        return FALSE;
+    }
+    
+    /**
+     * Comprueba que el usuario especificado no tiene datos relacionados que afecten al rol de agente
+     *
+     * @param [id]			Identificador del usuario
+     * @param [groups]                  Grupos de usuario
+     *
+     * @return TRUE OR FALSE
+     */
+    function check_user_datas($id, $groups)
+    {      
+        // Se comprueba que no se puede eliminar el agente al estar relacionado
+        if(!in_array(2, $groups))
+        {
+            $info=$this->with_clientes()->with_inmuebles()->with_demandas()->get($id);
+            // Si es admin y es el único del sistema
+            if (count($info->clientes) || count($info->inmuebles) || count($info->demandas))
+            {
+                $this->set_error("No se puede quitar el permiso de agente ya que está asignado a algún inmueble, demanda o cliente");
+                return FALSE;
+            }
+        }
+        
+        return TRUE;
+    }
+    
+    /**
      * Comprueba que el usuario especificado no se le puede quitar el permiso de administrador por ser el único
      *
      * @param [id]			Identificador del usuario

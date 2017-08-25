@@ -543,7 +543,7 @@ class Auth extends MY_Controller
             // Si se han especificado grupos, hay que comprobar que no se han quitado permisos a los admins
             if ($this->ion_auth->is_admin() && $this->input->post('groups'))
             {
-                if(!$this->Usuario_model->check_unique_admin($id,$this->input->post('groups')))
+                if(!$this->Usuario_model->check_user($id,$this->input->post('groups')))
                 {
                     $this->session->set_flashdata('message', $this->Usuario_model->get_error());
                     redirect('auth', 'refresh');
