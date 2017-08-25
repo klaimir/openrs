@@ -42,7 +42,7 @@ class Lugar_interes_model extends MY_Model
         // Para cada idioma creamos su regla para el nombre
         foreach($this->idiomas_activos as $idioma)
         {            
-            $this->form_validation->set_rules('nombre_'.$idioma->id_idioma, 'Nombre en '.$idioma->nombre, 'required|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('nombre_'.$idioma->id_idioma, 'Nombre en '.$idioma->nombre, 'required|max_length[100]|xss_clean|is_unique_global_foreign_key[lugares_interes_idiomas;' . $id . ';nombre;lugar_interes_id;idioma_id;' . $idioma->id_idioma . ']');
         }        
         $this->form_validation->set_rules('descripcion', 'Descripción', 'xss_clean|max_length[255]');
     }
@@ -103,7 +103,7 @@ class Lugar_interes_model extends MY_Model
                 'name' => 'nombre_'.$idioma->id_idioma,
                 'id' => 'nombre_'.$idioma->id_idioma,
                 'type' => 'text',
-                'value' => $this->form_validation->set_value('nombre',is_object($datos_idioma) ? $datos_idioma->nombre : ""),
+                'value' => $this->form_validation->set_value('nombre_'.$idioma->id_idioma,is_object($datos_idioma) ? $datos_idioma->nombre : ""),
             );
         }
         
