@@ -7,10 +7,15 @@ class Plantilla_documentacion_model extends MY_Model
 
     public function __construct()
     {
+        parent::__construct();
+        
         $this->table = 'plantillas_documentacion';
         $this->primary_key = 'id';
-                
-        parent::__construct();
+        
+        $this->has_many['inmuebles_fichas'] = array('local_key'=>'id', 'foreign_key'=>'plantilla_id', 'foreign_model'=>'Inmueble_ficha_model'); 
+        $this->has_many['inmuebles_carteles'] = array('local_key'=>'id', 'foreign_key'=>'plantilla_id', 'foreign_model'=>'Inmueble_cartel_model'); 
+        $this->has_many['clientes_fichas'] = array('local_key'=>'id', 'foreign_key'=>'plantilla_id', 'foreign_model'=>'Cliente_ficha_model');
+        $this->has_many['demandas_fichas'] = array('local_key'=>'id', 'foreign_key'=>'plantilla_id', 'foreign_model'=>'Demanda_ficha_model');
         
         // Cargamos modelo de tipos de plantilla
         $this->load->model('Tipo_plantilla_documentacion_model');
@@ -122,7 +127,8 @@ class Plantilla_documentacion_model extends MY_Model
     
     function check_delete($id)
     {        
-        if (count($this->with_documentos_generados()->get($id)->documentos_generados))
+        $info=$this->with_clientes_fichas()->with_inmuebles_fichas()->with_inmuebles_carteles()->with_demandas_fichas()->get($id);
+        if (count($info->clientes_fichas) || count($info->inmuebles_fichas) || count($info->inmuebles_carteles) || count($info->demandas_fichas))
         {
             return FALSE;
         }

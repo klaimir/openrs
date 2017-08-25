@@ -31,32 +31,5 @@ class Provincias extends MY_Controller
         // Render
         $this->render_private('provincias/index', $this->data);
     }
-    
-    public function activar($id,$activar) {
-        // Deshabilitar profiler
-        $this->output->enable_profiler(FALSE);
-        // Comprobación de petición por AJAX
-        if($this->input->is_ajax_request())
-        {
-            // Datos federado
-            $check_activar = $this->Provincia_model->activar($id,$activar);            
-            // Actualización de datos        
-            if($check_activar)
-            {
-                echo 1;
-            }
-            else
-            {
-                if($activar)
-                {
-                    echo "Error al activar la provincia. Inténtelo más tarde";
-                }
-                else
-                {
-                    echo "Error al desactivar la provincia. Inténtelo más tarde";
-                }
-            }
-        }
-    }
 
 }
