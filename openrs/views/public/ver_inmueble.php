@@ -222,7 +222,7 @@ $mensaje = array(
         <div class="col-sm-12 margin-top-20">
             <h3><?php echo $this->lang->line('tienda_caracteristicas_inmueble');?></h3>
             <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_tipo_propiedad');?></div>
-            <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->tipo_inmueble; ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->nombre_tipo; ?></div>
             <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_superficie_construida'); ?></div>
             <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->metros; ?></div>
             <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_superficie_util'); ?></div>
@@ -307,12 +307,33 @@ $(document).ready(function(){
                 $('#enlaces').fadeIn(500);
 	});
 });
-
 function check_google_maps() {
-        var pais_id=64;      
+    var pais_id=64;      
+    var direccion="<?php echo $inmueble->direccion;?>";
+
+    if(pais_id!='' && direccion!='')
+    {
         $('#google_maps_div').show();     
-        var url='/common/single_google_map?direccion=<?php echo $inmueble->direccion;?>&provincia_id=<?php echo $inmueble->provincia_id;?>&poblacion_id=<?php echo $inmueble->poblacion_id;?>&pais_id='+pais_id;
+        
+        var poblacion_id="<?php echo $inmueble->poblacion_id;?>";
+        var provincia_id="<?php echo $inmueble->provincia_id;?>";
+
+        if(poblacion_id!='' && provincia_id!='')
+        {
+            var url='/common/single_google_map?direccion='+direccion+'&provincia_id='+provincia_id+'&poblacion_id='+poblacion_id+'&pais_id='+pais_id;
+        }
+        else
+        {
+            var url='/common/single_google_map?direccion='+direccion+'&pais_id='+pais_id;
+        }
+        
         var url_encode = encodeURI(url);
+
         $('#google_maps').load('<?php echo site_url();?>'+url_encode);
     }
+    else
+    {
+        $('#google_maps_div').hide();
+    }
+}
 </script>

@@ -80,19 +80,15 @@ class Buscador_model extends MY_Model {
         }
         
         public function getInmuebleById($idioma, $id, $publicado=NULL){
-		$this->db->select('inmuebles.*, inmuebles.id as idinmueble, inmuebles_idiomas.*,inmuebles_imagenes.*, tipos_inmueble_idiomas.nombre as tipo_inmueble');
-        	$this->db->from('inmuebles');
-        	$this->db->join('inmuebles_idiomas','inmuebles.id=inmuebles_idiomas.inmueble_id');
-        	$this->db->join('inmuebles_imagenes','inmuebles_idiomas.inmueble_id=inmuebles_imagenes.inmueble_id');
-                $this->db->join('tipos_inmueble_idiomas','inmuebles.tipo_id=tipos_inmueble_idiomas.tipo_inmueble_id');
-                $this->db->where('inmuebles_idiomas.idioma_id',$idioma);
-		$this->db->where('inmuebles.id',$id);
-                $this->db->where('tipos_inmueble_idiomas.idioma_id',$idioma);
-                if($publicado){
-                    $this->db->where('inmuebles.publicado',$publicado);
-                }
-		return $this->db->get()->row();
-	}
+        	$this->db->from('v_inmuebles');
+        	$this->db->join('inmuebles_idiomas', 'inmuebles_idiomas.inmueble_id = v_inmuebles.id');
+			$this->db->where('v_inmuebles.id',$id);
+			$this->db->where('v_inmuebles.idioma_id',$idioma);
+            if($publicado){
+                $this->db->where('v_inmuebles.publicado',$publicado);
+            }
+			return $this->db->get()->row();
+		}
         
         public function getImagenesInmueble($id){
             $this->db->where('inmueble_id',$id);

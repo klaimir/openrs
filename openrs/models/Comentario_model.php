@@ -23,7 +23,7 @@ class Comentario_model extends MY_Model{
 	
 	function comentarios_articulo($id_articulo){
 		$this->db->where('id_articulo',$id_articulo);
-		$this->db->where('creado','desc');
+		$this->db->order_by('creado','desc');
 		return $this->db->get('comentarios_blog')->result();
 	}
 	

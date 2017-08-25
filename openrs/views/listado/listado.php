@@ -14,7 +14,7 @@
 				</div>
 			</div>
 			
-			<article>
+			<article style="margin-top:15px;">
 			<?php if (count($listado) > 0): ?>
 				<table class="table table-bordered table-hover table-condensed">
 					<thead>
@@ -50,11 +50,11 @@
 							     		<td>
 							     			<?php foreach($opciones as $ko=>$vo):?>
 							     				<?php if($ko!='Borrar'):?>
-								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
+								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
 								     					<span class="<?php echo $vo['icon'];?>"></span>
 								     				</a>
 								     			<?php else: ?>
-								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
+								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip red" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
 								     					<span class="<?php echo $vo['icon'];?>" id="" ></span>
 								     				</a>
 								     			<?php endif;?>

@@ -148,7 +148,7 @@
             <b class="arrow"></b>
         </li>
         
-        <li class="<?php echo set_active_option($_active_section,'Noticias'); ?>">
+        <li class="<?php echo set_active_option($_active_section,'noticias'); ?>">
             <a href="<?php echo site_url('blog/listar_articulos'); ?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Noticias </span>

@@ -30,6 +30,7 @@ class Seccion extends MY_Controller_Front
                 $this->load->model('Config_model');
                 $config=$this->Config_model->get_config();
                 $this->session->set_userdata('google_analytics_ID',$config->google_analytics_ID);
+                $this->output->enable_profiler(TRUE);
 	}
 	
 	//Método para la portada: diferente en cada tienda, para que la portada sea original

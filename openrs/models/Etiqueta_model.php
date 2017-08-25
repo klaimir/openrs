@@ -21,7 +21,7 @@ class Etiqueta_model extends MY_Model{
 		}
 	}	
 	
-	function get_all_etiqueta($idioma){
+	function get_all_etiquetas($idioma){
 		$this->db->where('id_idioma', $idioma);
 		return $this->db->get('etiquetas')->result();
 	}

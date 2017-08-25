@@ -6,13 +6,14 @@
 			<div class="col-sm-8">				
 				<h4><?php echo $this->lang->line('blog_listado_articulos');?></h4>
 			</div>
-                        <div class="col-sm-4">
-                            <a href="<?php echo site_url('blog/crear_articulo'); ?>" class="btn btn-primary pull-right">Nuevo artículo </a>
-                            <a href="<?php echo site_url('blog/listar_categorias'); ?>" class="btn btn-default pull-right">Listar categorías</a>
-                        </div>
+            <div class="col-sm-4">
+            	<a href="<?php echo site_url('blog/crear_articulo'); ?>" class="btn btn-primary pull-right">Nuevo artículo </a>
+                <a href="<?php echo site_url('blog/listar_categorias'); ?>" class="btn btn-default pull-right">Listar categorías</a>
+            </div>
 			<article>
+			<div class="col-sm-12">
 			<?php if (count($articulos) > 0): ?>
-				<table class="table table-bordered table-striped table-condensed a_datatable">
+				<table class="table table-bordered table-striped table-condensed " style="margin-top:15px;">
 					<thead>
 						<tr>
 							<th><?php echo $this->lang->line('blog_table_creado');?></th><th><?php echo $this->lang->line('blog_table_visto_votos');?></th><th><?php echo $this->lang->line('blog_table_imagen');?></th><th><?php echo $this->lang->line('blog_table_titulo');?></th><th><?php echo $this->lang->line('blog_url_seo');?></th><th><?php echo $this->lang->line('blog_table_categorias');?></th><th><?php echo $this->lang->line('blog_table_etiquetas');?></th><th><?php echo $this->lang->line('blog_table_estado');?></th><th><?php echo $this->lang->line('blog_table_opciones');?></th>
@@ -44,20 +45,20 @@
 								</td>
 								<td>
 									<span class="pull-right">
-										<a href="<?php echo site_url('blog/listar_comentarios/'.$art->id_articulo);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_listar_comentarios');?>">
-											<i class="glyphicon glyphicon-list"></i><?php echo ($art->comentario == 1) ? '<big><strong>!</strong></big>' : '';?>
+										<a href="<?php echo site_url('blog/listar_comentarios/'.$art->id_articulo);?>" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_listar_comentarios');?>">
+											<i class="ace-icon fa fa-list bigger-130"></i><?php echo ($art->comentario == 1) ? '<big><strong>!</strong></big>' : '';?>
 										</a>										
 										<?php if($art->id_estado!=2):?>
-											<a href="<?php echo site_url('blog/editar_articulo/'.$art->id_articulo);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_editar_articulo');?>">
-												<i class="glyphicon glyphicon-edit"></i>
+											<a href="<?php echo site_url('blog/editar_articulo/'.$art->id_articulo);?>" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_editar_articulo');?>">
+												<i class="ace-icon fa fa-pencil bigger-130"></i>
 											</a>
 										<?php else: ?>
-											<a href="<?php echo site_url('blog/recuperar_articulo/'.$art->id_articulo);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_recuperar_articulo');?>">
-												<i class="glyphicon glyphicon-share-alt"></i>
+											<a href="<?php echo site_url('blog/recuperar_articulo/'.$art->id_articulo);?>" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_recuperar_articulo');?>">
+												<i class="ace-icon fa fa-external-link1 bigger-130"></i>
 											</a>
 										<?php endif; ?>										
-										<a href="<?php echo site_url('blog/'.$art->url_seo_articulo);?>" target="_blank" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_ver_articulo');?>">
-											<i class="glyphicon glyphicon-eye-open"></i>
+										<a href="<?php echo site_url('blog/'.$art->url_seo_articulo);?>" target="_blank" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_ver_articulo');?>">
+											<i class="ace-icon fa fa-eye bigger-130"></i>
 										</a>
 									</span>
 								</td>
@@ -68,6 +69,7 @@
 			<?php else: ?>
 				<div class="alert alert-info"><?php echo $this->lang->line('blog_no_hay_articulos');?></div>
 			<?php endif; ?>
+			</div>
 			</article>
 		</section>
 	</div>

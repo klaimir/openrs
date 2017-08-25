@@ -41,11 +41,11 @@
 								<td>
 									<span class="pull-right">
 										<?php if($coment->visible==1):?>
-											<a href="<?php echo site_url('blog-eliminar-comentario/'.$coment->id);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_ocultar_comentario');?>">
+											<a href="<?php echo site_url('blog/eliminar_comentario/'.$coment->id);?>" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_ocultar_comentario');?>">
 												<i class="glyphicon glyphicon-trash"></i>
 											</a>
 										<?php else: ?>
-											<a href="<?php echo site_url('blog-recuperar-comentario/'.$coment->id);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_recuperar_comentario');?>">
+											<a href="<?php echo site_url('blog/recuperar_comentario/'.$coment->id);?>" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_recuperar_comentario');?>">
 												<i class="glyphicon glyphicon-share-alt"></i>
 											</a>
 										<?php endif; ?>

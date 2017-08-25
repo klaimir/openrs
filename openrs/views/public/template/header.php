@@ -1,4 +1,4 @@
-
+<?php $this->load->view('javascript/idiomas');?>
 <?php if($config->cabecera_fija == 1){?>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color:<?php echo $config->ccabecera;?>; border-bottom:2px solid <?php echo $config->cbordecabecera;?>;">
 <?php }else{?>
@@ -22,13 +22,13 @@
 							<?php }?>
 					
 							<?php if($sh->tipo_seccion == 1):?>
-								<a href="<?php echo site_url('seccion/seccion/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
+								<a href="<?php echo site_url($this->uri->segment('1').'/seccion/seccion/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 2): ?>
-								<a href="<?php echo site_url($sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
+								<a href="<?php echo site_url($this->uri->segment('1').'/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 3): ?>
 								<a href="<?php echo site_url('blog-articulos');?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 4): ?>
-								<a href="<?php echo site_url($sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
+								<a href="<?php echo site_url($this->uri->segment('1').'/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 5): ?>
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?> <span class="caret"></span></a>
 						          <ul class="dropdown-menu" role="menu">

@@ -1,4 +1,5 @@
 <?php $this->load->view('javascript/etiquetas');?>
+<?php $this->load->view('javascript/ckeditor');?>
 <?php // Form fields configuration
 	$this->form_validation->set_error_delimiters('<div class="alert alert-danger pull-left">', '</div>');
 ?>
@@ -113,7 +114,7 @@
 										<div class="col-md-10">
 											<div class="logo_marca">
 												<?php if(($articulo[$idioma->id_idioma]->img_articulo)){?>
-													<img src="<?php echo base_url('img/blog/1/'.$idioma->id_idioma.'/'.$articulo[$idioma->id_idioma]->img_articulo); ?>" class="img-responsive" />
+													<img src="<?php echo base_url('uploads/general/img/blog/1/'.$idioma->id_idioma.'/'.$articulo[$idioma->id_idioma]->img_articulo); ?>" class="img-responsive" />
 												<?php }else{?>
 													<?php echo $this->lang->line('blog_no_hay_imagen');?>
 												<?php }?>
@@ -184,8 +185,17 @@
 										<?php echo form_label($this->lang->line('blog_contenido'),'contenido_'.$idioma->id_idioma,array('class'=>'control-label pull-right')); ?>
 									</div>
 									<div class="col-md-10">
-										<?php echo form_textarea($contenido); ?>
 										<span><?php echo form_error('contenido_'.$idioma->id_idioma); ?></span>
+										<?php 
+										$config_mini = array();
+										$config_mini['toolbar'] = array(
+												array( 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike' ,'-', 'Link', 'Unlink', 'Anchor','Image')
+										);
+										$config_mini['filebrowserBrowseUrl'] = base_url()."assets/admin/ckeditor/kcfinder/browse.php";
+										$config_mini['filebrowserImageBrowseUrl'] = base_url()."assets/admin/ckeditor/kcfinder/browse.php?type=general";
+										$config_mini['filebrowserUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=general";
+										$config_mini['filebrowserImageUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=general";
+										echo $this->ckeditor->editor('contenido_'.$idioma->id_idioma, set_value('contenido_'.$idioma->id_idioma,isset($articulo[$idioma->id_idioma]->contenido) ? $articulo[$idioma->id_idioma]->contenido : ''), $config_mini);?>
 										<p></p>
 									</div>
 									<p class="centrado" style="font-size:12px;"><b>NOTA: </b>Para dividir el contenido en columnas, debes pulsar en "Fuente HTML" y pegar uno de estos códigos</p>
@@ -198,7 +208,7 @@
 									</div>
 									<div class="col-md-10">
 										<div class="categorias" id="categorias_<?php echo $idioma->id_idioma;?>">
-											<?php if(isset($categorias)){
+											<?php if(isset($categorias[$idioma->id_idioma])){
 												foreach($categorias[$idioma->id_idioma] as $cat){
 													if(isset($articulo) && $con == 0){
 														$asignada=$this->articulo_model->categoria_asignada($cat->id_categoria, $id_articulo);
@@ -259,3 +269,21 @@
 		</section>
 	</div>
 </div>
+<script>
+//Eliminar etiqueta
+$(".etiquetas").on("click", ".del_etiqueta", function(){
+	$(this).remove();
+	var id = $(this).attr('id').split('_');
+	$('#ins_etiqueta_'+id[1]).focus();
+});
+//Comprobaciones al enviar un blog
+$(".enviar").click(function(){
+	//Recorre el listado de etiquetas y las almacena en el input hidden
+	$('.etiquetas').each(function( index ) {
+		var id = $(this).attr('id').split('_');
+		$( "#etiquetas_"+id[1]+" li" ).each(function( index ) {
+			$("#todas_etiquetas_"+id[1]).val($("#todas_etiquetas_"+id[1]).val()+$(this).attr("id")+';');
+		});
+	});
+});
+</script>
