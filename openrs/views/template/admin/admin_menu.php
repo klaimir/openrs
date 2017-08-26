@@ -18,7 +18,7 @@
 
 <li class="<?php echo set_active_menu($_active_section,array("estados","tipos_ficheros","tipos_inmueble","plantillas_documentacion","opciones_extras","lugares_interes","provincias","medios_captacion")); ?>">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-building"></i>
+        <i class="menu-icon fa fa-cog"></i>
         <span class="menu-text"> Configuración </span>
 
         <b class="arrow fa fa-angle-down"></b>

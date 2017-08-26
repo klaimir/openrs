@@ -9,7 +9,7 @@
 
 <li class="<?php echo set_active_option($_active_section,'clientes'); ?>">
     <a href="<?php echo site_url('clientes'); ?>" onClick="return show_confirm_exit_message();">
-        <i class="menu-icon fa fa-users"></i>
+        <i class="menu-icon fa fa-user"></i>
         <span class="menu-text"> Clientes </span>
     </a>
 
