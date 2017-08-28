@@ -73,7 +73,11 @@ class Common extends MY_Controller
             // Config
             $config['loadAsynchronously'] = TRUE;
             $config['center']=$direccion_formateada;
-            $config['zoom']=15;        
+            $config['zoom']=15;      
+            // Activamos geocoding para mejorar rendimiento
+            $config['geocodeCaching'] = TRUE;
+            // Es legacy activarlo
+            $config['sensor'] = FALSE;
             // Activamos geocoding para mejorar rendimiento
             //$config['geocodeCaching'] = TRUE;
             $config['map_name'] = 'map_name_'.$map_number;
