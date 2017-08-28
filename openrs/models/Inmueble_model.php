@@ -2057,6 +2057,8 @@ class Inmueble_model extends MY_Model
         $config['loadAsynchronously'] = TRUE;
         // Activamos geocoding para mejorar rendimiento
         $config['geocodeCaching'] = TRUE;
+        // Es legacy activarlo
+        $config['sensor'] = FALSE;
         // Establecemos marcas de mapa        
         if($infowindow_type=="public")
         {
@@ -2071,7 +2073,7 @@ class Inmueble_model extends MY_Model
         $config['map_name'] = $map_name;
         $config['map_div_id'] = $map_div_id;        
         // Si hay filtros de provincia o población establecidos, los usamos, en caso contrario será nuestra posición actual (auto)
-        $config['center']=$this->format_google_map_center($filtros);
+        $config['center']=$this->format_google_map_center($filtros,$inmuebles);
         $config['zoom']=12;        
         // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
         $this->googlemaps->initialize($config);
@@ -2119,7 +2121,7 @@ class Inmueble_model extends MY_Model
         }
     }
 
-    public function format_google_map_center($filtros)
+    public function format_google_map_center($filtros,$inmuebles)
     {
         if (($filtros['provincia_id'] != -1 && $filtros['provincia_id'] != "") || ($filtros['poblacion_id'] != -1 && $filtros['poblacion_id'] != ""))
         {
@@ -2134,15 +2136,22 @@ class Inmueble_model extends MY_Model
                 $nombre_provincia = $this->Provincia_model->get_by_id($filtros['provincia_id'])->provincia;
                 $direccion_formateada = "$nombre_poblacion, $nombre_provincia, Spain";
             }
-            // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
-            return $this->utilities->cleantext($direccion_formateada);
+            
         }
         else
         {
-            return "auto";
-        }
+            // Esto da problemas con determinados dispositivos al intentar leer la ubicación, se recomienda deshabilitar
+            //return 'auto';
+            // Ponemos centro por defecto sin filtros el del inmueble
+            $inmueble=$inmuebles[0];
+            $nombre_poblacion = $this->Poblacion_model->get_by_id($inmueble->poblacion_id)->poblacion;
+            $nombre_provincia = $this->Provincia_model->get_by_id($inmueble->provincia_id)->provincia;
+            $direccion_formateada = "$nombre_poblacion, $nombre_provincia, Spain";
+        }        
+        // Al parecer hay que hacerle esto porque hay nombres con acentos y demás que no los coge bien
+        return $this->utilities->cleantext(trim($direccion_formateada));
     }
-    
+        
     /**
      * Determina si hay que regenarar el código QR de un inmueble pq haya cambiado su url-seo
      *
