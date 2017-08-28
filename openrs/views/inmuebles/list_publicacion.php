@@ -18,7 +18,7 @@
             <th>Portada</th>
             <th>Img.</th>
             <th>Cartel</th>
-            <th>Vídeos</th>
+            <th>Vídeo</th>
             <th>Enlaces</th>            
         </tr>
     </thead>
