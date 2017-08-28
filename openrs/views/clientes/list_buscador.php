@@ -29,7 +29,11 @@
                     {
                     ?>
                     <tr>
-                        <td><?php echo $element->apellidos.", ".$element->nombre; ?></td>
+                        <td>
+                            <a href="<?php echo site_url("clientes/edit/" . $element->id); ?>" class="blue" title="Editar datos del cliente">
+                                <?php echo $element->apellidos.", ".$element->nombre; ?>
+                            </a>
+                        </td>
                         <td><?php echo $element->nif; ?></td>
                         <td><?php echo $element->nombre_provincia; ?></td>
                         <td><?php echo $element->nombre_poblacion; ?></td>

@@ -34,7 +34,11 @@
                     {
                     ?>
                     <tr>
-                        <td><?php echo $element->referencia; ?></td>
+                        <td>
+                            <a href="<?php echo site_url("demandas/edit/" . $element->id); ?>" class="blue" title="Editar datos de la demanda">
+                                <?php echo $element->referencia; ?>
+                            </a>
+                        </td>
                         <td>
                             <a href="<?php echo site_url("clientes/edit/" . $element->id); ?>" class="blue" title="Ver datos del cliente">
                                 <?php echo $element->nombre_cliente; ?>
