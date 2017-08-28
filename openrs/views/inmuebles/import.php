@@ -25,7 +25,7 @@
             <div class="col-md-offset-3 col-md-9">
                 <button class="btn btn-info" type="submit" name="submit">
                     <i class="ace-icon fa fa-check bigger-110"></i>
-                    Importar
+                    Validar
                 </button>
             </div>
         </div>
@@ -39,12 +39,12 @@
     jQuery(function($) {                
 
         $('#fichero').ace_file_input({
-            no_file: 'No File ...',
-            btn_choose: 'Choose',
-            btn_change: 'Change',
+            no_file: 'Sin fichero ...',
+            btn_choose: 'Seleccionar',
+            btn_change: 'Cambiar',
             droppable: false,
             onchange: null,
-            thumbnail: false, //| true | large
+            thumbnail: false
             whitelist:'csv'
                     //blacklist:'exe|php'
                     //onchange:''
