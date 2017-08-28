@@ -52,17 +52,17 @@
                 <td><?php echo $element->habitaciones; ?></td>
                 <td><?php echo $element->banios; ?></td>
                 <td>
-                    <a href="<?php echo site_url('inmuebles/edit/'.$element->id); ?>">
+                    <a href="<?php echo site_url('inmuebles/edit/'.$element->id); ?>#publicacion">
                         <?php echo format_si_no($element->publicado); ?>
                     </a>                    
                 </td>
                 <td>
-                    <a href="<?php echo site_url('inmuebles/edit/'.$element->id); ?>">
+                    <a href="<?php echo site_url('inmuebles/edit/'.$element->id); ?>#publicacion">
                         <?php echo format_si_no($element->destacado); ?>
                     </a>
                 </td>
                 <td>
-                    <a href="<?php echo site_url('inmuebles/edit/'.$element->id); ?>">
+                    <a href="<?php echo site_url('inmuebles/edit/'.$element->id); ?>#publicacion">
                         <?php echo format_si_no($element->oportunidad); ?>
                     </a>
                 </td>
@@ -77,7 +77,7 @@
                     else
                     {
                     ?>
-                        <a href="<?php echo site_url('inmuebles/edit/'.$element->id); ?>">NO</a>
+                        <a href="<?php echo site_url('inmuebles/edit/'.$element->id); ?>#publicacion">NO</a>
                     <?php
                     }
                     ?>
