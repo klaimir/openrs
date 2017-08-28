@@ -12,7 +12,7 @@ class Blog extends MY_Controller
 		$this->load->model('Articulo_model');
 		$this->load->model('Etiqueta_model');
 		$this->load->model('Voto_model');
-		$this->load->model('Articulo_Etiqueta_model');
+		$this->load->model('Articulo_etiqueta_model');
  		$this->load->model('Comentario_model');
  		$this->load->model('General_model');
                 $this->load->model('Idioma_model');
@@ -339,7 +339,7 @@ class Blog extends MY_Controller
 									'id_etiqueta' => $id_etiqueta,
 									'id_articulo' => $id_articulo
 								);
-								$this->Articulo_Etiqueta_model->insertArtEtiqueta($art_etiq_data);
+								$this->Articulo_etiqueta_model->insertArtEtiqueta($art_etiq_data);
 							}
 						}
 						
@@ -423,7 +423,7 @@ class Blog extends MY_Controller
 											'id_etiqueta' => $id_etiqueta,
 											'id_articulo' => $id_articulo
 									);
-									$this->Articulo_Etiqueta_model->insertArtEtiqueta($art_etiq_data);
+									$this->Articulo_etiqueta_model->insertArtEtiqueta($art_etiq_data);
 								}
 							}
 						}
@@ -599,7 +599,7 @@ class Blog extends MY_Controller
 									'id_etiqueta' => $id_etiqueta,
 									'id_articulo' => $id_articulo
 								);
-								$this->Articulo_Etiqueta_model->insertArtEtiqueta($art_etiq_data);									
+								$this->Articulo_etiqueta_model->insertArtEtiqueta($art_etiq_data);									
 							}
 						}
 					}	
