@@ -6,6 +6,10 @@
         <div class="col-xs-12">
             <h1>
                 Enlaces de <?php echo $inmueble->referencia; ?>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    Editar
+                </small>
             </h1>
         </div>
     </div>

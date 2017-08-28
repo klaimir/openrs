@@ -6,6 +6,10 @@
         <div class="col-xs-12">
             <h1>
                 Cartel de <?php echo $inmueble->referencia; ?>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    Generar
+                </small>
             </h1>
         </div>
     </div>

@@ -6,6 +6,10 @@
         <div class="col-xs-12">
             <h1>
                 Ficha de <?php echo $inmueble->referencia; ?>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    Generar
+                </small>
             </h1>
         </div>
     </div>
