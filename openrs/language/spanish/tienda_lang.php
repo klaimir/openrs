@@ -235,17 +235,23 @@ $lang['tienda_imprimir_pdf'] = 'Imprimir en PDF';
 $lang['admin_pedidos'] = 'Pedidos';
 $lang['tienda_precio'] = 'Precio:';
 $lang['tienda_ver_pedido_descripcion'] = 'Descripción';
+$lang['tienda_banos'] = 'Baños:';
+$lang['tienda_dormitorios'] = 'Dormitorios:';
+$lang['tienda_garajes'] = 'Garajes:';
+$lang['tienda_superficie_construida'] = 'SC';
+$lang['tienda_superficie_parcela'] = 'SP';
+$lang['tienda_caracteristicas_inmueble'] = 'Características';
+$lang['tienda_descripcion_inmueble'] = 'Descripción';
+$lang['tienda_extras_inmueble'] = 'Extras';
+$lang['tienda_cenergetica_inmueble'] = 'Calificación energética';
+$lang['tienda_lugares_inmueble'] = 'Lugares de interés';
+$lang['tienda_ocupacion'] = 'Ocupación';
+$lang['tienda_localidad'] = 'Cualquier localidad';
+$lang['tienda_provincia'] = 'Cualquier provincia';
+$lang['tienda_inmueble_venta'] = 'Venta';
+$lang['tienda_inmueble_alquiler'] = 'Alquiler';
+$lang['tienda_inmueble_oferta'] = 'Oferta';
 
-//MAKITO
-$lang['tienda_makito_codigo_marcaje'] = 'Código de marcaje';
-$lang['tienda_makito_composicion'] = 'Composición';
-$lang['tienda_makito_largo'] = 'Largo';
-$lang['tienda_makito_ancho'] = 'Ancho';
-$lang['tienda_makito_peso'] = 'Peso';
-$lang['tienda_makito_diametro'] = 'Diámetro';
-$lang['tienda_makito_talla'] = 'Talla';
-$lang['tienda_makito_color'] = 'Color';
-$lang['tienda_categorias'] = 'Categorías';
 
 //Mensajes compra
 $lang['tienda_pedido_realizado'] = 'Gracias por realizar su compra en ';

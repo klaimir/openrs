@@ -75,4 +75,22 @@ class Idioma_model extends MY_Model
     	$this->db->where('subido', 0);
     	return $this->db->get('idiomas')->result();
     }
+    
+    public function get_url_amigable_id($id, $ruta){
+    	$this->db->select('seccion_idiomas.*');
+    	$this->db->from('seccion_idiomas');
+    	$this->db->join('idiomas', 'seccion_idiomas.id_idioma = idiomas.id_idioma');
+    	$this->db->where('seccion_idiomas.id_idioma', $id);
+    	$this->db->where('url_seo', $ruta);
+    	return $this->db->get()->row();
+    }
+    
+    public function get_url_amigable_by_id($id, $id_seccion){
+    	$this->db->select('seccion_idiomas.*');
+    	$this->db->from('seccion_idiomas');
+    	$this->db->join('idiomas', 'seccion_idiomas.id_idioma = idiomas.id_idioma');
+    	$this->db->where('id_seccion', $id_seccion);
+    	$this->db->where('seccion_idiomas.id_idioma', $id);
+    	return $this->db->get()->row();
+    }
 }

@@ -1,5 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+require_once APPPATH . 'core/MY_Controller_Front.php';
+
 class Idioma extends MY_Controller_Front
 {
 	function __construct()
@@ -15,16 +17,29 @@ class Idioma extends MY_Controller_Front
 		$idioma_actual = $this->Idioma_model->get_idioma($this->input->post('id_actual'));
 		if($dir = opendir(APPPATH."language/".$idioma->carpeta_idioma)){
 			while(($archivo = readdir($dir)) !== false){
-				if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess' && $archivo != '.svn'){
+				if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess' && $archivo != '.svn' && $archivo != 'index.html'){
 					$nombre_archivo = explode('_', $archivo);
-					$this->lang->load($nombre_archivo[0], $idioma->carpeta_idioma);
+					if(count ($nombre_archivo) > '1'){
+						if(count ($nombre_archivo) == '2'){
+							$this->lang->load($nombre_archivo[0], $idioma->carpeta_idioma);
+						}elseif(count ($nombre_archivo) == '3'){
+							$this->lang->load($nombre_archivo[0].'_'.$nombre_archivo[1], $idioma->carpeta_idioma);
+						}
+					}
 				}
 			}
 		}
 		$url_antigua = $this->input->post('location');
-		$url_nueva = str_replace('/'.$idioma_actual->nombre_seo2.'/', '/'.$idioma->nombre_seo2.'/', $url_antigua);
-		if(!$cookie){
-			$this->Usuario_model->modificar_idioma_usuario($this->ion_auth->user()->row()->id, $idioma->id_idioma);
+		$idiomayurl = explode('/', str_replace(site_url(), '', $url_antigua));
+		array_shift($idiomayurl);
+		$url =implode('/', $idiomayurl);
+		$id_url_amigable = $this->Idioma_model->get_url_amigable_id($this->input->post('id_actual'), $url);		
+		$nueva_url_amigable = $this->Idioma_model->get_url_amigable_by_id($this->input->post('id'), $id_url_amigable->id_seccion);
+		if(isset($nueva_url_amigable->id_idioma))
+			$idioma_nuevo = $this->Idioma_model->get_idioma($nueva_url_amigable->id_idioma);
+		$cookie1 = get_cookie('cookieLOPD');
+		if(!$cookie1){
+			//$this->Usuario_model->modificar_idioma_usuario($this->ion_auth->user()->row()->id, $idioma->id_idioma);
 		}else{
 			if(get_cookie('cookieLOPD')){
 				$cookie = array(
@@ -35,7 +50,10 @@ class Idioma extends MY_Controller_Front
 				set_cookie($cookie);
 			}
 		}
-		echo $url_nueva;
+		if(isset($idioma_nuevo->nombre_seo) && isset($nueva_url_amigable->url_seo))
+			echo $idioma_nuevo->nombre_seo."/".$nueva_url_amigable->url_seo;
+		else
+			echo str_replace(site_url(), '', $url_antigua);
 	}
 	
 	function index(){

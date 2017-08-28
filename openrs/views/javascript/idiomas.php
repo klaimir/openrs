@@ -1,4 +1,3 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
 	$(document).ready(function() {
 		$('.cambio_idioma').click(function(){
@@ -10,17 +9,19 @@
 				$.post("<?php echo site_url('idioma/cambiar_idioma/1'); ?>", {
 					id : id,
 					id_actual : id_actual,
+					'<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>',
 					location : location
 		     	}, function(data) {
-		     		window.location.href = data;
+		     		window.location.href = '<?php echo site_url();?>'+data;
 	            });
 			}else{
 				$.post("<?php echo site_url('idioma/cambiar_idioma'); ?>", {
 					id : id,
 					id_actual : id_actual,
+					'<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>',
 					location : location
 		     	}, function(data) {
-		     		window.location.href = data;
+		     		window.location.href = '<?php echo site_url();?>'+data;
 	            });	
 			}
 		});

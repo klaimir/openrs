@@ -1,5 +1,4 @@
 <?php header('Content-Type: text/html; charset=utf-8'); ?>
-
 <!DOCTYPE html>
 
 <html lang="<?php echo $this->uri->segment(1);?>">
@@ -17,12 +16,25 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/style.css">
-	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/jquery.fancybox.css"> -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/datepicker2.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/font-awesome.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
 	
-	
+	<!-- Javascript placed at the end of the document so the pages load faster -->
+	<script src="<?php echo base_url(); ?>assets/public/js/jquery-1.10.2.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/jquery.dataTables.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/jquery-ui-1.10.3-custom.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/bootstrap.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/jquery.cookie.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/global.js"></script>
+	<!-- <script src="<?php echo base_url(); ?>assets/public/ckeditor/ckeditor.js"></script>-->
+	<script src="<?php echo base_url(); ?>assets/public/js/bootstrap-datepicker.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/jquery.ui.touch-punch.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/jquery.easing.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/moment.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/es.js"></script>
+	<script src="<?php echo base_url(); ?>assets/public/js/bootstrap-datetimepicker.min.js"></script>
 	<!--[if !IE 7]>
 		<style type="text/css">
 			#wrap {display:table;height:100%}
@@ -32,7 +44,22 @@
 	<!--[if lt IE 9]>
 		<script src="<?php echo base_url('dist/html5shiv.js');?>"></script>
 	<![endif]-->
-        
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+  <script>
+       function onSubmit(token) {
+         document.getElementById("frmContacto").submit();
+       }
+     </script>
+<script>
+       function onSubmitmv(token) {
+         document.getElementById("frmContactomv").submit();
+       }
+     </script>
+     <script>
+       function onSubmitInmueble(token) {
+         document.getElementById("frmInmueble").submit();
+       }
+     </script>
         <?php include_once(APPPATH.'third_party/analyticstracking.php'); ?>
 </head>
 
@@ -51,20 +78,7 @@
 		<?php echo $footer; ?>
 	</footer>
 
-	<!-- Javascript placed at the end of the document so the pages load faster -->
-	<script src="<?php echo base_url(); ?>assets/public/js/jquery-1.10.2.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/jquery.dataTables.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/jquery-ui-1.10-3-custom.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/bootstrap.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/jquery.cookie.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/global.js"></script>
-	<!-- <script src="<?php echo base_url(); ?>assets/public/ckeditor/ckeditor.js"></script>-->
-	<script src="<?php echo base_url(); ?>assets/public/js/bootstrap-datepicker.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/jquery.ui.touch-punch.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/jquery.easing.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/moment.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/es.js"></script>
-	<script src="<?php echo base_url(); ?>assets/public/js/bootstrap-datetimepicker.min.js"></script>
+	
 </body>
 
 </html>

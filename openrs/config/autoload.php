@@ -122,7 +122,7 @@ $autoload['config'] = array();
 |
 */
 
-$autoload['language'] = array('login', 'admin', 'usuarios', 'general', 'cliente', 'cms');
+$autoload['language'] = array('login', 'admin', 'usuarios', 'general', 'cliente', 'cms', 'blog');
 
 /*
 | -------------------------------------------------------------------
