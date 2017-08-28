@@ -44,7 +44,7 @@
             btn_change: 'Cambiar',
             droppable: false,
             onchange: null,
-            thumbnail: false
+            thumbnail: false,
             whitelist:'csv'
                     //blacklist:'exe|php'
                     //onchange:''
