@@ -77,6 +77,7 @@ class Bloque_model extends MY_Model {
             } elseif ($tipo == 2) {
                 $this->db->where('inmuebles.oportunidad', 1);
             }
+            $this->db->where('inmuebles.publicado',1);
             $this->db->group_by('inmuebles.id');
             $this->db->limit($limit);
             return $this->db->get()->result();

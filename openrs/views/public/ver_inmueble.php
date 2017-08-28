@@ -265,7 +265,7 @@ $mensaje = array(
     <input type="hidden" id="site_url" value="<?php echo site_url();?>" />
     <input type="hidden" id="site_idioma" value="<?php echo $this->uri->segment(1);?>" />
 <?php }else{?>
-    <h3>Inmueble inexistente o no publicado</h3>
+    <h3 style="text-align:center;padding-top:40px;">Inmueble inexistente o no publicado</h3>
 <?php }?>
 <script>
 $(document).ready(function(){

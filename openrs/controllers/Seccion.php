@@ -30,7 +30,6 @@ class Seccion extends MY_Controller_Front
                 $this->load->model('Config_model');
                 $config=$this->Config_model->get_config();
                 $this->session->set_userdata('google_analytics_ID',$config->google_analytics_ID);
-                $this->output->enable_profiler(TRUE);
 	}
 	
 	//Método para la portada: diferente en cada tienda, para que la portada sea original
@@ -381,7 +380,7 @@ class Seccion extends MY_Controller_Front
         function ver_inmueble($url_seo){
             $url = explode('-',$url_seo);
             $data = $this->inicializar(1, $url[1]);
-            if($this->ion_auth->user()->row()->id){
+            if(isset($this->ion_auth->user()->row()->id)){
                 $session_es_agente = $this->Usuario_model->is_agente($this->ion_auth->user()->row()->id);
                 if($session_es_agente){
                     $data['inmueble'] = $this->Buscador_model->getInmuebleById($data['idioma_actual']->id_idioma, $url[0]);

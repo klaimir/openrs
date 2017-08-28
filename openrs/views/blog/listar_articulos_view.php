@@ -6,14 +6,13 @@
 			<div class="col-sm-8">				
 				<h4><?php echo $this->lang->line('blog_listado_articulos');?></h4>
 			</div>
-            <div class="col-sm-4">
-            	<a href="<?php echo site_url('blog/crear_articulo'); ?>" class="btn btn-primary pull-right">Nuevo artículo </a>
-                <a href="<?php echo site_url('blog/listar_categorias'); ?>" class="btn btn-default pull-right">Listar categorías</a>
-            </div>
+                        <div class="col-sm-4">
+                            <a href="<?php echo site_url('blog/crear_articulo'); ?>" class="btn btn-primary pull-right">Nuevo artículo </a>
+                            <a href="<?php echo site_url('blog/listar_categorias'); ?>" class="btn btn-default pull-right">Listar categorías</a>
+                        </div>
 			<article>
-			<div class="col-sm-12">
 			<?php if (count($articulos) > 0): ?>
-				<table class="table table-bordered table-striped table-condensed " style="margin-top:15px;">
+				<table class="table table-bordered table-striped table-condensed a_datatable">
 					<thead>
 						<tr>
 							<th><?php echo $this->lang->line('blog_table_creado');?></th><th><?php echo $this->lang->line('blog_table_visto_votos');?></th><th><?php echo $this->lang->line('blog_table_imagen');?></th><th><?php echo $this->lang->line('blog_table_titulo');?></th><th><?php echo $this->lang->line('blog_url_seo');?></th><th><?php echo $this->lang->line('blog_table_categorias');?></th><th><?php echo $this->lang->line('blog_table_etiquetas');?></th><th><?php echo $this->lang->line('blog_table_estado');?></th><th><?php echo $this->lang->line('blog_table_opciones');?></th>
@@ -69,7 +68,6 @@
 			<?php else: ?>
 				<div class="alert alert-info"><?php echo $this->lang->line('blog_no_hay_articulos');?></div>
 			<?php endif; ?>
-			</div>
 			</article>
 		</section>
 	</div>
