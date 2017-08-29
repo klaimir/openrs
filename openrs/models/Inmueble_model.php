@@ -1846,15 +1846,20 @@ class Inmueble_model extends MY_Model
         return $this->markers;
     }
     
-    public function create_google_map($inmuebles,$filtros,$infowindow_type="private",$infowindow_language=NULL)
+    public function create_google_map($inmuebles,$filtros,$infowindow_type="private",$infowindow_language=NULL, $idioma_id = NULL, $idioma_seo = NULL)
     {
         // Establecemos el tipo información del inmueble a mostrar y sus idiomas
         $this->infowindow_type=$infowindow_type;        
         // Si el idioma es NULL, consultamos el de la sesion
         if (is_null($infowindow_language))
         {
-            $this->infowindow_language = $this->data['session_id_idioma'];
-            $this->infowindow_nombre_seo = $this->data['session_idioma_nombre_seo'];
+        	if(!$idioma_id){
+	            $this->infowindow_language = $this->data['session_id_idioma'];
+	            $this->infowindow_nombre_seo = $this->data['session_idioma_nombre_seo'];
+        	}else{
+        		$this->infowindow_language = $idioma_id;
+        		$this->infowindow_nombre_seo = $idioma_seo;
+        	}
         }
         else
         {

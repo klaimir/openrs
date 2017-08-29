@@ -217,6 +217,6 @@ $(document).ready(function(){
 });
 function check_multiple_google_maps(infowindow_type) {
         $('#google_maps_div').toggle('slow');
-        $('#google_maps').load('<?php echo site_url('seccion/multiple_google_map/');?>'+infowindow_type);
+        $('#google_maps').load('<?php echo site_url($this->uri->segment('1').'/seccion/multiple_google_map/');?>'+infowindow_type);
     }
 </script>
