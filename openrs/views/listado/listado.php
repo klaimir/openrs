@@ -14,7 +14,7 @@
 				</div>
 			</div>
 			
-			<article style="margin-top:15px;">
+			<article>
 			<?php if (count($listado) > 0): ?>
 				<table class="table table-bordered table-hover table-condensed">
 					<thead>

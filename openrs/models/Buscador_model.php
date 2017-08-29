@@ -131,7 +131,7 @@ class Buscador_model extends MY_Model {
         }
         
         public function getCEInmueble($id){
-            $this->db->select('tipos_certificacion_energetica.id, tipos_certificacion_energetica.nombre');
+            $this->db->select('tipos_certificacion_energetica.id, tipos_certificacion_energetica.nombre, inmuebles.kwh_m2_anio');
             $this->db->from('tipos_certificacion_energetica');
             $this->db->join('inmuebles','inmuebles.certificacion_energetica_id = tipos_certificacion_energetica.id');
             $this->db->where('inmuebles.id',$id);
