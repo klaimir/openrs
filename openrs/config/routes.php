@@ -545,7 +545,7 @@ class dynamic_route{
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-articulos/(:num)/(:any)';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/articulos';
+                                    $return_data->url = 'seccion/articulos';
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-articulos';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
