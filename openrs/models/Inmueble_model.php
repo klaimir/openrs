@@ -859,11 +859,11 @@ class Inmueble_model extends MY_Model
             $this->db->where('certificacion_energetica_id <= ', $filtros['certificacion_energetica_minima_id']);
         }
         // Años de construcción
-        if (isset($filtros['anio_construccion_desde']) && $filtros['anio_construccion_desde'] != "")
+        if (isset($filtros['anio_construccion_desde']) && $filtros['anio_construccion_desde'] != "" && $filtros['anio_construccion_desde'] > 0)
         {
             $this->db->where('anio_construccion >=', $filtros['anio_construccion_desde']);
         }
-        if (isset($filtros['anio_construccion_hasta']) && $filtros['anio_construccion_hasta'] != "")
+        if (isset($filtros['anio_construccion_hasta']) && $filtros['anio_construccion_hasta'] != "" && $filtros['anio_construccion_hasta'] > 0)
         {
             $this->db->where('anio_construccion <=', $filtros['anio_construccion_hasta']);
         }
@@ -1025,12 +1025,12 @@ class Inmueble_model extends MY_Model
             $this->db->where('metros <=', $filtros['metros_hasta']);
         }
         // Precios
-        if (isset($filtros['precios_desde']) && $filtros['precios_desde'] != '')
+        if (isset($filtros['precios_desde']) && $filtros['precios_desde'] != '' && $filtros['precios_desde'] >0)
         {
             $precio_desde=$filtros['precios_desde'];
             $this->db->where("((precio_compra <> 0 AND precio_compra >= '$precio_desde') OR (precio_alquiler <> 0 AND precio_alquiler >= '$precio_desde'))");
         }
-        if (isset($filtros['precios_hasta']) && $filtros['precios_hasta']  != '')
+        if (isset($filtros['precios_hasta']) && $filtros['precios_hasta']  != '' && $filtros['precios_hasta'] >0)
         {
             $precio_hasta=$filtros['precios_hasta'];
             $this->db->where("((precio_compra <> 0 AND precio_compra <= '$precio_hasta') OR (precio_alquiler <> 0 AND precio_alquiler <= '$precio_hasta'))");
