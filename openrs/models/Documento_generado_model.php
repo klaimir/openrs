@@ -123,7 +123,7 @@ class Documento_generado_model extends MY_Model
     {
          // Calculamos el texto qr
         $idioma=$this->Idioma_model->get_idioma($idioma_id);
-        $qr_text=site_url($idioma->nombre_seo.'/'.$inmueble_id.'-'.$url_seo);
+        $qr_text=site_url($idioma->nombre_seo.'/inmueble/'.$inmueble_id.'-'.$url_seo);
         // Limpiamos ficheros
         $this->utilities->clean_files(FCPATH . 'uploads/inmuebles/' . $inmueble_id,"png");
         // Imprimimos el qr

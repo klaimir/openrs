@@ -224,7 +224,7 @@ class Inmueble_model extends MY_Model
         if(isset($info[$id_idioma]))
         {
             $datos['description']=$info[$id_idioma]->descripcion_seo;
-            $datos['url_seo']=$idioma_nombre_seo.'/'.$id.'-'.$info[$id_idioma]->url_seo;
+            $datos['url_seo']=$idioma_nombre_seo.'/inmueble/'.$id.'-'.$info[$id_idioma]->url_seo;
         }
         // Calculamos foto
         $this->load->model('Inmueble_imagen_model');
