@@ -414,7 +414,7 @@ class Inmueble_model extends MY_Model
         $data['lugares_interes_seleccionados'] = is_object($datos) ? $datos->lugares_interes : array();
 
         $data['tipo_id'] = $this->form_validation->set_value('tipo_id', is_object($datos) ? $datos->tipo_id : "");
-        $data['certificacion_energetica_id'] = $this->form_validation->set_value('certificacion_energetica_id', is_object($datos) ? $datos->certificacion_energetica_id : "");
+        $data['certificacion_energetica_id'] = $this->form_validation->set_value('certificacion_energetica_id', is_object($datos) ? $datos->certificacion_energetica_id : 9);
         $data['estado_id'] = $this->form_validation->set_value('estado_id', is_object($datos) ? $datos->estado_id : "");
         $data['captador_id'] = $this->form_validation->set_value('captador_id', is_object($datos) ? $datos->captador_id : $this->data['session_user_id']);
         $data['poblacion_id'] = $this->form_validation->set_value('poblacion_id', is_object($datos) ? $datos->poblacion_id : "");
