@@ -598,7 +598,7 @@ $mensaje = array(
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble" style="padding:10%;">
-                                                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }elseif($inmueble->precio_compra > 0){?>
@@ -612,7 +612,7 @@ $mensaje = array(
                                                                             }?>
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }elseif($inmueble->precio_alquiler > 0){?>
@@ -626,7 +626,7 @@ $mensaje = array(
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }?>
