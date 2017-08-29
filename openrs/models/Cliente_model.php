@@ -562,7 +562,7 @@ class Cliente_model extends MY_Model
     {
         $intereses = array();
         $intereses[$default] = '- Seleccione -';
-        $intereses[0] = 'La demanda u oferta es actual';
+        $intereses[0] = 'La demanda u oferta está vigente';
         $intereses[1] = 'La demanda u oferta es antigua';
         return $intereses;
     }
