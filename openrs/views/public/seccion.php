@@ -643,7 +643,7 @@ $mensaje = array(
                                     </div>
                                 <?php elseif ($it->id_tipo_bloque == 7):?>
                                         <div style="background:<?php echo $it->background;?>">
-						<form action="<?php echo site_url('browser');?>" method="get" class="form-inline padding-10 centrado">
+						<form action="<?php echo site_url($this->uri->segment('1').'/browser');?>" method="get" class="form-inline padding-10 centrado">
                                                                 <div class="container background-color-white">
                                                                     <div class="col-sm-12 margin-top-20 margin-bottom-10">
                                                                         <div class="col-sm-2">
