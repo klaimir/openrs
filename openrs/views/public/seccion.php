@@ -483,7 +483,28 @@ $mensaje = array(
                                                                 <div class="col-sm-4"><i class="fa fa-bed" aria-hidden="true"></i> <?php echo $inmueble->habitaciones; ?></div>
                                                             </div>
                                                             <div class="col-sm-12 padding-0">
-                                                                <?php if($inmueble->precio_compra > 0){?>
+                                                                <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler > 0){?>
+                                                                    <div class="col-sm-12 padding-0 background-color-ver">
+                                                                        <div class="col-sm-6 precio-inmueble">
+                                                                            <?php if($inmueble->precio_compra_anterior > 0){
+                                                                                echo '<s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
+                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                                                            }else{
+                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                                                            }?>
+                                                                            <?php echo '<br>';?>
+                                                                            <?php if($inmueble->precio_alquiler_anterior > 0){
+                                                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                            }else{
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                            }?> 
+                                                                        </div>
+                                                                        <div class="col-sm-6 ver-inmueble" style="padding:10%;">
+                                                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php }elseif($inmueble->precio_compra > 0){?>
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_compra_anterior > 0){
@@ -497,8 +518,7 @@ $mensaje = array(
                                                                             <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
-                                                                <?php }?>
-                                                                <?php if($inmueble->precio_alquiler > 0){?>
+                                                                <?php }elseif($inmueble->precio_alquiler > 0){?>
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
@@ -516,7 +536,7 @@ $mensaje = array(
                                                             </div>
                                                         </div>
                                                         <?php if($cont % 3 == 0){?>
-                                                            </div><div class="row">
+                                                            </div><div class="row margin-bottom-20">
                                                         <?php }
                                                         $cont++;?>
                                                     <?php }?>
@@ -560,7 +580,28 @@ $mensaje = array(
                                                                 <div class="col-sm-4"><i class="fa fa-bed" aria-hidden="true"></i> <?php echo $inmueble->habitaciones; ?></div>
                                                             </div>
                                                             <div class="col-sm-12 padding-0">
-                                                                <?php if($inmueble->precio_compra > 0){?>
+                                                                <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler > 0){?>
+                                                                    <div class="col-sm-12 padding-0 background-color-ver">
+                                                                        <div class="col-sm-6 precio-inmueble">
+                                                                            <?php if($inmueble->precio_compra_anterior > 0){
+                                                                                echo '<s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
+                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                                                            }else{
+                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                                                            }?>
+                                                                            <?php echo '<br>';?>
+                                                                            <?php if($inmueble->precio_alquiler_anterior > 0){
+                                                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                            }else{
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                            }?> 
+                                                                        </div>
+                                                                        <div class="col-sm-6 ver-inmueble" style="padding:10%;">
+                                                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php }elseif($inmueble->precio_compra > 0){?>
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_compra_anterior > 0){
@@ -574,8 +615,7 @@ $mensaje = array(
                                                                             <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
-                                                                <?php }?>
-                                                                <?php if($inmueble->precio_alquiler > 0){?>
+                                                                <?php }elseif($inmueble->precio_alquiler > 0){?>
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
@@ -599,6 +639,8 @@ $mensaje = array(
                                                     <?php } ?>
                                                         </div>
                                                 <?php }?>
+                                                </div>
+                                    </div>
                                 <?php elseif ($it->id_tipo_bloque == 7):?>
                                         <div style="background:<?php echo $it->background;?>">
 						<form action="<?php echo site_url('browser');?>" method="get" class="form-inline padding-10 centrado">

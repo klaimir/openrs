@@ -66,7 +66,7 @@
 					</tbody>
 				</table>
 			<?php else: ?>
-				<div class="alert alert-info"><?php echo $this->lang->line('blog_no_hay_articulos');?></div>
+				<div class="alert alert-info col-sm-12 margin-top-20"><?php echo $this->lang->line('blog_no_hay_articulos');?></div>
 			<?php endif; ?>
 			</article>
 		</section>

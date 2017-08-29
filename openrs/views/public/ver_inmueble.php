@@ -221,41 +221,38 @@ $mensaje = array(
         </div>
         <div class="col-sm-12 margin-top-20">
             <h3><?php echo $this->lang->line('tienda_caracteristicas_inmueble');?></h3>
-            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_tipo_propiedad');?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_tipo_propiedad');?></div>
             <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->nombre_tipo; ?></div>
-            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_superficie_construida'); ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_superficie_construida'); ?></div>
             <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->metros; ?></div>
-            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_superficie_util'); ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_superficie_util'); ?></div>
             <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->metros_utiles; ?></div>
-            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_banos'); ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_banos'); ?></div>
             <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->banios; ?></div>
-            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_producto_dormitorios'); ?></div>
+            <div class="col-sm-6 inmueble-caracteristicas-1"><?php echo $this->lang->line('tienda_dormitorios'); ?></div>
             <div class="col-sm-6 inmueble-caracteristicas-2"><?php echo $inmueble->habitaciones; ?></div>
         </div>
         <?php if($extras){?>
             <div class="col-sm-12 margin-top-20">
                 <h3><?php echo $this->lang->line('tienda_extras_inmueble');?></h3>
-                <ul style="margin-left:20px;">
                 <?php foreach($extras as $extra){?>
-                    <li><?php echo $extra->nombre;?></li>
+                    <div class="col-sm-6 margin-top-10"><?php echo $extra->nombre;?></div>
                 <?php }?>
-                </ul>
             </div>
         <?php }?>
         <?php if($lugares){?>
             <div class="col-sm-12 margin-top-20">
                 <h3><?php echo $this->lang->line('tienda_lugares_inmueble');?></h3>
-                <ul style="margin-left:20px;">
                 <?php foreach($lugares as $lugar){?>
-                    <li><?php echo $lugar->nombre;?></li>
+                    <div class="col-sm-6 margin-top-10"><?php echo $lugar->nombre;?></div>
                 <?php }?>
-                </ul>
             </div>
         <?php }?>
         <div class="col-sm-12 margin-top-20">
             <h3><?php echo $this->lang->line('tienda_cenergetica_inmueble');?></h3>
             <?php if($ce->id != 8 && $ce->id != 9){?>
                 <img src="<?php echo base_url('uploads/general/img/ce_'.$ce->nombre.'.png');?>" class="img-responsive"/>
+                <h4><?php echo $ce->kwh_m2_anio.' kwh';?></h4>
             <?php }else{
                 echo '<h4>'.$ce->nombre.'</h4>';
             }?>

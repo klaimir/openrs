@@ -3,7 +3,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div style="background:#30b481;">
-				<form action="<?php echo site_url('browser');?>" method="get" class="form-inline padding-10 centrado margin-top-5" id="frmFiltro">
+				<form action="<?php echo site_url($this->uri->segment('1').'/browser');?>" method="get" class="form-inline padding-10 centrado margin-top-5" id="frmFiltro">
 					<div class="container background-color-white">
                                                                     <div class="col-sm-12 margin-top-20 margin-bottom-10">
                                                                         <div class="col-sm-2">
@@ -63,12 +63,13 @@
 		</div>
 	</div>
 	<div class="container">
-            
 		<?php if(isset($inmuebles) && $inmuebles){?>
+            <div class="col-sm-12">
                     <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('public');">
                         <i class="menu-icon fa fa-map-marker"></i>
                         <span class="menu-text"> Ver mapa público</span>
                     </a>
+            </div>
                     <div class="row" id="google_maps_div" style="display:none;">      
                         <div class="space-10"></div>
                         <div class="col-xs-12">
@@ -80,11 +81,11 @@
                     <?php $cont=1;
                     foreach($inmuebles as $inmueble){
 	        	if($cont==1){?>
-	        		<div class="row">
+	        		<div class="row margin-bottom-20">
 	        	<?php }?>
 	        	<div class="col-sm-4" data-cont="<?php echo $cont;?>">
                             <div class="col-sm-12 padding-0">
-                                <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
+                                <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                     <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="max-height:270px;"/>
                                     <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
                                         <p class="tipo-inmueble"><?php echo 'VENTA';//$this->lang->line('tienda_inmueble_venta');?></p>
@@ -99,7 +100,7 @@
                                 </a>
                             </div>
                             <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px;">
-                                <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
+                                <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                     <h4 class="padding-top-10" id="nom2<?php echo $cont;?>"><?php echo $inmueble->titulo; ?></h4>
                                 </a>
                             </div>
@@ -115,7 +116,28 @@
                                 <div class="col-sm-4"><i class="fa fa-bed" aria-hidden="true"></i> <?php echo $inmueble->habitaciones; ?></div>
                             </div>
                             <div class="col-sm-12 padding-0">
-                                <?php if($inmueble->precio_compra > 0){?>
+                                <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler > 0){?>
+                                    <div class="col-sm-12 padding-0 background-color-ver">
+                                        <div class="col-sm-6 precio-inmueble">
+                                            <?php if($inmueble->precio_compra_anterior > 0){
+                                                echo '<s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
+                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                            }else{
+                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                            }?>
+                                            <?php echo '<br>';?>
+                                            <?php if($inmueble->precio_alquiler_anterior > 0){
+                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
+                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                            }else{
+                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                            }?> 
+                                        </div>
+                                        <div class="col-sm-6 ver-inmueble" style="padding:10%;">
+                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                        </div>
+                                    </div>
+                                <?php }elseif($inmueble->precio_compra > 0){?>
                                     <div class="col-sm-12 padding-0 background-color-ver">
                                         <div class="col-sm-6 precio-inmueble">
                                             <?php if($inmueble->precio_compra_anterior > 0){
@@ -126,11 +148,10 @@
                                             }?>
                                         </div>
                                         <div class="col-sm-6 ver-inmueble">
-                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                         </div>
                                     </div>
-                                <?php }?>
-                                <?php if($inmueble->precio_alquiler > 0){?>
+                                <?php }elseif($inmueble->precio_alquiler > 0){?>
                                     <div class="col-sm-12 padding-0 background-color-ver">
                                         <div class="col-sm-6 precio-inmueble">
                                             <?php if($inmueble->precio_alquiler_anterior > 0){
@@ -141,14 +162,14 @@
                                             }?> 
                                         </div>
                                         <div class="col-sm-6 ver-inmueble">
-                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                         </div>
                                     </div>
                                 <?php }?>
                             </div>
                         </div>
                         <?php if($cont % 3 == 0){?>
-                            </div><div class="row">
+                            </div><div class="row margin-bottom-20">
                         <?php }
                         $cont++;?>
                     <?php }?>
@@ -217,6 +238,6 @@ $(document).ready(function(){
 });
 function check_multiple_google_maps(infowindow_type) {
         $('#google_maps_div').toggle('slow');
-        $('#google_maps').load('<?php echo site_url('seccion/multiple_google_map/');?>'+infowindow_type);
+        $('#google_maps').load('<?php echo site_url($this->uri->segment('1').'/seccion/multiple_google_map/');?>'+infowindow_type);
     }
 </script>

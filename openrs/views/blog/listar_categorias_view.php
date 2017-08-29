@@ -1,6 +1,6 @@
 <div class="container admin-content">
 	<div class="row">
-		<a href="<?=site_url('blog-crear-categoria')?>" class="btn btn-primary pull-right">
+		<a href="<?=site_url('blog/crear_categoria')?>" class="btn btn-primary pull-right">
 			<?php echo $this->lang->line('blog_categoria_nueva');?>
 		</a>
 		<section>		
@@ -23,10 +23,10 @@
 								<td><?=$cat->url_seo_categoria_blog?></td>
 								<td>
 									<span class="pull-right">
-										<a href="<?php echo site_url('blog-editar-categoria/'.$cat->id_categoria);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_editar_categoria');?>">
+										<a href="<?php echo site_url('blog/editar_categoria/'.$cat->id_categoria);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_editar_categoria');?>">
 											<i class="glyphicon glyphicon-edit"></i>
 										</a>
-										<a href="<?php echo site_url('blog-eliminar-categoria/'.$cat->id_categoria);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_eliminar');?>">
+										<a href="<?php echo site_url('blog/eliminar_categoria/'.$cat->id_categoria);?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_eliminar');?>">
 											<i class="glyphicon glyphicon-trash"></i>
 										</a>										
 									</span>

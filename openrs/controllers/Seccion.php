@@ -361,13 +361,21 @@ class Seccion extends MY_Controller_Front
             }        
             // Valores de los filtros de búsqueda
             $filtros = $this->_generar_filtros_busqueda();
+            if($this->ion_auth->logged_in())
+            	$filtros['idioma_id'] == $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
+            else
+            	$filtros['idioma_id'] = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'))->id_idioma;
             // Búsqueda                
             $inmuebles=$this->Inmueble_model->get_by_filtros($filtros);         
             // Check
             if($inmuebles)
             {
+            	if($this->ion_auth->logged_in())
+            		$idioma_actual = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
+            	else
+            		$idioma_actual = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));
                 // Create the map.
-                $this->data['map'] = $this->Inmueble_model->create_google_map($inmuebles,$filtros,$infowindow_type);
+            		$this->data['map'] = $this->Inmueble_model->create_google_map($inmuebles,$filtros,$infowindow_type, $idioma_actual->id_idioma, $idioma_actual->nombre_seo);
                 // Load our view, passing the map data that has just been created
                 $this->load->view('common/google_maps', $this->data);
             }

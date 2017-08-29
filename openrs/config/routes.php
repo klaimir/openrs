@@ -574,7 +574,12 @@ class dynamic_route{
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
                                     $return_data->url = 'seccion/ver_inmuebles';
-                                    $return_data->route = '^'.$row['nombre_seo'].'/browser/(:any)';
+                                    $return_data->route = '^'.$row['nombre_seo'].'/browser';
+                                    $r_data[] = $return_data;
+                                    $return_data = new stdClass;
+                                    $return_data->url = 'seccion/ver_inmueble/$1';
+                                    $return_data->route = '^'.$row['nombre_seo'].'/inmueble/(:any)';
+                                    $r_data[] = $return_data;
                                     $return_data = new stdClass;
                                     $return_data->url = 'ventas/actualizar_estado/$1/$2';
                                     $return_data->route = '^'.$row['nombre_seo'].'/estado/(:num)/(:num)';
