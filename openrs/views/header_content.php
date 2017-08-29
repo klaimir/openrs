@@ -51,7 +51,7 @@
 	<!-- Javascript placed at the end of the document so the pages load faster -->
 	<script src="<?php echo base_url(); ?>js/jquery-1.10.2.min.js"></script>
 	<script src="<?php echo base_url(); ?>js/jquery.dataTables.min.js"></script>
-	<script src="<?php echo base_url(); ?>js/jquery-ui-1.10-3-custom.min.js"></script>
+	<!-- <script src="<?php echo base_url(); ?>js/jquery-ui-1.10-3-custom.min.js"></script>-->
 	<script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 	<script src="<?php echo base_url(); ?>js/jquery.cookie.js"></script>
 	<script src="<?php echo base_url(); ?>js/global.js"></script>
