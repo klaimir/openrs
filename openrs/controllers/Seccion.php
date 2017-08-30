@@ -526,7 +526,7 @@ class Seccion extends MY_Controller_Front
 			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
 			$this->form_validation->set_message('valid_email',$this->lang->line('login_c_valid_email'));
 				
-			$data = array(
+			$data2 = array(
 					'secret' => "6LczwC4UAAAAAFIpgTKF9vSuCJ5GlX-AtUCsEr6n",
 					'response' => $this->input->post('g-recaptcha-response')
 			);
@@ -534,7 +534,7 @@ class Seccion extends MY_Controller_Front
 			$verify = curl_init();
 			curl_setopt($verify, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
 			curl_setopt($verify, CURLOPT_POST, true);
-			curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
+			curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data2));
 			curl_setopt($verify, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
 			$response = curl_exec($verify);
