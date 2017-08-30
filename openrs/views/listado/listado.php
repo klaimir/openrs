@@ -4,10 +4,10 @@
 	<div class="row">
 		<section class="col-md-12">
 			<div class="row">
-				<div class="col-sm-8">
-					<h2><?php echo $title; ?></h2>
+				<div class="page-header col-sm-12">
+			    	<h1><?php echo $title; ?></h1>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-4 col-sm-offset-8" style="margin-bottom:20px;">
 					<?php foreach($botones as $kb=>$vb):?>
 						<a href="<?php echo $vb['href'];?>" class="<?php echo $vb['class'];?>"><?php echo $vb['contenido'];?> </a>
 					<?php endforeach;?>

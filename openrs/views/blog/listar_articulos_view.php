@@ -1,16 +1,20 @@
 <?php $this->load->view('javascript/datatable');?>
 <?php $this->load->view('javascript/global');?>
-<div class="container admin-content">
+<div class="container-fluid admin-content">
 	<div class="row">
 		<section class="col-sm-12">		
-			<div class="col-sm-8">				
-				<h4><?php echo $this->lang->line('blog_listado_articulos');?></h4>
+			<div class="col-sm-12">	
+			<div class="page-header">
+			    <h1>
+			        <?php echo $this->lang->line('blog_listado_articulos');?>
+			    </h1>
+			</div>			
 			</div>
-                        <div class="col-sm-4">
-                            <a href="<?php echo site_url('blog/crear_articulo'); ?>" class="btn btn-primary pull-right">Nuevo artículo </a>
-                            <a href="<?php echo site_url('blog/listar_categorias'); ?>" class="btn btn-default pull-right">Listar categorías</a>
+                        <div class="col-sm-4 col-sm-offset-8" style="margin-bottom:20px;">
+                            <a href="<?php echo site_url('blog/crear_articulo'); ?>" class="btn btn-info pull-right">Nuevo artículo </a>
+                            <a href="<?php echo site_url('blog/listar_categorias'); ?>" class="btn btn-info pull-right">Listar categorías</a>
                         </div>
-			<article style="margin-top:50px;">
+			<div class="col-sm-12">
 			<?php if (count($articulos) > 0): ?>
 				<table class="table table-bordered table-striped table-condensed" id="tabgrid_articulos">
 					<thead>
@@ -68,7 +72,7 @@
 			<?php else: ?>
 				<div class="alert alert-info col-sm-12 margin-top-20"><?php echo $this->lang->line('blog_no_hay_articulos');?></div>
 			<?php endif; ?>
-			</article>
+			</div>
 		</section>
 	</div>
 </div>

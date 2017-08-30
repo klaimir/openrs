@@ -116,7 +116,7 @@ class MY_Controller extends CI_controller
     	$this->data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
 		$this->data['idioma_actual'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
 		$this->data['config']=$this->General_model->get_config();
-		$this->data['title']= '';
+		$this->data['title']= $config['title'];
 		$this->data['secciones'] = $this->Seccion_model->get_secciones($this->data['idioma_actual']->id_idioma);
 		$this->data['max_prioridad_seccion'] = $this->General_model->maximo('seccion','prioridad');
     	//Datos del listado

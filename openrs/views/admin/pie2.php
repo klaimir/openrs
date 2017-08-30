@@ -58,6 +58,11 @@ function formulario(form, idioma){
 	$config_mini['filebrowserUploadUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/upload.php?type=files";
 	$config_mini['filebrowserImageUploadUrl'] = base_url()."/assets/admin/ckeditor/kcfinder/upload.php?type=general";?>
 	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f1','class'=>'form-horizontal'));?>
+	<div class="page-header">
+    <h1>
+        Gestionar pie
+    </h1>
+</div>
 	<div class="form-group">
 		<div class="col-sm-2">
 			<?php echo form_label($this->lang->line('admin_col_1'),'col',array('class'=>'control-label pull-right'));?>

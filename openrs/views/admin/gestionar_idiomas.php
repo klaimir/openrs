@@ -1,5 +1,5 @@
 <?php $this->load->view('javascript/global');?>
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12">	
 			<?php if(isset($message)): ?>
@@ -7,19 +7,19 @@
 			<?php endif; ?>
 	    </div>
 	</div>
+	<div class="page-header">
+    	<h1><?php echo $title; ?></h1>
+	</div>
 	<div class="row">
 		<section class="col-md-12">
 			<div class="row">
-				<div class="col-md-8">
-					<h2><?php echo $title; ?></h2>
-				</div>
-				<div class="col-md-4">
-					<a href="<?php echo site_url('admin/subir_idiomas')?>" class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus"></span> Subir idioma </a>
+				<div class="col-md-4 col-md-offset-8">
+					<a href="<?php echo site_url('admin/subir_idiomas')?>" class="btn btn-info pull-right"><span class="glyphicon glyphicon-plus"></span> Subir idioma </a>
 				</div>
 			</div>
 		</section>
 	</div>
-	<div class="row">
+	<div class="row" style="margin-top:20px;">
 	    <div class="col-xs-12" style="overflow-y:auto">
 	        <table class="table table-striped table-bordered table-hover">
 	            <thead>

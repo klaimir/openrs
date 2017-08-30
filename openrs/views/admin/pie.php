@@ -46,6 +46,11 @@ function formulario(form, idioma){
 	}
 }
 </script>
+<div class="page-header">
+    <h1>
+        Gestionar pie
+    </h1>
+</div>
 	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f1','class'=>'form-horizontal'));?>
 	<div class="form-group">
 		<div class="col-md-2">

@@ -2,6 +2,7 @@
 
 //Etiquetas
 $lang['admin_menu'] = 'Menu';
+$lang['admin_nombre_web'] = 'Nombre web';
 $lang['admin_instrucciones'] = 'Instrucciones';
 $lang['admin_web'] = 'Web';
 $lang['admin_secciones'] = 'Secciones';

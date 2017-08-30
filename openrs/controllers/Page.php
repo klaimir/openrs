@@ -68,10 +68,10 @@ class Page extends MY_Controller
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_borrar_seccion'))),
 				'botones'=>array('1'=>array('href'=>site_url('page/crear_seccion'),
-											'class'=>'btn btn-default pull-right',
+											'class'=>'btn btn-info pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-plus"></span> '.$this->lang->line('cms_c_listado_boton_nueva')),
 								 '2'=>array('href'=>site_url('page/ordenar_secciones'),
-											'class'=>'btn btn-default pull-right',
+											'class'=>'btn btn-info pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-random"></span> '.$this->lang->line('cms_c_listado_boton_ordenar')))
 		);
 		$this->listado($config);

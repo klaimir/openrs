@@ -79,10 +79,7 @@ class Seccion extends MY_Controller_Front
 	
 	function inicializar($seccion, $titulo=NULL){
 		$data['cargar_idiomas'] = $this->Idioma_model->get_idiomas_subidos_activos();
-		if($this->ion_auth->logged_in())
-			$data['idioma_actual'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
-		else
-			$data['idioma_actual'] = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));
+		$data['idioma_actual'] = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));
 		$data['config']=$this->General_model->get_config();
 		//$data['categorias_principales']=$this->producto_model->get_categorias_principales($data['idioma_actual']->id_idioma);
 		$data['secciones_header']=$this->Seccion_model->get_secciones_header($data['idioma_actual']->id_idioma);
@@ -479,9 +476,6 @@ class Seccion extends MY_Controller_Front
 	}
         
         function devolver_idioma(){
-            if($this->ion_auth->logged_in())
-			return $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
-		else
 			return $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));		
 	}
 	

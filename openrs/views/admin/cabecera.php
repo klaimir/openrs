@@ -91,6 +91,11 @@ $no_change_logo = array(
 		'class'=> 'no_change_logo'
 );?>
 
+<div class="page-header">
+    <h1>
+        Gestionar cabecera
+    </h1>
+</div>
 		<div class="col-sm-12">
 			<?php if(isset($mensaje)){?>
 				<div class="alert alert-<?php echo $color;?> alert-dismissible" role="alert">
@@ -241,11 +246,16 @@ $no_change_logo = array(
 						 	'name'=>'submit',
 						 	'content'=>$this->lang->line('admin_aplicar'),
 						 	'type'=>'submit',
-						 	'class'=>'btn btn-primary'
+						 	'class'=>'btn btn-info'
 				); ?>
 				<br>
-				<?php echo form_button($atri);
+				<div class="clearfix form-actions">
+		            <div class="col-md-offset-3 col-md-9">
+		                <?php echo form_button($atri);
 				echo ' '.anchor('cliente',$this->lang->line('admin_cancelar'),array('class'=>'btn'));?>
+		            </div>
+		        </div>
+				
 				<?php echo form_close(); ?>
 			</div>
 		</div>
