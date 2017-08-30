@@ -434,7 +434,7 @@ $mensaje = array(
 					</div>
                                 <?php elseif ($it->id_tipo_bloque == 5):?>
                                     <div style="background:<?php echo $it->background;?>">
-					<?php if($it->ancho == 1){?>
+										<?php if($it->ancho == 1){?>
                                             <div>
                                         <?php }else{?>
                                             <div class="container">
@@ -448,7 +448,7 @@ $mensaje = array(
                                                     $cont=1;
                                                     foreach($it->inmuebles as $inmueble){
                                                         if($cont==1){?>
-                                                            <div class="row margin-bottom-20">
+                                                            <div class="col-sm-12 margin-bottom-20">
                                                         <?php }?>
                                                         <div class="col-sm-4" data-cont="<?php echo $cont;?>">
                                                             <div class="col-sm-12 padding-0">
@@ -536,7 +536,7 @@ $mensaje = array(
                                                             </div>
                                                         </div>
                                                         <?php if($cont % 3 == 0){?>
-                                                            </div><div class="row margin-bottom-20">
+                                                            </div><div class="col-sm-12 margin-bottom-20">
                                                         <?php }
                                                         $cont++;?>
                                                     <?php }?>
@@ -545,7 +545,7 @@ $mensaje = array(
                                                     $cont=1;
                                                     foreach($it->inmuebles as $inmueble){
                                                         if($cont==1){?>
-                                                            <div class="row">
+                                                            <div class="col-sm-12 margin-bottom-20">
                                                         <?php }?>
                                                         <div class="col-sm-3" data-cont="<?php echo $cont;?>">
                                                             <div class="col-sm-12 padding-0">
@@ -633,13 +633,13 @@ $mensaje = array(
                                                             </div>
                                                         </div>
                                                         <?php if($cont % 4 == 0){?>
-                                                            </div><div class="row">
+                                                            </div><div class="col-sm-12 margin-bottom-20">
                                                         <?php }
                                                         $cont++;?>
                                                     <?php } ?>
-                                                        </div>
+                                                    </div>
                                                 <?php }?>
-                                                </div>
+                                            </div>
                                     </div>
                                 <?php elseif ($it->id_tipo_bloque == 7):?>
                                         <div style="background:<?php echo $it->background;?>">
