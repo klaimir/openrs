@@ -519,9 +519,9 @@ class Seccion extends MY_Controller_Front
 		$data['articulos_votados'] = $this->Articulo_model->articulos_votados($idioma->id_idioma);
 		$data['etiquetas_favoritas']= $this->Etiqueta_model->etiquetas_favoritas($idioma->id_idioma);
 		if($this->input->post()){
-			$this->form_validation->set_rules('contenido2', $this->lang->line('blog_comentario'), 'trim|required|xss_clean');
-			$this->form_validation->set_rules('email', $this->lang->line('blog_email'), 'trim|required|xss_clean|valid_email');
-			$this->form_validation->set_rules('nick', $this->lang->line('blog_nick'), 'trim|xss_clean');
+			$this->form_validation->set_rules('contenido2', $this->lang->line('blog_comentario'), 'trim|required');
+			$this->form_validation->set_rules('email', $this->lang->line('blog_email'), 'trim|required|valid_email');
+			$this->form_validation->set_rules('nick', $this->lang->line('blog_nick'), 'trim');
 			
 			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
 			$this->form_validation->set_message('valid_email',$this->lang->line('login_c_valid_email'));
@@ -554,7 +554,7 @@ class Seccion extends MY_Controller_Front
 				$this->Comentario_model->insertar_comentario($data_comentario);
 				//Activar alerta de nuevo comentario
 				$this->Articulo_model->updateById($id_articulo, array('comentario'=>1));
-				redirect('blog/'.$articulo->url_seo_articulo);
+				redirect($this->uri->segment('1').'/blog/'.$articulo->url_seo_articulo);
 			}
 		}
 		
