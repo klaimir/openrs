@@ -48,7 +48,11 @@
                                 <span class="lbl"></span>
                             </label>
                         </td>
-                        <td><?php echo $cliente->apellidos.", ".$cliente->nombre; ?></td>
+                        <td>
+                            <a href="<?php echo site_url("clientes/edit/" . $cliente->id); ?>" class="blue" title="Ver datos del cliente">
+                                <?php echo $cliente->apellidos.", ".$cliente->nombre; ?>
+                            </a>              
+                        </td>
                         <td><?php echo $cliente->nif; ?></td>
                         <td><?php echo $cliente->nombre_provincia; ?></td>
                         <td><?php echo $cliente->nombre_poblacion; ?></td>
