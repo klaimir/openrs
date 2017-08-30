@@ -81,7 +81,7 @@
                     <?php $cont=1;
                     foreach($inmuebles as $inmueble){
 	        	if($cont==1){?>
-	        		<div class="row margin-bottom-20">
+	        		<div class="col-sm-12 margin-bottom-20">
 	        	<?php }?>
 	        	<div class="col-sm-4" data-cont="<?php echo $cont;?>">
                             <div class="col-sm-12 padding-0">
@@ -169,7 +169,7 @@
                             </div>
                         </div>
                         <?php if($cont % 3 == 0){?>
-                            </div><div class="row margin-bottom-20">
+                            </div><div class="col-sm-12 margin-bottom-20">
                         <?php }
                         $cont++;?>
                     <?php }?>
