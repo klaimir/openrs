@@ -4,10 +4,10 @@
 	<div class="row">
 		<section class="col-md-12">
 			<div class="row">
-				<div class="col-md-8">
+				<div class="col-sm-8">
 					<h2><?php echo $title; ?></h2>
 				</div>
-				<div class="col-md-4">
+				<div class="col-sm-4">
 					<?php foreach($botones as $kb=>$vb):?>
 						<a href="<?php echo $vb['href'];?>" class="<?php echo $vb['class'];?>"><?php echo $vb['contenido'];?> </a>
 					<?php endforeach;?>
@@ -50,11 +50,11 @@
 							     		<td>
 							     			<?php foreach($opciones as $ko=>$vo):?>
 							     				<?php if($ko!='Borrar'):?>
-								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
+								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
 								     					<span class="<?php echo $vo['icon'];?>"></span>
 								     				</a>
 								     			<?php else: ?>
-								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
+								     				<a href="<?php echo $vo['href'];?><?php foreach($vo['keys'] as $key){ echo '/'.$it->$key; }?>" class="action-tooltip red" rel="tooltip" data-original-title="<?php echo $vo['title']; ?>">
 								     					<span class="<?php echo $vo['icon'];?>" id="" ></span>
 								     				</a>
 								     			<?php endif;?>

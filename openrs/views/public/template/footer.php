@@ -30,15 +30,15 @@
 								<?php endforeach;?>
 								</ul>
 							<?php }elseif($cp->id_opc == 2){?>
-								<?php if($config->facebook != NULL){?>
-									<a href="<?php echo $config->facebook;?>"><img src="<?php echo base_url('img/icon-fb.png');?>" onmouseover="src='<?php echo base_url('img/icon-fb.png');?>'" onMouseOut="src='<?php echo base_url('img/icon-fb.png');?>'" class="margin-top-30"/></a>
+								<?php /*if($config->facebook != NULL){?>
+									<a href="<?php echo $config->facebook;?>"><img src="<?php echo base_url('uploads/general/img/icon-fb.png');?>" onmouseover="src='<?php echo base_url('uploads/general/img/icon-fb.png');?>'" onMouseOut="src='<?php echo base_url('uploads/general/img/icon-fb.png');?>'" class="margin-top-30"/></a>
 								<?php }if($config->twitter != NULL){?>
-									<a href="<?php echo $config->twitter;?>"><img src="<?php echo base_url('img/twitter.png');?>" onmouseover="src='<?php echo base_url('img/twitter-hover.png');?>'" onMouseOut="src='<?php echo base_url('img/twitter.png');?>'" class="margin-top-30"/></a>
+									<a href="<?php echo $config->twitter;?>"><img src="<?php echo base_url('uploads/general/img/twitter.png');?>" onmouseover="src='<?php echo base_url('uploads/general/img/twitter-hover.png');?>'" onMouseOut="src='<?php echo base_url('uploads/general/img/twitter.png');?>'" class="margin-top-30"/></a>
 								<?php }if($config->google != NULL){?>
-									<a href="<?php echo $config->google;?>"><img src="<?php echo base_url('img/google.png');?>" onmouseover="src='<?php echo base_url('img/google-hover.png');?>'" onMouseOut="src='<?php echo base_url('img/google.png');?>'" class="margin-top-30"/></a>
+									<a href="<?php echo $config->google;?>"><img src="<?php echo base_url('uploads/general/img/google.png');?>" onmouseover="src='<?php echo base_url('uploads/general/img/google-hover.png');?>'" onMouseOut="src='<?php echo base_url('uploads/general/img/google.png');?>'" class="margin-top-30"/></a>
 								<?php }if($config->vimeo != NULL){?>
-									<a href="<?php echo $config->vimeo;?>"><img src="<?php echo base_url('img/vimeo.png');?>" onmouseover="src='<?php echo base_url('img/vimeo-hover.png');?>'" onMouseOut="src='<?php echo base_url('img/vimeo.png');?>'" class="margin-top-30"/></a>
-								<?php }?>
+									<a href="<?php echo $config->vimeo;?>"><img src="<?php echo base_url('uploads/general/img/vimeo.png');?>" onmouseover="src='<?php echo base_url('uploads/general/img/vimeo-hover.png');?>'" onMouseOut="src='<?php echo base_url('uploads/general/img/vimeo.png');?>'" class="margin-top-30"/></a>
+								<?php }*/?>
 							<?php }elseif($cp->id_opc == 3){?>
 								<?php if($cont == 1){?>
 									<div class="texto-pie" style="color:<?php echo $config->cfuentepie;?>">

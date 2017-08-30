@@ -94,6 +94,14 @@ class General_model extends CI_Model {
 		$query = $this->db->get($tabla);
 		return $query->row();
 	}
+        
+        public function updateBloques($tabla,$data,$where){
+		foreach($where as $k=>$v){
+			$this->db->where($k,$v);
+		}
+
+		$this->db->update($tabla,$data);
+	}
 	/*
 	public function listar($select=null,$tabla,$where=null){
 		if($select!=null){

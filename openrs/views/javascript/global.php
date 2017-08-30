@@ -1,6 +1,7 @@
 <script>
 	$(document).ready(function() {
-		$('.borrar').click(function(){
+		$('.borrar').click(function(e){
+                    e.preventDefault();
 			$('.btn-borrar').empty();
 			$('.btn-borrar').append('<a href="'+$(this).attr('id')+'" class="btn btn-primary">'+"<?php echo $this->lang->line('modal_boton_confirmar');?>"+'</a>');
 			$('#modalBorrar').modal();

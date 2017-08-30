@@ -7,7 +7,7 @@ class Page extends MY_Controller
 	/*function __construct()
 	{
 		parent::__construct();
-		//$this->load->model('carrusel_model');
+		//$this->load->model('Carrusel_model');
 		$this->load->model('Seccion_model');
 		$this->load->model('Usuario_model');
 		$this->load->model('Idioma_model');
@@ -20,12 +20,17 @@ class Page extends MY_Controller
 	function __construct()
 	{	
 		parent::__construct();
-	
+                
+                $this->load->model('Carrusel_model');
+                $this->load->model('Bloque_model');
 		// Secure the access
 		$this->_security();
 	
 		// Comprobación de acceso
 		$this->utilities->check_security_access_perfiles_or(array("session_es_admin"));
+                
+                // Sección activa
+                $this->data['_active_section']="secciones";
 	}
 	
 	//Desde este controlador cargaremos las secciones seleccionadas. Las secciones deben tener el campo url único
@@ -47,11 +52,11 @@ class Page extends MY_Controller
 								  $this->lang->line('cms_c_listado_menu')=> 'menu',
 								  $this->lang->line('cms_c_listado_estado')=>'id_estado'),
 				'opciones'=> array('Editar'=>array('href'=>site_url('page/crear_seccion'),
-												   'icon'=>'glyphicon glyphicon-edit',
+												   'icon'=>'ace-icon fa fa-pencil bigger-130',
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_editar_seccion')),
 								   'Bloque'=>array('href'=>site_url('page/crear_bloque'),
-												   'icon'=>'glyphicon glyphicon-plus-sign',
+												   'icon'=>'ace-icon fa fa-plus-circle bigger-130',
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_nuevo_bloque')),
 								   'ListBloque'=>array('href'=>site_url('page/listar_bloques'),
@@ -59,7 +64,7 @@ class Page extends MY_Controller
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_listar_bloques')),
 								   'Borrar'=>array('href'=>site_url('page/borrar_seccion'),
-												   'icon'=>'glyphicon glyphicon-trash borrar',
+												   'icon'=>'ace-icon fa fa-trash-o bigger-130 borrar',
 												   'keys'=>array('url_seo'),
 											       'title'=>$this->lang->line('cms_c_listado_borrar_seccion'))),
 				'botones'=>array('1'=>array('href'=>site_url('page/crear_seccion'),
@@ -123,29 +128,35 @@ class Page extends MY_Controller
 		}else{
 			redirect('errors/error_404');
 		}
-		//redirect('asd/'.$bloque->id_tipo_bloque);
 		switch($bloque->id_tipo_bloque){
 			case '1':
-				echo $idioma.' '.$bloque->id_bloque.'<b>';
 				$texto=$this->Seccion_model->get_bloque_txt($idioma, $bloque->id_bloque);
-				/*if($texto){
-					print_r($texto);
-					echo $texto->id;exit();
-				}else{
-					echo 'nada';exit();
-				}*/
-				//redirect('asd/'.$texto->id);
 				redirect('page/crear_bloque_texto/'.$texto->id);
 				break;
 			case '2':
 				$carrusel=$this->Seccion_model->get_bloque_carrusel($bloque->id_bloque);
-				//redirect('asd2/'.$carrusel->id);
-				redirect('cms-crear-bloque-carrusel/'.$carrusel->id);
+				redirect('page/crear_carrusel/'.$carrusel->id);
+				break;
+                        case '3':
+				$blog=$this->Seccion_model->get_bloque_txt($idioma, $bloque->id_bloque);
+				redirect('page/crear_bloque_texto/'.$blog->id);
 				break;
 			case '4':
 				$iframe=$this->Seccion_model->get_bloque_txt($idioma, $bloque->id_bloque);
 				//redirect('asd/'.$texto->id);
 				redirect('page/crear_bloque_texto/'.$iframe->id);
+				break;
+                        case '5':
+				$inmuebles=$this->Seccion_model->get_bloque_inmuebles($bloque->id_bloque);
+				redirect('page/crear_bloque_inmuebles/'.$inmuebles->idbloque_inmuebles);
+				break;
+			case '6':
+				$texto=$this->Seccion_model->get_bloque_txt($idioma, $bloque->id_bloque);
+				redirect('page/crear_bloque_texto/'.$texto->id);
+				break;
+                        case '7':
+				$texto=$this->Seccion_model->get_bloque_txt($idioma, $bloque->id_bloque);
+				redirect('page/crear_bloque_texto/'.$texto->id);
 				break;
 		}
 	}
@@ -162,8 +173,124 @@ class Page extends MY_Controller
 		return $this->data;
 	}
 	
-	function crear_bloque($url_seccion,$id_bloque=null){		
-		if(isset($url_seccion)){
+	function crear_bloque($url_seccion,$id_bloque=null){
+            if(isset($url_seccion)){
+			$seccion=$this->Seccion_model->get_seccion_nombre($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
+			if (count($seccion)==0){
+				redirect('errors/error_404');
+			}else{
+				$bloque=$this->Seccion_model->get_bloque($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $id_bloque);
+				if (count($bloque)==0){
+					$nuevo=true;
+				}else{
+					$nuevo=false;
+				}
+			}
+		}else{
+			redirect('errors/error_404');
+		}
+		$this->data = $this->inicializar('6', $this->lang->line('cms_c_crear_bloque'));
+		$this->data['seccion'] = $seccion;
+		$this->data['bloque'] = $bloque;
+		$tipo_bloque_dd['0'] = $this->lang->line('drop_seleccione');
+		$tipo_bloque_dd['1'] = $this->lang->line('cms_texto');
+		$tipo_bloque_dd['2'] = $this->lang->line('cms_carrusel');
+                $tipo_bloque_dd['3'] = $this->lang->line('cms_blog');
+		$tipo_bloque_dd['4'] = $this->lang->line('cms_iframe');
+                $tipo_bloque_dd['5'] = $this->lang->line('cms_inmuebles');
+                $tipo_bloque_dd['7'] = $this->lang->line('cms_buscador');
+                $this->data['tipo_bloque'] = $tipo_bloque_dd;
+		$estado_dd['0'] = $this->lang->line('drop_seleccione');
+		$estado_dd['1'] = $this->lang->line('cms_publicado');
+		$estado_dd['2'] = $this->lang->line('cms_eliminado');
+		$estado_dd['3'] = $this->lang->line('cms_borrador');
+		$this->data['estado'] = $estado_dd;
+		$ancho_dd['0'] = $this->lang->line('drop_seleccione');
+		$ancho_dd['1'] = $this->lang->line('cms_ancho_completo');
+		$ancho_dd['2'] = $this->lang->line('cms_ancho_margen');
+		$this->data['ancho'] = $ancho_dd;
+		$this->data['id_bloque']=isset($bloque->id_bloque)?$bloque->id_bloque:'';
+		$this->data['nuevo'] = $nuevo;
+		$this->data['nombre'] = 'bloque';
+		if(isset($bloque->titulo_bloque)){
+			$this->data['editando']=$bloque->titulo_bloque;
+		}else{
+			$this->data['editando']='';
+		}
+		if($this->input->post()){
+			$conf = $this->General_model->get_config($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma);
+			$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
+			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
+			$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));
+			foreach($this->data['cargar_idiomas'] as $idioma){
+				$this->form_validation->set_rules('titulo_bloque_'.$idioma->id_idioma, $this->lang->line('cms_c_bloques_titulo'), 'required|xss_clean');
+			}
+			if($this->form_validation->run()){
+				$datos_insert = array(
+						'id_estado' => $this->input->post('id_estado'),
+						'background' => $this->input->post('background'),
+						'c_titulo' => $this->input->post('c_titulo'),
+						'ancho' => $this->input->post('ancho'),
+						'prioridad' => $this->input->post('prioridad'),
+						'id_seccion' => $this->input->post('id_seccion'),
+						'id_tipo_bloque' => $this->input->post('id_tipo_bloque')
+				);
+				
+				if ($nuevo==true){
+					$id_bloque=$this->Seccion_model->crear_bloque('bloque',$datos_insert, $this->input->post('id_tipo_bloque'), $this->data['cargar_idiomas']);
+				}else{
+					$datos_insert['id_tipo_bloque']=$bloque->id_tipo_bloque;
+					$this->Seccion_model->update_bloque($id_bloque, $datos_insert);
+					//Falta borrar los datos si se cambia el tipo de bloque
+				} 
+				foreach($this->data['cargar_idiomas'] as $idioma){
+					$datos_insert_idiomas = array(
+						'titulo_bloque' => $this->input->post('titulo_bloque_'.$idioma->id_idioma),	
+					);
+					if($nuevo==true){
+						$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;
+						$datos_insert_idiomas['id_bloque'] = $id_bloque;
+						$this->General_model->insert('bloque_idiomas', $datos_insert_idiomas);
+					}else{
+						if($this->General_model->existe('bloque_idiomas', array('id_bloque'=>$id_bloque, 'id_idioma'=>$idioma->id_idioma))){
+							$this->Seccion_model->update_bloque_idiomas($id_bloque, $datos_insert_idiomas, $idioma->id_idioma);
+						}else{
+							$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;
+							$datos_insert_idiomas['id_bloque'] = $id_bloque;
+							$this->General_model->insert('bloque_idiomas', $datos_insert_idiomas);
+						}	
+					}
+				}
+				//comprobamos si hay imagen para banner
+				if (isset($_FILES['userfile']['tmp_name']) && $_FILES['userfile']['tmp_name']) {
+						$config['upload_path'] = 'img/parallax/';
+						$config['allowed_types']='gif|jpg|jpeg|png';
+						$config['max_size']	= '2048';
+						$config['overwrite']=FALSE;
+						//$config['encrypt_name'] = TRUE;
+				
+						$this->load->library('upload', $config);
+				
+						if ( ! $this->upload->do_upload()) {
+							echo $this->upload->display_errors();exit();
+						}
+						else {
+							$file_data = $this->upload->data();
+							$imagen_producto_data = array(
+									'imagen' => $file_data['file_name']
+							);
+							$this->Seccion_model->update_bloque($id_bloque, $imagen_producto_data);
+						}
+				}
+				redirect('page/editar_bloque/'.$id_bloque);			
+			}
+		}
+                $this->render_private('seccion/crear_bloque', $this->data);
+		/*$this->template->set_template('header_and_content');
+		$this->template->write_view('content','seccion/crear_bloque',$data);
+		$this->template->write_view('header','templates/header_admin',$data);
+		$this->template->render();*/
+		/*if(isset($url_seccion)){
 			$seccion=$this->Seccion_model->get_seccion_nombre($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
 			if (count($seccion)==0){
 				redirect('errors/error_404');
@@ -424,7 +551,7 @@ class Page extends MY_Controller
 				redirect('page/editar_bloque/'.$id_bloque);			
 			}
 		}
-		$this->render_private($datos['view'], $this->data);
+		$this->render_private($datos['view'], $this->data);*/
 	}
 	
 	
@@ -790,7 +917,7 @@ class Page extends MY_Controller
 								   'model_param'=>$url_seccion,
 								   'idioma'=>$this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'model_update'=>array('model_name'=>'General_model',
-									  'model_method'=>'update',
+									  'model_method'=>'updateBloques',
 									  'tabla'=>'bloque',
 									  'id_tabla'=>'id_bloque'),
 				'redirect'=>'page/listar_bloques/'.$url_seccion,
@@ -882,19 +1009,19 @@ class Page extends MY_Controller
 							}
 						}
 					}
-					if($config['nuevo']==true){
+					/*if($config['nuevo']==true){
 						$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;
 						$datos_insert_idiomas['id_texto'] = $id_texto;
 						$this->General_model->insert('texto_idiomas', $datos_insert_idiomas);
-					}else{
+					}else{*/
 						if($this->General_model->existe('texto_idiomas', array('id_texto'=>$id_texto, 'id_idioma'=>$idioma->id_idioma))){
-							$this->General_model->update('texto_idiomas',$datos_insert_idiomas,array('id_texto'=>$id_texto, 'id_idioma'=>$idioma->id_idioma));
+							$this->General_model->updateBloques('texto_idiomas',$datos_insert_idiomas,array('id_texto'=>$id_texto, 'id_idioma'=>$idioma->id_idioma));
 						}else{
 							$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;
 							$datos_insert_idiomas['id_texto'] = $id_texto;
 							$this->General_model->insert('texto_idiomas', $datos_insert_idiomas);
 						}
-					}
+					//}
 				}
 				redirect('page/listar_bloques/'.$this->data['seccion']->url_seo);
 			}
@@ -903,48 +1030,48 @@ class Page extends MY_Controller
 		$this->render_private('seccion/crear_texto', $this->data);
 	}
 	
-	/*function crear_carrusel($id_carrusel=null){
-		$data = $this->inicializar('6', $this->lang->line('cms_crear_galeria'));
+	function crear_carrusel($id_carrusel=null){
+		$this->data = $this->inicializar('6', $this->lang->line('cms_crear_galeria'));
 		if($id_carrusel==null){
 			redirect('errors/error_404');
 		}else{
-			$data['carrusel']=$this->carrusel_model->get_imagenes_carrusel($data['idioma_actual']->id_idioma, $id_carrusel);
-			if(count($data['carrusel'])==0){
-				$data['imagenes']=false;
+			$this->data['carrusel']=$this->Carrusel_model->get_imagenes_carrusel($this->data['idioma_actual']->id_idioma, $id_carrusel);
+			if(count($this->data['carrusel'])==0){
+				$this->data['imagenes']=false;
 			}else{
-				$data['imagenes']=true;
+				$this->data['imagenes']=true;
 			}
-			$data['categoria_carrusel']=$this->carrusel_model->get_categorias_carrusel($data['idioma_actual']->id_idioma, $id_carrusel);
-			if(count($data['categoria_carrusel'])==0){
-				$data['categorias']=false;
+			$this->data['categoria_carrusel']=$this->Carrusel_model->get_categorias_carrusel($this->data['idioma_actual']->id_idioma, $id_carrusel);
+			if(count($this->data['categoria_carrusel'])==0){
+				$this->data['categorias']=false;
 			}else{
-				$data['categorias']=true;
+				$this->data['categorias']=true;
 			}
 		}
-		$data['id_carrusel']=$id_carrusel;
+		$this->data['id_carrusel']=$id_carrusel;
 		
-		$data['carrusel_bloque']=$this->carrusel_model->get_carrusel($id_carrusel);
+		$this->data['carrusel_bloque']=$this->Carrusel_model->get_carrusel($id_carrusel);
 		//$data['dd_tipo_galeria']=$this->formularios->dropdown('tipo_carrusel','id_tipo_carrusel','nombre');
-		$data['dd_tipo_galeria'] = array(
+		$this->data['dd_tipo_galeria'] = array(
 				'1' => $this->lang->line('cms_tipo_galeria1'),
 				'2' => $this->lang->line('cms_tipo_galeria2'),
 				'3' => $this->lang->line('cms_tipo_galeria3'),
 				'4' => $this->lang->line('cms_tipo_galeria4')
 		);
-		$data['dd_categoria']=$this->formularios->dropdown_idioma('categoria_carrusel','id','nombre_cat',$data['idioma_actual']->id_idioma, array('categoria_carrusel.id_carrusel'=>$id_carrusel));
-		$data['dd_columnas']=array(
+		$this->data['dd_categoria']=$this->formularios->dropdown_idioma('categoria_carrusel','id','nombre_cat',$this->data['idioma_actual']->id_idioma, array('categoria_carrusel.id_carrusel'=>$id_carrusel));
+		$this->data['dd_columnas']=array(
 				'2'=>'2',
 				'3'=>'3',
 				'4'=>'4',
 				'6'=>'6',
 		);
-		$data['seccion']=$this->Seccion_model->get_seccion_bloque($data['idioma_actual']->id_idioma, $data['carrusel_bloque']->id_bloque);
+		$this->data['seccion']=$this->Seccion_model->get_seccion_bloque($this->data['idioma_actual']->id_idioma, $this->data['carrusel_bloque']->id_bloque);
 		
 		if($this->input->post('submit_imagen')){
 			$conf = $this->General_model->get_config();
 			$this->form_validation->set_rules('id_categoria',$this->lang->line('cms_galeria_categoria'),'trim|xss_clean|integer');
 			
-			foreach($data['cargar_idiomas'] as $idioma){
+			foreach($this->data['cargar_idiomas'] as $idioma){
 				if($idioma->id_idioma == $conf->idioma_defecto){
 					$this->form_validation->set_rules('titulo_seo_'.$idioma->id_idioma,$this->lang->line('cms_galeria_titulo_seo_imagen'),'trim|required|xss_clean|max_length[200]');
 				}else{
@@ -956,11 +1083,11 @@ class Page extends MY_Controller
 			if($this->form_validation->run()){
 				$this->load->library('upload');
 				$this->load->library('image_lib');
-				foreach($data['cargar_idiomas'] as $idioma){
-					if(!file_exists('img/carrusel/'.$idioma->id_idioma))
-						mkdir('img/carrusel/'.$idioma->id_idioma, '0755', true);
-					if(!file_exists('img/carruselmini/'.$idioma->id_idioma))
-						mkdir('img/carruselmini/'.$idioma->id_idioma, '0755', true);
+				foreach($this->data['cargar_idiomas'] as $idioma){
+					if(!file_exists('uploads/general/img/carrusel/'.$idioma->id_idioma))
+						mkdir('uploads/general/img/carrusel/'.$idioma->id_idioma, '0755', true);
+					if(!file_exists('uploads/general/img/carruselmini/'.$idioma->id_idioma))
+						mkdir('uploads/general/img/carruselmini/'.$idioma->id_idioma, '0755', true);
 				}
 				$prioridad=$this->General_model->maximo('imagen_carrusel', 'prioridad', array('id_carrusel' => $id_carrusel));
 				$imagen_carrusel_data = array(
@@ -969,24 +1096,24 @@ class Page extends MY_Controller
 						'prioridad'=>$prioridad->prioridad+1,
 				);
 				$id_imagen_carrusel = $this->General_model->insert('imagen_carrusel',$imagen_carrusel_data);
-				foreach($data['cargar_idiomas'] as $idioma){
+				foreach($this->data['cargar_idiomas'] as $idioma){
 					if($idioma->id_idioma == $conf->idioma_defecto){
 						if (isset($_FILES['userfile_'.$idioma->id_idioma]['tmp_name']) && $_FILES['userfile_'.$idioma->id_idioma]['tmp_name']) {						
-							$config['upload_path'] = 'img/carrusel/'.$idioma->id_idioma.'/';
+							$config['upload_path'] = 'uploads/general/img/carrusel/'.$idioma->id_idioma.'/';
 							$config['allowed_types']='gif|jpg|jpeg|png';
 							$config['max_size']	= '1024';
 							$config['overwrite']=FALSE;
 							$this->upload->initialize($config);
 							//$config['encrypt_name'] = TRUE;					
 							if (!$this->upload->do_upload('userfile_'.$idioma->id_idioma)) {
-								$data['error']='error';
+								$this->data['error']='error';
 							}else{
 								$file_data = $this->upload->data();
 								$imagen_carrusel_data_idiomas['imagen'] = $file_data['file_name'];
 								//Ahora creamos una copia de la imagen a tamaño 30*30
 								$config['image_library']='gd2';
-								$config['source_image']='img/carrusel/'.$idioma->id_idioma.'/'.$file_data['file_name'];
-								$config['new_image']='img/carruselmini/'.$idioma->id_idioma.'/';
+								$config['source_image']='uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$file_data['file_name'];
+								$config['new_image']='uploads/general/img/carruselmini/'.$idioma->id_idioma.'/';
 								$config['create_thumb'] = TRUE;
 								$config['maintain_ratio'] = TRUE;
 								$config['width'] = 562;
@@ -999,25 +1126,25 @@ class Page extends MY_Controller
 								$this->image_lib->resize();
 							}
 						}else{
-							$data['error']='no_image';
+							$this->data['error']='no_image';
 						}
 					}else{
 						if(isset($_FILES['userfile_'.$idioma->id_idioma]['tmp_name']) && $_FILES['userfile_'.$idioma->id_idioma]['tmp_name']){
-							$config['upload_path'] = 'img/carrusel/'.$idioma->id_idioma.'/';
+							$config['upload_path'] = 'uploads/general/img/carrusel/'.$idioma->id_idioma.'/';
 							$config['allowed_types']='gif|jpg|jpeg|png';
 							$config['max_size']	= '1024';
 							$config['overwrite']=FALSE;
 							$this->upload->initialize($config);
 							//$config['encrypt_name'] = TRUE;					
 							if (!$this->upload->do_upload('userfile_'.$idioma->id_idioma)) {
-								$data['error']='error';
+								$this->data['error']='error';
 							}else{
 								$file_data = $this->upload->data();
 								$imagen_carrusel_data_idiomas['imagen'] = $file_data['file_name'];
 								//Ahora creamos una copia de la imagen a tamaño 30*30
 								$config['image_library']='gd2';
-								$config['source_image']='img/carrusel/'.$idioma->id_idioma.'/'.$file_data['file_name'];
-								$config['new_image']='img/carruselmini/'.$idioma->id_idioma.'/';
+								$config['source_image']='uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$file_data['file_name'];
+								$config['new_image']='uploads/general/img/carruselmini/'.$idioma->id_idioma.'/';
 								$config['create_thumb'] = TRUE;
 								$config['maintain_ratio'] = TRUE;
 								$config['width'] = 562;
@@ -1029,14 +1156,14 @@ class Page extends MY_Controller
 								$this->image_lib->resize();
 							}
 						}else{
-							$imagen_carrusel = $this->carrusel_model->get_imagen_carrusel($conf->idioma_defecto, $id_imagen_carrusel);
-							copy('./img/carrusel/'.$conf->idioma_defecto.'/'.$imagen_carrusel->imagen, './img/carrusel/'.$idioma->id_idioma.'/'.$imagen_carrusel->imagen);
-							copy('./img/carruselmini/'.$conf->idioma_defecto.'/'.$imagen_carrusel->imagen_mini, './img/carruselmini/'.$idioma->id_idioma.'/'.$imagen_carrusel->imagen_mini);
+							$imagen_carrusel = $this->Carrusel_model->get_imagen_carrusel($conf->idioma_defecto, $id_imagen_carrusel);
+							copy('./uploads/general/img/carrusel/'.$conf->idioma_defecto.'/'.$imagen_carrusel->imagen, './uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$imagen_carrusel->imagen);
+							copy('./uploads/general/img/carruselmini/'.$conf->idioma_defecto.'/'.$imagen_carrusel->imagen_mini, './uploads/general/img/carruselmini/'.$idioma->id_idioma.'/'.$imagen_carrusel->imagen_mini);
 							$imagen_carrusel_data_idiomas['imagen'] = $imagen_carrusel->imagen;
 							$imagen_carrusel_data_idiomas['imagen_mini'] = $imagen_carrusel->imagen_mini;
 						}
 					}
-					if(!isset($data['error'])){
+					if(!isset($this->data['error'])){
 						$imagen_carrusel_data_idiomas2 = array(
 								'titulo_carrusel'=>$this->input->post('titulo_carrusel_'.$idioma->id_idioma),
 								'titulo_seo'=>$this->input->post('titulo_seo_'.$idioma->id_idioma),
@@ -1048,7 +1175,7 @@ class Page extends MY_Controller
 						$this->General_model->insert('imagen_carrusel_idiomas',$imagen_carrusel_data_idiomas);					
 					}
 				}
-				redirect('cms-crear-bloque-carrusel/'.$id_carrusel);
+				redirect('page/crear_carrusel/'.$id_carrusel);
 			}
 		}
 		if($this->input->post('submit_carrusel')){
@@ -1065,11 +1192,11 @@ class Page extends MY_Controller
 						'columnas'=>$this->input->post('columnas'),
 				);
 				$this->General_model->update('carrusel',$carrusel_data,array('id'=>$id_carrusel));
-				redirect('cms-crear-bloque-carrusel/'.$id_carrusel);
+				redirect('page/crear_carrusel/'.$id_carrusel);
 			}
 		}
 		if($this->input->post('submit_cat')){
-			foreach($data['cargar_idiomas'] as $idioma){
+			foreach($this->data['cargar_idiomas'] as $idioma){
 				$this->form_validation->set_rules('nombre_cat_'.$idioma->id_idioma,$this->lang->line('cms_galeria_nombre_categoria'),'trim|required|xss_clean');
 				$this->form_validation->set_rules('descripcion_cat_'.$idioma->id_idioma,$this->lang->line('cms_galeria_texto_categoria'),'trim|xss_clean');
 			}
@@ -1080,7 +1207,7 @@ class Page extends MY_Controller
 						'prioridad'=>(($this->General_model->maximo('categoria_carrusel','prioridad',array('id_carrusel'=>$id_carrusel))->prioridad)+1)
 				);
 				$id_categoria = $this->General_model->insert('categoria_carrusel',$categoria_data);
-				foreach($data['cargar_idiomas'] as $idioma){
+				foreach($this->data['cargar_idiomas'] as $idioma){
 					$categoria_data_idiomas=array(
 							'nombre_cat'=>$this->input->post('nombre_cat_'.$idioma->id_idioma),
 							'descripcion_cat'=>$this->input->post('descripcion_cat_'.$idioma->id_idioma),
@@ -1089,63 +1216,63 @@ class Page extends MY_Controller
 					);
 					$this->General_model->insert('categoria_carrusel_idiomas',$categoria_data_idiomas);
 				}
-				redirect('cms-crear-bloque-carrusel/'.$id_carrusel);
+				redirect('page/crear_carrusel/'.$id_carrusel);
 			}
 		}
-		
-		$this->template->set_template('header_and_content');
+		$this->render_private('formulario/crear_galeria', $this->data);
+		/*$this->template->set_template('header_and_content');
 		$this->template->write_view('content','formulario/crear_galeria',$data);
 		$this->template->write_view('header','templates/header_admin',$data);
-		$this->template->render();
+		$this->template->render();*/
 	}
 
 	function ordenar_carrusel($carrusel){
 		$config=array(
 				'title'=>$this->lang->line('cms_galeria_ordenar_imagenes'),
 				'view'=>'formulario/ordenar_carrusel',
-				'model_get'=>array('model_name'=>'carrusel_model',
+				'model_get'=>array('model_name'=>'Carrusel_model',
 						'model_method'=>'get_imagenes',
 						'model_param'=>$carrusel,
 						'idioma'=> $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
 				'model_update'=>array('model_name'=>'General_model',
-						'model_method'=>'update',
+						'model_method'=>'updateBloques',
 						'tabla'=>'imagen_carrusel',
 						'id_tabla'=>'id_imagen_carrusel'),
-				'redirect'=>'cms-crear-bloque-carrusel/'.$carrusel,
+				'redirect'=>'page/crear_carrusel/'.$carrusel,
 		);
 		$this->ordenar($config);
 	}
 	
 // 	//Editar la imagen del carrusel
 	function editar_carrusel($id_imagen_carrusel=null){
-		$data = $this->inicializar('6', $this->lang->line('cms_c_editar_imagen_galeria'));
+		$this->data = $this->inicializar('6', $this->lang->line('cms_c_editar_imagen_galeria'));
 		if($id_imagen_carrusel==null){
 			redirect('errors/error_404');
 		}else{
-			$data['imagen_carrusel2']=$this->carrusel_model->get_imagen_carrusel($data['idioma_actual']->id_idioma, $id_imagen_carrusel);
-			if(count($data['imagen_carrusel2'])!=1){
+			$this->data['imagen_carrusel2']=$this->Carrusel_model->get_imagen_carrusel($this->data['idioma_actual']->id_idioma, $id_imagen_carrusel);
+			if(count($this->data['imagen_carrusel2'])!=1){
 				redirect('errors/error_404');
 			}
-			foreach($data['cargar_idiomas'] as $idioma){
-				$data['imagen_carrusel'][$idioma->id_idioma] = $this->carrusel_model->get_imagen_carrusel($idioma->id_idioma, $id_imagen_carrusel);
+			foreach($this->data['cargar_idiomas'] as $idioma){
+				$this->data['imagen_carrusel'][$idioma->id_idioma] = $this->Carrusel_model->get_imagen_carrusel($idioma->id_idioma, $id_imagen_carrusel);
 			}
 		}
-		$id_carrusel=$data['imagen_carrusel2']->id_carrusel;
-		$data['id_carrusel']=$id_carrusel;		
-		$data['carrusel']=$this->carrusel_model->get_carrusel($id_carrusel);
+		$id_carrusel=$this->data['imagen_carrusel2']->id_carrusel;
+		$this->data['id_carrusel']=$id_carrusel;		
+		$this->data['carrusel']=$this->Carrusel_model->get_carrusel($id_carrusel);
 		//echo '<br /><br /><br />'.$data['carrusel']->id;
-		$data['dd_tipo_galeria'] = array(
+		$this->data['dd_tipo_galeria'] = array(
 				'1' => $this->lang->line('cms_tipo_galeria1'),
 				'2' => $this->lang->line('cms_tipo_galeria2'),
 				'3' => $this->lang->line('cms_tipo_galeria3')
 		);
-		$data['dd_categoria']=$this->formularios->dropdown_idioma('categoria_carrusel','id','nombre_cat',$data['idioma_actual']->id_idioma, array('categoria_carrusel.id_carrusel'=>$id_carrusel));
+		$this->data['dd_categoria']=$this->formularios->dropdown_idioma('categoria_carrusel','id','nombre_cat',$this->data['idioma_actual']->id_idioma, array('categoria_carrusel.id_carrusel'=>$id_carrusel));
 		
 		if($this->input->post('submit')){
 			$conf = $this->General_model->get_config();
 			$this->form_validation->set_rules('id_categoria',$this->lang->line('cms_galeria_categoria'),'trim|xss_clean|integer');
 			
-			foreach($data['cargar_idiomas'] as $idioma){
+			foreach($this->data['cargar_idiomas'] as $idioma){
 				if($idioma->id_idioma == $conf->idioma_defecto){
 					$this->form_validation->set_rules('titulo_seo_'.$idioma->id_idioma,$this->lang->line('cms_galeria_titulo_seo_imagen'),'trim|required|xss_clean|max_length[200]');
 				}else{
@@ -1157,34 +1284,34 @@ class Page extends MY_Controller
 			if($this->form_validation->run()){
 				$this->load->library('upload');
 				$this->load->library('image_lib');
-				foreach($data['cargar_idiomas'] as $idioma){
-					if(!file_exists('img/carrusel/'.$idioma->id_idioma))
-						mkdir('img/carrusel/'.$idioma->id_idioma, '0755', true);
-					if(!file_exists('img/carruselmini/'.$idioma->id_idioma))
-						mkdir('img/carruselmini/'.$idioma->id_idioma, '0755', true);
+				foreach($this->data['cargar_idiomas'] as $idioma){
+					if(!file_exists('uploads/general/img/carrusel/'.$idioma->id_idioma))
+						mkdir('uploads/general/img/carrusel/'.$idioma->id_idioma, '0755', true);
+					if(!file_exists('uploads/general/img/carruselmini/'.$idioma->id_idioma))
+						mkdir('uploads/general/img/carruselmini/'.$idioma->id_idioma, '0755', true);
 				}
 				$imagen_carrusel_data = array(
 						'id_categoria'=>$this->input->post('id_categoria')
 				);
 				$this->General_model->update('imagen_carrusel',$imagen_carrusel_data, array('id_carrusel' => $id_carrusel));
-				foreach($data['cargar_idiomas'] as $idioma){
+				foreach($this->data['cargar_idiomas'] as $idioma){
 					$modificado = FALSE;
 					if (isset($_FILES['userfile_'.$idioma->id_idioma]['tmp_name']) && $_FILES['userfile_'.$idioma->id_idioma]['tmp_name']) {
-						$config['upload_path'] = 'img/carrusel/'.$idioma->id_idioma.'/';
+						$config['upload_path'] = 'uploads/general/img/carrusel/'.$idioma->id_idioma.'/';
 						$config['allowed_types']='gif|jpg|jpeg|png';
 						$config['max_size']	= '1024';
 						$config['overwrite']=FALSE;
 						$this->upload->initialize($config);
 						//$config['encrypt_name'] = TRUE;
 						if (!$this->upload->do_upload('userfile_'.$idioma->id_idioma)) {
-							$data['error']='error';
+							$this->data['error']='error';
 						}else{
 							$file_data = $this->upload->data();
 							$imagen_carrusel_data_idiomas['imagen'] = $file_data['file_name'];
 							//Ahora creamos una copia de la imagen a tamaño 30*30
 							$config['image_library']='gd2';
-							$config['source_image']='img/carrusel/'.$idioma->id_idioma.'/'.$file_data['file_name'];
-							$config['new_image']='img/carruselmini/'.$idioma->id_idioma.'/';
+							$config['source_image']='uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$file_data['file_name'];
+							$config['new_image']='uploads/general/img/carruselmini/'.$idioma->id_idioma.'/';
 							$config['create_thumb'] = TRUE;
 							$config['maintain_ratio'] = TRUE;
 							$config['width'] = 562;
@@ -1198,12 +1325,12 @@ class Page extends MY_Controller
 							$modificado = TRUE;
 						}
 					}
-					if(!isset($data['error'])){
+					if(!isset($this->data['error'])){
 						if($modificado){
-							if(isset($data['imagen_carrusel'][$idioma->id_idioma]->imagen) && file_exists('img/carrusel/'.$idioma->id_idioma.'/'.$data['imagen_carrusel'][$idioma->id_idioma]->imagen))
-								unlink('img/carrusel/'.$idioma->id_idioma.'/'.$data['imagen_carrusel'][$idioma->id_idioma]->imagen);
-							if(isset($data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini) && file_exists('img/carruselmini/'.$idioma->id_idioma.'/'.$data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini))
-								unlink('img/carruselmini/'.$idioma->id_idioma.'/'.$data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini);
+							if(isset($this->data['imagen_carrusel'][$idioma->id_idioma]->imagen) && file_exists('uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$this->data['imagen_carrusel'][$idioma->id_idioma]->imagen))
+								unlink('uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$this->data['imagen_carrusel'][$idioma->id_idioma]->imagen);
+							if(isset($this->data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini) && file_exists('uploads/general/img/carruselmini/'.$idioma->id_idioma.'/'.$this->data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini))
+								unlink('uploads/general/img/carruselmini/'.$idioma->id_idioma.'/'.$this->data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini);
 						}
 						$imagen_carrusel_data_idiomas2 = array(
 								'titulo_carrusel'=>$this->input->post('titulo_carrusel_'.$idioma->id_idioma),
@@ -1216,14 +1343,14 @@ class Page extends MY_Controller
 						$this->General_model->update('imagen_carrusel_idiomas',$imagen_carrusel_data_idiomas2, array('id_imagen_carrusel' => $id_imagen_carrusel, 'id_idioma' => $idioma->id_idioma));
 					}
 				}
-				redirect('cms-crear-bloque-carrusel/'.$id_carrusel);	
+				redirect('page/crear_carrusel/'.$id_carrusel);	
 			}			
 		}
-		
-		$this->template->set_template('header_and_content');
+		$this->render_private('formulario/editar_galeria', $this->data);
+		/*$this->template->set_template('header_and_content');
 		$this->template->write_view('content','formulario/editar_galeria',$data);
 		$this->template->write_view('header','templates/header_admin',$data);
-		$this->template->render();
+		$this->template->render();*/
 	}
 	
 	function eliminar_imagen_carrusel($id_imagen_carrusel=null){
@@ -1231,28 +1358,28 @@ class Page extends MY_Controller
 			redirect('errors/error_404');
 		}else{
 			foreach($this->Idioma_model->get_idiomas_subidos_activos() as $idioma){
-				$data['imagen_carrusel'][$idioma->id_idioma]=$this->carrusel_model->get_imagen_carrusel($idioma->id_idioma, $id_imagen_carrusel);
+				$this->data['imagen_carrusel'][$idioma->id_idioma]=$this->Carrusel_model->get_imagen_carrusel($idioma->id_idioma, $id_imagen_carrusel);
 				if(!isset($id_carrusel))
-					$id_carrusel = $data['imagen_carrusel'][$idioma->id_idioma]->id_carrusel;
-				if(count($data['imagen_carrusel'][$idioma->id_idioma])==1){
-					if(isset($data['imagen_carrusel'][$idioma->id_idioma]->imagen) && file_exists('img/carrusel/'.$idioma->id_idioma.'/'.$data['imagen_carrusel'][$idioma->id_idioma]->imagen))
-						unlink('img/carrusel/'.$idioma->id_idioma.'/'.$data['imagen_carrusel'][$idioma->id_idioma]->imagen);
-					if(isset($data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini) && file_exists('img/carruselmini/'.$idioma->id_idioma.'/'.$data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini))
-						unlink('img/carruselmini/'.$idioma->id_idioma.'/'.$data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini);
+					$id_carrusel = $this->data['imagen_carrusel'][$idioma->id_idioma]->id_carrusel;
+				if(count($this->data['imagen_carrusel'][$idioma->id_idioma])==1){
+					if(isset($this->data['imagen_carrusel'][$idioma->id_idioma]->imagen) && file_exists('uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$this->data['imagen_carrusel'][$idioma->id_idioma]->imagen))
+						unlink('uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$this->data['imagen_carrusel'][$idioma->id_idioma]->imagen);
+					if(isset($this->data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini) && file_exists('uploads/general/img/carruselmini/'.$idioma->id_idioma.'/'.$this->data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini))
+						unlink('uploads/general/img/carruselmini/'.$idioma->id_idioma.'/'.$this->data['imagen_carrusel'][$idioma->id_idioma]->imagen_mini);
 					$this->General_model->delete('imagen_carrusel_idiomas',array('id_imagen_carrusel'=>$id_imagen_carrusel, 'id_idioma'=>$idioma->id_idioma));
 				}
 			}
 			$this->General_model->delete('imagen_carrusel',array('id_imagen_carrusel'=>$id_imagen_carrusel));
-			redirect('cms-crear-bloque-carrusel/'.$id_carrusel);
+			redirect('page/crear_carrusel/'.$id_carrusel);
 		}
 	}
 	
 	function ordenar_carrusel_categorias($carrusel){
-		$this->load->model('carrusel_model');
+		$this->load->model('Carrusel_model');
 		$config=array(
 				'title'=>$this->lang->line('cms_c_ordenar_categorias_carrusel'),
 				'view'=>'formulario/ordenar_categorias',
-				'model_get'=> array('model_name'=>'carrusel_model',
+				'model_get'=> array('model_name'=>'Carrusel_model',
 						'model_method'=>'get_categorias_carrusel',
 						'model_param'=>$carrusel,
 						'idioma'=> $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma),
@@ -1260,28 +1387,28 @@ class Page extends MY_Controller
 						'model_method'=>'update',
 						'tabla'=>'categoria_carrusel',
 						'id_tabla'=>'id'),
-				'redirect'=>'cms-crear-bloque-carrusel/'.$carrusel,
+				'redirect'=>'page/crear_carrusel/'.$carrusel,
 		);
 		$this->ordenar($config);
 	}
 	
 	//EDITAR CATEGORIA
 	function editar_carrusel_categoria($id_categoria_carrusel=null){
-		$data = $this->inicializar('6', $this->lang->line('cms_c_galeria_editar_categoria'));
+		$this->data = $this->inicializar('6', $this->lang->line('cms_c_galeria_editar_categoria'));
 		if($id_categoria_carrusel==null){
 			redirect('errors/error_404');
 		}else{
-			foreach($data['cargar_idiomas'] as $idioma){
-				$data['elementos'][$idioma->id_idioma] =$this->carrusel_model->get_categoria_carrusel($idioma->id_idioma, $id_categoria_carrusel);
+			foreach($this->data['cargar_idiomas'] as $idioma){
+				$this->data['elementos'][$idioma->id_idioma] =$this->Carrusel_model->get_categoria_carrusel($idioma->id_idioma, $id_categoria_carrusel);
 			}
 		}
-		$id_carrusel = $data['elementos'][$data['idioma_actual']->id_idioma]->id_carrusel;
-		$data['id_carrusel']=$id_carrusel;
-		$data['nuevo']=false;
-		$data['nombre']=$data['elementos'][$data['idioma_actual']->id_idioma]->nombre_cat;
-		$data['editando']='categoria';
+		$id_carrusel = $this->data['elementos'][$this->data['idioma_actual']->id_idioma]->id_carrusel;
+		$this->data['id_carrusel']=$id_carrusel;
+		$this->data['nuevo']=false;
+		$this->data['nombre']=$this->data['elementos'][$this->data['idioma_actual']->id_idioma]->nombre_cat;
+		$this->data['editando']='categoria';
 		
-		$data['inputs']=array(
+		$this->data['inputs']=array(
 				//Caso 1: input normal
 				'1'=>array(
 						'form_group'=>array(
@@ -1322,11 +1449,11 @@ class Page extends MY_Controller
 				),
 		);
 		
-		$data['carrusel']=$this->carrusel_model->get_carrusel($id_carrusel);
+		$this->data['carrusel']=$this->Carrusel_model->get_carrusel($id_carrusel);
 	
 		if($this->input->post()){
 			$this->form_validation->set_message('is_natural_no_zero', 'Debe seleccionar algún elemento del campo %s');
-			foreach($data['inputs'] as $it){
+			foreach($this->data['inputs'] as $it){
 				$this->form_validation->set_rules($it['form_group']['name'],$it['label'],$it['form_validation']);
 			}
 			if($this->form_validation->run()){
@@ -1334,9 +1461,9 @@ class Page extends MY_Controller
 				$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
 				$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
 				$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));
-				foreach($data['cargar_idiomas'] as $idioma){
+				foreach($this->data['cargar_idiomas'] as $idioma){
 					if($idioma->id_idioma == $conf->idioma_defecto){
-						foreach($data['inputs'] as $it){
+						foreach($this->data['inputs'] as $it){
 							if($it['fijo']){
 								if($it['val_req']){
 									$this->form_validation->set_rules($it['form_group']['name'],$it['label'],'required|'.$it['form_validation']);
@@ -1352,14 +1479,14 @@ class Page extends MY_Controller
 							}
 						}
 					}else{
-						foreach($data['inputs'] as $it){
+						foreach($this->data['inputs'] as $it){
 							if(!$it['fijo'])
 								$this->form_validation->set_rules($it['form_group']['name'].'_'.$idioma->id_idioma,$it['label'],$it['form_validation']);
 						}
 					}
 				}
 				if($this->form_validation->run()){
-					foreach($data['cargar_idiomas'] as $idioma){
+					foreach($this->data['cargar_idiomas'] as $idioma){
 						foreach($data['inputs'] as $it){
 							if($this->input->post($it['form_group']['name'].'_'.$idioma->id_idioma)){
 								$datos_insert_idiomas[$it['form_group']['name']]=$this->input->post($it['form_group']['name'].'_'.$idioma->id_idioma);
@@ -1374,15 +1501,15 @@ class Page extends MY_Controller
 						}	
 						$this->General_model->update('categoria_carrusel_idiomas',$datos_insert_idiomas,array('id_categoria_carrusel'=>$id_categoria_carrusel, 'id_idioma' => $idioma->id_idioma));
 					}						
-					redirect('cms-crear-bloque-carrusel/'.$id_carrusel);
+					redirect('page/crear_carrusel/'.$id_carrusel);
 				}
 			}
 		}
-		
-		$this->template->set_template('header_and_content');
+		$this->render_private('formulario/crear', $this->data);
+		/*$this->template->set_template('header_and_content');
 		$this->template->write_view('content','formulario/crear',$data);
 		$this->template->write_view('header','templates/header_admin',$data);
-		$this->template->render();
+		$this->template->render();*/
 	}
 
 	function eliminar_categoria_carrusel($id_categoria_carrusel=null){
@@ -1390,17 +1517,17 @@ class Page extends MY_Controller
 			redirect('errors/error_404');
 		}else{
 			foreach($this->Idioma_model->get_idiomas_subidos_activos() as $idioma){
-				$data['categoria_carrusel'][$idioma->id_idioma]=$this->carrusel_model->get_categoria_carrusel($idioma->id_idioma, $id_categoria_carrusel);
+				$this->data['categoria_carrusel'][$idioma->id_idioma]=$this->Carrusel_model->get_categoria_carrusel($idioma->id_idioma, $id_categoria_carrusel);
 				if(!isset($id_carrusel))
-					$id_carrusel = $data['categoria_carrusel'][$idioma->id_idioma]->id_carrusel;
-				if(count($data['categoria_carrusel'][$idioma->id_idioma])==1){
+					$id_carrusel = $this->data['categoria_carrusel'][$idioma->id_idioma]->id_carrusel;
+				if(count($this->data['categoria_carrusel'][$idioma->id_idioma])==1){
 					$this->General_model->delete('categoria_carrusel_idiomas',array('id_categoria_carrusel'=>$id_categoria_carrusel, 'id_idioma'=>$idioma->id_idioma));
 				}
 			}
 			$this->General_model->delete('categoria_carrusel',array('id'=>$id_categoria_carrusel));
-			redirect('cms-crear-bloque-carrusel/'.$id_carrusel);
+			redirect('page/crear_carrusel/'.$id_carrusel);
 		}
-	}*/
+	}
 
 	function borrar_bloque($id_bloque,$borrar_bloque=null){
 		//Primero comprobar el tipo y borrar su contenido
@@ -1419,16 +1546,16 @@ class Page extends MY_Controller
 			$this->General_model->delete('texto',array('id'=>$texto->id));
 		}else if ($bloque->id_tipo_bloque==2){ //Si es carrusel
 			$carrusel=$this->Seccion_model->get_bloque_carrusel($id_bloque);
-			$imagenes=$this->carrusel_model->get_imagenes(0, $carrusel->id);
-			$categorias=$this->carrusel_model->get_categorias_carrusel(0, $carrusel->id);
+			$imagenes=$this->Carrusel_model->get_imagenes(0, $carrusel->id);
+			$categorias=$this->Carrusel_model->get_categorias_carrusel(0, $carrusel->id);
 			//borrar imágenes
 			if(count($imagenes)!=0){
 				foreach($imagenes as $it){
 					foreach($idiomas_activos as $idioma){
-						if(isset($this->carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen) && file_exists('img/carrusel/'.$idioma->id_idioma.'/'.$this->carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen))
-							unlink('img/carrusel/'.$idioma->id_idioma.'/'.$this->carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen);
-						if(isset($this->carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen_mini) && file_exists('img/carruselmini/'.$idioma->id_idioma.'/'.$this->carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen_mini))
-							unlink('img/carruselmini/'.$idioma->id_idioma.'/'.$this->carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen_mini);
+						if(isset($this->Carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen) && file_exists('uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$this->Carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen))
+							unlink('uploads/general/img/carrusel/'.$idioma->id_idioma.'/'.$this->Carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen);
+						if(isset($this->Carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen_mini) && file_exists('uploads/general/img/carruselmini/'.$idioma->id_idioma.'/'.$this->Carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen_mini))
+							unlink('uploads/general/img/carruselmini/'.$idioma->id_idioma.'/'.$this->Carrusel_model->get_imagen_carrusel($idioma->id_idioma, $it->id_imagen_carrusel)->imagen_mini);
 						$this->General_model->delete('imagen_carrusel_idiomas',array('id_imagen_carrusel'=>$it->id_imagen_carrusel, 'id_idioma'=>$idioma->id_idioma));
 					}
 					$this->General_model->delete('imagen_carrusel',array('id_imagen_carrusel'=>$it->id_imagen_carrusel));
@@ -1474,6 +1601,31 @@ class Page extends MY_Controller
 		if($seccion == 'seccion')
 			redirect('page/listar_secciones');
 	}
+        
+        function crear_bloque_inmuebles($id_bloque=null){
+		$this->data = $this->inicializar('6', $this->lang->line('cms_crear_inmuebles'));
+		if($id_bloque==null){
+			redirect('errors/error_404');
+		}else{
+            $this->data['caracteristicas'] = $this->Bloque_model->getBloqueInmuebles($id_bloque);
+            $this->data['seccion']=$this->Seccion_model->get_seccion_bloque($this->data['idioma_actual']->id_idioma, $this->data['caracteristicas']->id_bloque);
+            if($this->input->post()){
+				$this->form_validation->set_rules('tipo_inmuebles',$this->lang->line('cms_inmuebles_tipo'),'trim|xss_clean|integer');
+				$this->form_validation->set_rules('num_inmuebles',$this->lang->line('cms_inmuebles_numero'),'trim|xss_clean|integer');
+				
+				if($this->form_validation->run()){
+					$productos_data=array(
+						'tipo'=>$this->input->post('tipo_inmuebles'),
+						'num_inmuebles'=>$this->input->post('num_inmuebles'),
+						'muestra_resumen'=>1
+					);
+					$this->Bloque_model->updateBloqueInmuebles($id_bloque,$productos_data);
+					redirect('page/crear_bloque_inmuebles/'.$id_bloque);
+				}
+            }
+            $this->render_private('formulario/bloque_inmuebles', $this->data);
+        }
+    }
 	
 // 	/*********************************** Grupos de secciones ***************************************/
 	function listar_super_secciones(){

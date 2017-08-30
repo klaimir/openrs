@@ -49,9 +49,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = "/auth/login";
+//$route['default_controller'] = "/auth/login";
+$route['default_controller'] = "/idioma";
 $route['seo/sitemap_blog\.xml'] = "seo/sitemap_blog";
 $route['seo/sitemap_etiq\.xml'] = "seo/sitemap_etiq";
+$route['es'] = "seccion";
+$route['en'] = "seccion";
 
 
 //$route['404_override'] = '';
@@ -542,7 +545,7 @@ class dynamic_route{
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-articulos/(:num)/(:any)';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/articulos';
+                                    $return_data->url = 'seccion/articulos';
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-articulos';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
@@ -570,20 +573,12 @@ class dynamic_route{
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-categoria/(:num)';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/ver_productos';
-                                    $return_data->route = '^'.$row['nombre_seo'].'/tienda';
+                                    $return_data->url = 'seccion/ver_inmuebles';
+                                    $return_data->route = '^'.$row['nombre_seo'].'/browser';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/ver_productos/$1';
-                                    $return_data->route = '^'.$row['nombre_seo'].'/tienda/(:any)';
-                                    $r_data[] = $return_data;
-                                    $return_data = new stdClass;
-                                    $return_data->url = 'site/ver_productos_filtrados/$1/$2/$3';
-                                    $return_data->route = '^'.$row['nombre_seo'].'/productos/(:any)/(:num)/(:num)';
-                                    $r_data[] = $return_data;
-                                    $return_data = new stdClass;
-                                    $return_data->url = 'site/ver_producto/$1/$2';
-                                    $return_data->route = '^'.$row['nombre_seo'].'/producto/(:any)/(:any)';
+                                    $return_data->url = 'seccion/ver_inmueble/$1';
+                                    $return_data->route = '^'.$row['nombre_seo'].'/inmueble/(:any)';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
                                     $return_data->url = 'ventas/actualizar_estado/$1/$2';

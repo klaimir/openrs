@@ -124,13 +124,17 @@ class Seccion_model extends MY_Model {
 	public function crear_bloque($tabla,$data_bloque, $tipo_bloque, $idiomas){
 		$this->db->insert($tabla,$data_bloque);
 		$id_bloque = $this->db->insert_id();
-		if($tipo_bloque=='1' || $tipo_bloque=='4'){ //texto
+		if($tipo_bloque=='1' || $tipo_bloque=='3' || $tipo_bloque=='4' || $tipo_bloque=='6' || $tipo_bloque=='7'){ //texto
 			$this->db->insert('texto',array('id_bloque'=>$id_bloque));
 			$id_texto = $this->db->insert_id();
 			foreach($idiomas as $idioma){
 				$this->db->insert('texto_idiomas',array('id_bloque'=>$id_bloque, 'id_texto'=>$id_texto, 'id_idioma' => $idioma->id_idioma));
 			}
-		}
+		}else if($tipo_bloque=='2'){ //carrusel
+			$this->db->insert('carrusel',array('id_bloque'=>$id_bloque));
+                }elseif($tipo_bloque=='5'){ //productos
+                    $this->db->insert('bloque_inmuebles',array('id_bloque'=>$id_bloque));
+                }
 		return $id_bloque;
 	}
 	
@@ -151,4 +155,25 @@ class Seccion_model extends MY_Model {
 		$this->db->where('id',$id_texto);
 		return $this->db->get('texto')->row();
 	}
+        
+        public function get_bloque_carrusel($id_bloque){
+		$this->db->where('id_bloque',$id_bloque);
+		return $this->db->get('carrusel')->row();
+	}
+        
+        public function get_bloque_inmuebles($id_bloque){
+            $this->db->where('id_bloque',$id_bloque);
+            return $this->db->get('bloque_inmuebles')->row();
+        }
+        
+        public function update_bloque($id, $datos){
+            $this->db->where('id_bloque',$id);
+            $this->db->update('bloque', $datos);
+        }
+
+        public function update_bloque_idiomas($id, $datos, $idioma){
+            $this->db->where('id_bloque',$id);
+            $this->db->where('id_idioma',$idioma);
+            $this->db->update('bloque_idiomas', $datos);
+        }
 }

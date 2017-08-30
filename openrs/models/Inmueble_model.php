@@ -955,24 +955,26 @@ class Inmueble_model extends MY_Model
             default:
                 break;
         }
-        // Modificaciones precio        
-        switch ($filtros['modificacion_precio_id'])
-        {
-            case 1:
-                $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior > precio_compra');
-                break;
-            case 2:
-                $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior < precio_compra');
-                break;
-            case 3:
-                $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior > precio_alquiler');
-                break;
-            case 4:
-                $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior < precio_alquiler');
-                break;
-            default:
-                break;
-        }        
+        // Modificaciones precio 
+        if(isset($filtros['modificacion_precio_id'])){
+            switch ($filtros['modificacion_precio_id'])
+            {
+                case 1:
+                    $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior > precio_compra');
+                    break;
+                case 2:
+                    $this->db->where('precio_compra > 0 AND precio_compra_anterior > 0  AND precio_compra_anterior < precio_compra');
+                    break;
+                case 3:
+                    $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior > precio_alquiler');
+                    break;
+                case 4:
+                    $this->db->where('precio_alquiler > 0 AND precio_alquiler_anterior > 0  AND precio_alquiler_anterior < precio_alquiler');
+                    break;
+                default:
+                    break;
+            }  
+        }
         // Datos de publicado
         if (isset($filtros['publicado_id']) && $filtros['publicado_id'] >= 0)
         {
@@ -2036,15 +2038,20 @@ class Inmueble_model extends MY_Model
         return $this->markers;
     }
     
-    public function create_google_map($inmuebles,$filtros,$infowindow_type="private",$infowindow_language=NULL)
+    public function create_google_map($inmuebles,$filtros,$infowindow_type="private",$infowindow_language=NULL, $idioma_id = NULL, $idioma_seo = NULL)
     {
         // Establecemos el tipo información del inmueble a mostrar y sus idiomas
         $this->infowindow_type=$infowindow_type;        
         // Si el idioma es NULL, consultamos el de la sesion
         if (is_null($infowindow_language))
         {
-            $this->infowindow_language = $this->data['session_id_idioma'];
-            $this->infowindow_nombre_seo = $this->data['session_idioma_nombre_seo'];
+        	if(!$idioma_id){
+	            $this->infowindow_language = $this->data['session_id_idioma'];
+	            $this->infowindow_nombre_seo = $this->data['session_idioma_nombre_seo'];
+        	}else{
+        		$this->infowindow_language = $idioma_id;
+        		$this->infowindow_nombre_seo = $idioma_seo;
+        	}
         }
         else
         {

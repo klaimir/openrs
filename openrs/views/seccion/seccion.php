@@ -57,17 +57,17 @@ $mensaje = array(
 				<?php elseif ($it->id_tipo_bloque == 2):?>
 					<?php if($it->carrusel_general->tipo_carrusel == 1):?>
 						<div id="carousel-<?php echo $it->id_bloque;?>" class="carousel slide" data-ride="carousel">						  
-							<?php /*if(count($it->carrusel) > 1):?>
+							<?php if(count($it->carrusel) > 1):?>
 							<ol class="carousel-indicators">
 							  	<?php foreach ($it->carrusel as $car):?>
 							  		<li data-target="#carousel-<?php echo $it->id_bloque;?>" data-slide-to="<?php echo ($car->prioridad-1); ?>" class="<?php ($car->prioridad == 1) ? "active" : ""; ?>"></li>
 							  	<?php endforeach; ?>
 							</ol>	
-							<?php endif;*/?>				  
+							<?php endif;?>				  
 						  	<div class="carousel-inner">
 						  		<?php foreach ($it->carrusel as $car):?>
 						  			<div class="item <?php echo ($car->prioridad == 1) ? "active" : ""; ?>">
-						  				<img src="<?php echo base_url()."img/carrusel/".$idioma_actual->id_idioma.'/'.$car->imagen; ?>" title="<?php echo $car->titulo_seo; ?>" alt="<?php echo $car->titulo_seo; ?>">
+						  				<img src="<?php echo base_url()."uploads/general/img/carrusel/".$idioma_actual->id_idioma.'/'.$car->imagen; ?>" title="<?php echo $car->titulo_seo; ?>" alt="<?php echo $car->titulo_seo; ?>">
 						  				<div class="carousel-caption hidden-xs">
 								        	<h1><?php echo $car->titulo_carrusel; ?></h1>
 								        	<h2><?php echo $car->texto_carrusel; ?></h2>

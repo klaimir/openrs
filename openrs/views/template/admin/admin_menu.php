@@ -135,7 +135,7 @@
     </ul>
 </li>
 
-<li class="<?php echo set_active_menu($_active_section,array("idiomas","cabecera","pie","secciones","Noticias")); ?>">
+<li class="<?php echo set_active_menu($_active_section,array("idiomas","cabecera","pie","secciones","noticias")); ?>">
     <a href="#" class="dropdown-toggle">
         <i class="menu-icon fa fa-globe"></i>
         <span class="menu-text"> Zona Pública </span>
@@ -182,8 +182,8 @@
             <b class="arrow"></b>
         </li>
         
-        <li class="<?php echo set_active_option($_active_section,'Noticias'); ?>">
-            <a href="<?php echo site_url('noticias'); ?>" onClick="return show_confirm_exit_message();">
+        <li class="<?php echo set_active_option($_active_section,'noticias'); ?>">
+            <a href="<?php echo site_url('blog/listar_articulos'); ?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
                 <span class="menu-text"> Noticias </span>
             </a>

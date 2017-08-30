@@ -1,4 +1,4 @@
-
+<?php $this->load->view('javascript/idiomas');?>
 <?php if($config->cabecera_fija == 1){?>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color:<?php echo $config->ccabecera;?>; border-bottom:2px solid <?php echo $config->cbordecabecera;?>;">
 <?php }else{?>
@@ -6,7 +6,7 @@
 <?php }?>
   	<div class="container">
 	    <div class="col-sm-3 cabecera-logo hidden-xs">
-			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'assets/admin/img/preferencias/'.$config->imagen; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
+			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'uploads/general/img/preferencias/'.$config->imagen; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
 		</div>
 	    <div class="col-md-9 menu-desplegable hidden-xs">
 			<div class="menu-nav hidden-xs" style="background-color:<?php echo $config->ccabecera;?>">
@@ -22,13 +22,13 @@
 							<?php }?>
 					
 							<?php if($sh->tipo_seccion == 1):?>
-								<a href="<?php echo site_url('sseccion/seccion/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
+								<a href="<?php echo site_url($this->uri->segment('1').'/seccion/seccion/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 2): ?>
-								<a href="<?php echo site_url($sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
+								<a href="<?php echo site_url($this->uri->segment('1').'/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 3): ?>
-								<a href="<?php echo site_url('blog-articulos');?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
+								<a href="<?php echo site_url($this->uri->segment('1').'/blog-articulos');?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 4): ?>
-								<a href="<?php echo site_url($sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
+								<a href="<?php echo site_url($this->uri->segment('1').'/'.$sh->url_seo);?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 5): ?>
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sh->titulo; ?> <span class="caret"></span></a>
 						          <ul class="dropdown-menu" role="menu">
@@ -52,23 +52,6 @@
 							<?php endif; ?>
 							</li>
 						<?php endforeach; ?>
-						<?php if($this->ion_auth->logged_in()){?>
-							<?php /*if($this->simple_sessions->es_usuario()){?>
-								<li class="elemento-header">
-									<a href="<?php echo site_url('usuario-mi-cuenta'); ?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $this->lang->line('admin_mi_cuenta');?></a>
-								</li>	
-							<?php }*/?>
-							<li>
-								<a href="<?php echo site_url('logout'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><span class="glyphicon glyphicon-off"></span></a>
-							</li>
-						<?php }else{?>
-							<li>
-								<a href="<?php echo site_url('login'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo "LOGIN";?></a>
-							</li>
-							<!-- <li>
-								<a href="<?php echo site_url('registro');?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo "Regístrate."; ?></a>
-							</li> -->
-						<?php }?>
 					 <?php }else{
 						foreach ($secciones_header as $sh):?>
 							<li>
@@ -102,33 +85,7 @@
 								<?php }?>
 							<?php endif; ?>
 							</li>
-						<?php endforeach;
-						if($seccion == 'mi_cuenta'){ ?>
-							<li class="elemento-header active">
-								<a href="<?php echo site_url('usuario-mi-cuenta'); ?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $this->lang->line('admin_mi_cuenta');?></a>
-							</li>
-							<li>
-								<a href="<?php echo site_url('logout'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><span class="glyphicon glyphicon-off"></span></a>
-							</li>				
-						<?php }elseif($seccion == 'error'){ ?>
-							<?php if($this->ion_auth->logged_in()){?>
-								<?php /*if($this->simple_sessions->es_usuario()){?>
-									<li class="elemento-header">
-										<a href="<?php echo site_url('usuario-mi-cuenta'); ?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $this->lang->line('admin_mi_cuenta');?></a>
-									</li>
-								<?php }*/?>
-								<li>
-									<a href="<?php echo site_url('logout'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><span class="glyphicon glyphicon-off"></span></a>
-								</li>
-							<?php }else{?>
-								<li>
-									<a href="<?php echo site_url('login'); ?>" class="menu-der" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo "LOGIN";?></a>
-								</li>
-								<!-- <li>
-									<a href="<?php echo site_url('registro');?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo "Regístrate."; ?></a>
-								</li> -->
-							<?php }?>
-						<?php }?>	
+						<?php endforeach;?>
 					<?php }?>
 					<?php if(count($cargar_idiomas) > 1){?>
 					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo strtoupper($idioma_actual->nombre_seo2);?> <b class="caret"></b></a>
@@ -162,7 +119,7 @@
 			</nav>
 		</div> 
 		<div class="col-xs-9 cabecera-logo hidden-sm hidden-md hidden-lg">
-			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'img/preferencias/'.$config->user_id.'/'.$config->imagen_thumb; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
+			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'uploads/general/img/preferencias/'.$config->imagen; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
 		</div>
 	</div>
 </div>

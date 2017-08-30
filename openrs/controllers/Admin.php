@@ -50,6 +50,8 @@ class Admin extends MY_Controller
     
     public function cabecera(){
     	$this->data = $this->inicializar('0', 'Cabecera');
+        // Sección activa
+        $this->data['_active_section']="cabecera";
     	//Cargamos configuración cabecera
     	//$this->data['config'] = $this->Admin_model->datos_config();
     	// Render
@@ -162,6 +164,7 @@ class Admin extends MY_Controller
     
     public function pie(){
     	$this->data = $this->inicializar('0', 'Pie');
+        $this->data['_active_section']="pie";
     	//Cargamos configuración pie
     	$this->data['opc_footer'] = $this->Admin_model->get_footer_opciones();
     	for($i=1;$i<5;$i++){//sacamos las opciones segun columna
@@ -267,6 +270,7 @@ class Admin extends MY_Controller
     
     public function gestionar_idiomas($error = NULL){
     	$this->data = $this->inicializar(-4, $this->lang->line('admin_gestionar_idiomas'));
+        $this->data['_active_section']="idiomas";
     	if($error == 1)
     		$this->data['message'] = $this->lang->line('admin_c_gestionar_idiomas_error1');
     	elseif($error == 2)
@@ -307,6 +311,7 @@ class Admin extends MY_Controller
     
     function subir_idiomas($error = NULL){
     	$data = $this->inicializar(-4, $this->lang->line('admin_subir_idiomas'));
+        $this->data['_active_section']="idiomas";
     	if($error == 1)
     		$this->data['message'] = $this->lang->line('admin_c_subir_idiomas_error1');
     	elseif($error == 2)
