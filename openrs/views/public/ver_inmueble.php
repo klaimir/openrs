@@ -305,7 +305,7 @@ $(document).ready(function(){
 });
 function check_google_maps() {
     var pais_id=64;      
-    var direccion="<?php echo $inmueble->direccion;?>";
+    var direccion="<?php echo $inmueble->direccion_publica;?>";
 
     if(pais_id!='' && direccion!='')
     {
