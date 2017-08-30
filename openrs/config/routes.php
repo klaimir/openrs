@@ -55,10 +55,10 @@ $route['seo/sitemap_blog\.xml'] = "seo/sitemap_blog";
 $route['seo/sitemap_etiq\.xml'] = "seo/sitemap_etiq";
 $route['es'] = "seccion";
 $route['en'] = "seccion";
-
-
 //$route['404_override'] = '';
 //$route['translate_uri_dashes'] = FALSE;
+$route['^es/blog-articulos'] = 'seccion/articulos';
+$route['^en/blog-news'] = 'seccion/articulos';
 
 class dynamic_route{
 
@@ -529,25 +529,22 @@ class dynamic_route{
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-eliminar-comentario/(:num)';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/votar/$1';
+                                    $return_data->url = 'seccion/votar/$1';
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-votar/(:num)';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/votar';
+                                    $return_data->url = 'seccion/votar';
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-votar';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/ver_articulo';
+                                    $return_data->url = 'seccion/ver_articulo';
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-ver-articulo';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/articulos/$1/$2';
+                                    $return_data->url = 'seccion/articulos/$1/$2';
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-articulos/(:num)/(:any)';
                                     $r_data[] = $return_data;
-                                    $return_data = new stdClass;
-                                    $return_data->url = 'seccion/articulos';
-                                    $return_data->route = '^'.$row['nombre_seo'].'/blog-articulos';
-                                    $r_data[] = $return_data;
+          
                                     $return_data = new stdClass;
                                     $return_data->url = 'pedido/cancelacion';
                                     $return_data->route = '^'.$row['nombre_seo'].'/cancelacion';
@@ -569,7 +566,7 @@ class dynamic_route{
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-eliminar-categoria/(:num)';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/articulos_categoria/$1';
+                                    $return_data->url = 'seccion/articulos_categoria/$1';
                                     $return_data->route = '^'.$row['nombre_seo'].'/blog-categoria/(:num)';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
@@ -720,6 +717,10 @@ class dynamic_route{
                                     $return_data->url = 'default_controller';
                                     $return_data->route = '^'.$row['nombre_seo'].'$';
                                     $r_data[] = $return_data;
+                                    $return_data = new stdClass;
+                                    $return_data->url = 'seccion/articulos';
+                                    $return_data->route = '^'.$row['nombre_seo'].'/blog-articulos';
+                                    $r_data[] = $return_data;
                             }
                     }
                 }
@@ -737,8 +738,8 @@ class dynamic_route{
 
 }
 
-if(ENVIRONMENT!="development")
-{
+//if(ENVIRONMENT!="development")
+//{
     require('connect.php');
 
     $dynamic_route = new dynamic_route;
@@ -750,4 +751,4 @@ if(ENVIRONMENT!="development")
     foreach($route_data as $row){
             $route[$row->route] = $row->url;
     }
-}
+//}

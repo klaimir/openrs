@@ -25,7 +25,8 @@ class Seccion extends MY_Controller_Front
                 $this->load->model('Articulo_model');
                 $this->load->model('Etiqueta_model');
                 $this->load->model('Inmueble_model');
-                
+                $this->load->model('Comentario_model');
+                $this->load->model('Voto_model');
                 // Carga de key de google analytic para seguimiento público
                 $this->load->model('Config_model');
                 $config=$this->Config_model->get_config();
@@ -34,14 +35,14 @@ class Seccion extends MY_Controller_Front
 	
 	//Método para la portada: diferente en cada tienda, para que la portada sea original
 	function index()
-	{	
-		$data = $this->inicializar(1, $this->lang->line('home'));
-		$data['bloques']=$this->Bloque_model->get_bloques(1,$data['idioma_actual']->id_idioma, $data['seccion']->id);
+	{			
+		$data = $this->inicializar(1);
+		$data['bloques']=$this->Bloque_model->get_bloques(1,$data['idioma_actual']->id_idioma, 1);
 		foreach ($data['bloques'] as $k=>$v){
 			if($v->id_tipo_bloque==1 || $v->id_tipo_bloque==4){ //bloque de texto
 				$data['bloques'][$k]->texto=$this->Bloque_model->get_contenido($v->id_bloque,"texto", $data['idioma_actual']->id_idioma);
 			}elseif($v->id_tipo_bloque==2){ //bloque carrusel
-                            $carrusel=$this->Bloque_model->get_contenido($v->id_bloque,"carrusel", $data['idioma_actual']->id_idioma);
+				$carrusel=$this->Bloque_model->get_contenido($v->id_bloque,"carrusel", $data['idioma_actual']->id_idioma);
 				$data['bloques'][$k]->carrusel_general=$carrusel;
 				$data['bloques'][$k]->carrusel=$this->Bloque_model->get_carrusel($carrusel->id, $data['idioma_actual']->id_idioma);
 				$data['bloques'][$k]->categorias=$this->Carrusel_model->get_categorias_carrusel($data['idioma_actual']->id_idioma, $carrusel->id);
@@ -63,11 +64,11 @@ class Seccion extends MY_Controller_Front
 						break;
 				}
 			}elseif($v->id_tipo_bloque==5){ //bloque productos
-                            $caracteristicas = $this->producto_model->getBloqueFrontend($v->id_bloque);
-                            $data['bloques'][$k]->num_productos = $caracteristicas->num_productos;
-                            $data['bloques'][$k]->productos = $this->producto_model->getProductosBloque($caracteristicas->tipo, $caracteristicas->num_productos,$data['idioma_actual']->id_idioma);
-                            $data['bloques'][$k]->muestra_resumen = $caracteristicas->muestra_resumen;
-                        }
+				$caracteristicas = $this->Bloque_model->getBloqueFrontend($v->id_bloque);
+				$data['bloques'][$k]->num_inmuebles = $caracteristicas->num_inmuebles;
+				$data['bloques'][$k]->tipo = $caracteristicas->tipo;
+				$data['bloques'][$k]->inmuebles = $this->Bloque_model->getInmueblesBloque($caracteristicas->tipo, $caracteristicas->num_inmuebles,$data['idioma_actual']->id_idioma);
+			}
 		}
 		
 		$this->template->write_view('header','public/template/header',$data);
@@ -106,9 +107,9 @@ class Seccion extends MY_Controller_Front
 				$data['codigo'.$cont]=$this->Usuario_model->get_codigo_pie($col->id, $data['idioma_actual']->id_idioma);
 		}
 		$data['seccion']=$this->Seccion_model->get_seccion($data['idioma_actual']->id_idioma, $seccion);
-		if (count($data['seccion'])==0){
+		/*if (count($data['seccion'])==0){
 			redirect('errors/error_404');
-		}
+		}*/
 		if($titulo != NULL){
 			$data['title']=$titulo;
 		}else{
@@ -495,7 +496,7 @@ class Seccion extends MY_Controller_Front
 				redirect('errors/error_404');
 			}
 		}
-		$data = $this->inicializar(2, $articulo->titulo);
+		$data = $this->inicializar(7, $articulo->titulo);
 		$data['articulo'] = $articulo;
 		$data['autor']=$data['config']->nombre;
 		$data['meta_description']=$data['articulo']->titulo.' | '.$this->config->item('site_name');
@@ -505,7 +506,7 @@ class Seccion extends MY_Controller_Front
 	
 		//Aumenta en 1 el número de visitas a la publicación
 		$this->Articulo_model->updateById($id_articulo, array('visitas'=>($data['articulo']->visitas + 1)));
-		$data['comentarios'] = $this->comentario_model->get_comentarios($id_articulo);
+		$data['comentarios'] = $this->Comentario_model->get_comentarios($id_articulo);
 		$data['categorias'] = $this->Articulo_model->get_categorias(1, $idioma->id_idioma);
 		$data['etiquetas'] = $this->Etiqueta_model->get_etiquetas_articulo($id_articulo, $idioma->id_idioma);
 	
@@ -544,25 +545,25 @@ class Seccion extends MY_Controller_Front
 						'contenido'=>$this->input->post('contenido2'),
 						'visible'=>TRUE,
 						'id_articulo'=>$id_articulo,
-						'num_mensaje_articulo' => ($this->comentario_model->max_num_mensaje_articulo($id_articulo) + 1),
+						'num_mensaje_articulo' => ($this->Comentario_model->max_num_mensaje_articulo($id_articulo) + 1),
 				);
 				if($this->input->post('nick') != '')
 					$data_comentario['nick'] = $this->input->post('nick');
 				else
 					$data_comentario['nick'] = $this->lang->line('blog_anonimo');
-				$this->comentario_model->insertar_comentario($data_comentario);
+				$this->Comentario_model->insertar_comentario($data_comentario);
 				//Activar alerta de nuevo comentario
 				$this->Articulo_model->updateById($id_articulo, array('comentario'=>1));
 				redirect('blog/'.$articulo->url_seo_articulo);
 			}
 		}
 		
-		$data['bloques']=$this->bloque_model->get_bloques(1,$data['idioma_actual']->id_idioma, 2);
+		$data['bloques']=$this->Bloque_model->get_bloques(1,$data['idioma_actual']->id_idioma, 2);
 		foreach ($data['bloques'] as $k=>$v){
 			if($v->id_tipo_bloque==2){ //bloque carrusel
-				$carrusel=$this->bloque_model->get_contenido($v->id_bloque,"carrusel", $data['idioma_actual']->id_idioma);
+				$carrusel=$this->Bloque_model->get_contenido($v->id_bloque,"carrusel", $data['idioma_actual']->id_idioma);
 				$data['bloques'][$k]->carrusel_general=$carrusel;
-				$data['bloques'][$k]->carrusel=$this->bloque_model->get_carrusel($carrusel->id, $data['idioma_actual']->id_idioma);
+				$data['bloques'][$k]->carrusel=$this->Bloque_model->get_carrusel($carrusel->id, $data['idioma_actual']->id_idioma);
 				$data['bloques'][$k]->categorias=$this->carrusel_model->get_categorias_carrusel($data['idioma_actual']->id_idioma, $carrusel->id);
 				switch ($data['bloques'][$k]->carrusel_general->columnas){
 					case 2:
@@ -604,14 +605,14 @@ class Seccion extends MY_Controller_Front
 			}
 		}
 		//Si no hay repetición de la ip en la tabla se produce el voto
-		if($this->voto_model->comprobar_voto($id_articulo, $this->input->ip_address())){
+		if($this->Voto_model->comprobar_voto($id_articulo, $this->input->ip_address())){
 			$data_voto = array(
 				'ip' => $this->input->ip_address(),
 				'id_articulo' => $id_articulo
 			);
-			$this->voto_model->insert($data_voto);
+			$this->Voto_model->insert($data_voto);
 		}
-		redirect('blog/'.$data['articulo']->url_seo_articulo);
+		redirect($this->uri->segment('1').'/blog/'.$data['articulo']->url_seo_articulo);
 	}
 	
 	function articulos($busqueda = NULL, $url=NULL){		
@@ -666,14 +667,14 @@ class Seccion extends MY_Controller_Front
 		$idioma = $this->devolver_idioma();
 		$data = $this->inicializar(2, $this->lang->line('blog_c_listado_articulos_categoria'));
 	
-		$data['bloques']=$this->bloque_model->get_bloques(1,$data['idioma_actual']->id_idioma, $data['seccion']->id);
+		$data['bloques']=$this->Bloque_model->get_bloques(1,$data['idioma_actual']->id_idioma, $data['seccion']->id);
 		foreach ($data['bloques'] as $k=>$v){
 			if($v->id_tipo_bloque==1){ //bloque de texto
-				$data['bloques'][$k]->texto=$this->bloque_model->get_contenido($v->id_bloque,"texto", $data['idioma_actual']->id_idioma);
+				$data['bloques'][$k]->texto=$this->Bloque_model->get_contenido($v->id_bloque,"texto", $data['idioma_actual']->id_idioma);
 			}elseif($v->id_tipo_bloque==2){ //bloque carrusel
-				$carrusel=$this->bloque_model->get_contenido($v->id_bloque,"carrusel", $data['idioma_actual']->id_idioma);
+				$carrusel=$this->Bloque_model->get_contenido($v->id_bloque,"carrusel", $data['idioma_actual']->id_idioma);
 				$data['bloques'][$k]->carrusel_general=$carrusel;
-				$data['bloques'][$k]->carrusel=$this->bloque_model->get_carrusel($carrusel->id, $data['idioma_actual']->id_idioma);
+				$data['bloques'][$k]->carrusel=$this->Bloque_model->get_carrusel($carrusel->id, $data['idioma_actual']->id_idioma);
 			}
 		}
 		/*Necesario para la paginación */

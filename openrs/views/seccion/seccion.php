@@ -185,7 +185,7 @@ $mensaje = array(
 												<div class="articulo-blog img-galeria <?php echo ($primero == TRUE) ? '' : 'borde-articulo';?> <?php echo ($contador>='4'  || $contador >= $maximo)?' oculto':'';?> <?php echo 'pagina-'.$num_pagina; ?>">
 													
 														<div class="titulo-blog">
-															<?php $segments = array('blog', $art->url_seo_articulo);?>
+															<?php $segments = array($this->uri->segment('1'), 'blog', $art->url_seo_articulo);?>
 															<h3><a href="<?php echo site_url($segments); ?>"><?php echo $art->titulo; ?></a></h3>
 														</div>
 														<div class="descripcion-corta">
@@ -245,7 +245,7 @@ $mensaje = array(
 										<div class="art_relacionado">
 																		
 												<div>
-													<a href="<?php echo site_url('blog/'.$popular->url_seo_articulo); ?>"><?php echo $popular->titulo; ?></a>
+													<a href="<?php echo site_url($this->uri->segment('1').'/blog/'.$popular->url_seo_articulo); ?>"><?php echo $popular->titulo; ?></a>
 												</div>								
 											
 										</div>
@@ -257,7 +257,7 @@ $mensaje = array(
 									<?php foreach($articulos_votados as $votado):?>
 										<div class="art_relacionado">						
 											<div>
-												<a href="<?php echo site_url('blog/'.$votado->url_seo_articulo); ?>"><?php echo $votado->titulo; ?></a>
+												<a href="<?php echo site_url($this->uri->segment('1').'/blog/'.$votado->url_seo_articulo); ?>"><?php echo $votado->titulo; ?></a>
 											</div>								
 										</div>
 									<?php endforeach; ?>
@@ -266,7 +266,7 @@ $mensaje = array(
 									<h5><?php echo $this->lang->line('blog_categorias');?></h5>
 									<?php foreach($categorias as $cat){?>
 										<div>
-											<a href="<?php echo site_url('blog-categoria/'.$cat->id_categoria); ?>">
+											<a href="<?php echo site_url($this->uri->segment('1').'/blog-categoria/'.$cat->id_categoria); ?>">
 												<span class="label-right"><?php echo $cat->categoria; ?></span>
 											</a>
 										</div>
@@ -288,7 +288,7 @@ $mensaje = array(
 											$originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿ??';
 											$modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
 											$cadena = strtr($cadena, utf8_decode($originales), $modificadas);?>
-											<a href="<?php echo site_url('blog-articulos/'.$favorita->id_etiqueta.'/'.$cadena); ?>">
+											<a href="<?php echo site_url($this->uri->segment('1').'/blog-articulos/'.$favorita->id_etiqueta.'/'.$cadena); ?>">
 												<span class="label-right"><?php echo $favorita->etiqueta.' ('.$favorita->repeticiones.')'; ?></span>
 											</a>
 										</div>
@@ -378,7 +378,7 @@ $mensaje = array(
 										<div class="art_relacionado">
 																		
 												<div>
-													<a href="<?php echo site_url('blog/'.$popular->url_seo_articulo); ?>"><?php echo $popular->titulo; ?></a>
+													<a href="<?php echo site_url($this->uri->segment('1').'/blog/'.$popular->url_seo_articulo); ?>"><?php echo $popular->titulo; ?></a>
 												</div>								
 											
 										</div>
@@ -390,7 +390,7 @@ $mensaje = array(
 									<?php foreach($articulos_votados as $votado):?>
 										<div class="art_relacionado">						
 											<div>
-												<a href="<?php echo site_url('blog/'.$votado->url_seo_articulo); ?>"><?php echo $votado->titulo; ?></a>
+												<a href="<?php echo site_url($this->uri->segment('1').'/blog/'.$votado->url_seo_articulo); ?>"><?php echo $votado->titulo; ?></a>
 											</div>								
 										</div>
 									<?php endforeach; ?>
@@ -399,7 +399,7 @@ $mensaje = array(
 									<h5><?php echo $this->lang->line('blog_categorias');?></h5>
 									<?php foreach($categorias as $cat){?>
 										<div>
-											<a href="<?php echo site_url('blog-categoria/'.$cat->id_categoria); ?>">
+											<a href="<?php echo site_url($this->uri->segment('1').'/blog-categoria/'.$cat->id_categoria); ?>">
 												<span class="label-right"><?php echo $cat->categoria; ?></span>
 											</a>
 										</div>
@@ -421,7 +421,7 @@ $mensaje = array(
 											$originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿ??';
 											$modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
 											$cadena = strtr($cadena, utf8_decode($originales), $modificadas);?>
-											<a href="<?php echo site_url('blog-articulos/'.$favorita->id_etiqueta.'/'.$cadena); ?>">
+											<a href="<?php echo site_url($this->uri->segment('1').'/blog-articulos/'.$favorita->id_etiqueta.'/'.$cadena); ?>">
 												<span class="label-right"><?php echo $favorita->etiqueta.' ('.$favorita->repeticiones.')'; ?></span>
 											</a>
 										</div>

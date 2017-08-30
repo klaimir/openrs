@@ -33,10 +33,17 @@ class Idioma extends MY_Controller_Front
 		$idiomayurl = explode('/', str_replace(site_url(), '', $url_antigua));
 		array_shift($idiomayurl);
 		$url =implode('/', $idiomayurl);
-		$id_url_amigable = $this->Idioma_model->get_url_amigable_id($this->input->post('id_actual'), $url);		
-		$nueva_url_amigable = $this->Idioma_model->get_url_amigable_by_id($this->input->post('id'), $id_url_amigable->id_seccion);
-		if(isset($nueva_url_amigable->id_idioma))
-			$idioma_nuevo = $this->Idioma_model->get_idioma($nueva_url_amigable->id_idioma);
+		$id_url_amigable = $this->Idioma_model->get_url_amigable_id($this->input->post('id_actual'), $url);	
+		if(!isset($id_url_amigable->id_seccion)){
+			$url_seo = 'seccion';
+			$idioma_nuevo = $idioma;
+		}else{
+			$nueva_url_amigable = $this->Idioma_model->get_url_amigable_by_id($this->input->post('id'), $id_url_amigable->id_seccion);
+			if(isset($nueva_url_amigable->id_idioma))
+				$idioma_nuevo = $this->Idioma_model->get_idioma($nueva_url_amigable->id_idioma);
+			$url_seo = $nueva_url_amigable->url_seo;
+		}
+
 		$cookie1 = get_cookie('cookieLOPD');
 		if(!$cookie1){
 			//$this->Usuario_model->modificar_idioma_usuario($this->ion_auth->user()->row()->id, $idioma->id_idioma);
@@ -50,8 +57,8 @@ class Idioma extends MY_Controller_Front
 				set_cookie($cookie);
 			}
 		}
-		if(isset($idioma_nuevo->nombre_seo) && isset($nueva_url_amigable->url_seo))
-			echo $idioma_nuevo->nombre_seo."/".$nueva_url_amigable->url_seo;
+		if(isset($idioma_nuevo->nombre_seo) && isset($url_seo))
+			echo $idioma_nuevo->nombre_seo."/".$url_seo;
 		else
 			echo str_replace(site_url(), '', $url_antigua);
 	}
