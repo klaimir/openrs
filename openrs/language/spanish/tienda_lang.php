@@ -249,9 +249,11 @@ $lang['tienda_lugares_inmueble'] = 'Lugares de interés';
 $lang['tienda_ocupacion'] = 'Ocupación';
 $lang['tienda_localidad'] = 'Cualquier localidad';
 $lang['tienda_provincia'] = 'Cualquier provincia';
-$lang['tienda_inmueble_venta'] = 'Venta';
-$lang['tienda_inmueble_alquiler'] = 'Alquiler';
-$lang['tienda_inmueble_oferta'] = 'Oferta';
+$lang['tienda_inmueble_venta'] = 'VENTA';
+$lang['tienda_inmueble_alquiler'] = 'ALQUILER';
+$lang['tienda_inmueble_venta_alquiler'] = 'VENTA Y ALQUILER';
+$lang['tienda_inmueble_oferta'] = 'OPORTUNIDAD';
+$lang['tienda_inmueble_ver'] = 'VER';
 
 
 //Mensajes compra

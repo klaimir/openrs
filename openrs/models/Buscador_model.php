@@ -5,43 +5,43 @@ require_once APPPATH . 'core/MY_Model.php';
 class Buscador_model extends MY_Model {
     
         public function getInmuebleBuscador($idioma, $filtros=NULL, $total=NULL){
-        	$this->db->select('inmuebles.*, inmuebles.id as idinmueble, inmuebles_idiomas.*,inmuebles_imagenes.*');
-        	$this->db->from('inmuebles');
-        	$this->db->join('inmuebles_idiomas','inmuebles.id=inmuebles_idiomas.inmueble_id');
+        	$this->db->select('v_inmuebles.*, inmuebles.id as idinmueble, inmuebles_idiomas.*,inmuebles_imagenes.*');
+        	$this->db->from('v_inmuebles');
+        	$this->db->join('inmuebles_idiomas','v_inmuebles.id=inmuebles_idiomas.inmueble_id');
         	$this->db->join('inmuebles_imagenes','inmuebles_idiomas.inmueble_id=inmuebles_imagenes.inmueble_id');
         	$this->db->where('inmuebles_idiomas.idioma_id',$idioma);
         	if (isset($filtros['tipo_id']) && $filtros['tipo_id'] > 0)
                 {
-                    $this->db->where('inmuebles.tipo_id', $filtros['tipo_id']);
+                    $this->db->where('v_inmuebles.tipo_id', $filtros['tipo_id']);
                 }
                 // Filtro Provincia
-                /*if (isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0)
+                if (isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0)
                 {
-                    $this->db->where('inmuebles.provincia_id', $filtros['provincia_id']);
-                }*/
+                    $this->db->where('v_inmuebles.provincia_id', $filtros['provincia_id']);
+                }
                 // Filtro Población
                 if (isset($filtros['poblacion_id']) && !empty($filtros['poblacion_id']) && $filtros['provincia_id'] >= 0)
                 {
-                    $this->db->where('inmuebles.poblacion_id', $filtros['poblacion_id']);
+                    $this->db->where('v_inmuebles.poblacion_id', $filtros['poblacion_id']);
                 }
                 // Filtro Zona
                 if (isset($filtros['zona_id']) && !empty($filtros['zona_id']))
                 {
-                    $this->db->where('inmuebles.zona_id', $filtros['zona_id']);
+                    $this->db->where('v_inmuebles.zona_id', $filtros['zona_id']);
                 }
         	if(isset($filtros['oferta_id']) && $filtros['oferta_id'] > 0){
                     // Ofertas        
                     switch ($filtros['oferta_id'])
                     {
                         case 1:
-                            $this->db->where('inmuebles.precio_compra > 0');
+                            $this->db->where('v_inmuebles.precio_compra > 0');
                             break;
                         case 2:
-                            $this->db->where('inmuebles.precio_alquiler > 0');
+                            $this->db->where('v_inmuebles.precio_alquiler > 0');
                             break;
                         case 3:
-                            $this->db->where('inmuebles.precio_compra > 0');
-                            $this->db->where('inmuebles.precio_alquiler > 0');
+                            $this->db->where('v_inmuebles.precio_compra > 0');
+                            $this->db->where('v_inmuebles.precio_alquiler > 0');
                             break;
                         default:
                             break;
@@ -59,18 +59,19 @@ class Buscador_model extends MY_Model {
                 }
         	if (isset($filtros['habitaciones_desde']) && $filtros['habitaciones_desde'] >0)
                 {
-                    $this->db->where('inmuebles.habitaciones >=', $filtros['habitaciones_desde']);
+                    $this->db->where('v_inmuebles.habitaciones >=', $filtros['habitaciones_desde']);
                 }
         	if (isset($filtros['banios_desde']) && $filtros['banios_desde'] >0)
                 {
-                    $this->db->where('inmuebles.banios >=', $filtros['banios_desde']);
+                    $this->db->where('v_inmuebles.banios >=', $filtros['banios_desde']);
                 }
                 if (isset($filtros['metros_desde']) && $filtros['metros_desde'] >0)
                 {
-                    $this->db->where('inmuebles.metros >=', $filtros['metros_desde']);
+                    $this->db->where('v_inmuebles.metros >=', $filtros['metros_desde']);
                 }
-                $this->db->where('inmuebles.publicado', 1);
-        	$this->db->group_by('inmuebles.id');
+                $this->db->where('v_inmuebles.publicado', 1);
+				$this->db->where('inmuebles_imagenes.portada',1);
+				$this->db->group_by('v_inmuebles.id');
                 if($total){
                     return $this->db->get()->num_rows();
                 }else{

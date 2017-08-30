@@ -243,15 +243,17 @@ $lang['tienda_superficie_util'] = 'Superficie Útil';
 $lang['tienda_tipo_propiedad'] = 'Tipo Propiedad';
 $lang['tienda_caracteristicas_inmueble'] = 'Características';
 $lang['tienda_descripcion_inmueble'] = 'Descripción';
-$lang['tienda_extras_inmueble'] = 'Características';
+$lang['tienda_extras_inmueble'] = 'Extras';
 $lang['tienda_cenergetica_inmueble'] = 'Calificación energética';
-$lang['tienda_lugares_inmueble'] = 'Sitios Cercanos';
+$lang['tienda_lugares_inmueble'] = 'Lugares de interés';
 $lang['tienda_ocupacion'] = 'Ocupación';
 $lang['tienda_localidad'] = 'Cualquier localidad';
 $lang['tienda_provincia'] = 'Cualquier provincia';
-$lang['tienda_inmueble_venta'] = 'Venta';
-$lang['tienda_inmueble_alquiler'] = 'Alquiler';
-$lang['tienda_inmueble_oferta'] = 'Oferta';
+$lang['tienda_inmueble_venta'] = 'VENTA';
+$lang['tienda_inmueble_alquiler'] = 'ALQUILER';
+$lang['tienda_inmueble_venta_alquiler'] = 'VENTA Y ALQUILER';
+$lang['tienda_inmueble_oferta'] = 'OPORTUNITY';
+$lang['tienda_inmueble_ver'] = 'SEE';
 
 
 //Mensajes compra
