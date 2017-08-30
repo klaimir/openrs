@@ -188,7 +188,7 @@ if(isset($cliente_id))
 <div class="widget-box">
     <div class="widget-header">
         <h4 class="widget-title">
-            DATOS ZONA PÚBLICA <?php if($url_publica) { ?> ( - <a target="_blank" href="<?php echo $url_publica; ?>">Ver vista pública</a> - ) <?php } ?>
+            <a name="publicacion">DATOS ZONA PÚBLICA</a> <?php if($url_publica) { ?> ( - <a target="_blank" href="<?php echo $url_publica; ?>">Ver vista pública</a> - ) <?php } ?>
         </h4>
     </div>
     <div class="widget-body">

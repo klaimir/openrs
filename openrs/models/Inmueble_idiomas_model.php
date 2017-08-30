@@ -120,7 +120,7 @@ class Inmueble_idiomas_model extends MY_Model
         $idioma=$this->Idioma_model->get_idioma($idioma_id);
         if($info_idioma && !empty($info_idioma->url_seo))
         {
-            return base_url($idioma->nombre_seo.'/'.$inmueble_id.'-'.$info_idioma->url_seo);
+            return base_url($idioma->nombre_seo.'/inmueble/'.$inmueble_id.'-'.$info_idioma->url_seo);
         }
         else
         {

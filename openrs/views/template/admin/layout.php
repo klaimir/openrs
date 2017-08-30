@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta charset="utf-8" />
-        <title>Open RS</title>
+        <title>OPENRS</title>
 
         <meta name="description" content="overview &amp; stats" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -105,7 +105,7 @@
                     <a href="index.html" class="navbar-brand">
                         <small>
                             <i class="fa fa-leaf"></i>
-                            Open RS
+                            OPENRS
                         </small>
                     </a>
                 </div>
@@ -434,7 +434,7 @@
                     <?php } */ ?>
 
                     <div class="page-content">
-                        <div class="ace-settings-container" id="ace-settings-container">
+                        <div class="hidden-xs ace-settings-container" id="ace-settings-container">
                             <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
                                 <i class="ace-icon fa fa-cog bigger-130"></i>
                             </div>
@@ -444,47 +444,52 @@
 
                                     <div class="ace-settings-item">
                                         <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
-                                        <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+                                        <label class="lbl" for="ace-settings-navbar"> Fijar cabecera </label>
                                     </div>
 
                                     <div class="ace-settings-item">
                                         <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
-                                        <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+                                        <label class="lbl" for="ace-settings-sidebar"> Fijar cab. y menú</label>
                                     </div>
 
                                     <div class="ace-settings-item">
                                         <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
-                                        <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+                                        <label class="lbl" for="ace-settings-breadcrumbs"> Fijar Migas de Pan</label>
                                     </div>
 
                                     <div class="ace-settings-item">
                                         <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
-                                        <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+                                        <label class="lbl" for="ace-settings-rtl"> Orientar Interfaz hacia la derecha </label>
                                     </div>
-
-                                    <div class="ace-settings-item">
-                                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
-                                        <label class="lbl" for="ace-settings-add-container">
-                                            Inside
-                                            <b>.container</b>
-                                        </label>
-                                    </div>
+                                    
                                 </div><!-- /.pull-left -->
 
                                 <div class="pull-left width-50">
                                     <div class="ace-settings-item">
+                                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                                        <label class="lbl" for="ace-settings-add-container">
+                                            Fijar interfaz central
+                                        </label>
+                                    </div>
+                                    
+                                    <?php
+                                    /*
+                                    <div class="ace-settings-item">
                                         <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" />
                                         <label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>
                                     </div>
+                                     * 
+                                     */
+                                    ?>
 
                                     <div class="ace-settings-item">
                                         <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" />
-                                        <label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>
+                                        <label class="lbl" for="ace-settings-compact"> Comprimir menú</label>
                                     </div>
 
                                     <div class="ace-settings-item">
                                         <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" />
-                                        <label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>
+                                        <label class="lbl" for="ace-settings-highlight"> Alt. Opción Activa</label>
                                     </div>
                                 </div><!-- /.pull-left -->
                             </div><!-- /.ace-settings-box -->
@@ -509,7 +514,7 @@
                 <div class="footer-inner">
                     <div class="footer-content">
                         <span class="bigger-120">
-                            Open RS &copy; 2017
+                            OPENRS &copy; 2017
                         </span>
                         <?php /*
                         &nbsp; &nbsp;

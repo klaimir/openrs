@@ -6,6 +6,10 @@
         <div class="col-xs-12">
             <h1>
                 Ficheros de la demanda <?php echo $demanda->referencia; ?>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    Listado
+                </small>
             </h1>
         </div>
     </div>

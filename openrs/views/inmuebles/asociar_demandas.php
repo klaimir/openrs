@@ -51,9 +51,13 @@
                                 <span class="lbl"></span>
                             </label>
                         </td>
-                        <td><?php echo $demanda->referencia; ?></td>
                         <td>
-                            <a href="<?php echo site_url("clientes/edit/" . $demanda->id); ?>" class="blue" title="Ver datos del cliente">
+                            <a href="<?php echo site_url("demandas/edit/" . $demanda->id); ?>" class="blue" title="Ver datos de la demanda">
+                                <?php echo $demanda->referencia; ?>
+                            </a>              
+                        </td>
+                        <td>
+                            <a href="<?php echo site_url("clientes/edit/" . $demanda->cliente_id); ?>" class="blue" title="Ver datos del cliente">
                                 <?php echo $demanda->nombre_cliente; ?>
                             </a>              
                         </td>

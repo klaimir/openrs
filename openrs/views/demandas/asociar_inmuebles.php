@@ -30,11 +30,12 @@
                     <th>Municipio</th>
                     <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
+                    <th>Precio<br> Compra</th>
+                    <th>Precio<br> Alquiler</th>
                     <th>Metros</th>
                     <th>Hab.</th>
                     <th>Baños</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,7 +52,11 @@
                                 <span class="lbl"></span>
                             </label>
                         </td>
-                        <td><?php echo $inmueble->referencia; ?></td>
+                        <td>
+                            <a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" class="blue" title="Editar datos del inmueble">
+                                <?php echo $inmueble->referencia; ?>
+                            </a>
+                        </td>
                         <td><?php echo $inmueble->nombre_tipo; ?></td>
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>
                         <td><?php echo $inmueble->nombre_zona; ?></td>
@@ -60,7 +65,8 @@
                         <td><?php echo number_format($inmueble->precio_alquiler, 0, ",", "."); ?></td>
                         <td><?php echo $inmueble->metros; ?></td>
                         <td><?php echo $inmueble->habitaciones; ?></td>
-                        <td><?php echo $inmueble->banios; ?></td>                        
+                        <td><?php echo $inmueble->banios; ?></td>  
+                        <td><?php echo $inmueble->nombre_estado; ?></td>  
                     </tr>
                 <?php 
                     }

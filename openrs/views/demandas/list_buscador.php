@@ -34,16 +34,30 @@
                     {
                     ?>
                     <tr>
-                        <td><?php echo $element->referencia; ?></td>
                         <td>
-                            <a href="<?php echo site_url("clientes/edit/" . $element->id); ?>" class="blue" title="Ver datos del cliente">
+                            <a href="<?php echo site_url("demandas/edit/" . $element->id); ?>" class="blue" title="Editar datos de la demanda">
+                                <?php echo $element->referencia; ?>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="<?php echo site_url("clientes/edit/" . $element->cliente_id); ?>" class="blue" title="Editar datos del cliente">
                                 <?php echo $element->nombre_cliente; ?>
                             </a>              
                         </td>
                         <td><?php if($element->tipos_inmuebles) { echo $element->tipos_inmuebles; } else { echo "-"; } ?></td>
                         <td>
                             <?php
-                                echo $element->nombre_poblacion;
+                                if(empty($element->nombre_poblacion))
+                                {
+                                    if(!empty($element->nombre_provincia))
+                                    {
+                                        echo $element->nombre_provincia ." (Provincia)";
+                                    }
+                                }
+                                else
+                                {
+                                    echo $element->nombre_poblacion;
+                                }
                                 if($element->zonas) { echo "<br>(". $element->zonas . ")";  }
                              ?>
                         </td>

@@ -562,7 +562,7 @@ class Cliente_model extends MY_Model
     {
         $intereses = array();
         $intereses[$default] = '- Seleccione -';
-        $intereses[0] = 'La demanda u oferta es actual';
+        $intereses[0] = 'La demanda u oferta está vigente';
         $intereses[1] = 'La demanda u oferta es antigua';
         return $intereses;
     }
@@ -976,7 +976,7 @@ class Cliente_model extends MY_Model
             $linedata['provincia_id'] = $this->Provincia_model->get_id_by_nombre($linedata['nombre_provincia']);
             if (empty($linedata['provincia_id']))
             {
-                $linedata['nombre_provincia'].=' <span class="label label-success">No existe</span>';
+                $linedata['nombre_provincia'].=' <span class="label label-warning">No existe</span>';
                 $error = TRUE;
             }
             else
@@ -985,7 +985,7 @@ class Cliente_model extends MY_Model
                 $linedata['poblacion_id'] = $this->Poblacion_model->get_id_by_nombre($linedata['nombre_poblacion'],$linedata['provincia_id']);
                 if (!$linedata['poblacion_id'])
                 {
-                    $linedata['nombre_poblacion'].=' <span class="label label-success">No existe</span>';
+                    $linedata['nombre_poblacion'].=' <span class="label label-warning">No existe</span>';
                     $error = TRUE;
                 }
             }

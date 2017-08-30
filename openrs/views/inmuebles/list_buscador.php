@@ -32,7 +32,11 @@
             {
             ?>
             <tr>
-                <td><?php echo $element->referencia; ?></td>
+                <td>
+                    <a href="<?php echo site_url("inmuebles/edit/" . $element->id); ?>" class="blue" title="Editar datos del inmueble">
+                        <?php echo $element->referencia; ?>
+                    </a>
+                </td>
                 <td><?php echo $element->nombre_tipo; ?></td>
                 <td><?php echo $element->nombre_poblacion; ?></td>
                 <td><?php echo $element->nombre_zona; ?></td>

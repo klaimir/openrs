@@ -25,12 +25,13 @@
                             <span class="lbl"></span>
                         </label>
                     </th>
+                    <th>Referencia</th>
                     <th>Tipología</th>
                     <th>Municipio</th>
                     <th>Zona</th>
                     <th>Dirección</th>
-                    <th>Precio Compra</th>
-                    <th>Precio Alquiler</th>
+                    <th>Precio<br> Compra</th>
+                    <th>Precio<br> Alquiler</th>
                     <th>Metros</th>
                     <th>Hab.</th>
                     <th>Baños</th>
@@ -49,6 +50,11 @@
                                 <input class="ace" type="checkbox" value="<?php echo $inmueble->id;?>"  name="inmuebles[]"/>
                                 <span class="lbl"></span>
                             </label>
+                        </td>
+                        <td>
+                            <a href="<?php echo site_url("inmuebles/edit/" . $inmueble->id); ?>" class="blue" title="Editar datos del inmueble">
+                                <?php echo $inmueble->referencia; ?>
+                            </a>
                         </td>
                         <td><?php echo $inmueble->nombre_tipo; ?></td>
                         <td><?php echo $inmueble->nombre_poblacion; ?></td>

@@ -6,6 +6,10 @@
         <div class="col-xs-12">
             <h1>
                 Ficheros de <?php echo $cliente->apellidos.', '.$cliente->nombre; ?>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    Listado
+                </small>
             </h1>
         </div>
     </div>

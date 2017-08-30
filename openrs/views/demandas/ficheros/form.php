@@ -16,24 +16,3 @@
         <?php echo form_dropdown('tipo_fichero_id',$tipos_ficheros,$tipo_fichero_id, 'id="tipo_fichero_id" onchange="mark_modified_field();" class="form-control"'); ?>        
     </div>                
 </div>
-
-
-<!-- inline scripts related to this page -->
-<script type="text/javascript">
-    jQuery(function($) {                
-
-        $('#fichero').ace_file_input({
-            no_file: 'No File ...',
-            btn_choose: 'Choose',
-            btn_change: 'Change',
-            droppable: false,
-            onchange: null,
-            thumbnail: false //| true | large
-                    //whitelist:'gif|png|jpg|jpeg'
-                    //blacklist:'exe|php'
-                    //onchange:''
-                    //
-        });
-
-    });
-</script>

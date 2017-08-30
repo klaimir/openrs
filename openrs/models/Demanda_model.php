@@ -92,7 +92,7 @@ class Demanda_model extends MY_Model
         $this->form_validation->set_rules('precio_desde', 'Precio (desde)', 'xss_clean|is_natural|less_than_equal_to[' . $this->form_validation->get_validation_data('precio_hasta') . ']');
         $this->form_validation->set_rules('precio_hasta', 'Precio (hasta)', 'xss_clean|is_natural');
         $this->form_validation->set_rules('fecha_alta', 'Fecha de nacimiento', 'xss_clean|checkDateFormat');
-        $this->form_validation->set_rules('observaciones', 'Observaciones', 'required|trim');
+        $this->form_validation->set_rules('observaciones', 'Observaciones', 'trim');
         $this->form_validation->set_rules('poblacion_id', 'Población', 'xss_clean');
         $this->form_validation->set_rules('zonas_id[]', 'Zonas', 'xss_clean');
         $this->form_validation->set_rules('provincia_id', 'Provincia', 'xss_clean');

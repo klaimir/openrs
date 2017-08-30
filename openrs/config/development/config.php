@@ -443,7 +443,7 @@ $config['csrf_protection'] = TRUE;
 $config['csrf_token_name'] = 'csrftoken';
 $config['csrf_cookie_name'] = 'csrfcookie';
 $config['csrf_expire'] = 7200;
-$config['csrf_regenerate'] = TRUE;
+$config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array('test/upload/do_upload_multiple','test/upload/do_upload_encrypt','demandas/update_inmueble_propuesto');
 
 /*
