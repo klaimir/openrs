@@ -84,7 +84,13 @@ $mensaje = array(
 		<div id="aviso-compra"></div>
 		<h1><?php echo $inmueble->titulo; ?></h1>
 		<!-- hacerlo en plan slider y que las imágenes mini sean los botoncitos típicos -->
-		<div id="galeria" class="col-sm-11">
+		<div id="mapa" class="col-sm-11 margin-top-20 padding-bottom-20">
+			<div class="mapa" id="google_maps_div">            
+				<div id="google_maps" class="col-sm-12">
+				</div>
+			</div>
+		</div>
+		<div id="galeria" class="col-sm-11 oculto">
 			<div class="row">
 				<div id="carrusel-img-producto" class="carousel" data-ride="carousel">
 				    <div class="carousel-inner" role="listbox">
@@ -108,13 +114,6 @@ $mensaje = array(
 				<?php endforeach;?>
 		    </div>
 		</div>
-		<div id="mapa" class="col-sm-11 oculto margin-top-20 padding-bottom-20">
-				<!--<div class="mapa"><?php echo $producto->mapa;?></div>-->
-                    <div class="mapa" id="google_maps_div">            
-                        <div id="google_maps" class="col-sm-12">
-                        </div>
-                    </div>
-                </div>
 		<?php if($video){?>
 			<div id="video" class="col-sm-11 oculto margin-top-20 padding-bottom-20">
 				<div class="mapa">
@@ -170,8 +169,8 @@ $mensaje = array(
                 <?php }?>
 		<div class="col-sm-1 padding-left-0">
 			<ul class="margin-top-20">
-				<li id="igaleria" class="item-menu-inmueble cursor-pointer"><i class="fa fa-picture-o fa-lg" aria-hidden="true"></i></li>
-                                <li id="imapa" class="item-menu-inmueble cursor-pointer"><i class="fa fa-map fa-lg" aria-hidden="true"></i></li>
+				<li id="imapa" class="item-menu-inmueble cursor-pointer"><i class="fa fa-map fa-lg" aria-hidden="true"></i></li>
+				<li id="igaleria" class="item-menu-inmueble cursor-pointer"><i class="fa fa-picture-o fa-lg" aria-hidden="true"></i></li>                                
 				<?php if($video){?>
 					<li id="ivideo" class="item-menu-inmueble cursor-pointer"><i class="fa fa-video-camera fa-lg" aria-hidden="true"></i></li>
 				<?php }?>
