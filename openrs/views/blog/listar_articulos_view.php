@@ -10,9 +10,9 @@
                             <a href="<?php echo site_url('blog/crear_articulo'); ?>" class="btn btn-primary pull-right">Nuevo artículo </a>
                             <a href="<?php echo site_url('blog/listar_categorias'); ?>" class="btn btn-default pull-right">Listar categorías</a>
                         </div>
-			<article>
+			<article style="margin-top:50px;">
 			<?php if (count($articulos) > 0): ?>
-				<table class="table table-bordered table-striped table-condensed a_datatable">
+				<table class="table table-bordered table-striped table-condensed" id="tabgrid_articulos">
 					<thead>
 						<tr>
 							<th><?php echo $this->lang->line('blog_table_creado');?></th><th><?php echo $this->lang->line('blog_table_visto_votos');?></th><th><?php echo $this->lang->line('blog_table_imagen');?></th><th><?php echo $this->lang->line('blog_table_titulo');?></th><th><?php echo $this->lang->line('blog_url_seo');?></th><th><?php echo $this->lang->line('blog_table_categorias');?></th><th><?php echo $this->lang->line('blog_table_etiquetas');?></th><th><?php echo $this->lang->line('blog_table_estado');?></th><th><?php echo $this->lang->line('blog_table_opciones');?></th>
@@ -72,3 +72,22 @@
 		</section>
 	</div>
 </div>
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('#tabgrid_articulos').dataTable({
+            "iDisplayLength": 100,
+            "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt');?>"},
+            "aoColumns": [
+                null, 
+                null,
+                null,                
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ]
+        });
+    })
+</script>

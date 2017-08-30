@@ -709,7 +709,7 @@ class dynamic_route{
                                     $return_data->route = '^'.$row['nombre_seo'].'/errors/error_404';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;
-                                    $return_data->url = 'site/seccion/contacto';
+                                    $return_data->url = 'seccion/seccion/contacto';
                                     $return_data->route = '^'.$row['nombre_seo'].'/contacto';
                                     $r_data[] = $return_data;
                                     $return_data = new stdClass;

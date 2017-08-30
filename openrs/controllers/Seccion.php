@@ -614,10 +614,9 @@ class Seccion extends MY_Controller_Front
 		redirect('blog/'.$data['articulo']->url_seo_articulo);
 	}
 	
-	function articulos($busqueda = NULL, $url=NULL){
+	function articulos($busqueda = NULL, $url=NULL){		
 		$idioma = $this->devolver_idioma();
-		$data = $this->inicializar(2, $this->lang->line('blog_c_listado_articulos_categoria'));
-
+		$data = $this->inicializar(7, $this->lang->line('blog_c_listado_articulos_categoria'));
 		$data['bloques']=$this->Bloque_model->get_bloques(1,$data['idioma_actual']->id_idioma, $data['seccion']->id);
 		foreach ($data['bloques'] as $k=>$v){
 			if($v->id_tipo_bloque==1){ //bloque de texto

@@ -1,5 +1,4 @@
 <?php $this->load->view('javascript/etiquetas');?>
-<?php $this->load->view('javascript/ckeditor');?>
 <?php // Form fields configuration
 	$this->form_validation->set_error_delimiters('<div class="alert alert-danger pull-left">', '</div>');
 ?>
