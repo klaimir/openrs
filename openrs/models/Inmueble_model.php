@@ -1983,7 +1983,7 @@ class Inmueble_model extends MY_Model
             . '<br>'. $datos['datos_generales_2']
             . '<br>'.$url_seo;
         // Añadir editar si está logueado como agente inmobiliario
-        if($this->data["session_es_agente"])
+        if($this->session->userdata('session_es_agente'))
         {
             $infowindow_content.=' | <a href="'.  site_url('inmuebles/edit/'.$inmueble->id) .'">Editar</a>';
         }

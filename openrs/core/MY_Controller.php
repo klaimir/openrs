@@ -74,6 +74,8 @@ class MY_Controller extends CI_controller
         // Permisos
         $this->data['session_es_admin'] = $this->Usuario_model->is_admin($this->data['session_user_id']);
         $this->data['session_es_agente'] = $this->Usuario_model->is_agente($this->data['session_user_id']);
+        $this->session->set_userdata('session_es_admin',$this->data['session_es_admin']);
+        $this->session->set_userdata('session_es_agente',$this->data['session_es_agente']);
         
         // Idioma
         $idioma_usuario = $this->Usuario_model->get_lang($this->session->userdata('user_id'));

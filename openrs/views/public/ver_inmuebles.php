@@ -67,7 +67,7 @@
             <div class="col-sm-12">
                     <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('public');">
                         <i class="menu-icon fa fa-map-marker"></i>
-                        <span class="menu-text"> Ver mapa público</span>
+                        <span class="menu-text"> Ver en mapa</span>
                     </a>
             </div>
                     <div class="row" id="google_maps_div" style="display:none;">      
@@ -75,7 +75,7 @@
                         <div class="col-xs-12">
                             <div id="google_maps">
                             </div>
-                            <small class="blue">El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en su posición actual. Esta opción sólo funcionará si tiene habilitado en su dispositivo la geolocalización y no está bloqueado para el navegador web actual.</small>
+                            <strong>El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en el municipio del primer inmueble listado.</strong>
                         </div>
                     </div>
                     <?php $cont=1;

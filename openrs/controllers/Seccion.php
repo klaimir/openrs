@@ -345,6 +345,9 @@ class Seccion extends MY_Controller_Front
             $filtros['precios_desde'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->session->userdata('inmuebles_buscador_front_precios_desde')), "int");
             $filtros['precios_hasta'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->session->userdata('inmuebles_buscador_front_precios_hasta')), "int");
 
+            // Sólo publicados
+            $filtros['publicado_id']=1;
+            
             return $filtros;
         }
         
@@ -360,22 +363,18 @@ class Seccion extends MY_Controller_Front
                 return;
             }        
             // Valores de los filtros de búsqueda
-            $filtros = $this->_generar_filtros_busqueda();
-            if($this->ion_auth->logged_in())
-            	$filtros['idioma_id'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
-            else
-            	$filtros['idioma_id'] = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'))->id_idioma;
+            $filtros = $this->_generar_filtros_busqueda();            
+            // Si está logueado
+            $filtros['idioma_id'] = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'))->id_idioma;
             // Búsqueda                
             $inmuebles=$this->Inmueble_model->get_by_filtros($filtros);         
             // Check
             if($inmuebles)
             {
-            	if($this->ion_auth->logged_in())
-            		$idioma_actual = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
-            	else
-            		$idioma_actual = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));
+                // Idioma a mostrar
+            	$idioma_actual = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'));
                 // Create the map.
-            		$this->data['map'] = $this->Inmueble_model->create_google_map($inmuebles,$filtros,$infowindow_type, $idioma_actual->id_idioma, $idioma_actual->nombre_seo);
+            	$this->data['map'] = $this->Inmueble_model->create_google_map($inmuebles,$filtros,$infowindow_type, $idioma_actual->id_idioma, $idioma_actual->nombre_seo);
                 // Load our view, passing the map data that has just been created
                 $this->load->view('common/google_maps', $this->data);
             }
