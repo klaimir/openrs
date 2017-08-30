@@ -86,16 +86,16 @@
 	        	<div class="col-sm-4" data-cont="<?php echo $cont;?>">
                             <div class="col-sm-12 padding-0">
                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
-                                    <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="max-height:270px;"/>
+                                    <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="height:255px;"/>
                                     <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
-                                        <p class="tipo-inmueble"><?php echo 'VENTA';//$this->lang->line('tienda_inmueble_venta');?></p>
+                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta');?></p>
                                     <?php }elseif($inmueble->precio_alquiler > 0 && $inmueble->precio_compra == 0){?>
-                                        <p class="tipo-inmueble"><?php echo 'ALQUILER';//$this->lang->line('tienda_inmueble_alquiler');?></p>
+                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_alquiler');?></p>
                                     <?php }else{?>
-                                        <p class="tipo-inmueble"><?php echo 'VENTA Y ALQUILER';//$this->lang->line('tienda_inmueble_alquiler');?></p>
+                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
                                     <?php }?>
                                     <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                        <span class="tipo-oferta"><?php echo 'OPORTUNIDAD';//$this->lang->line('tienda_inmueble_oferta');?></span>
+                                        <span class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></span>
                                     <?php }?>
                                 </a>
                             </div>
@@ -174,14 +174,18 @@
                         $cont++;?>
                     <?php }?>
 	         	</div>
-                    <?php if($total && $total > 4){?>
+                    <?php if($total && $total > 12){?>
 	         		<div class="col-xs-12">
 	         			<p>
 	         				<?php if($filtros['start'] < 0){
 	         					echo '<b>Total: 12/'.$total.'</b>';
 	         				}else{
 	         					$totalpagina = $filtros['start']+12;
-	         					echo '<b>Total: '.$totalpagina.'/'.$total.'</b>';
+								if($totalpagina > $total){
+									echo '<b>Total: '.$total.'/'.$total.'</b>';
+								}else{
+									echo '<b>Total: '.$totalpagina.'/'.$total.'</b>';
+								}
 	         				}?>
 	         			</p>
 	         		</div>
@@ -215,6 +219,15 @@
 </div>
 <script>
 $(document).ready(function(){
+	$('#provincia').on('change', function(){
+        var provincia = $(this).val();
+		if(provincia > 0){
+			$('#localidad').fadeIn(500);
+			$('#localidad').load('<?php echo site_url('seccion/cargar_localidades');?>/'+provincia);
+		}else{
+			$('#localidad').fadeOut(500);
+		}
+    });
     $('#paginicio').on('click',function(){
         var pag = $(this).data('pag');
         $('#start').val(pag);

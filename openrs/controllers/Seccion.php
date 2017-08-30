@@ -238,48 +238,33 @@ class Seccion extends MY_Controller_Front
             $this->load->view('public/zonas', $this->data);
         }
         
-        public function ver_inmuebles(){
-		$data = $this->inicializar(1, 'Inmuebles');
-		// Valores filtros de sesión
+    public function ver_inmuebles(){
+			$data = $this->inicializar(1, 'Inmuebles');
+			// Valores filtros de sesión
                 $this->_load_filtros_session();
                 // Valores de los filtros de búsqueda
                 $filtros = $this->_generar_filtros_busqueda();
-                /*if($this->input->get()){
-                    $filtros = array();
-                    $filtros['referencia'] = $this->input->get('referencia');
-                    $filtros['tipo_id'] = $this->input->get('tipo_id');
-                    $filtros['provincia_id'] = $this->input->get('provincia_id');
-                    $filtros['poblacion_id'] = $this->input->get('poblacion_id');
-                    $filtros['zona_id'] = $this->input->get('zona_id');
-                    $filtros['banios_desde'] = $this->input->get('banios');
-                    $filtros['habitaciones_desde'] = $this->input->get('habitaciones');
-                    $filtros['metros_desde'] = $this->input->get('metros');
-                    $filtros['oferta_id'] = $this->input->get('oferta_id');
-                    // Precios es especial por el tipo de consulta que se hace   
-                    $filtros['precios_desde'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->input->get('precios_desde')), "int");
-                    $filtros['precios_hasta'] = $this->utilities->get_sql_value_string($this->utilities->formatear_numero($this->input->get('precios_hasta')), "int");*/
-                    if($this->input->get('start') && $this->input->get('start')>0){
-                        $filtros['start'] = $this->input->get('start');
-                    }else{
-                        $filtros['start'] = 0;
+                if($this->input->get('start') && $this->input->get('start')>0){
+                    $filtros['start'] = $this->input->get('start');
+                }else{
+                    $filtros['start'] = 0;
+                }
+                if($this->input->get('referencia')){
+                    $referencia = $this->security->xss_clean($this->input->get('referencia'));
+                    $inmueble = $this->Buscador_model->getInmuebleByReferencia($data['idioma_actual']->id_idioma, $referencia);
+                    if($inmueble){
+                        redirect('inmueble/'.$inmueble->id.'-'.$inmueble->url_seo);
                     }
-                    
-                    if($this->input->get('referencia')){
-                        $referencia = $this->security->xss_clean($this->input->get('referencia'));
-                        $inmueble = $this->Buscador_model->getInmuebleByReferencia($data['idioma_actual']->id_idioma, $referencia);
-                        if($inmueble){
-                            redirect('inmueble/'.$inmueble->id.'-'.$inmueble->url_seo);
-                        }
-                    }else{
-                        $filtros = $this->security->xss_clean($filtros);
-                        $data['filtros']=$filtros;
-                        // Búsqueda
-                        //$data['elements'] = $this->Inmueble_model->get_by_filtros($filtros);
-                        $data['total'] = $this->Buscador_model->getInmuebleBuscador($data['idioma_actual']->id_idioma, $filtros, 1);
-                        $data['inmuebles'] = $this->Buscador_model->getInmuebleBuscador($data['idioma_actual']->id_idioma, $filtros);
-                    }
-		//}
-	
+                }else{
+                    $filtros = $this->security->xss_clean($filtros);
+                    $data['filtros']=$filtros;
+                    // Búsqueda
+                    $data['total'] = $this->Buscador_model->getInmuebleBuscador($data['idioma_actual']->id_idioma, $filtros, 1);
+                    $data['inmuebles'] = $this->Buscador_model->getInmuebleBuscador($data['idioma_actual']->id_idioma, $filtros);
+                }
+			$data['title']="Inmuebles";
+			$data['meta_description']="Todos los inmuebles que busques";
+			$data['meta_keywords']="Pisos, chalets, adosados";
 		$this->template->write_view('header','public/template/header',$data);
 		$this->template->write_view('content_center','public/ver_inmuebles',$data);
 		$this->template->write_view('footer','public/template/footer',$data);
@@ -289,40 +274,40 @@ class Seccion extends MY_Controller_Front
         private function _load_filtros_session()
         {
             // Filtro provincia_id
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'provincia_id');
+			$this->session->set_userdata('inmuebles_buscador_front_provincia_id', $this->input->get('provincia_id');
 
             // Filtro poblacion_id
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'poblacion_id');
+			$this->session->set_userdata('inmuebles_buscador_front_poblacion_id', $this->input->get('poblacion_id');
 
             // Filtro zona_id
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'zona_id');
+			$this->session->set_userdata('inmuebles_buscador_front_zona_id', $this->input->get('zona_id');
 
             // Filtro tipo_id
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'tipo_id');
+			$this->session->set_userdata('inmuebles_buscador_front_tipo_id', $this->input->get('tipo_id');
 
             // Filtro oferta_id
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'oferta_id');
+			$this->session->set_userdata('inmuebles_buscador_front_oferta_id', $this->input->get('oferta_id');
 
             // Filtro destacado_id
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'destacado_id');
+			$this->session->set_userdata('inmuebles_buscador_front_destacado_id', $this->input->get('destacado_id');
 
             // Filtro oportunidad_id
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'oportunidad_id');
+			$this->session->set_userdata('inmuebles_buscador_front_oportunidad_id', $this->input->get('oportunidad_id');
 
             // Filtro banios_desde
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'banios_desde');
+			$this->session->set_userdata('inmuebles_buscador_front_banios_desde', $this->input->get('banios_desde');
 
             // Filtro habitaciones_desde
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'habitaciones_desde');
+			$this->session->set_userdata('inmuebles_buscador_front_habitaciones_desde', $this->input->get('habitaciones_desde');
 
             // Filtro metros_desde
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'metros_desde');
+			$this->session->set_userdata('inmuebles_buscador_front_metros_desde', $this->input->get('metros_desde');
 
             // Filtro precios_desde
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'precios_desde');
+			$this->session->set_userdata('inmuebles_buscador_front_precios_desde', $this->input->get('precios_desde');
 
             // Filtro precios_hasta
-            $this->utilities->set_value_session_filter('inmuebles_buscador_front', 'precios_hasta');
+			$this->session->set_userdata('inmuebles_buscador_front_precios_hasta', $this->input->get('precios_hasta');
         }
 
         private function _generar_filtros_busqueda()
@@ -449,7 +434,7 @@ class Seccion extends MY_Controller_Front
                                                     </head>
                                                     <body>
                                                     <p>Detalles del formulario de contacto:</p>
-                                                    <p><b>Inmueble</b>: ' . $data['inmueble']->referencia.': '.$this->input->post('inmueble') . '</p>' . '
+                                                    <p><b>Inmueble</b>: ' . $this->input->post('referencia').': '.$this->input->post('inmueble') . '</p>' . '
                                                     <p><b>Nombre</b>: ' . $this->input->post('nombre') . '</p>' . '
                                                     <p><b>Empresa</b>: ' . $this->input->post('empresa') . '</p>' . '
                                                     <p><b>Email</b>: ' . $this->input->post('email') . '</p>' . '
@@ -462,6 +447,9 @@ class Seccion extends MY_Controller_Front
                     redirect('seccion/envioinmueble/'.$url_seo);
                 }
             }
+			$data['title']=$data['inmueble']->titulo;
+			$data['meta_description']=$data['inmueble']->descripcion_seo;
+			$data['meta_keywords']=$data['inmueble']->keywords_seo;
             $this->template->write_view('header','public/template/header',$data);
             $this->template->write_view('content_center','public/ver_inmueble',$data);
             $this->template->write_view('footer','public/template/footer',$data);

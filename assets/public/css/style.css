@@ -197,7 +197,7 @@ h5{
 	.menu-mv nav {
 		width:90%;
 		height:100%;
-		left:-160%;
+		left:-500%;
 		margin:0;
 		position: relative;
 		z-index:9;
@@ -452,7 +452,7 @@ img {
 	margin-top:300px;
 }
 .inicio-seccion-movil{
-	margin-top:114px;
+	margin-top:200px;
 }
 .inicio-seccion-productos{
 	margin-top:144px;

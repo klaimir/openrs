@@ -158,6 +158,7 @@ $mensaje = array(
 						</div>
 					</div>
 					<input type="hidden" name="inmueble" value="<?php echo $inmueble->titulo; ?>"/>
+					<input type="hidden" name="referencia" value="<?php echo $inmueble->referencia; ?>"/>
 				<?php echo form_close(); ?>
 		</div>
                 <?php if($enlaces){?>
@@ -250,7 +251,7 @@ $mensaje = array(
         <div class="col-sm-12 margin-top-20">
             <h3><?php echo $this->lang->line('tienda_cenergetica_inmueble');?></h3>
             <?php if($ce->id != 8 && $ce->id != 9){?>
-                <img src="<?php echo base_url('uploads/general/img/ce_'.$ce->nombre.'.png');?>" class="img-responsive"/>
+                <img src="<?php echo base_url('assets/public/img/ce_'.$ce->nombre.'.png');?>" class="img-responsive"/>
                 <h4><?php echo $ce->kwh_m2_anio.' kwh';?></h4>
             <?php }else{
                 echo '<h4>'.$ce->nombre.'</h4>';
