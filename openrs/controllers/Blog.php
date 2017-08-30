@@ -12,7 +12,7 @@ class Blog extends MY_Controller
 		$this->load->model('Articulo_model');
 		$this->load->model('Etiqueta_model');
 		$this->load->model('Voto_model');
-		$this->load->model('Articulo_Etiqueta_model');
+		$this->load->model('Articulo_etiqueta_model');
  		$this->load->model('Comentario_model');
  		$this->load->model('General_model');
                 $this->load->model('Idioma_model');
@@ -250,10 +250,11 @@ class Blog extends MY_Controller
 				//Cargar datos de artículos comunes a borrador y publicado
 				foreach($idiomas as $idioma){
 					//ESTO PARA VARIOS BLOGS CON UN ÚNICO ADMINISTRADOR
-					/*if(!file_exists('uploads/general/img/blog/'.$this->simple_sessions->get_value('id_usuario').'/'.$idioma))
-						mkdir('uploads/general/img/blog/'.$this->simple_sessions->get_value('id_usuario').'/'.$idioma, '0755', true);
-					if(!file_exists('uploads/general/img/blogmini/'.$this->simple_sessions->get_value('id_usuario').'/'.$idioma))
-						mkdir('uploads/general/img/blogmini/'.$this->simple_sessions->get_value('id_usuario').'/'.$idioma, '0755', true);*/
+				    if(!file_exists('uploads/general/img/blog/1/'.$idioma))
+                                        mkdir('uploads/general/img/blog/1/'.$idioma, '0755', true);
+                                    if(!file_exists('uploads/general/img/blogmini/1/'.$idioma))
+                                        mkdir('uploads/general/img/blogmini/1/'.$idioma, '0755', true);
+
 				}
 				if (isset($_FILES['userfile_'.$conf->idioma_defecto]['tmp_name'])) {
 					//ESTO PARA VARIOS BLOGS CON UN ÚNICO ADMINISTRADOR
@@ -342,7 +343,7 @@ class Blog extends MY_Controller
 									'id_etiqueta' => $id_etiqueta,
 									'id_articulo' => $id_articulo
 								);
-								$this->Articulo_Etiqueta_model->insertArtEtiqueta($art_etiq_data);
+								$this->Articulo_etiqueta_model->insertArtEtiqueta($art_etiq_data);
 							}
 						}
 						
@@ -426,7 +427,7 @@ class Blog extends MY_Controller
 											'id_etiqueta' => $id_etiqueta,
 											'id_articulo' => $id_articulo
 									);
-									$this->Articulo_Etiqueta_model->insertArtEtiqueta($art_etiq_data);
+									$this->Articulo_etiqueta_model->insertArtEtiqueta($art_etiq_data);
 								}
 							}
 						}
@@ -437,6 +438,7 @@ class Blog extends MY_Controller
 				}
 			}
 		}
+                $this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
                 $this->render_private('blog/crear_articulo_view', $this->data);
 				
 	}
@@ -511,10 +513,11 @@ class Blog extends MY_Controller
 				}
 				foreach($idiomas as $idioma){
 					//ESTO PARA VARIOS BLOGS CON UN ÚNICO ADMINISTRADOR
-					/*if(!file_exists('uploads/general/img/blog/'.$this->simple_sessions->get_value('id_usuario').'/'.$idioma))
-						mkdir('uploads/general/img/blog/'.$this->simple_sessions->get_value('id_usuario').'/'.$idioma, '0755', true);
-					if(!file_exists('uploads/general/img/blogmini/'.$this->simple_sessions->get_value('id_usuario').'/'.$idioma))
-						mkdir('uploads/general/img/blogmini/'.$this->simple_sessions->get_value('id_usuario').'/'.$idioma, '0755', true);*/
+					if(!file_exists('uploads/general/img/blog/1/'.$idioma))
+                                            mkdir('uploads/general/img/blog/1/'.$idioma, '0755', true);
+                                        if(!file_exists('uploads/general/img/blogmini/1/'.$idioma))
+                                            mkdir('uploads/general/img/blogmini/1/'.$idioma, '0755', true);
+
 				
 					if($this->input->post('change_logo_'.$idioma)){
 						if (isset($_FILES['userfile_'.$idioma]['tmp_name'])) {
@@ -582,7 +585,6 @@ class Blog extends MY_Controller
 						//Una vez insertado el artículo se añaden las etiquetas
 						$etiq_array = array();
 						$etiq_array = explode(';', $this->input->post('todas_etiquetas_'.$idioma));
-						print_r($etiq_array);
 						foreach($etiq_array as $k=>$v){
 							if($v != ''){ //Para eliminar el último elemento vacío
 								//Ahora compruebo si existe la etiqueta en la base de datos
@@ -603,7 +605,7 @@ class Blog extends MY_Controller
 									'id_etiqueta' => $id_etiqueta,
 									'id_articulo' => $id_articulo
 								);
-								$this->Articulo_Etiqueta_model->insertArtEtiqueta($art_etiq_data);									
+								$this->Articulo_etiqueta_model->insertArtEtiqueta($art_etiq_data);									
 							}
 						}
 					}	
@@ -612,6 +614,7 @@ class Blog extends MY_Controller
 					redirect('blog/listar_articulos');
 			}			
 		}
+                $this->load->library('ckeditor', array('instanceName' => 'CKEDITOR1','basePath' => base_url()."assets/admin/ckeditor/", 'outPut' => true));
                 $this->render_private('blog/crear_articulo_view', $this->data);
 		
 	}

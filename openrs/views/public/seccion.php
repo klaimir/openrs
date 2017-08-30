@@ -452,7 +452,7 @@ $mensaje = array(
                                                         <?php }?>
                                                         <div class="col-sm-4" data-cont="<?php echo $cont;?>">
                                                             <div class="col-sm-12 padding-0">
-                                                                <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
+                                                                <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="max-height:270px;"/>
                                                                     <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
                                                                         <p class="tipo-inmueble"><?php echo 'VENTA';//$this->lang->line('tienda_inmueble_venta');?></p>
@@ -467,7 +467,7 @@ $mensaje = array(
                                                                 </a>
                                                             </div>
                                                             <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px;">
-                                                                <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
+                                                                <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <h4 class="padding-top-10" id="nom2<?php echo $cont;?>"><?php echo $inmueble->titulo; ?></h4>
                                                                 </a>
                                                             </div>
@@ -501,7 +501,7 @@ $mensaje = array(
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble" style="padding:10%;">
-                                                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }elseif($inmueble->precio_compra > 0){?>
@@ -515,7 +515,7 @@ $mensaje = array(
                                                                             }?>
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }elseif($inmueble->precio_alquiler > 0){?>
@@ -529,7 +529,7 @@ $mensaje = array(
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }?>
@@ -549,7 +549,7 @@ $mensaje = array(
                                                         <?php }?>
                                                         <div class="col-sm-3" data-cont="<?php echo $cont;?>">
                                                             <div class="col-sm-12 padding-0">
-                                                                <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
+                                                                <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="max-height:270px;"/>
                                                                     <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
                                                                         <p class="tipo-inmueble"><?php echo 'VENTA';//$this->lang->line('tienda_inmueble_venta');?></p>
@@ -564,7 +564,7 @@ $mensaje = array(
                                                                 </a>
                                                             </div>
                                                             <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px;">
-                                                                <a href="<?php echo site_url('inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
+                                                                <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <h4 class="padding-top-10" id="nom2<?php echo $cont;?>"><?php echo $inmueble->titulo; ?></h4>
                                                                 </a>
                                                             </div>
