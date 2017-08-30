@@ -163,7 +163,7 @@ class Seccion extends MY_Controller_Front
 			$this->form_validation->set_rules('telefono','Teléfono','trim|xss_clean|required|is_natural');
 	
 			$data = array(
-					'secret' => "6LdIfh4UAAAAAMMbwtFVtrZ2Dmsmq4WkRvzLrVIM",
+					'secret' => "6LczwC4UAAAAAFIpgTKF9vSuCJ5GlX-AtUCsEr6n",
 					'response' => $this->input->post('g-recaptcha-response')
 			);
 			
@@ -188,14 +188,14 @@ class Seccion extends MY_Controller_Front
 				$this->email->initialize($config);
                                 $this->load->model('Config_model');
                                 $dataconfig = $this->Config_model->get_config();
-				$this->email->from('noreply@openrs.es', 'Email de contacto');
+				$this->email->from('noreply@openrs.es', 'OPENRS');
 				$this->email->to($dataconfig->email_contacto);
 	
 				$this->email->subject('Correo entrante de la WEB');
 				$this->email->message('
 						<html>
 						<head>
-						<title>Contacto Openrs</title>
+						<title>Contacto OPENRS</title>
 						</head>
 						<body>
 						<p>Detalles del formulario de contacto:</p>
@@ -222,9 +222,9 @@ class Seccion extends MY_Controller_Front
 		$idseccion = $this->seccion_model->get_seccion_nombre(1, $seccion)->id;
 		$data = $this->inicializar($idseccion);
 		$data['nseccion']=$seccion;
-		$this->template->write_view('header','public/templates/header',$data);
+		$this->template->write_view('header','public/template/header',$data);
 		$this->template->write_view('content_center','public/envio',$data);
-		$this->template->write_view('footer','public/templates/footer',$data);
+		$this->template->write_view('footer','public/template/footer',$data);
 		$this->template->render();
 	}
         
@@ -362,7 +362,7 @@ class Seccion extends MY_Controller_Front
             // Valores de los filtros de búsqueda
             $filtros = $this->_generar_filtros_busqueda();
             if($this->ion_auth->logged_in())
-            	$filtros['idioma_id'] == $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
+            	$filtros['idioma_id'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma;
             else
             	$filtros['idioma_id'] = $this->Idioma_model->get_id_idioma_by_nombre($this->uri->segment('1'))->id_idioma;
             // Búsqueda                
@@ -398,6 +398,7 @@ class Seccion extends MY_Controller_Front
             }else{
                 $data['inmueble'] = $this->Buscador_model->getInmuebleById($data['idioma_actual']->id_idioma, $url[0], 1);
             }
+            
             $data['imagenes']=$this->Buscador_model->getImagenesInmueble($url[0]);
             $data['extras']=$this->Buscador_model->getExtrasInmueble($data['idioma_actual']->id_idioma, $url[0]);
             $data['lugares']=$this->Buscador_model->getLugaresInmueble($data['idioma_actual']->id_idioma, $url[0]);
@@ -412,7 +413,7 @@ class Seccion extends MY_Controller_Front
                 $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|xss_clean|required|is_natural');
 
                 $data = array(
-                    'secret' => "6LdIfh4UAAAAAMMbwtFVtrZ2Dmsmq4WkRvzLrVIM",
+                    'secret' => "6LczwC4UAAAAAFIpgTKF9vSuCJ5GlX-AtUCsEr6n",
                     'response' => $this->input->post('g-recaptcha-response')
                 );
 
@@ -438,18 +439,18 @@ class Seccion extends MY_Controller_Front
 
                     $this->load->model('Config_model');
                     $dataconfig = $this->Config_model->get_config();
-                    $this->email->from('noreply@openrs.es', 'Email de contacto');
+                    $this->email->from('noreply@openrs.es', 'OPENRS');
                     $this->email->to($dataconfig->email_contacto);
 
                     $this->email->subject('Correo entrante de la WEB');
                     $this->email->message('
                                                     <html>
                                                     <head>
-                                                    <title>Contacto Inmueble Openrs</title>
+                                                    <title>Contacto Inmueble OPENRS</title>
                                                     </head>
                                                     <body>
                                                     <p>Detalles del formulario de contacto:</p>
-                                                    <p><b>Inmueble</b>: ' . $this->input->post('inmueble') . '</p>' . '
+                                                    <p><b>Inmueble</b>: ' . $data['inmueble']->referencia.': '.$this->input->post('inmueble') . '</p>' . '
                                                     <p><b>Nombre</b>: ' . $this->input->post('nombre') . '</p>' . '
                                                     <p><b>Empresa</b>: ' . $this->input->post('empresa') . '</p>' . '
                                                     <p><b>Email</b>: ' . $this->input->post('email') . '</p>' . '
@@ -471,9 +472,9 @@ class Seccion extends MY_Controller_Front
         function envioinmueble($url_seo){
 		$data = $this->inicializar(1);
 		$data['url_seo']=$url_seo;
-		$this->template->write_view('header','public/templates/header',$data);
+		$this->template->write_view('header','public/template/header',$data);
 		$this->template->write_view('content_center','public/envio_inmueble',$data);
-		$this->template->write_view('footer','public/templates/footer',$data);
+		$this->template->write_view('footer','public/template/footer',$data);
 		$this->template->render();
 	}
         
@@ -526,7 +527,7 @@ class Seccion extends MY_Controller_Front
 			$this->form_validation->set_message('valid_email',$this->lang->line('login_c_valid_email'));
 				
 			$data = array(
-					'secret' => "6LdIfh4UAAAAAMMbwtFVtrZ2Dmsmq4WkRvzLrVIM",
+					'secret' => "6LczwC4UAAAAAFIpgTKF9vSuCJ5GlX-AtUCsEr6n",
 					'response' => $this->input->post('g-recaptcha-response')
 			);
 			

@@ -142,7 +142,7 @@ $mensaje = array(
 							<p></p>
 						</div>
 						<div class="form-group row">
-							<button class="g-recaptcha btn-contacto" data-sitekey="6LdIfh4UAAAAAJXul7Q7JWfUnz-IcuOdv-fIHDfp" data-callback="onSubmitInmueble">Enviar</button>
+							<button class="g-recaptcha btn-contacto" data-sitekey="6LczwC4UAAAAAA2EBXrcrZYujyvgMthPMv-icNeA" data-callback="onSubmitInmueble">Enviar</button>
 						</div>
 					</div>
 					<div class="col-sm-6">
