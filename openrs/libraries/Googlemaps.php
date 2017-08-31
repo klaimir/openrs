@@ -1124,7 +1124,7 @@ class Googlemaps {
 				if ($this->https) { $apiLocation = 'https://maps-api-ssl'; }else{ $apiLocation = 'http://maps'; }
 				$apiLocation .= '.google.com/maps/api/js?';
 			}
-			$apiLocation .= 'sensor='.$this->sensor;
+			//$apiLocation .= 'sensor='.$this->sensor;
 			if ($this->region!="" && strlen($this->region)==2) { $apiLocation .= '&region='.strtoupper($this->region); }
 			if ($this->language!="") { $apiLocation .= '&language='.$this->language; }
 			$libraries = array();
@@ -2223,7 +2223,7 @@ class Googlemaps {
 		}
 		
 		if ($this->https) { $data_location = 'https://'; }else{ $data_location = 'http://'; }
-		$data_location .= "maps.google.com/maps/api/geocode/json?address=".urlencode(utf8_encode($address))."&sensor=".$this->sensor;
+		$data_location .= "maps.google.com/maps/api/geocode/json?address=".urlencode(utf8_encode($address))/*."&sensor=".$this->sensor*/;
 		if ($this->region!="" && strlen($this->region)==2) { $data_location .= "&region=".$this->region; }
 		$data = file_get_contents($data_location);
 		
