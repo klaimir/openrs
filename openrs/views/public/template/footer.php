@@ -66,7 +66,7 @@
 			
 			<div class="row">
 				<div class="subfooter">
-					<p style="color:#000;"><?php echo $config->nombre.' '.date('Y'); ?>. Todos los derechos reservados</p>
+					<p style="color:<?php echo $config->cfuentepie;?>"><?php echo $config->nombre.' '.date('Y'); ?>. Todos los derechos reservados</p>
 				</div>
 			</div>
 		</div>
