@@ -84,6 +84,7 @@ class Buscador_model extends MY_Model {
         	$this->db->from('v_inmuebles');
         	$this->db->join('inmuebles_idiomas', 'inmuebles_idiomas.inmueble_id = v_inmuebles.id');
 			$this->db->where('v_inmuebles.id',$id);
+                        $this->db->where('inmuebles_idiomas.idioma_id',$idioma);
 			$this->db->where('v_inmuebles.idioma_id',$idioma);
             if($publicado){
                 $this->db->where('v_inmuebles.publicado',$publicado);
