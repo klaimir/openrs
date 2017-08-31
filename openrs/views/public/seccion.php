@@ -450,7 +450,7 @@ $mensaje = array(
                                                         if($cont==1){?>
                                                             <div class="col-sm-12 margin-bottom-20">
                                                         <?php }?>
-                                                        <div class="col-sm-4" data-cont="<?php echo $cont;?>">
+                                                        <div class="col-md-4" data-cont="<?php echo $cont;?>">
                                                             <div class="col-sm-12 padding-0">
                                                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="height:255px;"/>
@@ -462,16 +462,16 @@ $mensaje = array(
                                                                         <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
                                                                     <?php }?>
                                                                     <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                                                        <p class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
+                                                                        <p class="tipo-oferta col-xs-12"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
                                                                     <?php }?>
                                                                 </a>
                                                             </div>
-                                                            <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px;">
+                                                            <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px;height:73px;">
                                                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
-                                                                    <h4 class="padding-top-10" id="nom2<?php echo $cont;?>"><?php echo $inmueble->titulo; ?></h4>
+                                                                    <h4 class="padding-top-10" id="nom2<?php echo $cont;?>" style="height:58px;"><?php echo $inmueble->titulo; ?></h4>
                                                                 </a>
                                                             </div>
-                                                            <div class="col-sm-12 caja-contenido-inmuble">
+                                                            <div class="col-sm-12 caja-contenido-inmuble" style="height:81px;">
                                                                 <p><?php echo $this->utilities->cortar_texto($inmueble->descripcion_seo,100);?></p>
                                                             </div>
                                                             <div class="col-sm-12 caja-contenido-inmuble">
@@ -500,7 +500,7 @@ $mensaje = array(
                                                                                 echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
                                                                             }?> 
                                                                         </div>
-                                                                        <div class="col-sm-6 ver-inmueble" style="padding:10%;">
+                                                                        <div class="col-sm-6 ver-inmueble">
                                                                             <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
@@ -508,10 +508,10 @@ $mensaje = array(
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_compra_anterior > 0){
-                                                                                echo '<s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
-                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
+                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
                                                                             }else{
-                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
                                                                             }?>
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
@@ -522,10 +522,10 @@ $mensaje = array(
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
-                                                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes</p>';
                                                                             }else{
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes</p>';
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
@@ -547,7 +547,7 @@ $mensaje = array(
                                                         if($cont==1){?>
                                                             <div class="col-sm-12 margin-bottom-20">
                                                         <?php }?>
-                                                        <div class="col-sm-3" data-cont="<?php echo $cont;?>">
+                                                        <div class="col-md-3" data-cont="<?php echo $cont;?>">
                                                             <div class="col-sm-12 padding-0">
                                                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="max-height:270px;"/>
@@ -559,16 +559,16 @@ $mensaje = array(
                                                                         <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
                                                                     <?php }?>
                                                                     <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                                                        <p class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
+                                                                        <p class="tipo-oferta col-xs-12"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
                                                                     <?php }?>
                                                                 </a>
                                                             </div>
-                                                            <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px;">
+                                                            <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px; height:73px;">
                                                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <h4 class="padding-top-10" id="nom2<?php echo $cont;?>"><?php echo $inmueble->titulo; ?></h4>
                                                                 </a>
                                                             </div>
-                                                            <div class="col-sm-12 caja-contenido-inmuble">
+                                                            <div class="col-sm-12 caja-contenido-inmuble" style="height:81px;">
                                                                 <p><?php echo $this->utilities->cortar_texto($inmueble->descripcion_seo,100);?></p>
                                                             </div>
                                                             <div class="col-sm-12 caja-contenido-inmuble">
@@ -597,7 +597,7 @@ $mensaje = array(
                                                                                 echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
                                                                             }?> 
                                                                         </div>
-                                                                        <div class="col-sm-6 ver-inmueble" style="padding:10%;">
+                                                                        <div class="col-sm-6 ver-inmueble">
                                                                             <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
                                                                         </div>
                                                                     </div>
@@ -605,10 +605,10 @@ $mensaje = array(
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_compra_anterior > 0){
-                                                                                echo '<s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
-                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
+                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
                                                                             }else{
-                                                                                echo number_format($inmueble->precio_compra,2,",",".").' &euro;';
+                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
                                                                             }?>
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
@@ -619,10 +619,10 @@ $mensaje = array(
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
-                                                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes</p>';
                                                                             }else{
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes</p>';
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">

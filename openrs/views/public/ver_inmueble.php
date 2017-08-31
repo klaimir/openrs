@@ -84,13 +84,13 @@ $mensaje = array(
 		<div id="aviso-compra"></div>
 		<h1><?php echo $inmueble->titulo; ?></h1>
 		<!-- hacerlo en plan slider y que las imágenes mini sean los botoncitos típicos -->
-		<div id="mapa" class="col-sm-11 margin-top-20 padding-bottom-20">
+		<div id="mapa" class="col-sm-10 col-md-11 margin-top-20 padding-bottom-20">
 			<div class="mapa" id="google_maps_div">            
 				<div id="google_maps" class="col-sm-12">
 				</div>
 			</div>
 		</div>
-		<div id="galeria" class="col-sm-11 oculto">
+		<div id="galeria" class="col-sm-10 col-md-11 oculto">
 			<div class="row">
 				<div id="carrusel-img-producto" class="carousel" data-ride="carousel">
 				    <div class="carousel-inner" role="listbox">
@@ -115,7 +115,7 @@ $mensaje = array(
 		    </div>
 		</div>
 		<?php if($video){?>
-			<div id="video" class="col-sm-11 oculto margin-top-20 padding-bottom-20">
+			<div id="video" class="col-sm-10 col-md-11 oculto margin-top-20 padding-bottom-20">
 				<div class="mapa">
                                     <?php $video = explode('&', str_replace('https://www.youtube.com/watch?v=', '', $video->url));
                                     $video[0] = str_replace('https://youtu.be/', '', $video[0]);?>
@@ -123,7 +123,7 @@ $mensaje = array(
                                 </div>
 			</div>
 		<?php }?>
-		<div id="contacto" class="col-sm-11 oculto margin-top-20">
+		<div id="contacto" class="col-sm-10 col-md-11 oculto margin-top-20">
 			<?php echo form_open('',array('class'=>'form-horizontal','id'=>'frmInmueble')); ?>
 					<div class="col-sm-6">
 						<div class="form-group margin-right-0">
@@ -162,13 +162,13 @@ $mensaje = array(
 				<?php echo form_close(); ?>
 		</div>
                 <?php if($enlaces){?>
-                    <div id="enlaces" class="col-sm-11 oculto margin-top-20">
+                    <div id="enlaces" class="col-sm-10 col-md-11 oculto margin-top-20">
                         <?php foreach($enlaces as $enlace){?>
                             <p><a target="_blank" class="text-primary" href="<?php echo $enlace->url;?>">- <?php echo $enlace->titulo;?> -</a></p>
                         <?php }?>
                     </div>
                 <?php }?>
-		<div class="col-sm-1 padding-left-0">
+		<div class="col-sm-2 col-md-1 padding-left-0">
 			<ul class="margin-top-20">
 				<li id="imapa" class="item-menu-inmueble cursor-pointer"><i class="fa fa-map fa-lg" aria-hidden="true"></i></li>
 				<li id="igaleria" class="item-menu-inmueble cursor-pointer"><i class="fa fa-picture-o fa-lg" aria-hidden="true"></i></li>                                
