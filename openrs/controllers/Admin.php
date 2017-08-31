@@ -95,7 +95,7 @@ class Admin extends MY_Controller
     					
     				//Para panales independientes
     				//$config['upload_path'] = 'img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/';
-    				$config['upload_path'] = 'assets/admin/img/preferencias/';
+    				$config['upload_path'] = 'uploads/general/img/preferencias/';
     				$config['allowed_types']='gif|jpg|jpeg|png';
     				$config['max_size']	= '1000';
     				$config['overwrite']=TRUE;
@@ -115,8 +115,8 @@ class Admin extends MY_Controller
     					//unlink('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen_thumb);
     					//}
     					$configuracion = $this->Admin_model->datos_config();
-    					if($configuracion && isset($configuracion->imagen) && file_exists('assets/admin/img/preferencias/'.$configuracion->imagen)){
-    						unlink('assets/admin/img/preferencias/'.$configuracion->imagen);
+    					if($configuracion && isset($configuracion->imagen) && file_exists('uploads/general/img/preferencias/'.$configuracion->imagen)){
+    						unlink('uploads/general/img/preferencias/'.$configuracion->imagen);
     						//unlink('img/preferencias/1/'.$configuracion->imagen_thumb);
     					}
     					$file_data = $this->upload->data();
@@ -127,8 +127,8 @@ class Admin extends MY_Controller
     					//Para paneles independientes
     					//$config['source_image']='img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$file_data['file_name'];
     					//$config['new_image']='img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/';
-    					$config['source_image']='assets/admin/img/preferencias/'.$file_data['file_name'];
-    					$config['new_image']='assets/admin/img/preferencias/';
+    					$config['source_image']='uploads/general/img/preferencias/'.$file_data['file_name'];
+    					$config['new_image']='uploads/general/img/preferencias/';
     					$config['create_thumb'] = TRUE;
     					$config['maintain_ratio'] = FALSE;
     					$config['width'] = 182;

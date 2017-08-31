@@ -195,7 +195,7 @@ $no_change_logo = array(
 							<div class="logo_marca">
 								<?php if($config->imagen){?>
 									<!-- Para paneles independientes -->
-									<img src="<?php echo base_url('assets/admin/img/preferencias/'.$config->imagen); ?>" class="img-responsive">
+									<img src="<?php echo base_url('uploads/general/img/preferencias/'.$config->imagen); ?>" class="img-responsive">
 								<?php }else{?>
 									<?php echo $this->lang->line('admin_no_hay_logo');?>
 								<?php }?>
