@@ -15,7 +15,7 @@ class Idioma extends MY_Controller_Front
 	public function cambiar_idioma($cookie = 0){
 		$idioma = $this->Idioma_model->get_idioma($this->input->post('id'));
 		$idioma_actual = $this->Idioma_model->get_idioma($this->input->post('id_actual'));
-		if($dir = opendir(APPPATH."language/".$idioma->carpeta_idioma)){
+		/*if($dir = opendir(APPPATH."language/".$idioma->carpeta_idioma)){
 			while(($archivo = readdir($dir)) !== false){
 				if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess' && $archivo != '.svn' && $archivo != 'index.html'){
 					$nombre_archivo = explode('_', $archivo);
@@ -28,7 +28,8 @@ class Idioma extends MY_Controller_Front
 					}
 				}
 			}
-		}
+		}*/
+		$this->session->set_userdata('idioma', $idioma->carpeta_idioma);
 		$url_antigua = $this->input->post('location');
 		$idiomayurl = explode('/', str_replace(site_url(), '', $url_antigua));
 		array_shift($idiomayurl);

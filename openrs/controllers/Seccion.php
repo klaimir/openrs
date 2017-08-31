@@ -31,6 +31,8 @@ class Seccion extends MY_Controller_Front
                 $this->load->model('Config_model');
                 $config=$this->Config_model->get_config();
                 $this->session->set_userdata('google_analytics_ID',$config->google_analytics_ID);
+                if($this->session->userdata('idioma'))
+                    $this->lang->load(array('admin', 'auth', 'blog', 'cms', 'common', 'inmuebles', 'ion_auth', 'tienda'),$this->session->userdata('idioma'));
 	}
 	
 	//Método para la portada: diferente en cada tienda, para que la portada sea original
@@ -272,40 +274,40 @@ class Seccion extends MY_Controller_Front
         private function _load_filtros_session()
         {
             // Filtro provincia_id
-			$this->session->set_userdata('inmuebles_buscador_front_provincia_id', $this->input->get('provincia_id');
+			$this->session->set_userdata('inmuebles_buscador_front_provincia_id', $this->input->get('provincia_id'));
 
             // Filtro poblacion_id
-			$this->session->set_userdata('inmuebles_buscador_front_poblacion_id', $this->input->get('poblacion_id');
+			$this->session->set_userdata('inmuebles_buscador_front_poblacion_id', $this->input->get('poblacion_id'));
 
             // Filtro zona_id
-			$this->session->set_userdata('inmuebles_buscador_front_zona_id', $this->input->get('zona_id');
+			$this->session->set_userdata('inmuebles_buscador_front_zona_id', $this->input->get('zona_id'));
 
             // Filtro tipo_id
-			$this->session->set_userdata('inmuebles_buscador_front_tipo_id', $this->input->get('tipo_id');
+			$this->session->set_userdata('inmuebles_buscador_front_tipo_id', $this->input->get('tipo_id'));
 
             // Filtro oferta_id
-			$this->session->set_userdata('inmuebles_buscador_front_oferta_id', $this->input->get('oferta_id');
+			$this->session->set_userdata('inmuebles_buscador_front_oferta_id', $this->input->get('oferta_id'));
 
             // Filtro destacado_id
-			$this->session->set_userdata('inmuebles_buscador_front_destacado_id', $this->input->get('destacado_id');
+			$this->session->set_userdata('inmuebles_buscador_front_destacado_id', $this->input->get('destacado_id'));
 
             // Filtro oportunidad_id
-			$this->session->set_userdata('inmuebles_buscador_front_oportunidad_id', $this->input->get('oportunidad_id');
+			$this->session->set_userdata('inmuebles_buscador_front_oportunidad_id', $this->input->get('oportunidad_id'));
 
             // Filtro banios_desde
-			$this->session->set_userdata('inmuebles_buscador_front_banios_desde', $this->input->get('banios_desde');
+			$this->session->set_userdata('inmuebles_buscador_front_banios_desde', $this->input->get('banios_desde'));
 
             // Filtro habitaciones_desde
-			$this->session->set_userdata('inmuebles_buscador_front_habitaciones_desde', $this->input->get('habitaciones_desde');
+			$this->session->set_userdata('inmuebles_buscador_front_habitaciones_desde', $this->input->get('habitaciones_desde'));
 
             // Filtro metros_desde
-			$this->session->set_userdata('inmuebles_buscador_front_metros_desde', $this->input->get('metros_desde');
+			$this->session->set_userdata('inmuebles_buscador_front_metros_desde', $this->input->get('metros_desde'));
 
             // Filtro precios_desde
-			$this->session->set_userdata('inmuebles_buscador_front_precios_desde', $this->input->get('precios_desde');
+			$this->session->set_userdata('inmuebles_buscador_front_precios_desde', $this->input->get('precios_desde'));
 
             // Filtro precios_hasta
-			$this->session->set_userdata('inmuebles_buscador_front_precios_hasta', $this->input->get('precios_hasta');
+			$this->session->set_userdata('inmuebles_buscador_front_precios_hasta', $this->input->get('precios_hasta'));
         }
 
         private function _generar_filtros_busqueda()
