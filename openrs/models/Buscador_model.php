@@ -5,7 +5,7 @@ require_once APPPATH . 'core/MY_Model.php';
 class Buscador_model extends MY_Model {
     
         public function getInmuebleBuscador($idioma, $filtros=NULL, $total=NULL){
-        	$this->db->select('v_inmuebles.*, inmuebles.id as idinmueble, inmuebles_idiomas.*,inmuebles_imagenes.*');
+        	$this->db->select('v_inmuebles.*, v_inmuebles.id as idinmueble, inmuebles_idiomas.*,inmuebles_imagenes.*');
         	$this->db->from('v_inmuebles');
         	$this->db->join('inmuebles_idiomas','v_inmuebles.id=inmuebles_idiomas.inmueble_id');
         	$this->db->join('inmuebles_imagenes','inmuebles_idiomas.inmueble_id=inmuebles_imagenes.inmueble_id');
@@ -70,8 +70,8 @@ class Buscador_model extends MY_Model {
                     $this->db->where('v_inmuebles.metros >=', $filtros['metros_desde']);
                 }
                 $this->db->where('v_inmuebles.publicado', 1);
-				$this->db->where('inmuebles_imagenes.portada',1);
-				$this->db->group_by('v_inmuebles.id');
+		$this->db->where('inmuebles_imagenes.portada',1);
+                $this->db->where('v_inmuebles.idioma_id',$idioma);
                 if($total){
                     return $this->db->get()->num_rows();
                 }else{
