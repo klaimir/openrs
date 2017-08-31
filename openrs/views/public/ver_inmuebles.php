@@ -75,7 +75,7 @@
                         <div class="col-xs-12">
                             <div id="google_maps">
                             </div>
-                            <strong>El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en el municipio del primer inmueble listado.</strong>
+                            <strong><?php echo $this->lang->line('tienda_inmueble_info_ver_mapa');?></strong>
                         </div>
                     </div>
                     <?php $cont=1;
@@ -95,7 +95,7 @@
                                         <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
                                     <?php }?>
                                     <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                        <span class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></span>
+                                        <p class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
                                     <?php }?>
                                 </a>
                             </div>

@@ -440,9 +440,9 @@ $mensaje = array(
                                             <div class="container">
                                         <?php }?>
                                             <?php if($it->tipo == 1){
-                                                echo '<h3>Destacados</h3>';
+                                                echo '<h3>'.$this->lang->line('tienda_inmueble_destacados').'</h3>';
                                             }else{
-                                                echo '<h3>Oportunidades</h3>';
+                                                echo '<h3>'.$this->lang->line('tienda_inmueble_oportunidades').'</h3>';
                                             }
                                                 if($it->num_inmuebles == 3 || $it->num_inmuebles == 6){
                                                     $cont=1;
@@ -462,7 +462,7 @@ $mensaje = array(
                                                                         <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
                                                                     <?php }?>
                                                                     <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                                                        <span class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></span>
+                                                                        <p class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
                                                                     <?php }?>
                                                                 </a>
                                                             </div>
@@ -472,7 +472,7 @@ $mensaje = array(
                                                                 </a>
                                                             </div>
                                                             <div class="col-sm-12 caja-contenido-inmuble">
-                                                                <p><?php echo substr($inmueble->descripcion_seo,0,100).'...';?></p>
+                                                                <p><?php echo $this->utilities->cortar_texto($inmueble->descripcion_seo,100);?></p>
                                                             </div>
                                                             <div class="col-sm-12 caja-contenido-inmuble">
                                                                 <p class="text-right"><?php echo '<b>Ref. '.$inmueble->referencia.' </b>';?></p>
@@ -559,7 +559,7 @@ $mensaje = array(
                                                                         <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
                                                                     <?php }?>
                                                                     <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                                                        <span class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></span>
+                                                                        <p class="tipo-oferta"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
                                                                     <?php }?>
                                                                 </a>
                                                             </div>
