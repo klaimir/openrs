@@ -190,6 +190,15 @@
 
             <b class="arrow"></b>
         </li>
+        
+        <li>
+            <a target="_blank" href="<?php echo site_url('es/inicio'); ?>">
+                <i class="menu-icon fa fa-caret-right"></i>
+                <span class="menu-text"> Ver Web </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
     </ul>
 </li>						
 								
