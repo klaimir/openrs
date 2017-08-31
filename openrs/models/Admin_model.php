@@ -20,7 +20,7 @@ class Admin_model extends MY_Model
     /* Devuelve: nada (actualiza datos de la tabla config según parámetros)*/
     /***********************************************************************/
     public function actualizar_configuracion($id_user, $datos){
-    	$this->db->where('user_id', $id_user);
+    	$this->db->where('id_config', 1);
     	$this->db->update('config', $datos);
     }
     
@@ -92,12 +92,12 @@ class Admin_model extends MY_Model
     }
     
     function actualizar_red_social($id_user, $datos){
-    	$this->db->where('user_id', $id_user);
+    	$this->db->where('id_config', 1);
     	$this->db->update('config', $datos);
     }
     
     function limpiar_red_social($id_user, $red){
-    	$this->db->where('user_id', $id_user);
+    	$this->db->where('id_config', 1);
     	if($red == 'facebook')
     		$this->db->update('config', array('facebook'=>NULL));
     	elseif($red == 'twitter')

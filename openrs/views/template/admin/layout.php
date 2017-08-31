@@ -631,6 +631,17 @@
                             //	blacklist:'exe|php'
                 });
                 
+                $('#file').ace_file_input({
+                    no_file: 'Sin fichero ...',
+                    btn_choose: 'Seleccionar',
+                    btn_change: 'Cambiar',
+                    droppable: false,
+                    onchange: null,
+                    thumbnail: false
+                            //	whitelist:'gif|png|jpg|jpeg|pdf|doc|docx',
+                            //	blacklist:'exe|php'
+                });
+                
                 if(!ace.vars['touch']) {
                         $('.chosen-select').chosen({allow_single_deselect:true}); 
                         //resize the chosen on window resize

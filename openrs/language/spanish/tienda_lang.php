@@ -241,11 +241,11 @@ $lang['tienda_garajes'] = 'Garajes:';
 $lang['tienda_superficie_construida'] = 'Superficie Construida';
 $lang['tienda_superficie_util'] = 'Superficie Útil';
 $lang['tienda_tipo_propiedad'] = 'Tipo Propiedad';
-$lang['tienda_caracteristicas_inmueble'] = 'Características';
+$lang['tienda_caracteristicas_inmueble'] = 'Datos Generales';
 $lang['tienda_descripcion_inmueble'] = 'Descripción';
-$lang['tienda_extras_inmueble'] = 'Extras';
+$lang['tienda_extras_inmueble'] = 'Características';
 $lang['tienda_cenergetica_inmueble'] = 'Calificación energética';
-$lang['tienda_lugares_inmueble'] = 'Lugares de interés';
+$lang['tienda_lugares_inmueble'] = 'Sitios Cercanos';
 $lang['tienda_ocupacion'] = 'Ocupación';
 $lang['tienda_localidad'] = 'Cualquier localidad';
 $lang['tienda_provincia'] = 'Cualquier provincia';
@@ -254,7 +254,9 @@ $lang['tienda_inmueble_alquiler'] = 'ALQUILER';
 $lang['tienda_inmueble_venta_alquiler'] = 'VENTA Y ALQUILER';
 $lang['tienda_inmueble_oferta'] = 'OPORTUNIDAD';
 $lang['tienda_inmueble_ver'] = 'VER';
-
+$lang['tienda_inmueble_destacados'] = 'DESTACADOS';
+$lang['tienda_inmueble_oportunidades'] = 'OPORTUNIDADES';
+$lang['tienda_inmueble_info_ver_mapa'] = 'El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en el municipio del primer inmueble listado.';
 
 //Mensajes compra
 $lang['tienda_pedido_realizado'] = 'Gracias por realizar su compra en ';
