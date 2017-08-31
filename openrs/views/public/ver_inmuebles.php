@@ -105,7 +105,7 @@
                                 </a>
                             </div>
                             <div class="col-sm-12 caja-contenido-inmuble">
-                                <p><?php echo substr($inmueble->descripcion,0,100).'...';?></p>
+                                <p><?php echo $this->utilities->cortar_texto($inmueble->descripcion_seo,100); ?></p>
                             </div>
                             <div class="col-sm-12 caja-contenido-inmuble">
                                 <p class="text-right"><?php echo '<b>Ref. '.$inmueble->referencia.' </b>';?></p>
