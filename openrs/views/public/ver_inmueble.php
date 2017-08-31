@@ -164,7 +164,7 @@ $mensaje = array(
                 <?php if($enlaces){?>
                     <div id="enlaces" class="col-sm-11 oculto margin-top-20">
                         <?php foreach($enlaces as $enlace){?>
-                            <p><a href="<?php echo $enlace->url;?>"><?php echo $enlace->titulo;?></a></p>
+                            <p><a target="_blank" class="text-primary" href="<?php echo $enlace->url;?>">- <?php echo $enlace->titulo;?> -</a></p>
                         <?php }?>
                     </div>
                 <?php }?>
