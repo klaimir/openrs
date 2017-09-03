@@ -69,7 +69,7 @@
 					<div class="contenido-articulo">
 						<?php if ($articulo->img_articulo != ''): ?>
 							<div class="imagen-blog">
-								<img class="img-responsive" src="<?php echo base_url('img/blog/'.$articulo->id_autor.'/'.$articulo->id_idioma.'/'.$articulo->img_articulo);?>" alt="<?php echo $articulo->titulo; ?>" title="<?php echo $articulo->titulo; ?>"/>
+								<img class="img-responsive" src="<?php echo base_url('upload/general/img/blog/1/'.$articulo->id_idioma.'/'.$articulo->img_articulo);?>" alt="<?php echo $articulo->titulo; ?>" title="<?php echo $articulo->titulo; ?>"/>
 							</div>
 						<?php endif; ?>
 						<div class="titulo-blog titulo-articulo">
@@ -174,7 +174,7 @@
 									<div class="art-rel-down">
 										<div>
 											<figure class="text-center">
-												<img src="<?php echo base_url('img/blogmini/'.$reciente->id_autor.'/'.$reciente->id_idioma.'/'.$reciente->img_articulo_mini);?>" alt="<?php echo $reciente->titulo; ?>" title="<?php echo $reciente->titulo; ?>"/>
+												<img src="<?php echo base_url('upload/general/img/blogmini/1/'.$reciente->id_idioma.'/'.$reciente->img_articulo_mini);?>" alt="<?php echo $reciente->titulo; ?>" title="<?php echo $reciente->titulo; ?>"/>
 											</figure>
 										</div>
 										<div class="text-center">
@@ -195,14 +195,17 @@
 							<?php $this->load->view('bootstrap/form_control_group',$email); ?>
 							<?php $this->load->view('bootstrap/form_control_group',$nick); ?>
 							<div class="control-group">
-								<div class="col-sm-10">
+								<div class="col-md-2">
+									<?php echo $this->lang->line('blog_comentario');?>
+								</div>
+								<div class="col-md-10">
 									<?php echo form_textarea($contenido2); ?>
 									<span><?php echo form_error('contenido2'); ?></span>
 									<p></p>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-3">
+								<div class="col-sm-3 col-md-offset-2">
 									<button class="g-recaptcha btn enviar border-radius-8" data-sitekey="6LczwC4UAAAAAA2EBXrcrZYujyvgMthPMv-icNeA" data-callback="onSubmit"><?php echo $this->lang->line('blog_enviar');?></button>
 								</div>
 							</div>
@@ -303,7 +306,7 @@
 					<div class="contenido-articulo">
 						<?php if ($articulo->img_articulo != ''): ?>
 							<div class="text-center imagen-blog">
-								<img class="img-responsive" src="<?php echo base_url('img/blog/'.$articulo->id_autor.'/'.$articulo->id_idioma.'/'.$articulo->img_articulo);?>" alt="<?php echo $articulo->titulo; ?>" title="<?php echo $articulo->titulo; ?>"/>
+								<img class="img-responsive" src="<?php echo base_url('upload/general/img/blog/1/'.$articulo->id_idioma.'/'.$articulo->img_articulo);?>" alt="<?php echo $articulo->titulo; ?>" title="<?php echo $articulo->titulo; ?>"/>
 							</div>
 						<?php endif; ?>
 							<div class="descripcion-corta">
@@ -390,7 +393,7 @@
 									<div class="art-rel-down">
 										<div>
 											<figure class="text-center">
-												<img src="<?php echo base_url('img/blogmini/'.$reciente->id_autor.'/'.$reciente->id_idioma.'/'.$reciente->img_articulo_mini);?>" alt="<?php echo $reciente->titulo; ?>" title="<?php echo $reciente->titulo; ?>"/>
+												<img src="<?php echo base_url('img/blogmini/1/'.$reciente->id_idioma.'/'.$reciente->img_articulo_mini);?>" alt="<?php echo $reciente->titulo; ?>" title="<?php echo $reciente->titulo; ?>"/>
 											</figure>
 										</div>
 										<div class="text-center">

@@ -110,7 +110,7 @@ class Admin_model extends MY_Model
     	$this->db->update('config', array('vimeo'=>NULL));
     }
     
-    function actualizar_texto($id, $contenido, $idioma=NULL){
+    function actualizar_texto($id, $contenido, $columna, $idioma=NULL){
     	if($idioma == NULL){
     		$this->db->where('id_opc_cliente',$id);
     		$this->db->where('id_idioma',1);
@@ -120,7 +120,7 @@ class Admin_model extends MY_Model
     			$this->db->where('id_idioma',1);
     			$this->db->update('footer_texto_idiomas', array('contenido'=>$contenido));
     		}else{
-    			$this->db->insert('footer_texto_idiomas', array('id_opc_cliente'=>$id, 'contenido'=>$contenido, 'id_idioma'=>1));
+    			$this->db->insert('footer_texto_idiomas', array('id_opc_cliente'=>$id, 'contenido'=>$contenido, 'id_idioma'=>1, 'columna' => $columna));
     		}
     	}else{
     		$this->db->where('id_opc_cliente',$id);

@@ -193,8 +193,8 @@ $mensaje = array(
         </div>
         <div class="col-sm-12 margin-top-20">
             <?php if($inmueble->precio_compra > 0){?>
-                <div class="col-sm-6 maring-top-10">
-                    <h3>Precio compra</h3>
+                <div class="col-sm-6 maring-top-10 padding-left-0">
+                    <h3><?php echo $this->lang->line('tienda_inmueble_precio_compra');?></h3>
                         <?php
                         if ($inmueble->precio_compra_anterior > 0) {
                             echo '<h2><s>' . number_format($inmueble->precio_compra_anterior, 2, ",", ".") . ' &euro;</s></h2>';
@@ -206,8 +206,8 @@ $mensaje = array(
                 </div>
             <?php } ?>
             <?php if ($inmueble->precio_alquiler > 0) { ?>
-                <div class="col-sm-6 maring-top-10">
-                    <h3>Precio alquiler</h3>
+                <div class="col-sm-6 maring-top-10 padding-left-0">
+                    <h3><?php echo $this->lang->line('tienda_inmueble_precio_alquiler');?></h3>
                         <?php
                         if ($inmueble->precio_alquiler_anterior > 0) {
                             echo '<h2><s>' . number_format($inmueble->precio_alquiler_anterior, 2, ",", ".") . ' &euro; / mes</s></h2>';

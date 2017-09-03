@@ -16,29 +16,34 @@
 								<?php foreach($menu_footer as $sec):?>
 									<li>
 										<?php if ($sec->tipo_seccion == 1):?>
-											<a href="<?php echo site_url('site/seccion/'.$sec->url_seo); ?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo;?></a>
+											<a href="<?php echo site_url($this->uri->segment('1').'/seccion/seccion/'.$sec->url_seo); ?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo;?></a>
 										<?php elseif ($sec->tipo_seccion == 2): ?>
-											<a href="<?php echo site_url($sec->url_seo);?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo; ?></a>
+											<a href="<?php echo site_url($this->uri->segment('1').'/'.$sec->url_seo);?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo; ?></a>
 										<?php elseif ($sec->tipo_seccion == 3): ?>
-											<a href="<?php echo site_url('blog-articulos');?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo; ?></a>
+											<?php if($idioma_actual->id_idioma == '1'){?>
+												<a href="<?php echo site_url($this->uri->segment('1').'/blog-articulos');?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo; ?></a>
+											<?php }elseif($idioma_actual->id_idioma == '53'){?>
+												<a href="<?php echo site_url($this->uri->segment('1').'/blog-news');?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo; ?></a>
+											<?php }?>
 										<?php elseif ($sec->tipo_seccion == 4): ?>
-											<a href="<?php echo site_url($sec->url_seo);?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo; ?></a>
-										<?php elseif ($sec->tipo_seccion == 6): ?>
-											<a href="<?php echo site_url('tienda');?>" style="color:<?php echo $config->cfuentecabecera;?>"><?php echo $sec->titulo; ?></a>
+											<a href="<?php echo site_url($this->uri->segment('1').'/'.$sec->url_seo);?>" style="color:<?php echo $config->cfuentepie;?>"><?php echo $sec->titulo; ?></a>
+										
 										<?php endif; ?>
 									</li>
 								<?php endforeach;?>
 								</ul>
 							<?php }elseif($cp->id_opc == 2){?>
-								<?php /*if($config->facebook != NULL){?>
-									<a href="<?php echo $config->facebook;?>"><img src="<?php echo base_url('uploads/general/img/icon-fb.png');?>" onmouseover="src='<?php echo base_url('uploads/general/img/icon-fb.png');?>'" onMouseOut="src='<?php echo base_url('uploads/general/img/icon-fb.png');?>'" class="margin-top-30"/></a>
+								<div class="row margin-top-30">
+								<?php if($config->facebook != NULL){?>
+									<a href="<?php echo $config->facebook;?>"><i class="fa fa-facebook-square fa-2x color-white" aria-hidden="true"></i></a>
 								<?php }if($config->twitter != NULL){?>
-									<a href="<?php echo $config->twitter;?>"><img src="<?php echo base_url('uploads/general/img/twitter.png');?>" onmouseover="src='<?php echo base_url('uploads/general/img/twitter-hover.png');?>'" onMouseOut="src='<?php echo base_url('uploads/general/img/twitter.png');?>'" class="margin-top-30"/></a>
+									<a href="<?php echo $config->twitter;?>"><i class="fa fa-twitter-square fa-2x color-white" aria-hidden="true"></i></a>
 								<?php }if($config->google != NULL){?>
-									<a href="<?php echo $config->google;?>"><img src="<?php echo base_url('uploads/general/img/google.png');?>" onmouseover="src='<?php echo base_url('uploads/general/img/google-hover.png');?>'" onMouseOut="src='<?php echo base_url('uploads/general/img/google.png');?>'" class="margin-top-30"/></a>
+									<a href="<?php echo $config->google;?>"><i class="fa fa-google-plus-square fa-2x color-white" aria-hidden="true"></i></a>
 								<?php }if($config->vimeo != NULL){?>
-									<a href="<?php echo $config->vimeo;?>"><img src="<?php echo base_url('uploads/general/img/vimeo.png');?>" onmouseover="src='<?php echo base_url('uploads/general/img/vimeo-hover.png');?>'" onMouseOut="src='<?php echo base_url('uploads/general/img/vimeo.png');?>'" class="margin-top-30"/></a>
-								<?php }*/?>
+									<a href="<?php echo $config->vimeo;?>"><i class="fa fa-vimeo-square fa-2x color-white" aria-hidden="true"></i></a>
+								<?php }?>
+								</div>
 							<?php }elseif($cp->id_opc == 3){?>
 								<?php if($cont == 1){?>
 									<div class="texto-pie" style="color:<?php echo $config->cfuentepie;?>">

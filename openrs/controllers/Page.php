@@ -602,7 +602,7 @@ class Page extends MY_Controller
 			),
 			'model_update_idiomas'=>array(
 					'model'=>'General_model',
-					'method'=>'update',
+					'method'=>'updateBloques',
 					'table'=>'seccion_idiomas',
 					'where'=>array(
 						'id_seccion'=>isset($seccion->id) ? $seccion->id : '',

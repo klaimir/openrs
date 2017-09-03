@@ -13,7 +13,7 @@
                 	}?>
 <script>
 function redireccionarPagina() {
-	window.location = "<?php echo site_url($idioma_actual->nombre_seo.'/inmueble/'.$url_seo);?>";
+	window.location = "<?php echo site_url($this->uri->segment('1').'/inmueble/'.$url_seo);?>";
 }
 setTimeout("redireccionarPagina()", 4000);
 </script>

@@ -13,7 +13,7 @@
                 	}?>
 <script>
 function redireccionarPagina() {
-	window.location = "<?php echo site_url($nseccion);?>";
+	window.location = "<?php echo site_url($this->uri->segment('1').'/'.$nseccion);?>";
 }
 setTimeout("redireccionarPagina()", 4000);
 </script>

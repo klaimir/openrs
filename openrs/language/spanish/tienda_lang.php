@@ -257,6 +257,8 @@ $lang['tienda_inmueble_ver'] = 'VER';
 $lang['tienda_inmueble_destacados'] = 'DESTACADOS';
 $lang['tienda_inmueble_oportunidades'] = 'OPORTUNIDADES';
 $lang['tienda_inmueble_info_ver_mapa'] = 'El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en el municipio del primer inmueble listado.';
+$lang['tienda_inmueble_precio_compra'] = 'Precio compra';
+$lang['tienda_inmueble_precio_alquiler'] = 'Precio alquiler';
 
 //Mensajes compra
 $lang['tienda_pedido_realizado'] = 'Gracias por realizar su compra en ';

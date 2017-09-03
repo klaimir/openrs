@@ -182,71 +182,67 @@ class Admin extends MY_Controller
     }
     
     function modificarPie(){  
-    	//echo 'Idioma: '.$this->input->post('idioma').'<br>Contenido: '.$this->input->post('contenido2_1');exit();
     	//Comprobación borrado de columna
     	if($this->input->post('col') == 0){
     		$cliente_opc = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
     		$this->Admin_model->borrar_texto_columna($cliente_opc->id);
     		$this->Admin_model->borrar_columna_pie(1, $this->input->post('columna'));
-    	}
-    		 
-    	//Comprobación opción redes sociales
-    	if($this->input->post('facebook')){
-    		$datos_profile = array('facebook' => $this->input->post('facebook'));
-    		$this->Admin_model->actualizar_red_social(1, $datos_profile);
-    	}
-    	if($this->input->post('twitter')){
-    		$datos_profile = array('twitter' => $this->input->post('twitter'));
-    		$this->Admin_model->actualizar_red_social(1, $datos_profile);
-    	}
-    	if($this->input->post('google')){
-    		$datos_profile = array('google' => $this->input->post('google'));
-    		$this->Admin_model->actualizar_red_social(1, $datos_profile);
-    	}
-    	if($this->input->post('vimeo')){
-    		$datos_profile = array('vimeo' => $this->input->post('vimeo'));
-    		$this->Admin_model->actualizar_red_social(1, $datos_profile);
-    	}
-    		 
-    	//Comprobación Inserción de texto
-    	if($this->input->post('idioma')){
-    		//echo 'entro en idioma';exit();
-    		$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
-    		//echo var_dump($opc_cliente);
-    		$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido'),$this->input->post('idioma'));
-    	}
-    	//Comprobación Edición de texto
-    	if($this->input->post('idiomas')){
-    		//echo 'entro en idiomas';exit();
-    		$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
-    		$idiomas = $this->input->post('idiomas');
-    		if($opc_cliente){
-	    		foreach($idiomas as $idioma){
-	    			$col=$this->input->post('columna');
-	    			if($col == 1)
-	    				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido_'.$idioma),$idioma);
-	    			elseif($col == 2)
-	    				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido2_'.$idioma),$idioma);
-	    			elseif($col == 3)
-	    				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido3_'.$idioma),$idioma);
-	    			elseif($col == 4)
-	    				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido4_'.$idioma),$idioma);
-	    		}
-    		}else{
-    			$opc_cliente = $this->Admin_model->insert_footer_cliente(1, $this->input->post('columna'), 3);
-	    		foreach($idiomas as $idioma){
-	    			$col=$this->input->post('columna');
-	    			if($col == 1)
-	    				$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido_'.$idioma),$idioma);
-	    			elseif($col == 2)
-	    				$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido2_'.$idioma),$idioma);
-	    			elseif($col == 3)
-	    				$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido3_'.$idioma),$idioma);
-	    			elseif($col == 4)
-	    				$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido4_'.$idioma),$idioma);
-	    		}
-    		}
-    	}
+    	}elseif($this->input->post('col') == 2){
+			//Comprobación opción redes sociales
+			if($this->input->post('facebook')){
+				$datos_profile = array('facebook' => $this->input->post('facebook'));
+				$this->Admin_model->actualizar_red_social(1, $datos_profile);
+			}
+			if($this->input->post('twitter')){
+				$datos_profile = array('twitter' => $this->input->post('twitter'));
+				$this->Admin_model->actualizar_red_social(1, $datos_profile);
+			}
+			if($this->input->post('google')){
+				$datos_profile = array('google' => $this->input->post('google'));
+				$this->Admin_model->actualizar_red_social(1, $datos_profile);
+			}
+			if($this->input->post('vimeo')){
+				$datos_profile = array('vimeo' => $this->input->post('vimeo'));
+				$this->Admin_model->actualizar_red_social(1, $datos_profile);
+			}
+    	}elseif($this->input->post('col') == 3){	 
+			//Comprobación Inserción de texto
+			if($this->input->post('idioma')){
+				$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
+				$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido'), $this->input->post('columna'), $this->input->post('idioma'));
+			}
+			//Comprobación Edición de texto
+			if($this->input->post('idiomas')){
+				$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
+				$idiomas = $this->input->post('idiomas');
+				if($opc_cliente){
+					foreach($idiomas as $idioma){
+						$col=$this->input->post('columna');
+						if($col == 1)
+							$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenidoe_'.$idioma),$idioma);
+						elseif($col == 2)
+							$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido2e_'.$idioma),$idioma);
+						elseif($col == 3)
+							$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido3e_'.$idioma),$idioma);
+						
+					}
+				}else{
+					//Borramos la columna vacia
+					$this->Admin_model->borrar_columna_pie(1, $this->input->post('columna'), 3);
+					$opc_cliente = $this->Admin_model->insert_footer_cliente(1, $this->input->post('columna'), 3);
+					foreach($idiomas as $idioma){
+						$col=$this->input->post('columna');
+						if($col == 1)
+							$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido_'.$idioma),$idioma);
+						elseif($col == 2)
+							$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido2_'.$idioma),$idioma);
+						elseif($col == 3)
+							$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido3_'.$idioma),$idioma);
+						
+					}
+				}
+			}
+		}
     	
     	$this->Admin_model->actualizar_pie_cliente(1, $this->input->post('columna'), $this->input->post('col'));
     	

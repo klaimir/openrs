@@ -118,7 +118,7 @@ class Seccion extends MY_Controller_Front
             $cont++;
             if ($col->id_opc == 1)
                 $data['menu_footer'] = $this->Seccion_model->get_secciones_footer($data['idioma_actual']->id_idioma);
-            elseif ($col->id_opc == 4)
+            elseif ($col->id_opc == 3)
                 $data['codigo' . $cont] = $this->Usuario_model->get_codigo_pie($col->id, $data['idioma_actual']->id_idioma);
         }
         $data['seccion'] = $this->Seccion_model->get_seccion($data['idioma_actual']->id_idioma, $seccion);
@@ -292,7 +292,7 @@ class Seccion extends MY_Controller_Front
             $inmueble = $this->Buscador_model->getInmuebleByReferencia($data['idioma_actual']->id_idioma, $referencia);
             if ($inmueble)
             {
-                redirect('inmueble/' . $inmueble->id . '-' . $inmueble->url_seo);
+                redirect($this->uri->segment('1').'/inmueble/' . $inmueble->id . '-' . $inmueble->url_seo);
             }
         }
         else
