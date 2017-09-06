@@ -16,3 +16,15 @@
         <?php echo form_input($google_analytics_ID, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
     </div>
 </div>
+<div class="form-group">            
+    <?php echo label('Clave del sitio (Recaptcha)', 'recaptcha_site_key', 'class="col-sm-3 control-label no-padding-right"'); ?>
+    <div class="col-sm-9">
+        <?php echo form_input($recaptcha_site_key, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+    </div>
+</div>
+<div class="form-group">            
+    <?php echo label('Clave secreta (Recaptcha)', 'recaptcha_secret_key', 'class="col-sm-3 control-label no-padding-right"'); ?>
+    <div class="col-sm-9">
+        <?php echo form_input($recaptcha_secret_key, '', 'class="form-control" onchange="mark_modified_field();"'); ?>
+    </div>
+</div>

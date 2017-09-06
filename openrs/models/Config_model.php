@@ -32,9 +32,11 @@ class Config_model extends MY_Model
     
     public function set_rules($id=0)
     {
-        $this->form_validation->set_rules('email_contacto', 'Email de contacto', 'xss_clean|max_length[120]|valid_email');
-        $this->form_validation->set_rules('api_key', 'API-KEY de google', 'xss_clean|max_length[50]');
-        $this->form_validation->set_rules('google_analytics_ID', 'API-KEY de google', 'xss_clean|max_length[20]');
+        $this->form_validation->set_rules('email_contacto', 'Email de contacto', 'required|xss_clean|max_length[120]|valid_email');
+        $this->form_validation->set_rules('google_api_key', 'API-KEY de Google', 'required|xss_clean|max_length[50]');
+        $this->form_validation->set_rules('google_analytics_ID', 'ID. Google Analytics', 'xss_clean|max_length[20]');
+        $this->form_validation->set_rules('recaptcha_site_key', 'Clave del sitio (Recaptcha)', 'required|xss_clean|max_length[60]');
+        $this->form_validation->set_rules('recaptcha_secret_key', 'Clave secreta (Recaptcha)', 'required|xss_clean|max_length[60]');
     }
     
     /**
@@ -83,6 +85,20 @@ class Config_model extends MY_Model
             'type' => 'text',
             'value' => $this->form_validation->set_value('google_analytics_ID',is_object($datos) ? $datos->google_analytics_ID : ""),
         );
+        
+        $data['recaptcha_site_key'] = array(
+            'name' => 'recaptcha_site_key',
+            'id' => 'recaptcha_site_key',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('recaptcha_site_key',is_object($datos) ? $datos->recaptcha_site_key : ""),
+        );
+        
+        $data['recaptcha_secret_key'] = array(
+            'name' => 'recaptcha_secret_key',
+            'id' => 'recaptcha_secret_key',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('recaptcha_secret_key',is_object($datos) ? $datos->recaptcha_secret_key : ""),
+        );
 
         return $data;
     }
@@ -98,6 +114,8 @@ class Config_model extends MY_Model
         $datas['email_contacto'] = $this->input->post('email_contacto');
         $datas['google_api_key'] = $this->input->post('google_api_key');
         $datas['google_analytics_ID'] = $this->input->post('google_analytics_ID');
+        $datas['recaptcha_secret_key'] = $this->input->post('recaptcha_secret_key');
+        $datas['recaptcha_site_key'] = $this->input->post('recaptcha_site_key');
         return $datas;
     }
     
