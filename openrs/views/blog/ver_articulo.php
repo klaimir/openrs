@@ -195,9 +195,9 @@
 							<?php $this->load->view('bootstrap/form_control_group',$email); ?>
 							<?php $this->load->view('bootstrap/form_control_group',$nick); ?>
 							<div class="control-group">
-								<div class="col-md-2">
-									<?php echo $this->lang->line('blog_comentario');?>
-								</div>
+                                                                <div class="col-md-2 fuente-comentario">
+                                                                    <label class="control-label pull-right" for="comentario"><?php echo $this->lang->line('blog_comentario');?></label>
+                                                                </div>
 								<div class="col-md-10">
 									<?php echo form_textarea($contenido2); ?>
 									<span><?php echo form_error('contenido2'); ?></span>
