@@ -41,7 +41,7 @@
         ?>        
                 <li>
                     <a href="<?php echo base_url($element->imagen); ?>" title="<?php echo basename($element->imagen); ?>" data-rel="colorbox">
-                        <img width="250" height="250" alt="250x250" src="<?php echo base_url($element->imagen); ?>" />
+                        <img width="230" height="180" alt="230x230" src="<?php echo base_url($element->imagen); ?>" />
                     </a>
 
                     <div class="tags">

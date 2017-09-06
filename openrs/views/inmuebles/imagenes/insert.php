@@ -24,6 +24,9 @@
         <div class="fallback">
             <input type="file" name="file" multiple=""  />
         </div>
+        <small class="blue">Se recomienda que adjunte imágenes con una resolución mínima de 640x480, aunque la ideal sería de 1024x728. Si adjunta imágenes con una orientación vertical no hay problema, no obstante
+        se recomienda que utilice una imagen apaisada para la portada para que su visualización sea óptima en todos los dispositivos. Intente reducir el espacio de las imágenes para que su carga sea más rápida.
+        El tamaño máximo que podrá subir por imagen es de <?php echo ini_get('post_max_size'); ?>.</small>
     </div>
 </div>
 
