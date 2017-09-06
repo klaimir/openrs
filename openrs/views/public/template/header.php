@@ -5,7 +5,7 @@
 <div class="navbar navbar-inverse navbar-suelto" role="navigation" style="background-color:<?php echo $config->ccabecera;?>;border-bottom:2px solid <?php echo $config->cbordecabecera;?>;">
 <?php }?>
   	<div class="container">
-	    <div class="col-sm-3 cabecera-logo hidden-xs">
+	    <div class="col-md-3 cabecera-logo hidden-xs">
 			<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url().'uploads/general/img/preferencias/'.$config->imagen; ?>" class="img-responsive" alt="<?php echo $config->nombre;?>" title="<?php echo $config->nombre;?>"/></a>
 		</div>
 	    <div class="col-md-9 menu-desplegable hidden-xs">
