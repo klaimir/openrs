@@ -11,3 +11,4 @@ ALTER TABLE `clientes` ADD INDEX `clientes_fecha_actualizacion` (`fecha_actualiz
 ALTER TABLE `inmuebles` ADD INDEX `inmuebles_fecha_alta` (`fecha_alta`);
 ALTER TABLE `inmuebles` ADD INDEX `inmuebles_fecha_actualizacion` (`fecha_actualizacion`);
 
+
