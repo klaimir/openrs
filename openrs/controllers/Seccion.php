@@ -35,6 +35,10 @@ class Seccion extends MY_Controller_Front
         $this->load->model('Config_model');
         $config = $this->Config_model->get_config();
         $this->session->set_userdata('google_analytics_ID', $config->google_analytics_ID);
+        // Cargas de key para recaptcha para protección de formularios externos
+        $this->session->set_userdata('recaptcha_secret_key', $config->recaptcha_secret_key);
+        $this->session->set_userdata('recaptcha_site_key', $config->recaptcha_site_key); 
+        // Datos de idiomas
         if($this->session->userdata('idioma'))
             $this->lang->load(array('admin', 'auth', 'blog', 'cms', 'common', 'inmuebles', 'ion_auth', 'tienda'),$this->session->userdata('idioma'));
     }
@@ -191,7 +195,7 @@ class Seccion extends MY_Controller_Front
             $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|xss_clean|required|is_natural');
 
             $data = array(
-                'secret' => "6LczwC4UAAAAAFIpgTKF9vSuCJ5GlX-AtUCsEr6n",
+                'secret' => $this->session->userdata('recaptcha_secret_key'),
                 'response' => $this->input->post('g-recaptcha-response')
             );
 
@@ -446,7 +450,7 @@ class Seccion extends MY_Controller_Front
             $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|xss_clean|required|is_natural');
 
             $data = array(
-                'secret' => "6LczwC4UAAAAAFIpgTKF9vSuCJ5GlX-AtUCsEr6n",
+                'secret' => $this->session->userdata('recaptcha_secret_key'),
                 'response' => $this->input->post('g-recaptcha-response')
             );
 
@@ -569,7 +573,7 @@ class Seccion extends MY_Controller_Front
             $this->form_validation->set_message('valid_email', $this->lang->line('login_c_valid_email'));
 
             $data2 = array(
-                'secret' => "6LczwC4UAAAAAFIpgTKF9vSuCJ5GlX-AtUCsEr6n",
+                'secret' => $this->session->userdata('recaptcha_secret_key'),
                 'response' => $this->input->post('g-recaptcha-response')
             );
 

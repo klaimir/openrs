@@ -722,7 +722,7 @@ $mensaje = array(
 							<p></p>
 						</div>
                                                 <div class="form-group row">
-							<button class="g-recaptcha btn-contacto" data-sitekey="6LczwC4UAAAAAA2EBXrcrZYujyvgMthPMv-icNeA" data-callback="onSubmit">Enviar</button>
+							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmit">Enviar</button>
 						</div>
 					</div>
 					<div class="col-sm-6">

@@ -206,7 +206,7 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-3 col-md-offset-2">
-									<button class="g-recaptcha btn enviar border-radius-8" data-sitekey="6LczwC4UAAAAAA2EBXrcrZYujyvgMthPMv-icNeA" data-callback="onSubmit"><?php echo $this->lang->line('blog_enviar');?></button>
+									<button class="g-recaptcha btn enviar border-radius-8" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmit"><?php echo $this->lang->line('blog_enviar');?></button>
 								</div>
 							</div>
 						<?php echo form_close(); ?>
@@ -425,7 +425,7 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-2 col-sm-offset-2">
-									<button class="g-recaptcha btn enviar border-radius-8" data-sitekey="6LczwC4UAAAAAA2EBXrcrZYujyvgMthPMv-icNeA" data-callback="onSubmitmv"><?php echo $this->lang->line('blog_enviar');?></button>
+									<button class="g-recaptcha btn enviar border-radius-8" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmitmv"><?php echo $this->lang->line('blog_enviar');?></button>
 								</div>
 							</div>
 						<?php echo form_close(); ?>
