@@ -158,7 +158,7 @@
         <li class="<?php echo set_active_option($_active_section,'cabecera'); ?>">
             <a href="<?php echo site_url('admin/cabecera');?>" onClick="return show_confirm_exit_message();">
                 <i class="menu-icon fa fa-caret-right"></i>
-                Cabecera
+                Aspecto
             </a>
 
             <b class="arrow"></b>

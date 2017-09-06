@@ -93,7 +93,7 @@ $no_change_logo = array(
 
 <div class="page-header">
     <h1>
-        Gestionar cabecera
+        Gestionar Aspecto
     </h1>
 </div>
 		<div class="col-sm-12">
