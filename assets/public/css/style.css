@@ -1188,6 +1188,9 @@ footer li{
 .margin-right-0{
 	margin-right:0 !important;
 }
+.margin-right-10{
+	margin-right:10px;
+}
 .margin-top-30{
 	margin-top:30px;
 }
@@ -1220,6 +1223,9 @@ footer li{
 }
 .padding-left-0{
     padding-left:0px;
+}
+.padding-left-10{
+    padding-left:10px;
 }
 .width-100p{
     width:100%;

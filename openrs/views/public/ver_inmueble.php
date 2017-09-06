@@ -107,7 +107,7 @@ $mensaje = array(
 			<div class="row">
 				<?php $primero=true; $cont=0;?>
 			    	<?php foreach($imagenes as $it):?>
-			    		<figure data-target="#carrusel-img-producto" data-slide-to="<?php echo $cont;?>" class="mini-producto col-xs-2 <?php echo ($primero==true)?'active':'';?>">
+			    		<figure data-target="#carrusel-img-producto" data-slide-to="<?php echo $cont;?>" class="mini-producto col-xs-4 col-md-2 <?php echo ($primero==true)?'active':'';?>">
 			    			<img src="<?php echo base_url($it->imagen)?>" class="img-responsive" style="width:164px; height:102px;"/>
 			    		</figure>
 		    		<?php $primero=false; $cont++;?>
@@ -168,7 +168,7 @@ $mensaje = array(
                         <?php }?>
                     </div>
                 <?php }?>
-		<div class="col-sm-2 col-md-1 padding-left-0">
+		<div class="col-sm-2 col-md-1 padding-left-10">
 			<ul class="margin-top-20">
 				<li id="imapa" class="item-menu-inmueble cursor-pointer"><i class="fa fa-map fa-lg" aria-hidden="true"></i></li>
 				<li id="igaleria" class="item-menu-inmueble cursor-pointer"><i class="fa fa-picture-o fa-lg" aria-hidden="true"></i></li>                                

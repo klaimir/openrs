@@ -64,11 +64,13 @@
 	</div>
 	<div class="container">
 		<?php if(isset($inmuebles) && $inmuebles){?>
-            <div class="col-sm-12">
-                    <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('public');">
-                        <i class="menu-icon fa fa-map-marker"></i>
-                        <span class="menu-text"> Ver en mapa</span>
-                    </a>
+            <div class="row">
+                <div class="col-sm-12 margin-right-10">
+                        <a class="btn btn-info pull-right" onclick="check_multiple_google_maps('public');">
+                            <i class="menu-icon fa fa-map-marker"></i>
+                            <span class="menu-text"> Ver en mapa</span>
+                        </a>
+                </div>
             </div>
                     <div class="row" id="google_maps_div" style="display:none;">      
                         <div class="space-10"></div>
