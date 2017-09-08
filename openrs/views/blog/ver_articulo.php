@@ -69,7 +69,7 @@
 					<div class="contenido-articulo">
 						<?php if ($articulo->img_articulo != ''): ?>
 							<div class="imagen-blog">
-								<img class="img-responsive" src="<?php echo base_url('upload/general/img/blog/1/'.$articulo->id_idioma.'/'.$articulo->img_articulo);?>" alt="<?php echo $articulo->titulo; ?>" title="<?php echo $articulo->titulo; ?>"/>
+								<img class="img-responsive" src="<?php echo base_url('uploads/general/img/blog/1/'.$articulo->id_idioma.'/'.$articulo->img_articulo);?>" alt="<?php echo $articulo->titulo; ?>" title="<?php echo $articulo->titulo; ?>"/>
 							</div>
 						<?php endif; ?>
 						<div class="titulo-blog titulo-articulo">
@@ -174,7 +174,7 @@
 									<div class="art-rel-down">
 										<div>
 											<figure class="text-center">
-												<img src="<?php echo base_url('upload/general/img/blogmini/1/'.$reciente->id_idioma.'/'.$reciente->img_articulo_mini);?>" alt="<?php echo $reciente->titulo; ?>" title="<?php echo $reciente->titulo; ?>"/>
+												<img src="<?php echo base_url('uploads/general/img/blogmini/1/'.$reciente->id_idioma.'/'.$reciente->img_articulo_mini);?>" alt="<?php echo $reciente->titulo; ?>" title="<?php echo $reciente->titulo; ?>"/>
 											</figure>
 										</div>
 										<div class="text-center">
@@ -306,7 +306,7 @@
 					<div class="contenido-articulo">
 						<?php if ($articulo->img_articulo != ''): ?>
 							<div class="text-center imagen-blog">
-								<img class="img-responsive" src="<?php echo base_url('upload/general/img/blog/1/'.$articulo->id_idioma.'/'.$articulo->img_articulo);?>" alt="<?php echo $articulo->titulo; ?>" title="<?php echo $articulo->titulo; ?>"/>
+								<img class="img-responsive" src="<?php echo base_url('uploads/general/img/blog/1/'.$articulo->id_idioma.'/'.$articulo->img_articulo);?>" alt="<?php echo $articulo->titulo; ?>" title="<?php echo $articulo->titulo; ?>"/>
 							</div>
 						<?php endif; ?>
 							<div class="descripcion-corta">

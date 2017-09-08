@@ -112,7 +112,7 @@
 													<div class="substr-articulo">
 														<?php if ($art->img_articulo != ''): ?>
 															<div class="text-center">
-																<img src="<?php echo base_url('img/blog/'.$art->id_autor.'/'.$art->id_idioma.'/'.$art->img_articulo);?>" class="img-responsive" alt="<?php echo $art->titulo; ?>" title="<?php echo $art->titulo; ?>"/>
+																<img src="<?php echo base_url('uploads/general/img/blog/1/'.$art->id_idioma.'/'.$art->img_articulo);?>" class="img-responsive" alt="<?php echo $art->titulo; ?>" title="<?php echo $art->titulo; ?>"/>
 															</div>
 															<p></p>
 														<?php endif; ?>

@@ -60,7 +60,7 @@
 												<i class="ace-icon fa fa-external-link1 bigger-130"></i>
 											</a>
 										<?php endif; ?>										
-										<a href="<?php echo site_url('blog/'.$art->url_seo_articulo);?>" target="_blank" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_ver_articulo');?>">
+										<a href="<?php echo site_url('es/blog/'.$art->url_seo_articulo);?>" target="_blank" class="action-tooltip green" rel="tooltip" data-original-title="<?php echo $this->lang->line('blog_ver_articulo');?>">
 											<i class="ace-icon fa fa-eye bigger-130"></i>
 										</a>
 									</span>
