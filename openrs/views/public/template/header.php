@@ -108,7 +108,11 @@
 							<?php elseif ($sh->tipo_seccion == 2): ?>
 								<a href="<?php echo site_url($this->uri->segment('1').'/'.$sh->url_seo);?>" style="color:white"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 3): ?>
-								<a href="<?php echo site_url($this->uri->segment('1').'/blog-articulos');?>" style="color:white"><?php echo $sh->titulo; ?></a>
+                                                            <?php if($idioma_actual->id_idioma == '1'){?>
+                                                                <a href="<?php echo site_url($this->uri->segment('1').'/blog-articulos');?>" style="color:white"><?php echo $sh->titulo; ?></a>
+                                                            <?php }elseif($idioma_actual->id_idioma == '53'){?>
+                                                                <a href="<?php echo site_url($this->uri->segment('1').'/blog-news');?>" style="color:white"><?php echo $sh->titulo; ?></a>
+                                                            <?php }?>
 							<?php elseif ($sh->tipo_seccion == 4): ?>
 								<a href="<?php echo site_url($this->uri->segment('1').'/'.$sh->url_seo);?>" style="color:white"><?php echo $sh->titulo; ?></a>
 							<?php elseif ($sh->tipo_seccion == 5): ?>
