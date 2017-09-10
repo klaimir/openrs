@@ -110,7 +110,7 @@ class Seccion extends MY_Controller_Front
         $data['secciones_header'] = $this->Seccion_model->get_secciones_header($data['idioma_actual']->id_idioma);
         $data['subsecciones_header'] = $this->Seccion_model->get_subsecciones_header($data['idioma_actual']->id_idioma);
         //Para buscador inmuebles
-        $data['provincias'] = $this->Provincia_model->get_provincias_dropdown(-1, "- Provincias -");
+        $data['provincias'] = $this->Inmueble_model->get_provincias_existentes_dropdown(-1, "- Provincias -", 1);
         $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown(-1, $data['idioma_actual']->id_idioma, TRUE, "- Tipos -");
         $data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1, "- Ofertas -");
 
@@ -280,7 +280,7 @@ class Seccion extends MY_Controller_Front
             echo 'Petición no realizada a través de AJAX';
             return;
         }
-        $this->data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($idprovincia,'',"- Municipios -");
+        $this->data['poblaciones'] = $this->Inmueble_model->get_poblaciones_provincia_existentes_dropdown($idprovincia);
         $this->load->view('public/poblaciones', $this->data);
     }
 
@@ -294,7 +294,7 @@ class Seccion extends MY_Controller_Front
             echo 'Petición no realizada a través de AJAX';
             return;
         }
-        $this->data['zonas'] = $this->Zona_model->get_zonas_dropdown($idpoblacion,'',TRUE,"- Zonas -");
+        $this->data['zonas'] = $this->Inmueble_model->get_zonas_poblacion_existentes_dropdown($idpoblacion);
         $this->load->view('public/zonas', $this->data);
     }
 

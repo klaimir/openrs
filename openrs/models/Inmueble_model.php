@@ -2260,10 +2260,14 @@ class Inmueble_model extends MY_Model
      * @return array de identificares de provincias
      */
 
-    function get_id_provincias_existentes()
+    function get_id_provincias_existentes($publicado=NULL)
     {
         $this->db->select('distinct(provincia_id) as provincia_id');
         $this->db->from($this->view);
+        if(!is_null($publicado))
+        {
+            $this->db->where('publicado', $publicado);
+        }
         $result=$this->db->get()->result();
         return $this->utilities->get_keys_objects_array($result,'provincia_id');
     }
@@ -2274,15 +2278,15 @@ class Inmueble_model extends MY_Model
      * @return array de provincia
      */
 
-    function get_provincias_existentes_dropdown($default_value="")
+    function get_provincias_existentes_dropdown($default_value="", $text_value="- Seleccione provincia -", $publicado=NULL)
     {
         // Consulta existentes
-        $ids_provincias=$this->get_id_provincias_existentes();
+        $ids_provincias=$this->get_id_provincias_existentes($publicado);
         // Consulta provincias
         $provincias=$this->Provincia_model->get_provincias_in_array($ids_provincias);        
         $provincias_dropdown=$this->utilities->dropdown($provincias, 'id', 'provincia');        
         // Selección inicial
-        $seleccion[$default_value]="- Seleccione provincia -";
+        $seleccion[$default_value]=$text_value;
         return ($seleccion+$provincias_dropdown);
     }
     
@@ -2293,10 +2297,14 @@ class Inmueble_model extends MY_Model
      * @return array de identificares de poblaciones
      */
 
-    function get_id_poblaciones_existentes()
+    function get_id_poblaciones_existentes($publicado=NULL)
     {
         $this->db->select('distinct(poblacion_id) as poblacion_id');
         $this->db->from($this->table);
+        if(!is_null($publicado))
+        {
+            $this->db->where('publicado', $publicado);
+        }
         $result=$this->db->get()->result();
         return $this->utilities->get_keys_objects_array($result,'poblacion_id');
     }
@@ -2309,12 +2317,28 @@ class Inmueble_model extends MY_Model
      * @return array de poblaciones
      */
 
-    function get_poblaciones_provincia_existentes($provincia_id)
+    function get_poblaciones_provincia_existentes($provincia_id, $publicado=NULL)
     {
         // Consulta existentes
-        $ids_poblaciones=$this->get_id_poblaciones_existentes();
+        $ids_poblaciones=$this->get_id_poblaciones_existentes($publicado);
         // Consulta poblaciones
         return $this->Poblacion_model->get_poblaciones_provincia_in_array($provincia_id,$ids_poblaciones);
+    }
+    
+    /**
+     * Consulta las poblaciones existentes en formato dropdown
+     *
+     * @return array de poblaciones
+     */
+
+    function get_poblaciones_provincia_existentes_dropdown($provincia_id, $publicado=1, $default_value="", $text_value="- Municipios -")
+    {
+        // Consulta poblaciones
+        $poblaciones=$this->get_poblaciones_provincia_existentes($provincia_id, $publicado);       
+        $poblaciones_dropdown=$this->utilities->dropdown($poblaciones, 'id', 'poblacion');        
+        // Selección inicial
+        $seleccion[$default_value]=$text_value;
+        return ($seleccion+$poblaciones_dropdown);
     }
     
     /**
@@ -2324,10 +2348,14 @@ class Inmueble_model extends MY_Model
      * @return array de identificares de zonas
      */
 
-    function get_id_zonas_existentes()
+    function get_id_zonas_existentes($publicado=NULL)
     {
         $this->db->select('distinct(zona_id) as zona_id');
         $this->db->from($this->table);
+        if(!is_null($publicado))
+        {
+            $this->db->where('publicado', $publicado);
+        }
         $result=$this->db->get()->result();
         return $this->utilities->get_keys_objects_array($result,'zona_id');
     }
@@ -2340,12 +2368,28 @@ class Inmueble_model extends MY_Model
      * @return array de zonas
      */
 
-    function get_zonas_poblacion_existentes($poblacion_id)
+    function get_zonas_poblacion_existentes($poblacion_id, $publicado=NULL)
     {
         // Consulta existentes
-        $ids_zonas=$this->get_id_zonas_existentes();
+        $ids_zonas=$this->get_id_zonas_existentes($publicado);
         // Consulta poblaciones
         return $this->Zona_model->get_zonas_poblacion_in_array($poblacion_id,$ids_zonas);
+    }
+    
+    /**
+     * Consulta las zonas existentes en formato dropdown
+     *
+     * @return array de zonas
+     */
+
+    function get_zonas_poblacion_existentes_dropdown($poblacion_id, $publicado=1, $default_value="", $text_value="- Zonas -")
+    {
+        // Consulta zonas
+        $zonas=$this->get_zonas_poblacion_existentes($poblacion_id, $publicado);    
+        $zonas_dropdown=$this->utilities->dropdown($zonas, 'id', 'nombre');        
+        // Selección inicial
+        $seleccion[$default_value]=$text_value;
+        return ($seleccion+$zonas_dropdown);
     }
     
     /**
