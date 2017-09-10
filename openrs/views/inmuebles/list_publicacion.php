@@ -1,3 +1,4 @@
+<div style="overflow-y:auto">       
 <table class="table table-striped table-bordered table-hover" id="tabgrid_publicacion" >
     <thead>
         <tr>
@@ -160,7 +161,7 @@
         ?>
     </tbody>
 </table>
-
+ </div>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
         
