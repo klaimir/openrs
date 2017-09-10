@@ -30,12 +30,12 @@ class Provincia_model extends MY_Model
      * @return array de provincias en formato dropdown
      */
     
-    function get_provincias_dropdown($default_value="")
+    function get_provincias_dropdown($default_value="", $text_value="- Seleccione provincia -")
     {
         // Array de provincias
         $provincias=$this->as_dropdown('provincia')->get_all();
         // Selección inicial
-        $seleccion[$default_value]="- Seleccione provincia -";
+        $seleccion[$default_value]=$text_value;
         // Si devolvemos un merge se pierden las claves numéricas
         // http://php.net/manual/es/function.array-merge.php
         // return array_merge($seleccion,$provincias);

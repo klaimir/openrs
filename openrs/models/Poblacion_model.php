@@ -186,7 +186,7 @@ class Poblacion_model extends MY_Model
      * @return array de poblaciones en formato dropdown
      */
     
-    function get_poblaciones_dropdown($provincia_id,$default_value="",$activa=NULL)
+    function get_poblaciones_dropdown($provincia_id,$default_value="", $text_value="- Seleccione población -")
     {
         // Array de poblaciones
         // Añadimos esto para que no falle cuando no exista provincia
@@ -199,7 +199,7 @@ class Poblacion_model extends MY_Model
             $poblaciones=$this->as_dropdown('poblacion')->where('provincia_id',$provincia_id)->get_all();
         }
         // Selección inicial
-        $seleccion[$default_value]="- Seleccione población -";
+        $seleccion[$default_value]=$text_value;
         // Por tanto devolvemos el operador suma para que mantenga las claves numéricas
         return ($seleccion+$poblaciones);
     }

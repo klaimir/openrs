@@ -147,12 +147,12 @@ class Zona_model extends MY_Model
      * @return array de zonas en formato dropdown
      */
     
-    function get_zonas_dropdown($poblacion_id,$default_value="",$show_default_value=TRUE)
+    function get_zonas_dropdown($poblacion_id,$default_value="",$show_default_value=TRUE, $text_value="- Seleccione población -")
     {
         // Selección inicial
         if($show_default_value)
         {
-            $seleccion[$default_value]="- Seleccione zona -";
+            $seleccion[$default_value]=$text_value;
         }
         else
         {

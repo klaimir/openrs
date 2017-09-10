@@ -1240,10 +1240,10 @@ class Inmueble_model extends MY_Model
      *
      * @return array de ofertas en formato dropdown
      */
-    function get_ofertas_dropdown($default = "")
+    function get_ofertas_dropdown($default = "", $text_value="- Seleccione oferta -")
     {
         $ofertas = array();
-        $ofertas[$default] = '- Seleccione oferta -';
+        $ofertas[$default] = $text_value;
         $ofertas[1] = lang('inmuebles_ofertas_vender');
         $ofertas[2] = lang('inmuebles_ofertas_alquilar');
         $ofertas[3] = lang('inmuebles_ofertas_ambos');
