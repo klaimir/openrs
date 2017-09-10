@@ -104,7 +104,11 @@
                 <div class="navbar-header pull-left">
                     <a href="index.html" class="navbar-brand">
                         <small>
+                            <?php /*
                             <i class="fa fa-leaf"></i>
+                             * 
+                             */
+                            ?>
                             OPENRS
                         </small>
                     </a>
