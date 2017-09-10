@@ -251,8 +251,10 @@ class Seccion extends MY_Controller_Front
                 );
                 $this->email->send();
 				$this->session->set_flashdata('mensaje','El mensaje ha sido enviado correctamente');
+				redirect($this->uri->segment(1).'/'.$this->uri->segment(2));
             }else{
 				$this->session->set_flashdata('error',validation_errors());
+				redirect($this->uri->segment(1).'/'.$this->uri->segment(2));
 			}
         }
 
@@ -521,8 +523,10 @@ class Seccion extends MY_Controller_Front
                 );
                 $this->email->send();
 				$this->session->set_flashdata('mensaje','El mensaje ha sido enviado correctamente');
+				redirect($this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
             }else{
 				$this->session->set_flashdata('error',validation_errors());
+				redirect($this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
 			}
         }
 		if($data['inmueble']){

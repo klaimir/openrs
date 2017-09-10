@@ -726,36 +726,38 @@ $mensaje = array(
 					<?php }?>
 					<?php echo form_open('',array('class'=>'form-horizontal','id'=>'frmContacto')); ?>
 					<div class="col-sm-6">
-						<div class="form-group margin-right-0">
+						<div class="col-sm-12">
 								<?php echo form_input($nombre); ?>
 								<span><?php echo form_error('nombre'); ?></span>
 								<p></p>
 						</div>
-						<div class="form-group margin-right-0">
+						<div class="col-sm-12">
 								<?php echo form_input($email); ?>
 								<span><?php echo form_error('email'); ?></span>
 								<p></p>
 						</div>
-						<div class="form-group margin-right-0">
-							<?php echo form_textarea($mensaje); ?>
-							<span><?php echo form_error('mensaje'); ?></span>
-							<p></p>
-						</div>
 					</div>
 					<div class="col-sm-6">
-						<div class="form-group margin-left-0">
+						<div class="col-sm-12">
 								<?php echo form_input($empresa); ?>
 								<span><?php echo form_error('empresa'); ?></span>
 								<p></p>
 						</div>
-						<div class="form-group margin-left-0">
+						<div class="col-sm-12">
 								<?php echo form_input($telefono); ?>
 								<span><?php echo form_error('telefono'); ?></span>
 								<p></p>	
 						</div>
 					</div>
 					<div class="col-sm-12">
-						<div class="form-group row">
+						<div class="col-sm-12">
+							<?php echo form_textarea($mensaje); ?>
+							<span><?php echo form_error('mensaje'); ?></span>
+							<p></p>
+						</div>
+					</div>
+					<div class="col-sm-12 margin-bottom-20">
+						<div class="col-sm-4">
 							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmit">Enviar</button>
 						</div>
 					</div>
