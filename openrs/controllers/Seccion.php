@@ -38,6 +38,13 @@ class Seccion extends MY_Controller_Front
         // Cargas de key para recaptcha para protección de formularios externos
         $this->session->set_userdata('recaptcha_secret_key', $config->recaptcha_secret_key);
         $this->session->set_userdata('recaptcha_site_key', $config->recaptcha_site_key); 
+        
+        // Enable profiler if ENVIRONMENT is development
+        if(ENVIRONMENT=='development')
+        {
+            $this->output->enable_profiler(TRUE);
+        }        
+        
         // Datos de idiomas
         if($this->session->userdata('idioma'))
             $this->lang->load(array('admin', 'auth', 'blog', 'cms', 'common', 'inmuebles', 'ion_auth', 'tienda'),$this->session->userdata('idioma'));
@@ -103,7 +110,7 @@ class Seccion extends MY_Controller_Front
         $data['secciones_header'] = $this->Seccion_model->get_secciones_header($data['idioma_actual']->id_idioma);
         $data['subsecciones_header'] = $this->Seccion_model->get_subsecciones_header($data['idioma_actual']->id_idioma);
         //Para buscador inmuebles
-        $data['provincias'] = $this->Provincia_model->get_provincias_dropdown();
+        $data['provincias'] = $this->Provincia_model->get_provincias_dropdown(-1);
         $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown(-1, 1);
         $data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1);
 
@@ -265,12 +272,28 @@ class Seccion extends MY_Controller_Front
 
     function cargar_localidades($idprovincia)
     {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if (!$this->input->is_ajax_request())
+        {
+            echo 'Petición no realizada a través de AJAX';
+            return;
+        }
         $this->data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($idprovincia);
         $this->load->view('public/poblaciones', $this->data);
     }
 
     function cargar_zonas($idpoblacion)
     {
+        // Deshabilitar profiler
+        $this->output->enable_profiler(FALSE);
+        // Comprobación de petición por AJAX
+        if (!$this->input->is_ajax_request())
+        {
+            echo 'Petición no realizada a través de AJAX';
+            return;
+        }
         $this->data['zonas'] = $this->Zona_model->get_zonas_dropdown($idpoblacion);
         $this->load->view('public/zonas', $this->data);
     }
@@ -340,13 +363,13 @@ class Seccion extends MY_Controller_Front
         $this->session->set_userdata('inmuebles_buscador_front_oportunidad_id', $this->input->get('oportunidad_id'));
 
         // Filtro banios_desde
-        $this->session->set_userdata('inmuebles_buscador_front_banios_desde', $this->input->get('banios_desde'));
+        $this->session->set_userdata('inmuebles_buscador_front_banios_desde', $this->input->get('banios'));
 
         // Filtro habitaciones_desde
-        $this->session->set_userdata('inmuebles_buscador_front_habitaciones_desde', $this->input->get('habitaciones_desde'));
+        $this->session->set_userdata('inmuebles_buscador_front_habitaciones_desde', $this->input->get('habitaciones'));
 
         // Filtro metros_desde
-        $this->session->set_userdata('inmuebles_buscador_front_metros_desde', $this->input->get('metros_desde'));
+        $this->session->set_userdata('inmuebles_buscador_front_metros_desde', $this->input->get('metros'));
 
         // Filtro precios_desde
         $this->session->set_userdata('inmuebles_buscador_front_precios_desde', $this->input->get('precios_desde'));

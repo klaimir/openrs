@@ -15,7 +15,7 @@ class Buscador_model extends MY_Model {
                     $this->db->where('v_inmuebles.tipo_id', $filtros['tipo_id']);
                 }
                 // Filtro Provincia
-                if (isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0)
+                if (isset($filtros['provincia_id']) && !empty($filtros['provincia_id']) && $filtros['provincia_id'] >= 0)
                 {
                     $this->db->where('v_inmuebles.provincia_id', $filtros['provincia_id']);
                 }
