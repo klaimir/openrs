@@ -192,14 +192,15 @@ class Page extends MY_Controller
 		$this->data = $this->inicializar('6', $this->lang->line('cms_c_crear_bloque'));
 		$this->data['seccion'] = $seccion;
 		$this->data['bloque'] = $bloque;
+		$this->data['bloques'] = $this->Seccion_model->get_bloques($id_bloque);
 		$tipo_bloque_dd['0'] = $this->lang->line('drop_seleccione');
 		$tipo_bloque_dd['1'] = $this->lang->line('cms_texto');
 		$tipo_bloque_dd['2'] = $this->lang->line('cms_carrusel');
-                $tipo_bloque_dd['3'] = $this->lang->line('cms_blog');
+        $tipo_bloque_dd['3'] = $this->lang->line('cms_blog');
 		$tipo_bloque_dd['4'] = $this->lang->line('cms_iframe');
-                $tipo_bloque_dd['5'] = $this->lang->line('cms_inmuebles');
-                $tipo_bloque_dd['7'] = $this->lang->line('cms_buscador');
-                $this->data['tipo_bloque'] = $tipo_bloque_dd;
+        $tipo_bloque_dd['5'] = $this->lang->line('cms_inmuebles');
+        $tipo_bloque_dd['7'] = $this->lang->line('cms_buscador');
+        $this->data['tipo_bloque'] = $tipo_bloque_dd;
 		$estado_dd['0'] = $this->lang->line('drop_seleccione');
 		$estado_dd['1'] = $this->lang->line('cms_publicado');
 		$estado_dd['2'] = $this->lang->line('cms_eliminado');
@@ -261,297 +262,10 @@ class Page extends MY_Controller
 						}	
 					}
 				}
-				//comprobamos si hay imagen para banner
-				if (isset($_FILES['userfile']['tmp_name']) && $_FILES['userfile']['tmp_name']) {
-						$config['upload_path'] = 'img/parallax/';
-						$config['allowed_types']='gif|jpg|jpeg|png';
-						$config['max_size']	= '2048';
-						$config['overwrite']=FALSE;
-						//$config['encrypt_name'] = TRUE;
-				
-						$this->load->library('upload', $config);
-				
-						if ( ! $this->upload->do_upload()) {
-							echo $this->upload->display_errors();exit();
-						}
-						else {
-							$file_data = $this->upload->data();
-							$imagen_producto_data = array(
-									'imagen' => $file_data['file_name']
-							);
-							$this->Seccion_model->update_bloque($id_bloque, $imagen_producto_data);
-						}
-				}
 				redirect('page/editar_bloque/'.$id_bloque);			
 			}
 		}
-                $this->render_private('seccion/crear_bloque', $this->data);
-		/*$this->template->set_template('header_and_content');
-		$this->template->write_view('content','seccion/crear_bloque',$data);
-		$this->template->write_view('header','templates/header_admin',$data);
-		$this->template->render();*/
-		/*if(isset($url_seccion)){
-			$seccion=$this->Seccion_model->get_seccion_nombre($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $url_seccion);
-			if (count($seccion)==0){
-				redirect('errors/error_404');
-			}else{
-				$bloque=$this->Seccion_model->get_bloque($this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id)->id_idioma, $id_bloque);
-				if (count($bloque)==0){
-					$nuevo=true;
-				}else{
-					$nuevo=false;
-				}
-			}
-		}else{
-			redirect('errors/error_404');
-		}
-		$this->data = $this->inicializar('6', $this->lang->line('cms_c_crear_bloque'));
-		$this->data['seccion'] = $seccion;
-		//$tipo_bloque_dd=$this->formularios->dropdown('tipo_bloque','id','nombre');
-		//$estado_dd=$this->formularios->dropdown('estados','id','estado');
-		$tipo_bloque_dd['1'] = $this->lang->line('cms_texto');
-		$tipo_bloque_dd['4'] = $this->lang->line('cms_iframe');
-		$estado_dd['0'] = $this->lang->line('drop_seleccione');
-		$estado_dd['1'] = $this->lang->line('cms_publicado');
-		$estado_dd['2'] = $this->lang->line('cms_eliminado');
-		$estado_dd['3'] = $this->lang->line('cms_borrador');
-		$ancho_dd['0'] = $this->lang->line('drop_seleccione');
-		$ancho_dd['1'] = $this->lang->line('cms_ancho_completo');
-		$ancho_dd['2'] = $this->lang->line('cms_ancho_margen');
-		//array para formularios
-		$inputs=array(
-				//Caso 1: input normal
-				'1'=>array(
-						'form_group'=>array(
-								'name'=>'titulo_bloque', //name = nombre del campo en la base de datos
-								'id'=>'titulo_bloque',
-								'value'=> set_value('titulo_bloque',isset($bloque->titulo_bloque) ? $bloque->titulo_bloque : ''),
-								'class'=>'form-control',
-								'placeholder'=>$this->lang->line('cms_c_bloques_titulo_placeholder'),
-						),
-						'val_req' => '1',
-						'fijo' => '0',
-						'label'=>$this->lang->line('cms_c_bloques_titulo'),
-						'help'=>form_error('titulo'),
-						'label_class'=>'control-label pull-right', //Clases de la label del intput
-						'class'=>'col-md-10', //Clases
-						'type'=>'input',
-						'form_validation'=>'trim|xss_clean|max_length[50]',
-				),
-				//Caso 3: select dropdown
-				'2'=>array(
-						'form_group'=>array(
-								'name'=>'id_tipo_bloque', //name = nombre del campo en la base de datos
-								'id'=>'id_tipo_bloque',
-								'value'=> set_value('id_tipo_bloque',isset($bloque->id_tipo_bloque) ? $bloque->id_tipo_bloque : 0),
-								'class'=>'form-control id_tipo_bloque',
-								'disabled'=>isset($bloque->id_tipo_bloque) ?'disabled':'',
-						),
-						'val_req' => '0',
-						'fijo' => '1',
-						'dropdown'=>$tipo_bloque_dd,
-						'label'=>$this->lang->line('cms_c_bloques_tipo_bloque'),
-						'help'=>form_error('id_tipo_bloque'),
-						'label_class'=>'control-label pull-right', //Clases de la label del intput
-						'class'=>'col-md-4', //Clases
-						'type'=>'select',
-						'form_validation'=>'trim|xss_clean|integer|is_natural_no_zero',
-				),
-				'3'=>array(
-						'form_group'=>array(
-								'name'=>'id_estado', //name = nombre del campo en la base de datos
-								'id'=>'id_estado',
-								'value'=> set_value('id_estado',isset($bloque->id_estado) ? $bloque->id_estado : 1),
-								'class'=>'form-control id_estado',
-						),
-						'val_req' => '1',
-						'fijo' => '1',
-						'dropdown'=>$estado_dd,
-						'label'=>$this->lang->line('cms_c_bloques_estado'),
-						'help'=>form_error('id_estado'),
-						'label_class'=>'control-label pull-right', //Clases de la label del intput
-						'class'=>'col-md-4', //Clases
-						'type'=>'select',
-						'form_validation'=>'trim|xss_clean|integer|is_natural_no_zero',
-				),
-				'4'=>array(
-						'form_group'=>array(
-								'name'=>'background', //name = nombre del campo en la base de datos
-								'id'=>'background',
-								'value'=> set_value('background',isset($bloque->background) ? $bloque->background : ''),
-								'class'=>'form-control input_color',
-								'type'=>'color',
-						),
-						'val_req' => '1',
-						'fijo' => '1',
-						'label'=>$this->lang->line('cms_c_bloques_background'),
-						'help'=>form_error('background'),
-						'label_class'=>'control-label pull-right', //Clases de la label del intput
-						'class'=>'col-md-1', //Clases
-						'type'=>'color',
-						'form_validation'=>'trim|xss_clean',
-				),
-				'5'=>array(
-						'form_group'=>array(
-								'name'=>'c_titulo', //name = nombre del campo en la base de datos
-								'id'=>'c_titulo',
-								'value'=> set_value('c_titulo',isset($bloque->c_titulo) ? $bloque->c_titulo : ''),
-								'class'=>'form-control input_color',
-								'type'=>'color',
-						),
-						'val_req' => '1',
-						'fijo' => '1',
-						'label'=>$this->lang->line('cms_c_bloques_color_titulo'),
-						'help'=>form_error('c_titulo'),
-						'label_class'=>'control-label pull-right', //Clases de la label del intput
-						'class'=>'col-md-1', //Clases
-						'type'=>'color',
-						'form_validation'=>'trim|xss_clean',
-				),
-				'6'=>array(
-						'form_group'=>array(
-								'name'=>'ancho', //name = nombre del campo en la base de datos
-								'id'=>'ancho',
-								'value'=> set_value('ancho',isset($bloque->ancho) ? $bloque->ancho : 1),
-								'class'=>'form-control ancho',
-						),
-						'val_req' => '1',
-						'fijo' => '1',
-						'dropdown'=>$ancho_dd,
-						'label'=>$this->lang->line('cms_c_bloques_ancho'),
-						'help'=>form_error('ancho'),
-						'label_class'=>'control-label pull-right', //Clases de la label del intput
-						'class'=>'col-md-4', //Clases
-						'type'=>'select',
-						'form_validation'=>'trim|xss_clean|integer|is_natural_no_zero',
-				),
-				'15'=>array(
-						'form_group'=>array(
-								'name'=>'prioridad', //name = nombre del campo en la base de datos
-								'id'=>'prioridad',
-								'value'=> ($nuevo==true)? set_value('prioridad',$this->General_model->maximo('bloque','prioridad',array('id_seccion'=>$seccion->id))->prioridad+1):set_value('prioridad',$bloque->prioridad),
-								'class'=>'form-control',
-						),
-						'val_req' => '1',
-						'fijo' => '1',
-						'label'=>$this->lang->line('cms_c_listado_prioridad'),
-						'type'=>'hidden',
-						'form_validation'=>'trim|xss_clean|integer',
-				),
-				'16'=>array(
-						'form_group'=>array(
-								'name'=>'id_seccion', //name = nombre del campo en la base de datos
-								'id'=>'id_seccion',
-								'value'=> $seccion->id,
-								'class'=>'form-control',
-						),
-						'val_req' => '1',
-						'fijo' => '1',
-						'label'=>'id',
-						'type'=>'hidden',
-						'form_validation'=>'trim|xss_clean|integer',
-				),
-				'17'=>array(
-						'form_group'=>array(
-								'name'=>'id_seccion', //name = nombre del campo en la base de datos
-								'id'=>'id_seccion',
-								'value'=> $seccion->id,
-								'class'=>'form-control',
-						),
-						'val_req' => '1',
-						'fijo' => '1',
-						'label'=>'id',
-						'type'=>'hidden',
-						'form_validation'=>'trim|xss_clean|integer',
-				),
-		);
-		
-		$datos=array(
-				'nombre'=>'bloque',
-				'editando'=>isset($bloque->titulo_bloque) ? $bloque->titulo_bloque : '' ,
-				'nuevo'=>$nuevo,
-				'view'=>'seccion/crear_bloque',
-				'redirect'=>'page/listar_bloques/'.$url_seccion
-		);
-		$this->data = array_merge($this->data, $datos);
-		$this->data['inputs']=$inputs;
-		$this->data['id_bloque']=isset($bloque->id_bloque)?$bloque->id_bloque:'';
-		if(isset($bloque->id_bloque)){
-			foreach($this->Idioma_model->get_idiomas_subidos_activos() as $idioma){
-				$this->data['elementos'][$idioma->id_idioma] = $this->Seccion_model->get_bloque($idioma->id_idioma, $bloque->id_bloque);
-			}
-		}
-		//$this->crear($inputs,$datos);
-		if($this->input->post()){
-			$conf = $this->General_model->get_config();
-			$this->form_validation->set_message('is_natural_no_zero', $this->lang->line('login_c_is_natural_no_zero'));
-			$this->form_validation->set_message('required',$this->lang->line('login_c_required'));
-			$this->form_validation->set_message('max_length',$this->lang->line('login_c_max_length'));
-			foreach($this->data['cargar_idiomas'] as $idioma){
-				if($idioma->id_idioma == $conf->idioma_defecto){
-					foreach($this->data['inputs'] as $it){
-						if($it['fijo']){
-							if($it['val_req']){
-								$this->form_validation->set_rules($it['form_group']['name'],$it['label'],'required|'.$it['form_validation']);
-							}else{
-								$this->form_validation->set_rules($it['form_group']['name'],$it['label'],$it['form_validation']);
-							}
-						}else{
-							if($it['val_req']){
-								$this->form_validation->set_rules($it['form_group']['name'].'_'.$idioma->id_idioma,$it['label'],'required|'.$it['form_validation']);
-							}else{
-								$this->form_validation->set_rules($it['form_group']['name'].'_'.$idioma->id_idioma,$it['label'],$it['form_validation']);
-							}
-						}
-					}
-				}else{
-					foreach($this->data['inputs'] as $it){
-						if(!$it['fijo'])
-							$this->form_validation->set_rules($it['form_group']['name'].'_'.$idioma->id_idioma,$it['label'],$it['form_validation']);
-					}
-				}
-			}
-			if($this->form_validation->run()){
-				foreach($this->data['inputs'] as $it){
-					if($it['fijo'])
-						$datos_insert[$it['form_group']['name']]=$this->input->post($it['form_group']['name']);
-				}
-				
-				if ($nuevo==true){
-					$id_bloque=$this->Seccion_model->crear_bloque('bloque',$datos_insert, $this->input->post('id_tipo_bloque'), $this->data['cargar_idiomas']);
-				}else{
-					$datos_insert['id_tipo_bloque']=$bloque->id_tipo_bloque;
-					$this->General_model->update('bloque',$datos_insert,array('id_bloque'=>$id_bloque));
-					//Falta borrar los datos si se cambia el tipo de bloque
-				} 
-				foreach($this->data['cargar_idiomas'] as $idioma){
-					foreach($this->data['inputs'] as $it){
-						if(!$it['fijo']){
-							if($this->input->post($it['form_group']['name'].'_'.$idioma->id_idioma)){
-								$datos_insert_idiomas[$it['form_group']['name']]=$this->input->post($it['form_group']['name'].'_'.$idioma->id_idioma);
-							}else{
-								$datos_insert_idiomas[$it['form_group']['name']]=$this->input->post($it['form_group']['name'].'_'.$conf->idioma_defecto).'_'.$idioma->id_idioma;
-							}
-						}
-					}
-					if($nuevo==true){
-						$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;
-						$datos_insert_idiomas['id_bloque'] = $id_bloque;
-						$this->General_model->insert('bloque_idiomas', $datos_insert_idiomas);
-					}else{
-						if($this->General_model->existe('bloque_idiomas', array('id_bloque'=>$id_bloque, 'id_idioma'=>$idioma->id_idioma))){
-							$this->General_model->update('bloque_idiomas',$datos_insert_idiomas,array('id_bloque'=>$id_bloque, 'id_idioma'=>$idioma->id_idioma));
-						}else{
-							$datos_insert_idiomas['id_idioma'] = $idioma->id_idioma;
-							$datos_insert_idiomas['id_bloque'] = $id_bloque;
-							$this->General_model->insert('bloque_idiomas', $datos_insert_idiomas);
-						}	
-					}
-				}
-				redirect('page/editar_bloque/'.$id_bloque);			
-			}
-		}
-		$this->render_private($datos['view'], $this->data);*/
+        $this->render_private('seccion/crear_bloque', $this->data);
 	}
 	
 	
@@ -762,12 +476,6 @@ class Page extends MY_Controller
 					'val_req' => '1',
 					'form_validation'=>'trim|xss_clean|integer',
 					'radio_buttons'=>array(
-						'1'=> array(
-							'value' => '1',
-							'label' => $this->lang->line('cms_tipo_auto'),
-							'checked' => ((isset($seccion->tipo_seccion) && $seccion->tipo_seccion == 1) ? 'si' : 'no'),
-						),
-					
 						'2'=> array(
 							'value' => '2',
 							'label' => $this->lang->line('cms_tipo_manual'),
@@ -787,11 +495,6 @@ class Page extends MY_Controller
 							'value' => '5',
 							'label' => $this->lang->line('cms_tipo_desplegable'),
 							'checked' => ((isset($seccion->tipo_seccion) && $seccion->tipo_seccion == 5) ? 'si' : 'no'),
-						),
-						'6'=> array(
-							'value' => '6',
-							'label' => $this->lang->line('cms_tipo_tienda'),
-							'checked' => ((isset($seccion->tipo_seccion) && $seccion->tipo_seccion == 6) ? 'si' : 'no'),
 						),
 					),
 				),

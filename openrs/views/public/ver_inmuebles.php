@@ -5,28 +5,40 @@
 		<div style="background:#30b481;">
 				<form action="<?php echo site_url($this->uri->segment('1').'/browser');?>" method="get" class="form-inline padding-10 centrado margin-top-5" id="frmFiltro">
 					<div class="container background-color-white">
-                                                                    <div class="col-sm-12 margin-top-20 margin-bottom-10">
-                                                                        <div class="col-sm-2">
+                                                                    <div class="col-sm-12 margin-top-10">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <input type="text" name="referencia" class="form-control" placeholder="Referencia"/>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                             <?php echo form_dropdown('oferta_id',$ofertas,$filtros['oferta_id'],'class="form-control"');?>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <?php echo form_dropdown('tipo_id',$tipos_inmuebles,$filtros['tipo_id'],'class="form-control"');?>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <?php echo form_dropdown('provincia_id',$provincias,$filtros['provincia_id'],'class="form-control" id="provincia"');?>
                                                                         </div>
-                                                                        <div class="col-sm-2 oculto" id="localidad">
+																		<?php if(isset($poblaciones) && $poblaciones){?>
+																			<div class="col-sm-2 margin-top-10">
+																				<?php echo form_dropdown('poblacion_id',$poblaciones,$filtros['poblacion_id'],'class="form-control" id="poblacion"');?>
+																			</div>
+																		<?php }else{?>
+																			<div class="col-sm-2 margin-top-10 oculto" id="localidad">
 
-                                                                        </div>
-                                                                        <div class="col-sm-2 oculto" id="zona">
+																			</div>
+																		<?php }?>
+																		<?php if(isset($zonas) && $zonas){?>
+																			<div class="col-sm-2 margin-top-10">
+																				<?php echo form_dropdown('zona_id',$zonas,$filtros['zona_id'],'class="form-control" id="zona"');?>
+																			</div>
+																		<?php }else{?>
+																			<div class="col-sm-2 margin-top-10 oculto" id="zona">
 
-                                                                        </div>
+																			</div>
+																		<?php }?>
                                                                     </div>
                                                                     <div class="col-sm-12 margin-bottom-20">
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                             <select name="habitaciones" class="form-control">
                                                                                 <option value="">- Habitaciones -</option>
                                                                                 <option value="1" <?php echo ($filtros['habitaciones_desde'] == 1)?'selected':'';?>>+1</option>
@@ -36,7 +48,7 @@
                                                                                 <option value="5" <?php echo ($filtros['habitaciones_desde'] == 5)?'selected':'';?>>+5</option>
                                                                             </select>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                             <select name="banios" class="form-control">
                                                                                 <option value="">- Baños -</option>
                                                                                 <option value="1" <?php echo ($filtros['banios_desde'] == 1)?'selected':'';?>>+1</option>
@@ -46,16 +58,16 @@
                                                                                 <option value="5" <?php echo ($filtros['banios_desde'] == 5)?'selected':'';?>>+5</option>
                                                                             </select>
                                                                         </div>
-                                                                        <div class="col-sm-2">
-                                                                                <input type="text" name="precios_desde" class="form-control" placeholder="Precio desde" value="<?php echo $filtros['precios_desde'];?>"/>
+                                                                        <div class="col-sm-2 margin-top-10">
+                                                                            <input type="text" name="precios_desde" class="form-control" placeholder="Precio desde" value="<?php echo $filtros['precios_desde'];?>"/>
                                                                         </div>
-                                                                        <div class="col-sm-2">
-                                                                                <input type="text" name="precios_hasta" class="form-control" placeholder="Precio hasta" value="<?php echo $filtros['precios_hasta'];?>"/>
+                                                                        <div class="col-sm-2 margin-top-10">
+                                                                            <input type="text" name="precios_hasta" class="form-control" placeholder="Precio hasta" value="<?php echo $filtros['precios_hasta'];?>"/>
                                                                         </div>
-                                                                        <div class="col-sm-2">
-                                                                                <input type="text" name="metros" class="form-control" placeholder="Sup. desde" value="<?php echo $filtros['metros_desde'];?>"/>
+                                                                        <div class="col-sm-2 margin-top-10">
+                                                                            <input type="text" name="metros" class="form-control" placeholder="Sup. desde" value="<?php echo $filtros['metros_desde'];?>"/>
                                                                         </div>
-                                                                        <button type="submit" class="btn btn-primary col-sm-2">BUSCAR</button>
+                                                                        <button type="submit" class="btn btn-primary col-sm-2 margin-top-10">BUSCAR</button>
                                                                     </div>
                                                                 </div>
 					<input type="hidden" name="start" id="start" value="<?php echo $filtros['start'];?>">
@@ -89,18 +101,22 @@
                             <div class="col-sm-12 padding-0">
                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                     <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="height:255px;"/>
-                                    <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
-                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta');?></p>
-                                    <?php }elseif($inmueble->precio_alquiler > 0 && $inmueble->precio_compra == 0){?>
-                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_alquiler');?></p>
-                                    <?php }else{?>
-                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
-                                    <?php }?>
-                                    <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                        <p class="tipo-oferta col-xs-12"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
-                                    <?php }?>
                                 </a>
                             </div>
+							<div class="col-sm-12 padding-0">
+								<?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
+                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta');?></p>
+                                <?php }elseif($inmueble->precio_alquiler > 0 && $inmueble->precio_compra == 0){?>
+                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_alquiler');?></p>
+                                <?php }else{?>
+                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
+                                <?php }?>
+								<p class="tipo-oferta col-xs-12">
+									<?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){
+										echo $this->lang->line('tienda_inmueble_oferta');
+									}?>
+								</p>
+							</div>
                             <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px;;height:73px;">
                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                     <h4 class="padding-top-10" id="nom2<?php echo $cont;?>"><?php echo $inmueble->titulo; ?></h4>
@@ -230,6 +246,13 @@ $(document).ready(function(){
 			$('#localidad').fadeOut(500);
 		}
     });
+	<?php if(isset($poblaciones) && $poblaciones){?>
+		$('#poblacion').on('change',function(){
+			var poblacion = $(this).val();
+			$('#zona').fadeIn(500);
+			$('#zona').load('<?php echo site_url('seccion/cargar_zonas');?>/'+poblacion);
+		});
+	<?php }?>
     $('#paginicio').on('click',function(){
         var pag = $(this).data('pag');
         $('#start').val(pag);

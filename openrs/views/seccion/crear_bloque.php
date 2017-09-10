@@ -28,6 +28,7 @@
 					<?php }?>
 				</ul>
 				<div class="tab-content">
+					<?php $cont = 0;?>
 					<?php foreach($cargar_idiomas as $idioma){?>
 						<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
 							<div class="tab-pane active" id="tab_<?php echo $idioma->id_idioma;?>">
@@ -39,11 +40,12 @@
 										<label for="titulo_bloque_<?php echo $idioma->id_idioma;?>" class="control-label pull-right"><?php echo $this->lang->line('cms_c_bloques_titulo')?></label>	
 									</div>
 								    <div class="col-sm-4">
-								    	<input type="text" name="titulo_bloque_<?php echo $idioma->id_idioma;?>" value="<?php echo (isset($bloque->titulo_bloque) && $bloque->titulo_bloque) ? $bloque->titulo_bloque : '';?>" class="form-control" placeholder="Nombre del bloque">    	
+								    	<input type="text" name="titulo_bloque_<?php echo $idioma->id_idioma;?>" value="<?php echo (isset($bloques[$cont]->titulo_bloque) && $bloques[$cont]->titulo_bloque) ? $bloques[$cont]->titulo_bloque : '';?>" class="form-control" placeholder="Nombre del bloque">    	
 								    	<p></p>    
 								    </div>
 								</div>
 							</div>
+						<?php $cont++;?>
 					<?php }?>
 					<div class="form-group">
 						<div class="col-sm-2">
@@ -52,23 +54,10 @@
 					    <div class="col-sm-4">
 					    	<select id="id_tipo_bloque" name="id_tipo_bloque" class="form-control id_tipo_bloque" <?php echo (isset($bloque->id_tipo_bloque) && $bloque->id_tipo_bloque) ? 'disabled="disabled"' : '';?>>
 					    		<?php foreach($tipo_bloque as $k=>$v){?>
-									<option value="<?php echo $k;?>" <?php echo (isset($bloque->id_tipo_bloque) && $bloque->id_tipo_bloque) ? 'selected="selected"' : '';?>><?php echo $v;?></option>
+									<option value="<?php echo $k;?>" <?php echo (isset($bloque->id_tipo_bloque) && $bloque->id_tipo_bloque == $k) ? 'selected="selected"' : '';?>><?php echo $v;?></option>
 								<?php }?>
 							</select>    	
 					    	<p></p>    
-						</div>
-					</div>
-					<?php if(!$nuevo && isset($bloque->id_tipo_bloque) && $bloque->id_tipo_bloque == 6){?>
-						<div id="imagen" class="form-group">
-					<?php }else{?>
-						<div id="imagen" class="form-group oculto">
-					<?php }?>
-						<div class="col-sm-2">
-							<label for="userfile" class="control-label pull-right"><?php echo $this->lang->line('cms_c_bloques_imagen')?></label>	
-						</div>
-						<div class="col-sm-4">
-							<input type="file" name="userfile" class="form-control">    	
-							<p></p>    
 						</div>
 					</div>
 					<div class="form-group">

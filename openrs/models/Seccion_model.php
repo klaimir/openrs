@@ -120,6 +120,12 @@ class Seccion_model extends MY_Model {
 		return $this->db->get('bloque')->row();
 	}
 	
+	public function get_bloques($id_bloque){
+		$this->db->join('bloque_idiomas', 'bloque.id_bloque = bloque_idiomas.id_bloque');
+		$this->db->where('bloque.id_bloque',$id_bloque);
+		return $this->db->get('bloque')->result();
+	}
+	
 	//Al crear el bloque creamos el bloque y su relación con el contenido
 	public function crear_bloque($tabla,$data_bloque, $tipo_bloque, $idiomas){
 		$this->db->insert($tabla,$data_bloque);
