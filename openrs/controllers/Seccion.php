@@ -190,9 +190,10 @@ class Seccion extends MY_Controller_Front
         if ($this->input->post())
         {
 
-            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('email', 'Email', 'trim|xss_clean|required|valid_email');
-            $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|xss_clean|required|is_natural');
+            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+            $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|required|is_natural');
+			$this->form_validation->set_rules('mensaje', 'Mensaje', 'trim|required');
 
             $data = array(
                 'secret' => $this->session->userdata('recaptcha_secret_key'),
@@ -242,23 +243,14 @@ class Seccion extends MY_Controller_Front
 						</html>'
                 );
                 $this->email->send();
-                redirect('seccion/envio/' . $seccion);
-            }
+				$this->session->set_flashdata('mensaje','El mensaje ha sido enviado correctamente');
+            }else{
+				$this->session->set_flashdata('error',validation_errors());
+			}
         }
 
         $this->template->write_view('header', 'public/template/header', $data);
         $this->template->write_view('content_center', 'public/seccion', $data);
-        $this->template->write_view('footer', 'public/template/footer', $data);
-        $this->template->render();
-    }
-
-    function envio($seccion)
-    {
-        $idseccion = $this->seccion_model->get_seccion_nombre(1, $seccion)->id;
-        $data = $this->inicializar($idseccion);
-        $data['nseccion'] = $seccion;
-        $this->template->write_view('header', 'public/template/header', $data);
-        $this->template->write_view('content_center', 'public/envio', $data);
         $this->template->write_view('footer', 'public/template/footer', $data);
         $this->template->render();
     }
@@ -303,6 +295,12 @@ class Seccion extends MY_Controller_Front
         {
             $filtros = $this->security->xss_clean($filtros);
             $data['filtros'] = $filtros;
+			if(isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0){
+				$data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($filtros['provincia_id']);
+				if(isset($filtros['poblacion_id']) && !empty($filtros['poblacion_id'])){
+					$data['zonas'] = $this->Zona_model->get_zonas_dropdown($filtros['poblacion_id']);
+				}
+			}
             // Búsqueda
             $data['total'] = $this->Buscador_model->getInmuebleBuscador($data['idioma_actual']->id_idioma, $filtros, 1);
             $data['inmuebles'] = $this->Buscador_model->getInmuebleBuscador($data['idioma_actual']->id_idioma, $filtros);
@@ -445,9 +443,10 @@ class Seccion extends MY_Controller_Front
         if ($this->input->post())
         {
             $cadena = str_replace("\r\n", "<br />", $this->input->post('mensaje'));
-            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('email', 'Email', 'trim|xss_clean|required|valid_email');
-            $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|xss_clean|required|is_natural');
+            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+            $this->form_validation->set_rules('telefono', 'Teléfono', 'trim|required|is_natural');
+			$this->form_validation->set_rules('mensaje', 'Mensaje', 'trim|required');
 
             $data = array(
                 'secret' => $this->session->userdata('recaptcha_secret_key'),
@@ -498,24 +497,18 @@ class Seccion extends MY_Controller_Front
                                                     </html>'
                 );
                 $this->email->send();
-                redirect('seccion/envioinmueble/' . $url_seo);
-            }
+				$this->session->set_flashdata('mensaje','El mensaje ha sido enviado correctamente');
+            }else{
+				$this->session->set_flashdata('error',validation_errors());
+			}
         }
-        $data['title'] = $data['inmueble']->titulo;
-        $data['meta_description'] = $data['inmueble']->descripcion_seo;
-        $data['meta_keywords'] = $data['inmueble']->keywords_seo;
+		if($data['inmueble']){
+			$data['title'] = $data['inmueble']->titulo;
+			$data['meta_description'] = $data['inmueble']->descripcion_seo;
+			$data['meta_keywords'] = $data['inmueble']->keywords_seo;
+		}
         $this->template->write_view('header', 'public/template/header', $data);
         $this->template->write_view('content_center', 'public/ver_inmueble', $data);
-        $this->template->write_view('footer', 'public/template/footer', $data);
-        $this->template->render();
-    }
-
-    function envioinmueble($url_seo)
-    {
-        $data = $this->inicializar(1);
-        $data['url_seo'] = $url_seo;
-        $this->template->write_view('header', 'public/template/header', $data);
-        $this->template->write_view('content_center', 'public/envio_inmueble', $data);
         $this->template->write_view('footer', 'public/template/footer', $data);
         $this->template->render();
     }

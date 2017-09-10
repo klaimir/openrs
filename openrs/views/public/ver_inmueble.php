@@ -73,7 +73,7 @@ $mensaje = array(
 		'class'=>'form-control caja-mensaje border-radius-8',
 		'rows'=>4,
 		'required' => 'required',
-		'placeholder' => 'Mensaje',
+		'placeholder' => '* Mensaje',
 		'onkeypress'=>'onTestChange()'
 );?>
 <div class="inicio-seccion hidden-xs"></div>
@@ -81,7 +81,20 @@ $mensaje = array(
 <?php if($inmueble){?>
     <div class="container-fluid background-color-f9">
 	<div class="container">
-		<div id="aviso-compra"></div>
+		<div id="aviso-compra">
+			<?php if($this->session->flashdata('error')){?>
+				<div class="alert alert-danger alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>¡Error!</strong> <?php echo $this->session->flashdata('error');?>
+				</div>
+			<?php }?>
+			<?php if($this->session->flashdata('mensaje')){?>
+				<div class="alert alert-success alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>¡Enhorabuena!</strong> <?php echo $this->session->flashdata('mensaje');?>
+				</div>
+			<?php }?>
+		</div>
 		<h1><?php echo $inmueble->titulo; ?></h1>
 		<!-- hacerlo en plan slider y que las imágenes mini sean los botoncitos típicos -->
 		<div id="mapa" class="col-sm-10 col-md-11 margin-top-20 padding-bottom-20">
@@ -126,35 +139,39 @@ $mensaje = array(
 		<div id="contacto" class="col-sm-10 col-md-11 oculto margin-top-20">
 			<?php echo form_open('',array('class'=>'form-horizontal','id'=>'frmInmueble')); ?>
 					<div class="col-sm-6">
-						<div class="form-group margin-right-0">
+						<div class="col-sm-12">
 								<?php echo form_input($nombre); ?>
 								<span><?php echo form_error('nombre'); ?></span>
 								<p></p>
 						</div>
-						<div class="form-group margin-right-0">
+						<div class="col-sm-12">
 								<?php echo form_input($email); ?>
 								<span><?php echo form_error('email'); ?></span>
 								<p></p>
 						</div>
-						<div class="form-group margin-right-0">
-							<?php echo form_textarea($mensaje); ?>
-							<span><?php echo form_error('mensaje'); ?></span>
-							<p></p>
-						</div>
-						<div class="form-group row">
-							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmitInmueble">Enviar</button>
-						</div>
 					</div>
 					<div class="col-sm-6">
-						<div class="form-group margin-left-0">
+						<div class="col-sm-12">
 								<?php echo form_input($empresa); ?>
 								<span><?php echo form_error('empresa'); ?></span>
 								<p></p>
 						</div>
-						<div class="form-group margin-left-0">
+						<div class="col-sm-12">
 								<?php echo form_input($telefono); ?>
 								<span><?php echo form_error('telefono'); ?></span>
 								<p></p>	
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<?php echo form_textarea($mensaje); ?>
+							<span><?php echo form_error('mensaje'); ?></span>
+							<p></p>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmitInmueble">Enviar</button>
 						</div>
 					</div>
 					<input type="hidden" name="inmueble" value="<?php echo $inmueble->titulo; ?>"/>
@@ -273,35 +290,35 @@ $(document).ready(function(){
 		$('#video').fadeOut(1);
 		$('#contacto').fadeOut(1);
                 $('#enlaces').fadeOut(1);
-		$('#mapa').fadeIn(500);
+		$('#mapa').fadeIn(1);
 	});
 	$('#igaleria').click(function(){
 		$('#mapa').fadeOut(1);
 		$('#video').fadeOut(1);
 		$('#contacto').fadeOut(1);
                 $('#enlaces').fadeOut(1);
-		$('#galeria').fadeIn(500);
+		$('#galeria').fadeIn(1);
 	});
 	$('#ivideo').click(function(){
 		$('#mapa').fadeOut(1);
 		$('#galeria').fadeOut(1);
 		$('#contacto').fadeOut(1);
                 $('#enlaces').fadeOut(1);
-		$('#video').fadeIn(500);
+		$('#video').fadeIn(1);
 	});
 	$('#icontacto').click(function(){
 		$('#mapa').fadeOut(1);
 		$('#galeria').fadeOut(1);
 		$('#video').fadeOut(1);
                 $('#enlaces').fadeOut(1);
-		$('#contacto').fadeIn(500);
+		$('#contacto').fadeIn(1);
 	});
         $('#ienlaces').click(function(){
 		$('#mapa').fadeOut(1);
 		$('#galeria').fadeOut(1);
 		$('#video').fadeOut(1);
 		$('#contacto').fadeOut(1);
-                $('#enlaces').fadeIn(500);
+                $('#enlaces').fadeIn(1);
 	});
 });
 function check_google_maps() {

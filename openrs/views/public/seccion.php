@@ -8,7 +8,7 @@ $nombre = array(
 		'id'=>'nombre',
 		'class'=>'form-control border-radius-8',
 		'required' => 'required',
-		'placeholder' => 'Nombre y Apellidos'
+		'placeholder' => '* Nombre y Apellidos'
 		);
 $empresa = array(
 		'name'=>'empresa',
@@ -22,13 +22,13 @@ $email = array(
 		'class'=>'form-control border-radius-8',
 		'required' => 'required',
 		'pattern' => "[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+",
-		'placeholder' => 'Email'
+		'placeholder' => '* Email'
 );
 $telefono = array(
 		'name'=>'telefono',
 		'id'=>'telefono',
 		'class'=>'form-control border-radius-8',
-		'placeholder' => 'Teléfono'
+		'placeholder' => '* Teléfono'
 );
 $mensaje = array(
 		'name'=>'mensaje',
@@ -36,7 +36,7 @@ $mensaje = array(
 		'class'=>'form-control caja-mensaje border-radius-8',
 		'rows'=>4,
 		'required' => 'required',
-		'placeholder' => 'Mensaje'
+		'placeholder' => '* Mensaje'
 );
 ?>
 <div class="inicio-seccion hidden-xs"></div>
@@ -454,18 +454,22 @@ $mensaje = array(
                                                             <div class="col-sm-12 padding-0">
                                                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="height:255px;"/>
-                                                                    <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
-                                                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta');?></p>
-                                                                    <?php }elseif($inmueble->precio_alquiler > 0 && $inmueble->precio_compra == 0){?>
-                                                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_alquiler');?></p>
-                                                                    <?php }else{?>
-                                                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
-                                                                    <?php }?>
-                                                                    <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                                                        <p class="tipo-oferta col-xs-12"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
-                                                                    <?php }?>
                                                                 </a>
                                                             </div>
+															<div class="col-sm-12 padding-0">
+																<?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
+                                                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta');?></p>
+                                                                <?php }elseif($inmueble->precio_alquiler > 0 && $inmueble->precio_compra == 0){?>
+                                                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_alquiler');?></p>
+                                                                <?php }else{?>
+                                                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
+                                                                <?php }?>
+																<p class="tipo-oferta col-xs-12">
+																	<?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){
+																		echo $this->lang->line('tienda_inmueble_oferta');
+																	}?>
+																</p>
+															</div>
                                                             <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px;height:73px;">
                                                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <h4 class="padding-top-10" id="nom2<?php echo $cont;?>" style="height:58px;"><?php echo $inmueble->titulo; ?></h4>
@@ -551,18 +555,22 @@ $mensaje = array(
                                                             <div class="col-sm-12 padding-0">
                                                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <img src="<?php echo base_url($inmueble->imagen); ?>" class="img-producto width-100p img-responsive" alt="<?php echo $inmueble->titulo; ?>" title="<?php echo $inmueble->titulo; ?>" style="max-height:270px;"/>
-                                                                    <?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
-                                                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta');?></p>
-                                                                    <?php }elseif($inmueble->precio_alquiler > 0 && $inmueble->precio_compra == 0){?>
-                                                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_alquiler');?></p>
-                                                                    <?php }else{?>
-                                                                        <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
-                                                                    <?php }?>
-                                                                    <?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){?>
-                                                                        <p class="tipo-oferta col-xs-12"><?php echo $this->lang->line('tienda_inmueble_oferta');?></p>
-                                                                    <?php }?>
                                                                 </a>
                                                             </div>
+															<div class="col-sm-12 padding-0">
+																<?php if($inmueble->precio_compra > 0 && $inmueble->precio_alquiler == 0){?>
+                                                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta');?></p>
+                                                                <?php }elseif($inmueble->precio_alquiler > 0 && $inmueble->precio_compra == 0){?>
+                                                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_alquiler');?></p>
+                                                                <?php }else{?>
+                                                                    <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
+                                                                <?php }?>
+																<p class="tipo-oferta col-xs-12">
+																	<?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){
+																		echo $this->lang->line('tienda_inmueble_oferta');
+																	}?>
+																</p>
+															</div>
                                                             <div class="col-sm-12 caja-contenido-inmuble" style="margin-top:-10px; height:73px;">
                                                                 <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">
                                                                     <h4 class="padding-top-10" id="nom2<?php echo $cont;?>"><?php echo $inmueble->titulo; ?></h4>
@@ -645,28 +653,28 @@ $mensaje = array(
                                         <div style="background:<?php echo $it->background;?>">
 						<form action="<?php echo site_url($this->uri->segment('1').'/browser');?>" method="get" class="form-inline padding-10 centrado">
                                                                 <div class="container background-color-white">
-                                                                    <div class="col-sm-12 margin-top-20 margin-bottom-10">
-                                                                        <div class="col-sm-2">
+                                                                    <div class="col-sm-12 margin-top-10">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <input type="text" name="referencia" class="form-control" placeholder="Referencia"/>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                             <?php echo form_dropdown('oferta_id',$ofertas,'','class="form-control"');?>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <?php echo form_dropdown('tipo_id',$tipos_inmuebles,'','class="form-control"');?>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <?php echo form_dropdown('provincia_id',$provincias,'','class="form-control" id="provincia"');?>
                                                                         </div>
-                                                                        <div class="col-sm-2 oculto" id="localidad">
+                                                                        <div class="col-sm-2 margin-top-10 oculto" id="localidad">
 
                                                                         </div>
-                                                                        <div class="col-sm-2 oculto" id="zona">
+                                                                        <div class="col-sm-2 margin-top-10 oculto" id="zona">
 
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-12 margin-bottom-20">
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                             <select name="habitaciones" class="form-control">
                                                                                 <option value="">- Habitaciones -</option>
                                                                                 <option value="1">+1</option>
@@ -676,7 +684,7 @@ $mensaje = array(
                                                                                 <option value="5">+5</option>
                                                                             </select>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                             <select name="banios" class="form-control">
                                                                                 <option value="">- Baños -</option>
                                                                                 <option value="1">+1</option>
@@ -686,16 +694,16 @@ $mensaje = array(
                                                                                 <option value="5">+5</option>
                                                                             </select>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <input type="text" name="precios_desde" class="form-control" placeholder="Precio desde"/>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <input type="text" name="precios_hasta" class="form-control" placeholder="Precio hasta"/>
                                                                         </div>
-                                                                        <div class="col-sm-2">
+                                                                        <div class="col-sm-2 margin-top-10">
                                                                                 <input type="text" name="metros" class="form-control" placeholder="Sup. desde"/>
                                                                         </div>
-                                                                        <button type="submit" class="btn btn-primary col-sm-2">BUSCAR</button>
+                                                                        <button type="submit" class="btn btn-primary col-sm-2 margin-top-10">BUSCAR</button>
                                                                     </div>
                                                                 </div>
 							</form>
@@ -704,6 +712,18 @@ $mensaje = array(
 			<?php endforeach; ?>
 			<?php if($seccion->tipo_seccion == 4){?>
 				<div class="col-sm-12 margin-top-20">
+					<?php if($this->session->flashdata('error')){?>
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<strong>¡Error!</strong> <?php echo $this->session->flashdata('error');?>
+						</div>
+					<?php }?>
+					<?php if($this->session->flashdata('mensaje')){?>
+						<div class="alert alert-success alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<strong>¡Enhorabuena!</strong> <?php echo $this->session->flashdata('mensaje');?>
+						</div>
+					<?php }?>
 					<?php echo form_open('',array('class'=>'form-horizontal','id'=>'frmContacto')); ?>
 					<div class="col-sm-6">
 						<div class="form-group margin-right-0">
@@ -721,9 +741,6 @@ $mensaje = array(
 							<span><?php echo form_error('mensaje'); ?></span>
 							<p></p>
 						</div>
-                                                <div class="form-group row">
-							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmit">Enviar</button>
-						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="form-group margin-left-0">
@@ -735,6 +752,11 @@ $mensaje = array(
 								<?php echo form_input($telefono); ?>
 								<span><?php echo form_error('telefono'); ?></span>
 								<p></p>	
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="form-group row">
+							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmit">Enviar</button>
 						</div>
 					</div>
 				<?php echo form_close(); ?>

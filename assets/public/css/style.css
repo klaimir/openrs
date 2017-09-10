@@ -202,7 +202,7 @@ h5{
 		position: relative;
 		z-index:9;
 		min-width:180px;
-		margin-top:35px;
+		margin-top:65px;
 	}
  
 	.menu-mv nav ul li {
@@ -317,7 +317,7 @@ body .menu > ul > li.active > a{
 .navbar-inverse .navbar-toggle {
     border-color: #30b481;
     float: left;
-    margin-top: -5px;
+    margin-top: 25px;
 }
 .navbar-inverse .navbar-toggle .icon-bar {
     background-color: #30b481;
@@ -1086,7 +1086,6 @@ footer li{
 }
 .img-producto{
 	margin-top: 50px;
-    margin-bottom: 10px;
 }
 .select-tienda{
 	width: 50%;
@@ -1243,16 +1242,13 @@ footer li{
     color:white;
 }
 .tipo-inmueble{
-    position: absolute;
-    margin-top: -75%;
     padding: 5px;
     color: white;
     background-color: #353a3e;
+	margin-bottom:0;
 }
 .tipo-oferta{
-    position: absolute;
-    margin-top: -50%;
-    /*margin-left: 17%;*/
+    height:55px;
     padding: 5px;
     color: #08a9a1;
     background-color: rgba(17, 17, 17, 0.48);
@@ -1260,26 +1256,7 @@ footer li{
     font-weight: bold;
 	text-align:center;
 }
-@media (max-width:800px) and (min-width:415px){
-	.tipo-inmueble{
-		position: absolute;
-		margin-top: -40%;
-		padding: 5px;
-		color: white;
-		background-color: #353a3e;
-	}
-	.tipo-oferta{
-		position: absolute;
-		margin-top: -25%;
-		/*margin-left: 17%;*/
-		padding: 5px;
-		color: #08a9a1;
-		background-color: rgba(17, 17, 17, 0.48);
-		font-size: 22px;
-		font-weight: bold;
-		text-align:center;
-	}
-}
+
 .caja-contenido-inmuble{
     background-color:#f9f9f9;
     padding:0 10px 5px 10px;
