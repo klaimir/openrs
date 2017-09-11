@@ -1,0 +1,42 @@
+El sistema viene con una preinstalación con todos los datos y configuraciones (excepto las preferencias)
+que se pueden visualizar en www.openrs.es/demo.
+
+Lo primero que deberá hacer es importar la base de datos usando el bd.sql.
+
+Si desea realizar adaptaciones a su dominio de las diferentes rutas empleadas para
+visualizar completamente la web con la plantilla de preinstalación, ejecute posteriormente 
+el fichero adaptaciones.sql.
+
+En este fichero, deberá indicar el nombre de su dominio para que se sustituya por openrs.es.
+
+Posteriormente siga la guía de deployment del propio framework en www.codeigniter.com para
+establecer los parámetros que considere oportunos (conexión a la base de datos, protección CSRF, etc.)
+Recomendamos que se use la configuración base y sólo adapte la configuración de la base de datos
+del entorno que vaya a usar (generalmente será producción).
+
+Finalmente, modifique el fichero de configuración de kcfinder para en introduzca el dominio de su
+web y si lo desea también el fichero de configuración de la librería de autentificación ion_auth,
+para que los correos no vengan en nombre de OPENRS. Recuerde que con anterioridad habrá tenido que
+configurar una cuenta de correo electrónico si desea que los correos no llegen a bandejas SPAM.
+
+Una vez tenga el servidor funcionando, accede con la cuenta de admin@admin.com (admin@admin.com)
+y modifique las preferencias del sistema. Recuerda que antes has tenido que serguir los pasos que se detallan
+en el manual de Instalación y explotación para poder conectar los sistemas externos a tu plataforma.
+
+¡¡ RECUERDA ¡¡ Los carteles generados contienen un QR que apunta inicialmente al dominio de donde
+se hizo la copia de seguridad importada. En esta distribución inicial será openrs.es.
+
+Si desea usar nuevamente los carteles importados vuelva a generarlos para que se actualicen sus urls.
+
+RESUMEN:
+
+En la mayoría de casos deberás de hacer sólo estos pasos:
+1) Subir el código a tu servidor web.
+2) Configurar la conexión a la base de datos (openrs/config/production/database.php)
+3) Modificar el fichero assets/admin/ckeditor/kcfinder/config.php e indicar tu dominio.
+4) Modifique el fichero ion_auth.php e indique el nombre de su sitio web y el correo del administrador del mismo.
+5) Acceder al sistema e introducir en la sección de Configuración -> Preferencias las claves
+que has generado previamente.
+
+No obstante lee el manual para obtener más información o envía un correo a angel.berasuain@gmail.com
+si tienes dudas o algo no funciona correctamente.
