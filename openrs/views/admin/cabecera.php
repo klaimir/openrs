@@ -252,7 +252,7 @@ $no_change_logo = array(
 				<div class="clearfix form-actions">
 		            <div class="col-md-offset-3 col-md-9">
 		                <?php echo form_button($atri);
-				echo ' '.anchor('cliente',$this->lang->line('admin_cancelar'),array('class'=>'btn'));?>
+				//echo ' '.anchor('cliente',$this->lang->line('admin_cancelar'),array('class'=>'btn'));?>
 		            </div>
 		        </div>
 				
