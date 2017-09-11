@@ -321,9 +321,9 @@ class Seccion extends MY_Controller_Front
             $filtros = $this->security->xss_clean($filtros);
             $data['filtros'] = $filtros;
 			if(isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0){
-				$data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($filtros['provincia_id']);
+				$data['poblaciones'] = $this->Inmueble_model->get_poblaciones_provincia_existentes_dropdown($filtros['provincia_id']);
 				if(isset($filtros['poblacion_id']) && !empty($filtros['poblacion_id'])){
-					$data['zonas'] = $this->Zona_model->get_zonas_dropdown($filtros['poblacion_id']);
+					$data['zonas'] = $this->Inmueble_model->get_zonas_poblacion_existentes_dropdown($filtros['poblacion_id']);
 				}
 			}
             // Búsqueda
