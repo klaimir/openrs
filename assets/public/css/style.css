@@ -496,6 +496,9 @@ img {
 .tit-panel-servicios{
 	color:#fff;
 }
+.panel-servicios{
+	background:#C41E1E
+}
 .menu-servicios{
 	margin-bottom:10px;
 	color:#fff;
@@ -1251,7 +1254,7 @@ footer li{
 .tipo-oferta{
     height:55px;
     padding: 5px;
-    color: #08a9a1;
+    color: #fff;
     background-color: rgba(17, 17, 17, 0.48);
     font-size: 22px;
     font-weight: bold;

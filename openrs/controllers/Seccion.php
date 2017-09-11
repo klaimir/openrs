@@ -110,9 +110,9 @@ class Seccion extends MY_Controller_Front
         $data['secciones_header'] = $this->Seccion_model->get_secciones_header($data['idioma_actual']->id_idioma);
         $data['subsecciones_header'] = $this->Seccion_model->get_subsecciones_header($data['idioma_actual']->id_idioma);
         //Para buscador inmuebles
-        $data['provincias'] = $this->Inmueble_model->get_provincias_existentes_dropdown(-1, "- Provincias -", 1);
-        $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown(-1, $data['idioma_actual']->id_idioma, TRUE, "- Tipos -");
-        $data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1, "- Ofertas -");
+        $data['provincias'] = $this->Inmueble_model->get_provincias_existentes_dropdown(-1, lang('tienda_inmueble_provincias'), 1);
+        $data['tipos_inmuebles'] = $this->Tipo_inmueble_model->get_tipos_inmuebles_dropdown(-1, $data['idioma_actual']->id_idioma, TRUE, lang('tienda_inmueble_tipos'));
+        $data['ofertas'] = $this->Inmueble_model->get_ofertas_dropdown(-1, lang('inmuebles_ofertas_default'));
 
         $data['cols_pie'] = $this->Usuario_model->get_columnas_pie();
         if (count($data['cols_pie']))
@@ -250,7 +250,7 @@ class Seccion extends MY_Controller_Front
 						</html>'
                 );
                 $this->email->send();
-				$this->session->set_flashdata('mensaje','El mensaje ha sido enviado correctamente');
+				$this->session->set_flashdata('mensaje',lang('tienda_contacto_ok_envio'));
 				redirect($this->uri->segment(1).'/'.$this->uri->segment(2));
             }else{
 				$this->session->set_flashdata('error',validation_errors());
@@ -274,7 +274,7 @@ class Seccion extends MY_Controller_Front
             echo 'Petición no realizada a través de AJAX';
             return;
         }
-        $this->data['poblaciones'] = $this->Inmueble_model->get_poblaciones_provincia_existentes_dropdown($idprovincia);
+        $this->data['poblaciones'] = $this->Inmueble_model->get_poblaciones_provincia_existentes_dropdown($idprovincia, 1, "", lang('tienda_inmueble_poblaciones'));
         $this->load->view('public/poblaciones', $this->data);
     }
 
@@ -288,7 +288,7 @@ class Seccion extends MY_Controller_Front
             echo 'Petición no realizada a través de AJAX';
             return;
         }
-        $this->data['zonas'] = $this->Inmueble_model->get_zonas_poblacion_existentes_dropdown($idpoblacion);
+        $this->data['zonas'] = $this->Inmueble_model->get_zonas_poblacion_existentes_dropdown($idpoblacion, 1, "", lang('tienda_inmueble_zonas'));
         $this->load->view('public/zonas', $this->data);
     }
 
@@ -307,6 +307,12 @@ class Seccion extends MY_Controller_Front
         {
             $filtros['start'] = 0;
         }
+        
+        // Limpiamos filtros
+        $filtros = $this->security->xss_clean($filtros);
+        $data['filtros'] = $filtros;
+        
+        // Realizamos listado
         if ($this->input->get('referencia'))
         {
             $referencia = $this->security->xss_clean($this->input->get('referencia'));
@@ -317,19 +323,21 @@ class Seccion extends MY_Controller_Front
             }
         }
         else
-        {
-            $filtros = $this->security->xss_clean($filtros);
-            $data['filtros'] = $filtros;
-			if(isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0){
-				$data['poblaciones'] = $this->Poblacion_model->get_poblaciones_dropdown($filtros['provincia_id']);
-				if(isset($filtros['poblacion_id']) && !empty($filtros['poblacion_id'])){
-					$data['zonas'] = $this->Zona_model->get_zonas_dropdown($filtros['poblacion_id']);
-				}
-			}
+        {			
             // Búsqueda
             $data['total'] = $this->Buscador_model->getInmuebleBuscador($data['idioma_actual']->id_idioma, $filtros, 1);
             $data['inmuebles'] = $this->Buscador_model->getInmuebleBuscador($data['idioma_actual']->id_idioma, $filtros);
         }
+        
+        // Mantenimiento de población y zona si se ha buscado
+        if(isset($filtros['provincia_id']) && $filtros['provincia_id'] >= 0){
+				$data['poblaciones'] = $this->Inmueble_model->get_poblaciones_provincia_existentes_dropdown($filtros['provincia_id'], 1, "", lang('tienda_inmueble_poblaciones'));
+				if(isset($filtros['poblacion_id']) && !empty($filtros['poblacion_id'])){
+					$data['zonas'] = $this->Inmueble_model->get_zonas_poblacion_existentes_dropdown($filtros['poblacion_id'], 1, "", lang('tienda_inmueble_zonas'));
+				}
+			}
+        
+        // Resultados
         $data['title'] = "Inmuebles";
         $data['meta_description'] = "Todos los inmuebles que busques";
         $data['meta_keywords'] = "Pisos, chalets, adosados";
@@ -522,7 +530,7 @@ class Seccion extends MY_Controller_Front
                                                     </html>'
                 );
                 $this->email->send();
-				$this->session->set_flashdata('mensaje','El mensaje ha sido enviado correctamente');
+				$this->session->set_flashdata('mensaje',lang('tienda_contacto_ok_envio'));
 				redirect($this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
             }else{
 				$this->session->set_flashdata('error',validation_errors());

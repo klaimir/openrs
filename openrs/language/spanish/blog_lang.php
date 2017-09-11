@@ -28,6 +28,8 @@ $lang['blog_oculto'] = 'Oculto';
 $lang['blog_ocultar_comentario'] = 'Ocultar comentario';
 $lang['blog_recuperar_comentario'] = 'Recuperar comentario';
 $lang['blog_seguir_leyendo'] = '...Seguir leyendo';
+$lang['blog_texto_panel_servicios'] = 'NOTICIAS';
+$lang['blog_texto_menu_servicios'] = 'Novedades, avances, consejos, etc.';
 
 //Mensajes
 $lang['blog_no_hay_articulos'] = 'No existen artículos para mostrar';
