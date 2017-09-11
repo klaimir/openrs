@@ -11,9 +11,6 @@ class Tipos_inmueble extends MY_Controller
     {
         parent::__construct();
         
-        // Establecimiento del lenguaje
-        $this->lang->load($this->_controller,$this->data['session_user_language']);
-
         // Secure the access
         $this->_security();
 

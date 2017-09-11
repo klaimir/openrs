@@ -8,13 +8,13 @@ $nombre = array(
 		'id'=>'nombre',
 		'class'=>'form-control border-radius-8',
 		'required' => 'required',
-		'placeholder' => '* Nombre y Apellidos'
+		'placeholder' => '* '.lang('tienda_contacto_nombre_apellidos')
 		);
 $empresa = array(
 		'name'=>'empresa',
 		'id'=>'empresa',
 		'class'=>'form-control border-radius-8',
-		'placeholder' => 'Empresa'
+		'placeholder' => lang('tienda_contacto_empresa')
 );
 $email = array(
 		'name'=>'email',
@@ -22,13 +22,13 @@ $email = array(
 		'class'=>'form-control border-radius-8',
 		'required' => 'required',
 		'pattern' => "[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+",
-		'placeholder' => '* Email'
+		'placeholder' => '* '.lang('tienda_contacto_email')
 );
 $telefono = array(
 		'name'=>'telefono',
 		'id'=>'telefono',
 		'class'=>'form-control border-radius-8',
-		'placeholder' => '* Teléfono'
+		'placeholder' => '* '.lang('tienda_contacto_telefono')
 );
 $mensaje = array(
 		'name'=>'mensaje',
@@ -36,7 +36,7 @@ $mensaje = array(
 		'class'=>'form-control caja-mensaje border-radius-8',
 		'rows'=>4,
 		'required' => 'required',
-		'placeholder' => '* Mensaje'
+		'placeholder' => '* '.lang('tienda_contacto_mensaje')
 );
 ?>
 <div class="inicio-seccion hidden-xs"></div>
@@ -498,14 +498,14 @@ $mensaje = array(
                                                                             }?>
                                                                             <?php echo '<br>';?>
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
-                                                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</s><br>';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'';
                                                                             }else{
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'';
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>"><?php echo lang('tienda_inmueble_ver');?></a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }elseif($inmueble->precio_compra > 0){?>
@@ -519,21 +519,21 @@ $mensaje = array(
                                                                             }?>
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>"><?php echo lang('tienda_inmueble_ver');?></a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }elseif($inmueble->precio_alquiler > 0){?>
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
-                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes</p>';
+                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</s><br>';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
                                                                             }else{
-                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes</p>';
+                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>"><?php echo lang('tienda_inmueble_ver');?></a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }?>
@@ -599,14 +599,14 @@ $mensaje = array(
                                                                             }?>
                                                                             <?php echo '<br>';?>
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
-                                                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                                echo '<s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</s><br>';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'';
                                                                             }else{
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'';
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>"><?php echo lang('tienda_inmueble_ver');?></a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }elseif($inmueble->precio_compra > 0){?>
@@ -620,21 +620,21 @@ $mensaje = array(
                                                                             }?>
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>"><?php echo lang('tienda_inmueble_ver');?></a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }elseif($inmueble->precio_alquiler > 0){?>
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
-                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / mes</s><br>';
-                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes</p>';
+                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</s><br>';
+                                                                                echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
                                                                             }else{
-                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / mes</p>';
+                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
-                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>">VER</a>
+                                                                            <a href="<?php echo site_url($this->uri->segment('1').'/inmueble/'.$inmueble->idinmueble.'-'.$inmueble->url_seo);?>"><?php echo lang('tienda_inmueble_ver');?></a>
                                                                         </div>
                                                                     </div>
                                                                 <?php }?>
@@ -655,7 +655,7 @@ $mensaje = array(
                                                                 <div class="container background-color-white">
                                                                     <div class="col-sm-12 margin-top-10">
                                                                         <div class="col-sm-2 margin-top-10">
-                                                                                <input type="text" name="referencia" class="form-control" placeholder="Referencia"/>
+                                                                                <input type="text" name="referencia" class="form-control" placeholder="<?php echo $this->lang->line('tienda_inmueble_referencia');?>"/>
                                                                         </div>
                                                                         <div class="col-sm-2 margin-top-10">
                                                                             <?php echo form_dropdown('oferta_id',$ofertas,'','class="form-control"');?>
@@ -676,7 +676,7 @@ $mensaje = array(
                                                                     <div class="col-sm-12 margin-bottom-20">
                                                                         <div class="col-sm-2 margin-top-10">
                                                                             <select name="habitaciones" class="form-control">
-                                                                                <option value="">- Habitaciones -</option>
+                                                                                <option value=""><?php echo lang('tienda_inmueble_habitaciones');?></option>
                                                                                 <option value="1">+1</option>
                                                                                 <option value="2">+2</option>
                                                                                 <option value="3">+3</option>
@@ -686,7 +686,7 @@ $mensaje = array(
                                                                         </div>
                                                                         <div class="col-sm-2 margin-top-10">
                                                                             <select name="banios" class="form-control">
-                                                                                <option value="">- Baños -</option>
+                                                                                <option value=""><?php echo lang('tienda_inmueble_banios');?></option>
                                                                                 <option value="1">+1</option>
                                                                                 <option value="2">+2</option>
                                                                                 <option value="3">+3</option>
@@ -695,15 +695,15 @@ $mensaje = array(
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-sm-2 margin-top-10">
-                                                                                <input type="text" name="precios_desde" class="form-control" placeholder="Precio desde"/>
+                                                                                <input type="text" name="precios_desde" class="form-control" placeholder="<?php echo lang('tienda_inmueble_precio_desde');?>"/>
                                                                         </div>
                                                                         <div class="col-sm-2 margin-top-10">
-                                                                                <input type="text" name="precios_hasta" class="form-control" placeholder="Precio hasta"/>
+                                                                                <input type="text" name="precios_hasta" class="form-control" placeholder="<?php echo lang('tienda_inmueble_precio_hasta');?>"/>
                                                                         </div>
                                                                         <div class="col-sm-2 margin-top-10">
-                                                                                <input type="text" name="metros" class="form-control" placeholder="Sup. desde"/>
+                                                                                <input type="text" name="metros" class="form-control" placeholder="<?php echo lang('tienda_inmueble_superficie_desde');?>"/>
                                                                         </div>
-                                                                        <button type="submit" class="btn btn-primary col-sm-2 margin-top-10">BUSCAR</button>
+                                                                        <button type="submit" class="btn btn-primary col-sm-2 margin-top-10"><?php echo lang('tienda_inmueble_buscar');?></button>
                                                                     </div>
                                                                 </div>
 							</form>
@@ -721,7 +721,7 @@ $mensaje = array(
 					<?php if($this->session->flashdata('mensaje')){?>
 						<div class="alert alert-success alert-dismissible" role="alert">
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<strong>¡Enhorabuena!</strong> <?php echo $this->session->flashdata('mensaje');?>
+							<strong>¡<?php echo lang('tienda_contacto_enhorabuena'); ?>!</strong> <?php echo $this->session->flashdata('mensaje');?>
 						</div>
 					<?php }?>
 					<?php echo form_open('',array('class'=>'form-horizontal','id'=>'frmContacto')); ?>
@@ -758,7 +758,7 @@ $mensaje = array(
 					</div>
 					<div class="col-sm-12 margin-bottom-20">
 						<div class="col-sm-4">
-							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmit">Enviar</button>
+							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmit"><?php echo lang('tienda_contacto_enviar'); ?></button>
 						</div>
 					</div>
 				<?php echo form_close(); ?>

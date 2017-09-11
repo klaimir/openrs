@@ -9,7 +9,6 @@
 			'value'=>set_value('contenido2',isset($comentario->contenido) ? $comentario->contenido : ''),
 			'rows'=>'3',
 			'required' => 'required',
-			'placeholder' => 'comentario'
 	);
 	$email=array(
 			'name'=>'email',
@@ -52,13 +51,13 @@
 				<?php endif;?>
 			<?php endif;?>
 		<?php endforeach;?>
-		<div style="background:#000000">
+		<div class="panel-servicios">
 			<div>
 				<div class="container">
 					<p>&nbsp;</p>
 					<p>&nbsp;</p>
-					<h2 class="tit-panel-servicios">BLOG</h2>
-					<p class="menu-servicios">Novedades, avances, consejos, etc.</p>
+					<h2 class="tit-panel-servicios"><?php echo lang('blog_texto_panel_servicios'); ?></h2>
+					<p class="menu-servicios"><?php echo lang('blog_texto_menu_servicios'); ?></p>
 				</div>
 			</div>
 		</div>

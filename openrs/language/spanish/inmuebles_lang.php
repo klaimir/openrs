@@ -16,6 +16,7 @@
 $lang['inmuebles_ofertas_ambos'] = 'Venta y alquiler';
 $lang['inmuebles_ofertas_vender'] = 'Venta';
 $lang['inmuebles_ofertas_alquilar'] = 'Alquiler';
+$lang['inmuebles_ofertas_default'] = "- Ofertas -";
 
 $lang['inmuebles_infowindow_portada_title'] = 'Imagen principal del inmueble';
 $lang['inmuebles_infowindow_portada_no_exist'] = 'Portada sin especificar';

@@ -40,18 +40,20 @@ tr.week_name{
 	padding-top: 13px;
 	padding-bottom: 7px;
 }</style>
-<?php $nombre = array(
+<?php 
+// Primero defino los campos que voy a necesitar para el formulario
+$nombre = array(
 		'name'=>'nombre',
 		'id'=>'nombre',
 		'class'=>'form-control border-radius-8',
 		'required' => 'required',
-		'placeholder' => '* Nombre y Apellidos'
+		'placeholder' => '* '.lang('tienda_contacto_nombre_apellidos')
 		);
 $empresa = array(
 		'name'=>'empresa',
 		'id'=>'empresa',
 		'class'=>'form-control border-radius-8',
-		'placeholder' => 'Empresa'
+		'placeholder' => lang('tienda_contacto_empresa')
 );
 $email = array(
 		'name'=>'email',
@@ -59,13 +61,13 @@ $email = array(
 		'class'=>'form-control border-radius-8',
 		'required' => 'required',
 		'pattern' => "[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9.-]+",
-		'placeholder' => '* Email'
+		'placeholder' => '* '.lang('tienda_contacto_email')
 );
 $telefono = array(
 		'name'=>'telefono',
 		'id'=>'telefono',
 		'class'=>'form-control border-radius-8',
-		'placeholder' => '* Teléfono'
+		'placeholder' => '* '.lang('tienda_contacto_telefono')
 );
 $mensaje = array(
 		'name'=>'mensaje',
@@ -73,8 +75,9 @@ $mensaje = array(
 		'class'=>'form-control caja-mensaje border-radius-8',
 		'rows'=>4,
 		'required' => 'required',
-		'placeholder' => '* Mensaje',
-		'onkeypress'=>'onTestChange()'
+		'placeholder' => '* '.lang('tienda_contacto_mensaje')
+);
+?>
 );?>
 <div class="inicio-seccion hidden-xs"></div>
 <div class="inicio-seccion-movil hidden-sm hidden-md hidden-lg"></div>
@@ -91,7 +94,7 @@ $mensaje = array(
 			<?php if($this->session->flashdata('mensaje')){?>
 				<div class="alert alert-success alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<strong>¡Enhorabuena!</strong> <?php echo $this->session->flashdata('mensaje');?>
+					<strong>¡<?php echo lang('tienda_contacto_enhorabuena'); ?>!</strong> <?php echo $this->session->flashdata('mensaje');?>
 				</div>
 			<?php }?>
 		</div>
@@ -171,7 +174,7 @@ $mensaje = array(
 					</div>
 					<div class="col-sm-12">
 						<div class="col-sm-12">
-							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmitInmueble">Enviar</button>
+							<button class="g-recaptcha btn-contacto" data-sitekey="<?php echo $this->session->userdata('recaptcha_site_key'); ?>" data-callback="onSubmitInmueble"><?php echo lang('tienda_contacto_enviar'); ?></button>
 						</div>
 					</div>
 					<input type="hidden" name="inmueble" value="<?php echo $inmueble->titulo; ?>"/>
@@ -227,10 +230,10 @@ $mensaje = array(
                     <h3><?php echo $this->lang->line('tienda_inmueble_precio_alquiler');?></h3>
                         <?php
                         if ($inmueble->precio_alquiler_anterior > 0) {
-                            echo '<h2><s>' . number_format($inmueble->precio_alquiler_anterior, 2, ",", ".") . ' &euro; / mes</s></h2>';
-                            echo '<h2>'.number_format($inmueble->precio_alquiler, 2, ",", ".") . ' &euro; / mes</h2>';
+                            echo '<h2><s>' . number_format($inmueble->precio_alquiler_anterior, 2, ",", ".") . ' &euro; / '.lang('tienda_inmueble_precio_mes').'</s></h2>';
+                            echo '<h2>'.number_format($inmueble->precio_alquiler, 2, ",", ".") . ' &euro; / '.lang('tienda_inmueble_precio_mes').'</h2>';
                         } else {
-                            echo '<h2>'.number_format($inmueble->precio_alquiler, 2, ",", ".") . ' &euro; / mes</h2>';
+                            echo '<h2>'.number_format($inmueble->precio_alquiler, 2, ",", ".") . ' &euro; / '.lang('tienda_inmueble_precio_mes').'</h2>';
                         }
                         ?> 
                 </div>
@@ -271,7 +274,14 @@ $mensaje = array(
                 <img src="<?php echo base_url('assets/public/img/ce_'.$ce->nombre.'.png');?>" class="img-responsive"/>
                 <h4><?php echo $ce->kwh_m2_anio.' kwh';?></h4>
             <?php }else{
-                echo '<h4>'.$ce->nombre.'</h4>';
+                if($ce->id == 8)
+                {
+                    echo '<h4>'.lang('tienda_inmueble_ce_exento').'</h4>';
+                }
+                else
+                {
+                    echo '<h4>'.lang('tienda_inmueble_ce_tramite').'</h4>';
+                }
             }?>
         </div>
     </div>
@@ -279,7 +289,7 @@ $mensaje = array(
     <input type="hidden" id="site_url" value="<?php echo site_url();?>" />
     <input type="hidden" id="site_idioma" value="<?php echo $this->uri->segment(1);?>" />
 <?php }else{?>
-    <h3 style="text-align:center;padding-top:40px;">Inmueble inexistente o no publicado</h3>
+    <h3 style="text-align:center;padding-top:40px;"><?php echo $this->lang->line('tienda_inmueble_no_existe');?></h3>
 <?php }?>
 <script>
 $(document).ready(function(){

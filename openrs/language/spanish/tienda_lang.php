@@ -236,8 +236,12 @@ $lang['admin_pedidos'] = 'Pedidos';
 $lang['tienda_precio'] = 'Precio:';
 $lang['tienda_ver_pedido_descripcion'] = 'Descripción';
 $lang['tienda_banos'] = 'Baños:';
-$lang['tienda_dormitorios'] = 'Dormitorios:';
-$lang['tienda_garajes'] = 'Garajes:';
+$lang['tienda_dormitorios'] = 'Dormitorios';
+$lang['tienda_garajes'] = 'Garajes';
+
+
+
+
 $lang['tienda_superficie_construida'] = 'Superficie Construida';
 $lang['tienda_superficie_util'] = 'Superficie Útil';
 $lang['tienda_tipo_propiedad'] = 'Tipo Propiedad';
@@ -247,8 +251,20 @@ $lang['tienda_extras_inmueble'] = 'Características';
 $lang['tienda_cenergetica_inmueble'] = 'Calificación energética';
 $lang['tienda_lugares_inmueble'] = 'Sitios Cercanos';
 $lang['tienda_ocupacion'] = 'Ocupación';
-$lang['tienda_localidad'] = 'Cualquier localidad';
-$lang['tienda_provincia'] = 'Cualquier provincia';
+$lang['tienda_inmueble_referencia'] = 'Referencia';
+$lang['tienda_inmueble_provincias'] = "- Provincias -";
+$lang['tienda_inmueble_poblaciones'] = "- Municipios -";
+$lang['tienda_inmueble_zonas'] = "- Zonas -";
+$lang['tienda_inmueble_tipos'] = "- Tipos -";
+$lang['tienda_inmueble_habitaciones'] = "- Habitaciones -";
+$lang['tienda_inmueble_banios'] = "- Baños -";
+$lang['tienda_inmueble_precio_desde'] = "Precio desde";
+$lang['tienda_inmueble_precio_hasta'] = "Precio hasta";
+$lang['tienda_inmueble_superficie_desde'] = "Surface from";
+$lang['tienda_inmueble_buscar'] = "BUSCAR";
+$lang['tienda_inmueble_ver_mapa'] = "VER EN GOOGLE MAPS";
+$lang['tienda_inmueble_ver'] = "VER";
+$lang['tienda_inmueble_precio_mes'] = "mes";
 $lang['tienda_inmueble_venta'] = 'VENTA';
 $lang['tienda_inmueble_alquiler'] = 'ALQUILER';
 $lang['tienda_inmueble_venta_alquiler'] = 'VENTA Y ALQUILER';
@@ -259,6 +275,19 @@ $lang['tienda_inmueble_oportunidades'] = 'OPORTUNIDADES';
 $lang['tienda_inmueble_info_ver_mapa'] = 'El mapa está cargándose, espere unos segundos... Aparecerá centrado en la provincia o población seleccionado en su criterio de búsqueda. Si no seleccionó ninguna de las dos, entonces se centrará en el municipio del primer inmueble listado.';
 $lang['tienda_inmueble_precio_compra'] = 'Precio compra';
 $lang['tienda_inmueble_precio_alquiler'] = 'Precio alquiler';
+$lang['tienda_inmueble_no_existe'] = 'Inmueble inexistente o no publicado';
+$lang['tienda_inmueble_busqueda_sin_resultados'] = 'No se han encontrado resultados';
+$lang['tienda_inmueble_ce_exento'] = 'Exento';
+$lang['tienda_inmueble_ce_tramite'] = 'En trámite';
+
+$lang['tienda_contacto_nombre_apellidos'] = 'Nombre y Apellidos';
+$lang['tienda_contacto_empresa'] = 'Empresa';
+$lang['tienda_contacto_email'] = 'Email';
+$lang['tienda_contacto_telefono'] = 'Teléfono';
+$lang['tienda_contacto_mensaje'] = 'Mensaje';
+$lang['tienda_contacto_enviar'] = 'Enviar';
+$lang['tienda_contacto_ok_envio'] = 'El mensaje ha sido enviado correctamente';
+$lang['tienda_contacto_enhorabuena'] = 'Enhorabuena';
 
 //Mensajes compra
 $lang['tienda_pedido_realizado'] = 'Gracias por realizar su compra en ';
