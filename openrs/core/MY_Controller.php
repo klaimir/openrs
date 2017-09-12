@@ -216,7 +216,7 @@ class MY_Controller extends CI_controller
     }
     
     public function ordenar ($config){
-    	//$data = $this->inicializar(6, $config['title']);
+    	$this->data['idioma_actual'] = $this->Usuario_model->get_usuario_idioma($this->ion_auth->user()->row()->id);
     	$this->data['title'] = $config['title'];
     	$this->data['ordenar']=$this->$config['model_get']['model_name']->$config['model_get']['model_method'](isset($config['model_get']['idioma']) ? $config['model_get']['idioma']:'', isset($config['model_get']['model_param']) ? $config['model_get']['model_param']:'');
     	if($this->input->post()){

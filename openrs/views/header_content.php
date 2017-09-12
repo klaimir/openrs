@@ -10,7 +10,7 @@
 	<meta name="keywords" content="<?php echo (isset($meta_keywords)) ? $meta_keywords : $this->lang->line('login_meta_keywords').' - '.$config->nombre;?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php echo (isset($title)) ? $title : $config->nombre; ?></title>
-	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url('img/favicon.png'); ?>" />
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url('uploads/general/img/favicon.png'); ?>" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/jquery.dataTables.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style.css">

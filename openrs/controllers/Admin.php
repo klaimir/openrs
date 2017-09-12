@@ -95,19 +95,20 @@ class Admin extends MY_Controller
     					
     				//Para panales independientes
     				//$config['upload_path'] = 'img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/';
-    				$config['upload_path'] = 'uploads/general/img/preferencias/';
-    				$config['allowed_types']='gif|jpg|jpeg|png';
+    				$config['upload_path'] = FCPATH .'/uploads/general/img/preferencias/';
+    				$config['allowed_types']='gif|jpg|png';
     				$config['max_size']	= '1000';
-    				$config['overwrite']=TRUE;
+    				//$config['overwrite']=TRUE;
     				//$config['encrypt_name'] = TRUE;
     				 
     				$this->load->library('upload', $config);
-    				 
-    				if (!$this->upload->do_upload()) {
+    				if (!$this->upload->do_upload('userfile')) {
+    					echo $this->upload->display_errors();exit();
     					$this->session->set_flashdata('color','danger');
     					$this->session->set_flashdata('error', 'La imagen no puede superar 1MB');
     					redirect('admin/cabecera', 'refresh');
     				}else {
+    					print_r($_FILES);Exit();
     					//Para paneles independientes
     					//$configuracion = $this->user_model->datos_config();
     					//if($configuracion && isset($configuracion->imagen) && file_exists('img/preferencias/'.$this->simple_sessions->get_value('id_usuario').'/'.$configuracion->imagen)){
@@ -214,32 +215,22 @@ class Admin extends MY_Controller
 			//Comprobación Edición de texto
 			if($this->input->post('idiomas')){
 				$opc_cliente = $this->Admin_model->get_footer_cliente(1, $this->input->post('columna'));
-				$idiomas = $this->input->post('idiomas');
-				if($opc_cliente){
-					foreach($idiomas as $idioma){
-						$col=$this->input->post('columna');
-						if($col == 1)
-							$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenidoe_'.$idioma),$idioma);
-						elseif($col == 2)
-							$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido2e_'.$idioma),$idioma);
-						elseif($col == 3)
-							$this->Admin_model->actualizar_texto($opc_cliente->id, $this->input->post('contenido3e_'.$idioma),$idioma);
-						
+				if($opc_cliente)
+					$this->Admin_model->borrar_columna_pie(1, $this->input->post('columna'));
+				$this->Admin_model->borrar_columna_pie_idioma($this->input->post('columna'));
+				$id_opc_cliente = $this->Admin_model->insert_footer_cliente(1, $this->input->post('columna'),$this->input->post('col'));				
+				$datos_idioma['columna'] = $this->input->post('columna');
+				$datos_idioma['id_opc_cliente'] = $id_opc_cliente;
+				foreach($this->input->post('idiomas') as $idioma){
+					$datos_idioma['id_idioma'] = $idioma;
+					if($this->input->post('columna') == 1){
+						$datos_idioma['contenido'] = $this->input->post('contenidoe_'.$idioma);
+					}elseif($this->input->post('columna') == 2){
+						$datos_idioma['contenido'] = $this->input->post('contenido2e_'.$idioma);
+					}elseif($this->input->post('columna') == 3){
+						$datos_idioma['contenido'] = $this->input->post('contenido3e_'.$idioma);
 					}
-				}else{
-					//Borramos la columna vacia
-					$this->Admin_model->borrar_columna_pie(1, $this->input->post('columna'), 3);
-					$opc_cliente = $this->Admin_model->insert_footer_cliente(1, $this->input->post('columna'), 3);
-					foreach($idiomas as $idioma){
-						$col=$this->input->post('columna');
-						if($col == 1)
-							$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido_'.$idioma),$idioma);
-						elseif($col == 2)
-							$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido2_'.$idioma),$idioma);
-						elseif($col == 3)
-							$this->Admin_model->actualizar_texto($opc_cliente, $this->input->post('contenido3_'.$idioma),$idioma);
-						
-					}
+					$this->Admin_model->insert_footer_cliente_idioma($datos_idioma);
 				}
 			}
 		}
