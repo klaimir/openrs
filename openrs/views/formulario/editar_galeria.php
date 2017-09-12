@@ -2,8 +2,8 @@
 	$this->form_validation->set_error_delimiters('<div class="alert alert-danger pull-right">', '</div>');?>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12">
-			<h2><?php echo $this->lang->line('cms_c_editar_imagen_galeria');?></h2>
+		<div class="col-md-12 page-header">
+			<h1><?php echo $this->lang->line('cms_c_editar_imagen_galeria');?></h1>
 		</div>
 	</div>	
 	<div class="row">		
@@ -126,7 +126,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-md-10 col-md-offset-2">
-							<?php echo form_submit(array('name'=>'submit','value'=>isset($imagen_carrusel[$idioma_actual->id_idioma])?$this->lang->line('cms_editar'):$this->lang->line('cms_galeria_anadir_imagen'),'class'=>'btn btn-default')); ?>
+							<?php echo form_submit(array('name'=>'submit','value'=>isset($imagen_carrusel[$idioma_actual->id_idioma])?$this->lang->line('cms_editar'):$this->lang->line('cms_galeria_anadir_imagen'),'class'=>'btn btn-info')); ?>
 						</div>
 					</div>
 					</div>

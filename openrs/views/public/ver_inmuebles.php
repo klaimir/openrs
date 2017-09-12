@@ -2,7 +2,7 @@
 <div class="inicio-seccion-movil hidden-sm hidden-md hidden-lg"></div>
 <div class="container-fluid">
 	<div class="row">
-		<div style="background:#30b481;">
+		<div style="background:#C41E1E;">
 				<form action="<?php echo site_url($this->uri->segment('1').'/browser');?>" method="get" class="form-inline padding-10 centrado margin-top-5" id="frmFiltro">
 					<div class="container background-color-white">
                                                                     <div class="col-sm-12 margin-top-10">

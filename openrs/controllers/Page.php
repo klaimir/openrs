@@ -109,10 +109,10 @@ class Page extends MY_Controller
 													'keys'=>array('id_bloque'),
 													'title'=>$this->lang->line('cms_c_borrar_bloque'))),
 				'botones'=>array('1'=>array('href'=>site_url('page/crear_bloque/'.$url_seccion),
-											'class'=>'btn btn-default pull-right',
+											'class'=>'btn btn-info pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-plus"></span> '.$this->lang->line('cms_c_listado_boton_nuevo')),
 								 '2'=>array('href'=>site_url('page/ordenar_bloques/'.$url_seccion),
-											'class'=>'btn btn-default pull-right',
+											'class'=>'btn btn-info pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-random"></span> '.$this->lang->line('cms_c_listado_boton_ordenar')))
 		);
 		$this->listado($config);
@@ -1354,10 +1354,10 @@ class Page extends MY_Controller
 													'keys'=>array('id'),
 													'title'=>$this->lang->line('cms_c_borrar_grupo_secciones'))),
 				'botones'=>array('1'=>array('href'=>site_url('cms-crear-super-seccion'),
-											'class'=>'btn btn-default pull-right',
+											'class'=>'btn btn-info pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-plus"></span> '.$this->lang->line('cms_c_listado_boton_nueva')),
 								 '2'=>array('href'=>site_url('cms-ordenar-super-secciones'),
-											'class'=>'btn btn-default pull-right',
+											'class'=>'btn btn-info pull-right',
 											'contenido'=>'<span class="glyphicon glyphicon-random"></span> '.$this->lang->line('cms_c_listado_boton_ordenar')))
 		);
 		$this->listado($config);

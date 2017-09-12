@@ -32,7 +32,7 @@
 						<?php foreach ($listado as $it): ?>
 							<tr>
 								<?php  foreach ($columnas as $k=>$v): ?>
-									<?php if($v == 'id_estado'){?>
+									<?php if($v == 'id_estado' || $v == 'estado'){?>
 										<td>
 											<?php if($it->$v == '1'){?>
 												<span class="label label-success"><?php echo $this->lang->line('cms_publicado');?></span>
@@ -41,6 +41,14 @@
 											<?php }elseif($it->$v == '3'){?>
 												<span class="label label-info"><?php echo $this->lang->line('cms_borrador');?></span>
 											<?php }?>
+										</td>
+                                                                        <?php } else if($v == 'menu'){?>
+										<td>                                                                                    
+                                                                                    <?php if($it->$v == '1') { ?>
+                                                                                        <i class="ace-icon fa fa-check-square"></i>
+                                                                                    <?php } else { ?>
+                                                                                        <i class="ace-icon fa fa-close"></i>
+                                                                                    <?php } ?>
 										</td>
 									<?php }else{?>
 							     		<td><?php echo $it->$v;?></td>

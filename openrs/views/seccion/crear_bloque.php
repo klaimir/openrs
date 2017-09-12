@@ -12,8 +12,8 @@
 				<li role="presentation"><a <?php echo ($nuevo==false)?'href="'.site_url('page/editar_bloque/'.$id_bloque).'"':'';?>><?php echo $this->lang->line('cms_bloques_paso2');?></a></li>
 			</ul>
 		</div>
-		<div class="col-md-12">
-			<h2><?php echo (($nuevo==true)?$this->lang->line('cms_crear'):$this->lang->line('cms_editar')).' '.$nombre.' '.(($nuevo==true)?'':$editando);?></h2>
+		<div class="col-md-12 page-header">
+			<h1><?php echo (($nuevo==true)?$this->lang->line('cms_crear'):$this->lang->line('cms_editar')).' '.$nombre.' '.(($nuevo==true)?'':$editando);?></h1>
 			<p></p>
 		</div>
 		<div class="col-md-12">
@@ -107,11 +107,13 @@
 				</div>
 				<input type="hidden" name="prioridad" value="<?php echo ($nuevo) ? $this->general_model->maximo('bloque','prioridad',array('id_seccion'=>$seccion->id))->prioridad+1 : $bloque->prioridad;?>">
 				<input type="hidden" name="id_seccion" value="<?php echo $seccion->id;?>">
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default">Continuar</button>
-					</div>
-				</div>
+                                <div class="form-group">
+                                    <div class="clearfix form-actions">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <button type="submit" class="btn btn-info">Continuar</button>
+                                        </div>
+                                    </div>
+                                </div>
 			<?php echo form_close(); ?>
 		</div>
 	</div>

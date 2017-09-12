@@ -28,8 +28,8 @@
 				<li role="presentation" class="active"><a><?php echo $this->lang->line('cms_bloques_paso2');?></a></li>
 			</ul>
 		</div>
-		<div class="col-md-12">
-			<h2><?php echo $this->lang->line('cms_datos_galeria');?></h2>
+		<div class="col-md-12 page-header">
+			<h1><?php echo $this->lang->line('cms_datos_galeria');?></h1>
 		</div>
 	</div>
 	<div class="row">
@@ -75,7 +75,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-md-10 col-md-offset-2">
-					<?php echo form_submit(array('name'=>'submit_carrusel','value'=>$this->lang->line('cms_guardar'),'class'=>'btn btn-default')); ?>
+					<?php echo form_submit(array('name'=>'submit_carrusel','value'=>$this->lang->line('cms_guardar'),'class'=>'btn btn-info')); ?>
 				</div>
 			</div>
 		<?php echo form_close(); ?>	
@@ -92,7 +92,7 @@
 				</div>
 			<?php else: ?>
 				<div class="col-md-12" style="margin-bottom:20px;">
-					<a href="<?php echo site_url('page/ordenar_carrusel/'.$id_carrusel);?>" class="btn btn-default"><?php echo $this->lang->line('cms_galeria_ordenar_imagenes');?></a>
+					<a href="<?php echo site_url('page/ordenar_carrusel/'.$id_carrusel);?>" class="btn btn-info"><?php echo $this->lang->line('cms_galeria_ordenar_imagenes');?></a>
 				</div>
 				<?php foreach($carrusel as $img):?>
 					<div class="col-md-2">
@@ -100,7 +100,7 @@
 							<img src="<?php echo base_url('uploads/general/img/carruselmini/'.$idioma_actual->id_idioma.'/'.$img->imagen_mini);?>" alt="<?php echo $img->titulo_carrusel;?>" title="<?php echo $img->titulo_carrusel;?>" class="img-responsive"/>
 							<p><?php echo $img->titulo_carrusel;?></p>
 							<?php if (!isset($imagen_carrusel)):?>
-								<a href="<?php echo site_url('page/editar_carrusel/'.$img->id_imagen_carrusel); ?>" class="btn btn-default" title="<?php echo $this->lang->line('cms_editar');?>"><span class="glyphicon glyphicon-edit"></span></a>
+								<a href="<?php echo site_url('page/editar_carrusel/'.$img->id_imagen_carrusel); ?>" class="btn btn-info" title="<?php echo $this->lang->line('cms_editar');?>"><span class="glyphicon glyphicon-edit"></span></a>
 								<a href="<?php echo site_url('page/eliminar_imagen_carrusel/'.$img->id_imagen_carrusel); ?>" class="btn btn-danger" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
 							<?php endif; ?>
 						</div>
@@ -109,33 +109,8 @@
 			<?php endif;?>
 		<?php endif; ?>
 	</div>
-	<div class="row">
-		<div class="col-md-12"><h3><?php echo $this->lang->line('cms_galeria_categorias');?></h3></div>
-		<?php if (isset($categoria_carrusel)):?>
-			<?php if($categorias==false):?>
-				<div class="col-md-12">
-					<div class="alert alert-info" role="alert">
-						<?php echo $this->lang->line('cms_galeria_no_categorias');?>
-					</div>
-				</div>
-			<?php else: ?>
-				<div class="col-md-12">
-					<a href="<?php echo site_url('page/ordenar_carrusel_categorias/'.$id_carrusel);?>" class="btn btn-default"><?php echo $this->lang->line('cms_galeria_ordenar_categorias')?></a>
-				</div>
-				<?php foreach($categoria_carrusel as $cat):?>
-					<div class="col-md-2">
-						<div class="carrusel_mini">
-							<h4><span class="label label-primary"><?php echo $cat->nombre_cat;?></span></h4>
-							<?php if (isset($categoria_carrusel)):?>
-								<a href="<?php echo site_url('page/editar_carrusel_categoria/'.$cat->id); ?>" class="btn btn-default" title="<?php echo $this->lang->line('cms_editar');?>"><span class="glyphicon glyphicon-edit"></span></a>
-								<a href="<?php echo site_url('page/eliminar_carrusel_categoria/'.$cat->id); ?>" class="btn btn-danger" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
-							<?php endif; ?>
-						</div>
-					</div>
-				<?php endforeach;?>
-			<?php endif;?>
-		<?php endif; ?>
-	</div>
+	
+        <div class="space-10"></div>
 	<div class="row">
 		<div class="col-md-12"><a class="btn btn-primary btn-mostrar"><?php echo $this->lang->line('cms_galeria_anadir_imagen');?></a></div>
 	</div>
@@ -268,7 +243,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-2">
-								<?php echo form_submit(array('name'=>'submit_imagen','value'=>isset($imagen_carrusel)?$this->lang->line('cms_editar'):$this->lang->line('cms_galeria_anadir_imagen'),'class'=>'btn btn-default')); ?>
+								<?php echo form_submit(array('name'=>'submit_imagen','value'=>isset($imagen_carrusel)?$this->lang->line('cms_editar'):$this->lang->line('cms_galeria_anadir_imagen'),'class'=>'btn btn-info')); ?>
 							</div>
 						</div>
 					</div>
@@ -276,6 +251,35 @@
 			<?php echo form_close(); ?>
 		</div>
 	</div>
+        
+    <div class="row">
+		<div class="col-md-12"><h3><?php echo $this->lang->line('cms_galeria_categorias');?></h3></div>
+		<?php if (isset($categoria_carrusel)):?>
+			<?php if($categorias==false):?>
+				<div class="col-md-12">
+					<div class="alert alert-info" role="alert">
+						<?php echo $this->lang->line('cms_galeria_no_categorias');?>
+					</div>
+				</div>
+			<?php else: ?>
+				<div class="col-md-12">
+					<a href="<?php echo site_url('page/ordenar_carrusel_categorias/'.$id_carrusel);?>" class="btn btn-info"><?php echo $this->lang->line('cms_galeria_ordenar_categorias')?></a>
+				</div>
+				<?php foreach($categoria_carrusel as $cat):?>
+					<div class="col-md-2">
+						<div class="carrusel_mini">
+							<h4><span class="label label-primary"><?php echo $cat->nombre_cat;?></span></h4>
+							<?php if (isset($categoria_carrusel)):?>
+								<a href="<?php echo site_url('page/editar_carrusel_categoria/'.$cat->id); ?>" class="btn btn-info" title="<?php echo $this->lang->line('cms_editar');?>"><span class="glyphicon glyphicon-edit"></span></a>
+								<a href="<?php echo site_url('page/eliminar_carrusel_categoria/'.$cat->id); ?>" class="btn btn-danger" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="glyphicon glyphicon-trash"></span></a>
+							<?php endif; ?>
+						</div>
+					</div>
+				<?php endforeach;?>
+			<?php endif;?>
+		<?php endif; ?>
+	</div>    
+    
 	<div class="row" style="margin-top:20px;">
 		<div class="col-md-12"><a class="btn btn-primary btn-mostrar-2"><?php echo $this->lang->line('cms_galeria_anadir_categoria');?></a></div>
 	</div>
@@ -343,7 +347,7 @@
 					<?php }?>						
 					<div class="form-group">
 						<div class="col-md-10 col-md-offset-2">
-							<?php echo form_submit(array('name'=>'submit_cat','value'=>$this->lang->line('cms_galeria_anadir_categoria'),'class'=>'btn btn-default')); ?>
+							<?php echo form_submit(array('name'=>'submit_cat','value'=>$this->lang->line('cms_galeria_anadir_categoria'),'class'=>'btn btn-info')); ?>
 						</div>
 					</div>
 				</div>

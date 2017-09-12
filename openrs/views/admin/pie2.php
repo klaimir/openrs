@@ -81,22 +81,22 @@ function formulario(form, idioma){
 				<div id="grupo1">
 					<?php if($opc_col1->id_opc == 2){?>
 						<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</a>
 						<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
 						<input class="form-control" type="text" name="facebook" value="<?php echo $valf;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</a>
 						<?php if(isset($config->twitter))$valt=$config->twitter; else $valt='';?>
 						<input class="form-control" type="text" name="twitter" value="<?php echo $valt;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</a>
 						<?php if(isset($config->google))$valg=$config->google; else $valg='';?>
 						<input class="form-control" type="text" name="google" value="<?php echo $valg;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</a>
 						<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
 						<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
 					<?php }?>
@@ -188,10 +188,15 @@ function formulario(form, idioma){
 		'type'=>'submit',
 		'class'=>'btn btn-primary'
 	); ?>
-	<div class="separacion-col">
-		<?php echo form_button($atrib);
-		echo form_close();?>
-	</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="separacion-col pull-right">
+                    <?php echo form_button($atrib);
+                    echo form_close();?>
+                </div>
+            </div>
+        </div>
+        <div class="space-10"></div>
 	
 	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f2','class'=>'form-horizontal'));?>
 	<div class="form-group">
@@ -213,22 +218,22 @@ function formulario(form, idioma){
 				<div id="grupo2">
 					<?php if($opc_col2->id_opc == 2){?>
 						<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
 						<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
 						<input class="form-control" type="text" name="facebook" value="<?php echo $valf;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
 						<?php if(isset($config->twitter))$valt=$config->twitter; else $valt='';?>
 						<input class="form-control" type="text" name="twitter" value="<?php echo $valt;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
 						<?php if(isset($config->google))$valg=$config->google; else $valg='';?>
 						<input class="form-control" type="text" name="google" value="<?php echo $valg;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
 						<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
 						<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
 					<?php }?>
@@ -320,10 +325,16 @@ function formulario(form, idioma){
 		'type'=>'submit',
 		'class'=>'btn btn-primary'
 	); ?>
-	<div class="separacion-col">
-		<?php echo form_button($atrib);
-		echo form_close();?>
-	</div>
+	<div class="row">
+            <div class="col-xs-12">
+                <div class="separacion-col pull-right">
+                    <?php echo form_button($atrib);
+                    echo form_close();?>
+                </div>
+            </div>
+        </div>
+        <div class="space-10"></div>
+                        
 	<?php echo form_open(site_url('admin/modificarPie'), array('name'=>'f3','class'=>'form-horizontal'));?>
 	<div class="form-group">
 		<div class="col-sm-2">
@@ -344,22 +355,22 @@ function formulario(form, idioma){
 				<div id="grupo2">
 					<?php if($opc_col3->id_opc == 2){?>
 						<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
 						<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
 						<input class="form-control" type="text" name="facebook" value="<?php echo $valf;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
 						<?php if(isset($config->twitter))$valt=$config->twitter; else $valt='';?>
 						<input class="form-control" type="text" name="twitter" value="<?php echo $valt;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
 						<?php if(isset($config->google))$valg=$config->google; else $valg='';?>
 						<input class="form-control" type="text" name="google" value="<?php echo $valg;?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>"><span class="ace-icon fa fa-trah-o bigger-130"></span></a>
+						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
 						<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
 						<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
 					<?php }?>
@@ -452,8 +463,12 @@ function formulario(form, idioma){
 		'type'=>'submit',
 		'class'=>'btn btn-primary'
 	); ?>
-	<div class="separacion-col">
-		<?php echo form_button($atrib);
-		echo form_close();?>
-	</div>
+	<div class="row">
+            <div class="col-xs-12">
+                <div class="separacion-col pull-right">
+                    <?php echo form_button($atrib);
+                    echo form_close();?>
+                </div>
+            </div>
+        </div>
 <?php //$this->load->view('javascript/ckeditor');?>

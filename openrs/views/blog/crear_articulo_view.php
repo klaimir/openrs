@@ -9,6 +9,9 @@
 			<?php if(isset($articulo)){
 				echo form_hidden('id_articulo', $id_articulo);
 			}?>
+                        <div class="col-md-12 page-header">
+                            <h1><?php echo isset($articulo) ? $this->lang->line('blog_editar_articulo') : $this->lang->line('blog_crear_articulo');?></h1>
+                        </div>
 			<!-- Only required for left/right tabs -->
 			<ul class="nav nav-tabs">
 				<?php foreach($cargar_idiomas as $idioma){ ?>
@@ -26,8 +29,7 @@
 						<div class="tab-pane active" id="tab_<?php echo $idioma->id_idioma;?>">
 					<?php }else{?>
 						<div class="tab-pane" id="tab_<?php echo $idioma->id_idioma;?>">
-					<?php }?>
-					<h4><?php echo isset($articulo) ? $this->lang->line('blog_editar_articulo') : $this->lang->line('blog_crear_articulo');?></h4>
+					<?php }?>					
 						<article>
 								<?php echo form_hidden('idiomas[]', $idioma->id_idioma);?>
 								<?php $titulo=array(
@@ -196,10 +198,10 @@
 										$config_mini['filebrowserImageUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=general";
 										echo $this->ckeditor->editor('contenido_'.$idioma->id_idioma, set_value('contenido_'.$idioma->id_idioma,isset($articulo[$idioma->id_idioma]->contenido) ? $articulo[$idioma->id_idioma]->contenido : ''), $config_mini);?>
 										<p></p>
-									</div>
-									<p class="centrado" style="font-size:12px;"><b>NOTA: </b>Para dividir el contenido en columnas, debes pulsar en "Fuente HTML" y pegar uno de estos códigos</p>
-									<p class="centrado" style="font-size:12px;">Para 2 columnas: &ltdiv class="col-md-6">Contenido&lt/div&gt &ltdiv class="col-md-6">Contenido&lt/div&gt</p>
-									<p class="centrado" style="font-size:12px;">Para 3 columnas: &ltdiv class="col-md-4">Contenido&lt/div&gt &ltdiv class="col-md-4">Contenido&lt/div&gt &ltdiv class="col-md-4">Contenido&lt/div&gt</p>
+                                                                                <small class="blue"><b>NOTA: </b>Para dividir el contenido en columnas, debes pulsar en "Fuente HTML" y pegar uno de estos códigos</small><br>
+                                                                                <small class="blue">Para 2 columnas: &ltdiv class="col-md-6">Contenido&lt/div&gt &ltdiv class="col-md-6">Contenido&lt/div&gt</small><br>
+                                                                                <small class="blue">Para 3 columnas: &ltdiv class="col-md-4">Contenido&lt/div&gt &ltdiv class="col-md-4">Contenido&lt/div&gt &ltdiv class="col-md-4">Contenido&lt/div&gt</small>
+									</div>									
 								</div>
 								<div class="form-group">
 									<div class="col-md-2">
@@ -259,11 +261,13 @@
 					<?php $con++;?>
 				<?php }?>
 			</div>
-			<div class="col-md-8 col-md-offset-4">
-				<?php echo form_submit(array('name'=>'publicar','value'=>$this->lang->line('blog_publicar'),'class'=>'btn enviar')); ?>
-				<?php echo form_submit(array('name'=>'borrador','value'=>$this->lang->line('blog_guardar_borrador'),'class'=>'btn enviar')); ?>
-				<?php echo isset($articulo) ? '<a href="'.site_url('blog-eliminar-articulo/'.$id_articulo).'" class="pull-right"><span class="btn btn-danger"><i class="icon-white icon-remove"></i>'.$this->lang->line('blog_eliminar').'</span></a>' : '';?>
-			</div>
+                            <div class="clearfix form-actions">
+                                <div class="ol-md-8 col-md-offset-4">
+                                    <?php echo form_submit(array('name'=>'publicar','value'=>$this->lang->line('blog_publicar'),'class'=>'btn btn-info enviar')); ?>
+                                    <?php echo form_submit(array('name'=>'borrador','value'=>$this->lang->line('blog_guardar_borrador'),'class'=>'btn btn-info enviar')); ?>
+                                    <?php echo isset($articulo) ? '<a href="'.site_url('blog-eliminar-articulo/'.$id_articulo).'" class="pull-right"><span class="btn btn-danger"><i class="icon-white icon-remove"></i>'.$this->lang->line('blog_eliminar').'</span></a>' : '';?>
+                                </div>
+                            </div>
 			<?php echo form_close(); ?>
 		</section>
 	</div>

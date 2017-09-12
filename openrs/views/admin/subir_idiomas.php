@@ -4,7 +4,10 @@
 	'value' => set_value('upload'),
 	'id'	=> 'upload'
 );?>
-<div class="container">
+<div class="page-header">
+    <h1>Subir idiomas</h1>
+</div>
+<div class="container">        
 	<div class="row">
 		<div class="col-sm-12" style="margin-top:50px">	
 			<?php if(isset($message)): ?>
@@ -21,7 +24,7 @@
 					<span style="color: red"><?php echo form_error('upload'); ?> </span>
 				</div>
 				<div class="col-sm-2" style="margin-left:15px;">
-					<?php echo form_submit(array('name'=>'submit','value'=>$this->lang->line('admin_subir_idioma_boton'),'class'=>'btn'));?>
+					<?php echo form_submit(array('name'=>'submit','value'=>$this->lang->line('admin_subir_idioma_boton'),'class'=>'btn btn-info'));?>
 				</div>
 			<?php echo form_close();?>
 		</div>
