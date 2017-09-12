@@ -1301,6 +1301,14 @@ footer li{
 .precioantfront{
 	padding-top:15%;
 }
+@media(max-width:800px) and (min-width:761px){
+	.preciofront{
+		padding-top:10%;
+	}
+	.precioantfront{
+		padding-top:8%;
+	}
+}
 @media(max-width:760px) and (min-width:560px){
 	.preciofront{
 		padding-top:6%;
