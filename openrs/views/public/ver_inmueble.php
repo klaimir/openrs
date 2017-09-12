@@ -95,14 +95,14 @@ $mensaje = array(
             <div class="breadcrumbs margin-top-10" id="breadcrumbs">
                 <ul class="breadcrumb">
                     <li>
-                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?provincia_id='.$inmueble->provincia_id); ?>"><?php echo $inmueble->nombre_provincia; ?></a>
+                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?referencia=&oferta_id=-1&tipo_id=-1&provincia_id='.$inmueble->provincia_id.'&poblacion_id=&zona_id=&habitaciones=&banios=&precios_desde=&precios_hasta=&metros=&start=0'); ?>"><?php echo $inmueble->nombre_provincia; ?></a>
                     </li>
                     <li>
-                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?provincia_id='.$inmueble->provincia_id.'&poblacion_id='.$inmueble->poblacion_id); ?>"><?php echo $inmueble->nombre_poblacion; ?></a>
+                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?referencia=&oferta_id=-1&tipo_id=-1&provincia_id='.$inmueble->provincia_id.'&poblacion_id='.$inmueble->poblacion_id.'&zona_id=&habitaciones=&banios=&precios_desde=&precios_hasta=&metros=&start=0'); ?>"><?php echo $inmueble->nombre_poblacion; ?></a>
                     </li>
                     <?php if(!empty($inmueble->nombre_zona)) { ?>
                     <li>
-                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?provincia_id='.$inmueble->provincia_id.'&poblacion_id='.$inmueble->poblacion_id.'&zona_id='.$inmueble->zona_id); ?>"><?php echo $inmueble->nombre_zona; ?></a>
+                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?referencia=&oferta_id=-1&tipo_id=-1&provincia_id='.$inmueble->provincia_id.'&poblacion_id='.$inmueble->poblacion_id.'&zona_id='.$inmueble->zona_id.'&habitaciones=&banios=&precios_desde=&precios_hasta=&metros=&start=0'); ?>"><?php echo $inmueble->nombre_zona; ?></a>
                     </li>
                     <?php } ?>
                 </ul><!-- /.breadcrumb -->
