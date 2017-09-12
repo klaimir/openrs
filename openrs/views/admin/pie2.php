@@ -4,44 +4,41 @@ function formulario(form, idioma){
 	if(form == "f1"){
 		//sacamos el valor del select de dicho formulario
 		opc = document.f1.col[document.f1.col.selectedIndex].value;
-		$('#grupo1').fadeOut(1);
 		if(opc == 1 || opc == 0){
-			$('#contenido1').fadeOut(500);
-			$('#redes1').fadeOut(500);
+			$('#grupo1_redes').fadeOut(500);
+			$('#grupo1_contenido').fadeOut(500);
 		}else if (opc == 2){ 
-			$('#contenido1').fadeOut(1);
-			$('#redes1').fadeIn(500);
+			$('#grupo1_contenido').fadeOut(1);
+			$('#grupo1_redes').fadeIn(500);
 		} else if(opc == 3){
-			$('#redes1').fadeOut(1);
-			$('#contenido1').fadeIn(500);
+			$('#grupo1_redes').fadeOut(1);
+			$('#grupo1_contenido').fadeIn(500);
 		}
 	}else if(form == "f2"){
 		//sacamos el valor del select de dicho formulario
 		opc = document.f2.col[document.f2.col.selectedIndex].value;
-		$('#grupo2').fadeOut(1);
 		if(opc == 1 || opc == 0){
-			$('#contenido2').fadeOut(500);
-			$('#redes2').fadeOut(500);
+			$('#grupo2_redes').fadeOut(500);
+			$('#grupo2_contenido').fadeOut(500);
 		}else if (opc == 2){ 
-			$('#contenido2').fadeOut(1);
-			$('#redes2').fadeIn(500);
+			$('#grupo2_contenido').fadeOut(1);
+			$('#grupo2_redes').fadeIn(500);
 		}else if(opc == 3){
-			$('#redes2').fadeOut(1);
-			$('#contenido2').fadeIn(500);
+			$('#grupo2_redes').fadeOut(1);
+			$('#grupo2_contenido').fadeIn(500);
 		}
 	}else if(form == "f3"){
 		//sacamos el valor del select de dicho formulario
 		opc = document.f3.col[document.f3.col.selectedIndex].value;
-		$('#grupo3').fadeOut(1);
 		if(opc == 1 || opc == 0){
-			$('#contenido3').fadeOut(500);
-			$('#redes3').fadeOut(500);
+			$('#grupo3_redes').fadeOut(500);
+			$('#grupo3_contenido').fadeOut(500);
 		}else if (opc == 2){ 
-			$('#contenido3').fadeOut(1);
-			$('#redes3').fadeIn(500);
+			$('#grupo3_contenido').fadeOut(1);
+			$('#grupo3_redes').fadeIn(500);
 		}else if(opc == 3){
-			$('#redes3').fadeOut(1);
-			$('#contenido3').fadeIn(500);
+			$('#grupo3_redes').fadeOut(1);
+			$('#grupo3_contenido').fadeIn(500);
 		}
 	}
 }
@@ -68,58 +65,43 @@ function formulario(form, idioma){
 		</div>
 		<div class="col-sm-10">
 			<select name="col" id="col" class="form-control" onchange="formulario('f1','<?php echo $idioma_actual->id_idioma;?>')">
-				<?php if(isset($opc_col1)){?>
-					<option value="<?php echo $opc_col1 -> id_opc; ?>"><?php echo $opc_col1 -> nombre; ?></option>
-				<?php }?>
 				<option value="0">Vacío</option>
 				<?php foreach($opc_footer as $opc){?>
-					<option value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
+					<option <?php echo ($opc_col1->id_opc == $opc->id_opc) ? 'selected' : '';?> value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
 				<?php } ?>        
 			</select>
 			<span><?php echo form_error('col'); ?></span>
 			<?php if(isset($opc_col1)){?>
-				<div id="grupo1">
+				<div id="grupo1_redes" <?php echo ($opc_col1->id_opc == 2) ? '' : 'style="display:none"';?>>
 					<?php if($opc_col1->id_opc == 2){?>
 						<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
 						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</a>
-						<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
-						<input class="form-control" type="text" name="facebook" value="<?php echo $valf;?>"></input>
+						<input class="form-control" type="text" name="facebook" value="<?php echo isset($config->facebook) ? $config->facebook :'';?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
 						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</a>
-						<?php if(isset($config->twitter))$valt=$config->twitter; else $valt='';?>
-						<input class="form-control" type="text" name="twitter" value="<?php echo $valt;?>"></input>
+						<input class="form-control" type="text" name="twitter" value="<?php echo isset($config->twitter) ? $config->twitter : '';?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
 						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</a>
-						<?php if(isset($config->google))$valg=$config->google; else $valg='';?>
-						<input class="form-control" type="text" name="google" value="<?php echo $valg;?>"></input>
+						<input class="form-control" type="text" name="google" value="<?php echo isset($config->google) ? $config->google : '';?>"></input>
 										
 						<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
 						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</a>
-						<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
-						<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
+						<input class="form-control" type="text" name="vimeo" value="<?php echo isset($config->vimeo) ? $config->vimeo : '';?>"></input>
 					<?php }?>
-					<?php if($opc_col1->id_opc == 3){?>
-						<ul class="nav nav-tabs">
-							<?php foreach($cargar_idiomas as $idioma){ ?>
-								<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-									<li class="active"><a href="#tab1_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-								<?php }else{?>
-									<li><a href="#tab1_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-								<?php }?>
-							<?php }?>
-						</ul>
-						<div class="tab-content">
-							<?php foreach($cargar_idiomas as $idioma){?>
-								<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-									<div class="tab-pane active" id="tab1_<?php echo $idioma->id_idioma;?>">
-								<?php }else{?>
-									<div class="tab-pane" id="tab1_<?php echo $idioma->id_idioma;?>">
-								<?php }
-									echo form_hidden('idiomas[]', $idioma->id_idioma);
-									?>
-															
+				</div>
+				<div id="grupo1_contenido" <?php echo ($opc_col1->id_opc == 3) ? '' : 'style="display:none"';?>>
+					<ul class="nav nav-tabs">
+						<?php foreach($cargar_idiomas as $idioma){ ?>
+							<li class="<?php echo $idioma->id_idioma == $idioma_actual->id_idioma ? 'active' : '';?>"><a href="#tab1_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+						<?php }?>
+					</ul>
+					<div class="tab-content">
+						<?php foreach($cargar_idiomas as $idioma){?>
+							<div class="tab-pane <?php echo ($idioma->id_idioma == $idioma_actual->id_idioma) ? 'active' : '';?>" id="tab1_<?php echo $idioma->id_idioma;?>">
+								<div class="row">
+									<?php echo form_hidden('idiomas[]', $idioma->id_idioma);?>
 									<div class="col-sm-12">
 										<?php echo form_label($this->lang->line('blog_contenido'),'contenidoe_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
 									</div>
@@ -128,55 +110,12 @@ function formulario(form, idioma){
 										<span><?php echo form_error('contenidoe_'.$idioma->id_idioma); ?></span>
 										<p></p>
 									</div>
-								</div><?php //cierre tab-pane ?>	
-							<?php } //cierre foreach?>
-						</div> <?php //cierre tab-content?>
-					<?php }?>
-				</div>
-			<?php }?>
-				<div id="redes1" style="display:none;">
-					<label>Facebook</label>
-					<input class="form-control" type="text" name="facebook"></input>
-					<label>Twitter</label>
-					<input class="form-control" type="text" name="twitter"></input>
-					<label>Google+</label>
-					<input class="form-control" type="text" name="google"></input>
-					<label>Vimeo</label>
-					<input class="form-control" type="text" name="vimeo"></input>
-				</div>
-				<div id="contenido1" style="display: none;">
-					<ul class="nav nav-tabs">
-						<?php foreach($cargar_idiomas as $idioma){ ?>
-							<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-								<li class="active"><a href="#tab1_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-							<?php }else{?>
-								<li><a href="#tab1_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-							<?php }?>
-						<?php }?>
-					</ul>
-					<div class="tab-content">
-						<?php foreach($cargar_idiomas as $idioma){?>
-							<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-								<div class="tab-pane active" id="tab1_<?php echo $idioma->id_idioma;?>">
-							<?php }else{?>
-								<div class="tab-pane" id="tab1_<?php echo $idioma->id_idioma;?>">
-							<?php }
-								echo form_hidden('idiomas[]', $idioma->id_idioma);
-								?>
-														
-								<div class="col-sm-12">
-									<?php echo form_label($this->lang->line('blog_contenido'),'contenido_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
 								</div>
-								<div class="col-sm-12">
-									<?php echo $this->ckeditor->editor('contenido_'.$idioma->id_idioma, isset($texto_footer1[$idioma->id_idioma]->contenido) ? $texto_footer1[$idioma->id_idioma]->contenido : '', $config_mini);?>
-									<span><?php echo form_error('contenido_'.$idioma->id_idioma); ?></span>
-									<p></p>
-								</div>					
-							</div><?php //cierre tab-pane?>
+							</div><?php //cierre tab-pane ?>	
 						<?php } //cierre foreach?>
-					</div><?php //cierre tab-content?>
-				</div><?php //cierre contenido1?>
-			<?php //}?>
+					</div> <?php //cierre tab-content?>
+				</div>
+			<?php }?>				
 		</div>
 	</div>
 	
@@ -205,58 +144,41 @@ function formulario(form, idioma){
 		</div>
 		<div class="col-sm-10">
 			<select name="col" id="col" class="form-control" onchange="formulario('f2','<?php echo $idioma_actual->id_idioma;?>')">
-				<?php if(isset($opc_col2)){?>
-					<option value="<?php echo $opc_col2 -> id_opc; ?>"><?php echo $opc_col2 -> nombre; ?></option>
-				<?php }?>
 				<option value="0">Vacío</option>
 				<?php foreach($opc_footer as $opc){?>
-					<option value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
+					<option <?php echo ($opc_col2->id_opc == $opc->id_opc) ? 'selected' : '';?> value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
 				<?php } ?>        
 			</select>
 			<span><?php echo form_error('col'); ?></span>
 			<?php if(isset($opc_col2)){?>
-				<div id="grupo2">
-					<?php if($opc_col2->id_opc == 2){?>
-						<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
-						<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
-						<input class="form-control" type="text" name="facebook" value="<?php echo $valf;?>"></input>
-										
-						<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
-						<?php if(isset($config->twitter))$valt=$config->twitter; else $valt='';?>
-						<input class="form-control" type="text" name="twitter" value="<?php echo $valt;?>"></input>
-										
-						<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
-						<?php if(isset($config->google))$valg=$config->google; else $valg='';?>
-						<input class="form-control" type="text" name="google" value="<?php echo $valg;?>"></input>
-										
-						<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
-						<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
-						<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
-					<?php }?>
-					<?php if($opc_col2->id_opc == 3){?>
-						<ul class="nav nav-tabs">
-							<?php foreach($cargar_idiomas as $idioma){ ?>
-								<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-									<li class="active"><a href="#tab2_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-								<?php }else{?>
-									<li><a href="#tab2_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-								<?php }?>
-							<?php }?>
-						</ul>
-						<div class="tab-content">
-							<?php foreach($cargar_idiomas as $idioma){?>
-								<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-									<div class="tab-pane active" id="tab2_<?php echo $idioma->id_idioma;?>">
-								<?php }else{?>
-									<div class="tab-pane" id="tab2_<?php echo $idioma->id_idioma;?>">
-								<?php }
-									echo form_hidden('idiomas[]', $idioma->id_idioma);
-									?>
-															
+				<div id="grupo2_redes" <?php echo ($opc_col2->id_opc == 2) ? '' : 'style="display:none"';?>>
+					<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
+					<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
+					<input class="form-control" type="text" name="facebook" value="<?php echo isset($config->facebook) ? $config->facebook :'';?>"></input>
+									
+					<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
+					<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
+					<input class="form-control" type="text" name="twitter" value="<?php echo isset($config->twitter) ? $config->twitter : '';?>"></input>
+									
+					<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
+					<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
+					<input class="form-control" type="text" name="google" value="<?php echo isset($config->google) ? $config->google : '';?>"></input>
+									
+					<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
+					<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
+					<input class="form-control" type="text" name="vimeo" value="<?php echo isset($config->vimeo) ? $config->vimeo : '';?>"></input>
+				</div>
+				<div id="grupo2_contenido" <?php echo ($opc_col2->id_opc == 3) ? '' : 'style="display:none"';?>>
+					<ul class="nav nav-tabs">
+						<?php foreach($cargar_idiomas as $idioma){ ?>
+							<li class="<?php $idioma->id_idioma == $idioma_actual->id_idioma ? 'active' : '';?>"><a href="#tab2_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+						<?php }?>
+					</ul>
+					<div class="tab-content">
+						<?php foreach($cargar_idiomas as $idioma){?>
+							<div class="tab-pane <?php echo $idioma->id_idioma == $idioma_actual->id_idioma ? 'active' : '';?>" id="tab2_<?php echo $idioma->id_idioma;?>">
+								<?php echo form_hidden('idiomas[]', $idioma->id_idioma);?>
+								<div class="row">
 									<div class="col-sm-12">
 										<?php echo form_label($this->lang->line('blog_contenido'),'contenido2e_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
 									</div>
@@ -265,55 +187,12 @@ function formulario(form, idioma){
 										<span><?php echo form_error('contenido2e_'.$idioma->id_idioma); ?></span>
 										<p></p>
 									</div>
-								</div><?php //cierre tab-pane ?>	
-							<?php } //cierre foreach?>
-						</div> <?php //cierre tab-content?>
-					<?php }?>
+								</div>
+							</div><?php //cierre tab-pane ?>	
+						<?php } //cierre foreach?>
+					</div> <?php //cierre tab-content?>
 				</div>
 			<?php }?>
-				<div id="redes2" style="display:none;">
-					<label>Facebook</label>
-					<input class="form-control" type="text" name="facebook"></input>
-					<label>Twitter</label>
-					<input class="form-control" type="text" name="twitter"></input>
-					<label>Google+</label>
-					<input class="form-control" type="text" name="google"></input>
-					<label>Vimeo</label>
-					<input class="form-control" type="text" name="vimeo"></input>
-				</div>
-				<div id="contenido2" style="display: none;">
-					<ul class="nav nav-tabs">
-						<?php foreach($cargar_idiomas as $idioma){ ?>
-							<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-								<li class="active"><a href="#tab2_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-							<?php }else{?>
-								<li><a href="#tab2_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-							<?php }?>
-						<?php }?>
-					</ul>
-					<div class="tab-content">
-						<?php foreach($cargar_idiomas as $idioma){?>
-							<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-								<div class="tab-pane active" id="tab2_<?php echo $idioma->id_idioma;?>">
-							<?php }else{?>
-								<div class="tab-pane" id="tab2_<?php echo $idioma->id_idioma;?>">
-							<?php }
-								echo form_hidden('idiomas[]', $idioma->id_idioma);
-								?>
-														
-								<div class="col-sm-12">
-									<?php echo form_label($this->lang->line('blog_contenido'),'contenido2_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
-								</div>
-								<div class="col-sm-12">
-									<?php echo $this->ckeditor->editor('contenido2_'.$idioma->id_idioma, isset($texto_footer2[$idioma->id_idioma]->contenido) ? $texto_footer2[$idioma->id_idioma]->contenido : '', $config_mini);?>
-									<span><?php echo form_error('contenido2_'.$idioma->id_idioma); ?></span>
-									<p></p>
-								</div>					
-							</div><?php //cierre tab-pane?>
-						<?php } //cierre foreach?>
-					</div><?php //cierre tab-content?>
-				</div><?php //cierre contenido1?>
-			<?php //}?>
 		</div>
 	</div>
 	
@@ -342,58 +221,41 @@ function formulario(form, idioma){
 		</div>
 		<div class="col-sm-10">
 			<select name="col" id="col" class="form-control" onchange="formulario('f3','<?php echo $idioma_actual->id_idioma;?>')">
-				<?php if(isset($opc_col3)){?>
-					<option value="<?php echo $opc_col3 -> id_opc; ?>"><?php echo $opc_col3 -> nombre; ?></option>
-				<?php }?>
 				<option value="0">Vacío</option>
 				<?php foreach($opc_footer as $opc){?>
-					<option value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
+					<option <?php echo (isset($opc_col3) && $opc_col3->id_opc == $opc->id_opc) ? 'selected' : '';?> value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
 				<?php } ?>        
 			</select>
 			<span><?php echo form_error('col'); ?></span>
 			<?php if(isset($opc_col3)){?>
-				<div id="grupo2">
-					<?php if($opc_col3->id_opc == 2){?>
-						<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
-						<?php if(isset($config->facebook))$valf=$config->facebook; else $valf='';?>
-						<input class="form-control" type="text" name="facebook" value="<?php echo $valf;?>"></input>
-										
-						<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
-						<?php if(isset($config->twitter))$valt=$config->twitter; else $valt='';?>
-						<input class="form-control" type="text" name="twitter" value="<?php echo $valt;?>"></input>
-										
-						<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
-						<?php if(isset($config->google))$valg=$config->google; else $valg='';?>
-						<input class="form-control" type="text" name="google" value="<?php echo $valg;?>"></input>
-										
-						<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
-						<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
-						<?php if(isset($config->vimeo))$valk=$config->vimeo; else $valk='';?>
-						<input class="form-control" type="text" name="vimeo" value="<?php echo $valk;?>"></input>
-					<?php }?>
-					<?php if($opc_col3->id_opc == 3){?>
-						<ul class="nav nav-tabs">
-							<?php foreach($cargar_idiomas as $idioma){ ?>
-								<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-									<li class="active"><a href="#tab3_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-								<?php }else{?>
-									<li><a href="#tab3_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-								<?php }?>
-							<?php }?>
-						</ul>
-						<div class="tab-content">
-							<?php foreach($cargar_idiomas as $idioma){?>
-								<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-									<div class="tab-pane active" id="tab3_<?php echo $idioma->id_idioma;?>">
-								<?php }else{?>
-									<div class="tab-pane" id="tab3_<?php echo $idioma->id_idioma;?>">
-								<?php }
-									echo form_hidden('idiomas[]', $idioma->id_idioma);
-									?>
-															
+				<div id="grupo3_redes" <?php echo ($opc_col3->id_opc == 2) ? '' : 'style="display:none"';?>>
+					<?php echo form_label($this->lang->line('cliente_facebook'),'facebook',array('class'=>'control-label'));?>
+					<a href="<?php echo site_url('admin/limpiar_red/facebook'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
+					<input class="form-control" type="text" name="facebook" value="<?php echo isset($config->facebook) ? $config->facebook : '';?>"></input>
+									
+					<?php echo form_label($this->lang->line('cliente_twitter'),'twitter',array('class'=>'control-label'));?>
+					<a href="<?php echo site_url('admin/limpiar_red/twitter'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
+					<input class="form-control" type="text" name="twitter" value="<?php echo isset($config->twitter) ? $config->twitter : '';?>"></input>
+									
+					<?php echo form_label($this->lang->line('cliente_google'),'google',array('class'=>'control-label'));?>
+					<a href="<?php echo site_url('admin/limpiar_red/google'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
+					<input class="form-control" type="text" name="google" value="<?php echo isset($config->google) ? $config->google : '';?>"></input>
+									
+					<?php echo form_label($this->lang->line('cliente_vimeo'),'vimeo',array('class'=>'control-label'));?>
+					<a href="<?php echo site_url('admin/limpiar_red/vimeo'); ?>" class="btn btn-danger pull-right" title="<?php echo $this->lang->line('cms_eliminar');?>">Eliminar</span></a>
+					<input class="form-control" type="text" name="vimeo" value="<?php echo isset($config->vimeo) ? $config->vimeo : '';?>"></input>
+				</div>
+				<div id="grupo3_contenido" <?php echo ($opc_col3->id_opc == 3) ? '' : 'style="display:none"';?>>
+					<ul class="nav nav-tabs">
+						<?php foreach($cargar_idiomas as $idioma){ ?>
+							<li class="<?php echo $idioma->id_idioma == $idioma_actual->id_idioma ? 'active' : ''?>"><a href="#tab3_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
+						<?php }?>
+					</ul>
+					<div class="tab-content">
+						<?php foreach($cargar_idiomas as $idioma){?>
+							<div class="tab-pane <?php echo $idioma->id_idioma == $idioma_actual->id_idioma ? 'active' : '';?>" id="tab3_<?php echo $idioma->id_idioma;?>">
+								<div class="row">
+									<?php echo form_hidden('idiomas[]', $idioma->id_idioma);?>
 									<div class="col-sm-12">
 										<?php echo form_label($this->lang->line('blog_contenido'),'contenido3e_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
 									</div>
@@ -403,55 +265,12 @@ function formulario(form, idioma){
 										<span><?php echo form_error('contenido3e_'.$idioma->id_idioma); ?></span>
 										<p></p>
 									</div>
-								</div><?php //cierre tab-pane ?>	
-							<?php } //cierre foreach?>
-						</div> <?php //cierre tab-content?>
-					<?php }?>
+								</div>
+							</div><?php //cierre tab-pane ?>	
+						<?php } //cierre foreach?>
+					</div> <?php //cierre tab-content?>
 				</div>
 			<?php }?>
-				<div id="redes3" style="display:none;">
-					<label>Facebook</label>
-					<input class="form-control" type="text" name="facebook"></input>
-					<label>Twitter</label>
-					<input class="form-control" type="text" name="twitter"></input>
-					<label>Google+</label>
-					<input class="form-control" type="text" name="google"></input>
-					<label>Vimeo</label>
-					<input class="form-control" type="text" name="vimeo"></input>
-				</div>
-				<div id="contenido3" style="display: none;">
-					<ul class="nav nav-tabs">
-						<?php foreach($cargar_idiomas as $idioma){ ?>
-							<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-								<li class="active"><a href="#tab3_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-							<?php }else{?>
-								<li><a href="#tab3_<?php echo $idioma->id_idioma;?>" data-toggle="tab"><?php echo $idioma->nombre;?></a></li>
-							<?php }?>
-						<?php }?>
-					</ul>
-					<div class="tab-content">
-						<?php foreach($cargar_idiomas as $idioma){?>
-							<?php if($idioma->id_idioma == $idioma_actual->id_idioma){?>
-								<div class="tab-pane active" id="tab3_<?php echo $idioma->id_idioma;?>">
-							<?php }else{?>
-								<div class="tab-pane" id="tab3_<?php echo $idioma->id_idioma;?>">
-							<?php }
-								echo form_hidden('idiomas[]', $idioma->id_idioma);
-								?>
-														
-								<div class="col-sm-12">
-									<?php echo form_label($this->lang->line('blog_contenido'),'contenido3_'.$idioma->id_idioma,array('class'=>'control-label')); ?>
-								</div>
-								<div class="col-sm-12">
-									<?php echo $this->ckeditor->editor('contenido3_'.$idioma->id_idioma, isset($texto_footer3[$idioma->id_idioma]->contenido) ? $texto_footer3[$idioma->id_idioma]->contenido : '', $config_mini);?>
-									<span><?php echo form_error('contenido3_'.$idioma->id_idioma); ?></span>
-									<p></p>
-								</div>					
-							</div><?php //cierre tab-pane?>
-						<?php } //cierre foreach?>
-					</div><?php //cierre tab-content?>
-				</div><?php //cierre contenido3?>
-			<?php //}?>
 		</div>
 	</div>
 	

@@ -68,6 +68,7 @@ class Seccion_model extends MY_Model {
 		$this->db->where('seccion_idiomas.id_idioma', $idioma);
 		if($id_super_seccion!=null)
 			$this->db->where('id_super_seccion',$id_super_seccion);
+		$this->db->order_by('prioridad', 'asc');
 		return $this->db->get('seccion')->result();
 	}
 	

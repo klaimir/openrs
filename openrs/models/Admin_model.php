@@ -147,4 +147,13 @@ class Admin_model extends MY_Model
     	$this->db->where('id_idioma',$idioma);
     	return $this->db->get('footer_texto_idiomas')->row();
     }
+    
+    function borrar_columna_pie_idioma($columna){
+    	$this->db->where('columna', $columna);
+    	$this->db->delete('footer_texto_idiomas');
+    }
+    
+    function insert_footer_cliente_idioma($datos){
+    	$this->db->insert('footer_texto_idiomas', $datos);
+    }
 }

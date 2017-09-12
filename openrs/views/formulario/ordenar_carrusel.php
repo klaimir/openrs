@@ -9,7 +9,7 @@
 	    		<?php $orden = '';?>
 		    	<?php foreach($ordenar as $it): ?>
 		    		<?php $orden = $orden.''.$it->id_imagen_carrusel.';'?>
-		        	<li id="<?php echo $it->id_imagen_carrusel; ?>" class="ui-state-default"><span class="glyphicon glyphicon-sort pull-right"></span><img src="<?php echo base_url('img/carruselmini/'.$idioma_actual->id_idioma.'/'.$it->imagen_mini);?>" /></li>
+		        	<li id="<?php echo $it->id_imagen_carrusel; ?>" class="ui-state-default"><span class="glyphicon glyphicon-sort pull-right"></span><img src="<?php echo base_url('uploads/general/img/carruselmini/'.$idioma_actual->id_idioma.'/'.$it->imagen_mini);?>" /></li>
 		      	<?php endforeach; ?>
 	      	</ul>
 	      	<?php echo form_open('',array('class'=>'form-horizontal')); ?>
