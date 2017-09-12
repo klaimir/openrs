@@ -84,6 +84,30 @@ $mensaje = array(
 <?php if($inmueble){?>
     <div class="container-fluid background-color-f9">
 	<div class="container">
+            <div class="row">
+                <div class="col-sm-12 margin-right-10">
+                        <a href="<?php echo $this->utilities->enlace_volver_general(); ?>" class="btn btn-info pull-right">
+                            <span class="menu-text">- <?php echo lang('tienda_inmueble_volver');?> -</span>
+                        </a>
+                </div>
+            </div>
+            
+            <div class="breadcrumbs margin-top-10" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?provincia_id='.$inmueble->provincia_id); ?>"><?php echo $inmueble->nombre_provincia; ?></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?provincia_id='.$inmueble->provincia_id.'&poblacion_id='.$inmueble->poblacion_id); ?>"><?php echo $inmueble->nombre_poblacion; ?></a>
+                    </li>
+                    <?php if(!empty($inmueble->nombre_zona)) { ?>
+                    <li>
+                        <a href="<?php echo site_url($this->uri->segment(1).'/browser?provincia_id='.$inmueble->provincia_id.'&poblacion_id='.$inmueble->poblacion_id.'&zona_id='.$inmueble->zona_id); ?>"><?php echo $inmueble->nombre_zona; ?></a>
+                    </li>
+                    <?php } ?>
+                </ul><!-- /.breadcrumb -->
+            </div>
+            
 		<div id="aviso-compra">
 			<?php if($this->session->flashdata('error')){?>
 				<div class="alert alert-danger alert-dismissible" role="alert">

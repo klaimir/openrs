@@ -279,6 +279,7 @@ $lang['tienda_inmueble_no_existe'] = 'Inmueble inexistente o no publicado';
 $lang['tienda_inmueble_busqueda_sin_resultados'] = 'No se han encontrado resultados';
 $lang['tienda_inmueble_ce_exento'] = 'Exento';
 $lang['tienda_inmueble_ce_tramite'] = 'En trámite';
+$lang['tienda_inmueble_volver'] = 'VOLVER';
 
 $lang['tienda_contacto_nombre_apellidos'] = 'Nombre y Apellidos';
 $lang['tienda_contacto_empresa'] = 'Empresa';

@@ -277,8 +277,9 @@ $lang['tienda_inmueble_no_existe'] = 'Non-existent or unpublished property';
 $lang['tienda_inmueble_busqueda_sin_resultados'] = 'No properties found';
 $lang['tienda_inmueble_ce_exento'] = 'No necessary';
 $lang['tienda_inmueble_ce_tramite'] = 'In process';
+$lang['tienda_inmueble_volver'] = 'BACK';
 
-$lang['tienda_contacto_nombre_apellidos'] = 'Complete Name';
+$lang['tienda_contacto_nombre_apellidos'] = 'Full Name';
 $lang['tienda_contacto_empresa'] = 'Business';
 $lang['tienda_contacto_email'] = 'Email';
 $lang['tienda_contacto_telefono'] = 'Telephone';
