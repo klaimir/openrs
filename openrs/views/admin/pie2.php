@@ -67,7 +67,7 @@ function formulario(form, idioma){
 			<select name="col" id="col" class="form-control" onchange="formulario('f1','<?php echo $idioma_actual->id_idioma;?>')">
 				<option value="0">Vacío</option>
 				<?php foreach($opc_footer as $opc){?>
-					<option <?php echo ($opc_col1->id_opc == $opc->id_opc) ? 'selected' : '';?> value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
+					<option <?php echo (isset($opc_col1) && $opc_col1->id_opc == $opc->id_opc) ? 'selected' : '';?> value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
 				<?php } ?>        
 			</select>
 			<span><?php echo form_error('col'); ?></span>
@@ -146,7 +146,7 @@ function formulario(form, idioma){
 			<select name="col" id="col" class="form-control" onchange="formulario('f2','<?php echo $idioma_actual->id_idioma;?>')">
 				<option value="0">Vacío</option>
 				<?php foreach($opc_footer as $opc){?>
-					<option <?php echo ($opc_col2->id_opc == $opc->id_opc) ? 'selected' : '';?> value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
+					<option <?php echo (isset($opc_col2) && $opc_col2->id_opc == $opc->id_opc) ? 'selected' : '';?> value="<?php echo $opc -> id_opc; ?>"><?php echo $opc -> nombre; ?></option>
 				<?php } ?>        
 			</select>
 			<span><?php echo form_error('col'); ?></span>
