@@ -3,8 +3,8 @@
 ?>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12">
-			<h2><?php echo (($nuevo==true)? $this->lang->line('cms_crear') : $this->lang->line('cms_editar')).' '.$nombre.' '.(($nuevo==true)?'':$editando);?></h2>
+		<div class="col-md-12 page-header">
+			<h1><?php echo (($nuevo==true)? $this->lang->line('cms_crear') : $this->lang->line('cms_editar')).' '.$nombre.' '.(($nuevo==true)?'':$editando);?></h1>
 			<p></p>
 		</div>
 		<div class="col-md-12">
@@ -47,11 +47,19 @@
 						<?php } ?>
 					<?php endforeach;?>
 				</div>
-				<div class="form-group">
-				    <div class="col-sm-offset-2 col-sm-10">
-				      	<button type="submit" class="btn btn-default"><?php echo $this->lang->line('cms_guardar');?></button>
-				    </div>
-				</div>
+                                    
+                                <div class="clearfix form-actions">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button type="submit" class="btn btn-info">
+                                            <i class="ace-icon fa fa-save bigger-110"></i>
+                                            <?php echo $this->lang->line('cms_guardar');?>
+                                        </button>
+                                        <button class="btn" type="reset">
+                                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
 			<?php echo form_close(); ?>
 		</div>
 	</div>

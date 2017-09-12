@@ -72,9 +72,9 @@
 	                        <td><?php echo form_checkbox($activo); ?></td>
 	                        <td>
 								<div class="action-buttons">
-									<?php echo form_submit(array('name'=>'submit','value'=>$this->lang->line('admin_modificar_idioma'),'class'=>'green'));?>
-	                                <a class="red borrar" id="<?php echo site_url('admin/eliminar_idioma/'.$idioma->id_idioma);?>" href="#" title="Borrar">
-	                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+									<?php echo form_submit(array('name'=>'submit','value'=>$this->lang->line('admin_modificar_idioma'),'class'=>'btn btn-info'));?>
+	                                <a class="btn btn-danger borrar" id="<?php echo site_url('admin/eliminar_idioma/'.$idioma->id_idioma);?>" href="#" title="Borrar">
+	                                    Eliminar
 	                                </a>
 	                            </div>
 	

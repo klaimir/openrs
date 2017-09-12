@@ -12,8 +12,8 @@
                 <li role="presentation" class="active"><a><?php echo $this->lang->line('cms_bloques_paso2');?></a></li>
             </ul>
 	</div>
-	<div class="col-sm-12">
-            <h2><?php echo $this->lang->line('cms_datos_inmuebles');?></h2>
+	<div class="col-sm-12 page-header">
+            <h1><?php echo $this->lang->line('cms_datos_inmuebles');?></h1>
 	</div>
     </div>
     <div class="row">
@@ -50,10 +50,12 @@
             </div>
        	</div>
        	<div class="form-group">
-            <div class="col-md-10 col-md-offset-2">
-				<?php echo form_submit(array('name'=>'submit_inmuebles','value'=>$this->lang->line('cms_guardar'),'class'=>'btn btn-default')); ?>
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <?php echo form_submit(array('name'=>'submit_inmuebles','value'=>$this->lang->line('cms_guardar'),'class'=>'btn btn-info')); ?>
+                </div>
             </div>
-		</div>
+	</div>
         <?php echo form_close(); ?>	
 	</div>
     </div>
