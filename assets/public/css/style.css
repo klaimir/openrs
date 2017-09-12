@@ -1286,6 +1286,38 @@ footer li{
     font-weight:700;
 }
 
+@media(max-width:760px) and (min-width:300px){
+	.ver-inmueble{
+		padding-top:21px;
+		padding-bottom:21px;
+		background-color:#9fb6c1;
+		text-align:center;
+		font-weight:700;
+	}
+}
+.preciofront{
+	padding-top:20%;
+}
+.precioantfront{
+	padding-top:15%;
+}
+@media(max-width:760px) and (min-width:560px){
+	.preciofront{
+		padding-top:6%;
+	}
+	.precioantfront{
+		padding-top:5%;
+	}
+}
+@media(max-width:414px) and (min-width:300px){
+	.preciofront{
+		padding-top:15%;
+	}
+	.precioantfront{
+		padding-top:10%;
+	}
+}
+
 .item-menu-inmueble{
 	background-color:#9fb6c1;
 	color:white;

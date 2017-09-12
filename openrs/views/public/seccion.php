@@ -512,10 +512,10 @@ $mensaje = array(
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_compra_anterior > 0){
-                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
+                                                                                echo '<p class="precioantfront"><s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
                                                                                 echo number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
                                                                             }else{
-                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
+                                                                                echo '<p class="preciofront">'.number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
                                                                             }?>
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
@@ -526,10 +526,10 @@ $mensaje = array(
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
-                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</s><br>';
+                                                                                echo '<p class="precioantfront"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</s><br>';
                                                                                 echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
                                                                             }else{
-                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
+                                                                                echo '<p class="preciofront">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
@@ -613,10 +613,10 @@ $mensaje = array(
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_compra_anterior > 0){
-                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
+                                                                                echo '<p class="precioantfront"><s>'.number_format($inmueble->precio_compra_anterior,2,",",".").' &euro;</s><br>';
                                                                                 echo number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
                                                                             }else{
-                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
+                                                                                echo '<p class="preciofront">'.number_format($inmueble->precio_compra,2,",",".").' &euro;</p>';
                                                                             }?>
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
@@ -627,10 +627,10 @@ $mensaje = array(
                                                                     <div class="col-sm-12 padding-0 background-color-ver">
                                                                         <div class="col-sm-6 precio-inmueble">
                                                                             <?php if($inmueble->precio_alquiler_anterior > 0){
-                                                                                echo '<p style="padding-top:15%;"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</s><br>';
+                                                                                echo '<p class="precioantfront"><s>'.number_format($inmueble->precio_alquiler_anterior,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</s><br>';
                                                                                 echo number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
                                                                             }else{
-                                                                                echo '<p style="padding-top:20%;">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
+                                                                                echo '<p class="preciofront">'.number_format($inmueble->precio_alquiler,2,",",".").' &euro; / '.lang('tienda_inmueble_precio_mes').'</p>';
                                                                             }?> 
                                                                         </div>
                                                                         <div class="col-sm-6 ver-inmueble">
