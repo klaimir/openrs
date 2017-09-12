@@ -1919,13 +1919,23 @@ class Inmueble_model extends MY_Model
     function exists_marker($position)
     {
         // Recorremos el array de marker buscando las coordenadas
-        foreach ($this->markers as $key => $marker)
+        //echo "<br>------------MARKERS ACTUALES---------------<br>";        
+        
+        //var_dump($this->markers);
+        
+        if(count($this->markers))
         {
-            $array_position=$marker['position'];
-            $string_position=$position[0].",".$position[1];
-            if($string_position==$array_position)
+            foreach ($this->markers as $key => $marker)
             {
-                return $key;
+                $array_position=trim($marker['position']);
+                $string_position=$position[0].",".$position[1];
+
+                //echo "<br>-----------------COMPARANDO $string_position VS $array_position--------------<br>";
+
+                if($string_position==$array_position)
+                {
+                    return $key;
+                }
             }
         }
         
@@ -2006,7 +2016,16 @@ class Inmueble_model extends MY_Model
             // Hay que comprobar que existen direcciones
             if($address)
             {
+                //echo "<br>----------------DIRECCION -----------------<br>";
+                
+                //echo $address."<br>";
+                
                 $position=$this->googlemaps->get_lat_long_from_address($address);
+                
+                //echo "<br>----------------POSICION -----------------<br>";
+                
+                //var_dump($position);
+                                
                 // Calculamos la ventana de información
                 if($this->infowindow_type=="private")
                 {
@@ -2017,9 +2036,14 @@ class Inmueble_model extends MY_Model
                     $infowindow_content=$this->get_infowindow_content_public($inmueble);
                 }
                 // Si existe marker, entonces hay que anidar el infowindow content con el marker detectado
-                $array_key=$this->exists_marker($position);            
+                $array_key=$this->exists_marker($position);  
+                
+                //echo "<br>-------------RESULTADO COMPARACION------------<br>";
+                
+                //var_dump($array_key);
+                
                 // Si existe el marker se anida al existente
-                if($array_key)
+                if($array_key!==false)
                 {
                     $this->add_infowindow_content($infowindow_content,$array_key);
                 }
@@ -2085,8 +2109,15 @@ class Inmueble_model extends MY_Model
         // Initialize our map. Here you can also pass in additional parameters for customising the map (see below)
         $this->googlemaps->initialize($config);
 
+        //echo "<br>----------------------INMUEBLES ----------------------<br>"; 
+        //var_dump($inmuebles);
+        
         // Hay que unificar antes los markers repetidos
-        $markers=$this->calculate_unique_markers($inmuebles);
+        $markers=$this->calculate_unique_markers($inmuebles);        
+        
+        //echo "<br>----------------------MARKERS ----------------------<br>";        
+        //var_dump($markers);
+        
         if(count($markers)>0)
         {
             foreach($markers as $marker)
