@@ -92,7 +92,7 @@
 										'name'=>'creado_'.$idioma->id_idioma,
 										'id'=>'creado_'.$idioma->id_idioma,
 										'class'=>'form-control',
-										'value'=>set_value('creado_'.$idioma->id_idioma, $articulo[$idioma->id_idioma]->creado),
+											'value'=>set_value('creado_'.$idioma->id_idioma, isset($articulo[$idioma->id_idioma]->creado) ? $articulo[$idioma->id_idioma]->creado : ''),
 									);?>
 									<!-- Fecha de creacion -->
 									<div class="form-group">
@@ -114,7 +114,7 @@
 										
 										<div class="col-md-10">
 											<div class="logo_marca">
-												<?php if(($articulo[$idioma->id_idioma]->img_articulo)){?>
+												<?php if(isset($articulo[$idioma->id_idioma]->img_articulo)){?>
 													<img src="<?php echo base_url('uploads/general/img/blog/1/'.$idioma->id_idioma.'/'.$articulo[$idioma->id_idioma]->img_articulo); ?>" class="img-responsive" />
 												<?php }else{?>
 													<?php echo $this->lang->line('blog_no_hay_imagen');?>
@@ -190,12 +190,13 @@
 										<?php 
 										$config_mini = array();
 										$config_mini['toolbar'] = array(
-												array( 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike' ,'-', 'Link', 'Unlink', 'Anchor','Image')
+												array( 'Source', '-', 'Cut', 'Copy', 'Paste', '-', 'Bold', 'Italic', 'Underline', 'Strike','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-', 'Link', 'Unlink', 'Anchor','-', 'Image')
 										);
 										$config_mini['filebrowserBrowseUrl'] = base_url()."assets/admin/ckeditor/kcfinder/browse.php";
 										$config_mini['filebrowserImageBrowseUrl'] = base_url()."assets/admin/ckeditor/kcfinder/browse.php?type=general";
 										$config_mini['filebrowserUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=general";
 										$config_mini['filebrowserImageUploadUrl'] = base_url()."assets/admin/ckeditor/kcfinder/upload.php?type=general";
+										
 										echo $this->ckeditor->editor('contenido_'.$idioma->id_idioma, set_value('contenido_'.$idioma->id_idioma,isset($articulo[$idioma->id_idioma]->contenido) ? $articulo[$idioma->id_idioma]->contenido : ''), $config_mini);?>
 										<p></p>
                                                                                 <small class="blue"><b>NOTA: </b>Para dividir el contenido en columnas, debes pulsar en "Fuente HTML" y pegar uno de estos códigos</small><br>
