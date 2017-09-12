@@ -413,7 +413,7 @@ class Seccion extends MY_Controller_Front
     }
 
     // Ajax method
-    function multiple_google_map($infowindow_type = 'private')
+    function multiple_google_map($infowindow_type = 'public')
     {
         // Deshabilitar profiler
         $this->output->enable_profiler(FALSE);

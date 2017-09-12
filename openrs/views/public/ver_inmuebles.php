@@ -19,7 +19,7 @@
                                                                                 <?php echo form_dropdown('provincia_id',$provincias,$filtros['provincia_id'],'class="form-control" id="provincia"');?>
                                                                         </div>
 																		<?php if(isset($poblaciones) && $poblaciones){?>
-																			<div class="col-sm-2 margin-top-10">
+																			<div class="col-sm-2 margin-top-10" id="localidad">
 																				<?php echo form_dropdown('poblacion_id',$poblaciones,$filtros['poblacion_id'],'class="form-control" id="poblacion"');?>
 																			</div>
 																		<?php }else{?>
@@ -28,7 +28,7 @@
 																			</div>
 																		<?php }?>
 																		<?php if(isset($zonas) && $zonas){?>
-																			<div class="col-sm-2 margin-top-10">
+																			<div class="col-sm-2 margin-top-10" id="zona">
 																				<?php echo form_dropdown('zona_id',$zonas,$filtros['zona_id'],'class="form-control" id="zona"');?>
 																			</div>
 																		<?php }else{?>
