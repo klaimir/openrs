@@ -8,6 +8,13 @@ openrs/logs/*
 !openrs/logs/index.html
 !openrs/logs/.htaccess
 
+uploads/*
+!uploads/demandas/index.html
+!uploads/clientes/index.html
+!uploads/inmuebles/index.html
+!uploads/general/index.html
+!uploads/index.html
+
 backups/*
 !backups/index.html
 
