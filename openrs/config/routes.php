@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 //$route['default_controller'] = "/auth/login";
-$route['default_controller'] = "/idioma";
+$route['default_controller'] = "idioma/index";
 $route['seo/sitemap_blog\.xml'] = "seo/sitemap_blog";
 $route['seo/sitemap_etiq\.xml'] = "seo/sitemap_etiq";
 $route['es'] = "seccion";

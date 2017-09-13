@@ -37,6 +37,7 @@ En la mayoría de casos deberás de hacer sólo estos pasos:
 4) Modifique el fichero ion_auth.php e indique el nombre de su sitio web y el correo del administrador del mismo.
 5) Acceder al sistema e introducir en la sección de Configuración -> Preferencias las claves
 que has generado previamente.
+6) Borra la carpeta documentacion y openrs/controllers/test y openrs/views/test (si ya no los necesitas).
 
 No obstante lee el manual para obtener más información o envía un correo a angel.berasuain@gmail.com
 si tienes dudas o algo no funciona correctamente.

@@ -24,12 +24,6 @@ class Inmuebles extends CRUD_controller
         // Idiomas activos
         // Inicializamos para que el modelo sepa sobre qué idiomas debe de realizar sus validaciones
         $this->{$this->_model}->idiomas_activos=$this->Idioma_model->get_idiomas_subidos_activos();  
-        
-        /*
-        if($this->session->userdata('idioma'))
-            $this->lang->load(array('admin', 'auth', 'blog', 'cms', 'common', 'inmuebles', 'ion_auth', 'tienda'),$this->session->userdata('idioma'));
-         * 
-         */
     }
     
     // Ajax method
