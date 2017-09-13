@@ -83,12 +83,19 @@ class Inmueble_imagen_model extends MY_Model
     /**
      * Comprueba si semánticamente, es posible eliminar el elemento indicado
      *
-     * @param [id]                  Indentificador del elemento
+     * @param [$imagen]            Datos de la imagen
+     * @param $inmuebleid]         Datos del inmueble
      *
      * @return void
      */
-    function check_delete($id)
+    function check_delete($imagen,$inmueble)
     {
+        // No se puede eliminar la imagen de portada si está publicada
+        if($inmueble->publicado && $imagen->portada)
+        {
+            $this->set_error('Mientras el inmueble esté publicado la imagen de portada no puede ser eliminada');
+            return FALSE;
+        }
         return TRUE;
     }
 
@@ -183,12 +190,6 @@ class Inmueble_imagen_model extends MY_Model
      */
     function remove($imagen)
     {       
-        // No se puede eliminar la imagen de portada
-        if($imagen->portada)
-        {
-            $this->set_error('La imagen de portada no puede ser eliminada');
-            return FALSE;
-        }        
         // Borrado físico del imagen
         if(file_exists(FCPATH . $imagen->imagen))
         {

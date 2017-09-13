@@ -186,7 +186,7 @@ class Inmuebles_imagenes extends CRUD_controller
         // Permisos acceso
         $this->Inmueble_model->check_access($this->data['inmueble']);
                 
-        if ($this->{$this->_model}->check_delete($id))
+        if ($this->{$this->_model}->check_delete($this->data['element'],$this->data['inmueble']))
         {
             if ($this->{$this->_model}->remove($this->data['element']))
             {
@@ -200,7 +200,7 @@ class Inmuebles_imagenes extends CRUD_controller
         }
         else
         {
-            $this->session->set_flashdata('message', lang('common_error_elemento_asociado_delete'));
+            $this->session->set_flashdata('message', $this->{$this->_model}->get_error());
         }
 
         redirect( $this->_controller."/index/".$this->data['element']->inmueble_id, 'refresh');
