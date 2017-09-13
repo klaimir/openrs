@@ -13,6 +13,7 @@
 	<meta property="og:title" content="<?php echo $title.' - '.$config->nombre;?>" />
     <meta property="og:description" content="<?php echo substr($meta_description,0,170);?>" />
     <meta property="og:image" content="<?php echo (isset($meta_imagen)) ? $meta_imagen : '';?>" />
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url('uploads/general/img/favicon.png'); ?>" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/public/css/style.css">
