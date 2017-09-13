@@ -5,3 +5,5 @@ UPDATE `config_admin` SET `recaptcha_site_key` = '6LczwC4UAAAAAA2EBXrcrZYujyvgMt
 
 
 ALTER TABLE `comentarios_blog` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+
