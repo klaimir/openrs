@@ -12,7 +12,7 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <table class="table table-striped table-bordered table-hover" id="tabgrid">
+        <table class="table table-striped table-bordered table-hover" id="tabgrid_backup">
             <thead>
                 <tr>
                     <th>Fecha</th>
@@ -143,6 +143,17 @@ $this->session->set_flashdata($key, $back_url);
                     window.location = '<?php echo site_url('backup'); ?>/delete/' + id;
                 }
             });
+        });
+        
+        $('#tabgrid_backup').dataTable({
+            "iDisplayLength": 10,
+            "oLanguage": {"sUrl": "<?php echo base_url('assets/admin/js/dataTables.spanish.txt'); ?>"},
+            "aoColumns": [
+                {"sType": "date-euro"},
+                null,
+                null,
+                null
+            ]
         });
 
     })

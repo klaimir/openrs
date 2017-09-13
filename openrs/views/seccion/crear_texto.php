@@ -6,6 +6,7 @@
 		<div class="col-md-12">
 			<a href="<?php echo site_url('page/listar_bloques/'.$seccion->url_seo);?>" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span> <?php echo $seccion->titulo?></a>
 		</div>
+            
 		<div class="col-md-12">
 			<ul class="nav nav-pills nav-justified">
 				<li role="presentation" ><a href="<?php echo site_url('page/crear_bloque/'.$seccion->url_seo.'/'.$texto->id_bloque);?>"><?php echo $this->lang->line('cms_bloques_paso1');?></a></li>
@@ -61,17 +62,17 @@
 							</div>
 						<?php }?>
 					</div>
-				</div>
-                                <div class="form-group">
-                                    <div class="clearfix form-actions">
-                                        <div class="col-md-offset-3 col-md-9">
-                                            <i class="ace-icon fa fa-save bigger-110"></i>
-                                            <button type="submit" class="btn btn-info"><?php echo $this->lang->line('cms_guardar');?></button>
-                                        </div>
-                                    </div>
-                                </div>
-			<?php echo form_close(); ?>
+				</div>                                
 		</div>
+            
+                <div class="form-group">
+                        <div class="clearfix form-actions">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="submit" class="btn btn-info"> <i class="ace-icon fa fa-save bigger-110"></i> <?php echo $this->lang->line('cms_guardar');?></button>
+                            </div>
+                        </div>
+                    </div>
+            <?php echo form_close(); ?>
 	</div>
 </div>
 			
