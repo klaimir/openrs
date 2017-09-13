@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OPENRS: Fichero Fuente D:/Wamp/www/openrs/openrs/models/Provincia_model.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">OPENRS
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">Software para gestión inmobiliaria y de su web corporativa</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Buscar');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('_provincia__model_8php_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">Provincia_model.php</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_provincia__model_8php.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&lt;?php <a class="code" href="constants_8php.html#a876a7ff4b01a7bf707758e31aa9ea60d">defined</a>(<span class="stringliteral">&#39;BASEPATH&#39;</span>) OR exit(&#39;No direct script access allowed&#39;);</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;require_once APPPATH . &#39;core/<a class="code" href="class_m_y___model.html">MY_Model</a>.php&#39;;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div><div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="class_provincia__model.html">    5</a></span>&#160;<a class="code" href="crear__galeria_8php.html#a2380a4bc9113d829e3105f24d6c9488b">class</a> <a class="code" href="class_provincia__model.html">Provincia_model</a> extends <a class="code" href="class_m_y___model.html">MY_Model</a></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div><div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="class_provincia__model.html#a095c5d389db211932136b53f25f39685">    8</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="class_provincia__model.html#a095c5d389db211932136b53f25f39685">__construct</a>()</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    {</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        $this-&gt;table = <span class="stringliteral">&#39;provincias&#39;</span>;</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        $this-&gt;primary_key = <span class="stringliteral">&#39;id&#39;</span>;</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        $this-&gt;has_many[<span class="stringliteral">&#39;poblaciones&#39;</span>] = array(<span class="stringliteral">&#39;local_key&#39;</span>=&gt;<span class="stringliteral">&#39;id&#39;</span>, <span class="stringliteral">&#39;foreign_key&#39;</span>=&gt;<span class="stringliteral">&#39;provincia_id&#39;</span>, <span class="stringliteral">&#39;foreign_model&#39;</span>=&gt;<span class="stringliteral">&#39;Poblacion_model&#39;</span>);</div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        </div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <a class="code" href="libraries_2_ckeditor_8php.html#a95d869117e2a1aed171541b33031669e">parent::__construct</a>();</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        </div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="comment">// Carga del modelo</span></div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        $this-&gt;load-&gt;model(<span class="stringliteral">&#39;Poblacion_model&#39;</span>);</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    </div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="comment">/************************* SECURITY *************************/</span></div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    </div><div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="class_provincia__model.html#af0c9eb580272833a800efe3971a39e06">   22</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="class_provincia__model.html#af0c9eb580272833a800efe3971a39e06">check_access_conditions</a>($datos)</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    {</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="constants_8php.html#ae04a3efe6aa42044f803ee90c2277846">TRUE</a>;</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    </div><div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_provincia__model.html#a347d2e9b7d3606d1459588286093ad08">   33</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="class_provincia__model.html#a347d2e9b7d3606d1459588286093ad08">get_provincias_dropdown</a>($default_value=<span class="stringliteral">&quot;&quot;</span>, $text_value=<span class="stringliteral">&quot;- Seleccione provincia -&quot;</span>)</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="comment">// Array de provincias</span></div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        $provincias=$this-&gt;as_dropdown(<span class="stringliteral">&#39;provincia&#39;</span>)-&gt;get_all();</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="comment">// Selección inicial</span></div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        $seleccion[$default_value]=$text_value;</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="comment">// Si devolvemos un merge se pierden las claves numéricas</span></div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="comment">// http://php.net/manual/es/function.array-merge.php</span></div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="comment">// return array_merge($seleccion,$provincias);</span></div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="comment">// Por tanto devolvemos el operador suma para que mantenga las claves numéricas</span></div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">return</span> ($seleccion+$provincias);</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    </div><div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_provincia__model.html#ade205f8671d945bdb3e753e4a2c0bb29">   54</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="class_provincia__model.html#ade205f8671d945bdb3e753e4a2c0bb29">get_provincias_in_array</a>($ids_provincias)</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    {</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="comment">// Consulta</span></div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        $this-&gt;db-&gt;from($this-&gt;table);</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">if</span>(count($ids_provincias))</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            $this-&gt;db-&gt;where_in($this-&gt;primary_key, $ids_provincias);</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">else</span></div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            $this-&gt;db-&gt;where($this-&gt;primary_key, 0);</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> $this-&gt;db-&gt;get()-&gt;result();</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    </div><div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="class_provincia__model.html#aa4238f9c65bd1e979a5562407ee16b51">   77</a></span>&#160;    <span class="keyword">function</span> <a class="code" href="class_provincia__model.html#aa4238f9c65bd1e979a5562407ee16b51">get_id_by_nombre</a>($nombre_provincia)</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        $this-&gt;db-&gt;select($this-&gt;table.<span class="stringliteral">&#39;.id&#39;</span>);</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        $this-&gt;db-&gt;from($this-&gt;table);</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        $this-&gt;db-&gt;where(<span class="stringliteral">&#39;provincia&#39;</span>, $nombre_provincia);</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        $query = $this-&gt;db-&gt;get();</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        $row = $query-&gt;row();</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">if</span> ($row) {</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">return</span> $row-&gt;id;</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        } <span class="keywordflow">else</span> {</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">return</span> NULL;</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    </div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div><div class="ttc" id="class_m_y___model_html"><div class="ttname"><a href="class_m_y___model.html">MY_Model</a></div><div class="ttdef"><b>Definition:</b> <a href="_m_y___model_8php_source.html#l00005">MY_Model.php:5</a></div></div>
+<div class="ttc" id="libraries_2_ckeditor_8php_html_a95d869117e2a1aed171541b33031669e"><div class="ttname"><a href="libraries_2_ckeditor_8php.html#a95d869117e2a1aed171541b33031669e">__construct</a></div><div class="ttdeci">__construct($array)</div><div class="ttdef"><b>Definition:</b> <a href="libraries_2_ckeditor_8php_source.html#l00023">Ckeditor.php:23</a></div></div>
+<div class="ttc" id="class_provincia__model_html_a347d2e9b7d3606d1459588286093ad08"><div class="ttname"><a href="class_provincia__model.html#a347d2e9b7d3606d1459588286093ad08">Provincia_model\get_provincias_dropdown</a></div><div class="ttdeci">get_provincias_dropdown($default_value=&quot;&quot;, $text_value=&quot;- Seleccione provincia -&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="_provincia__model_8php_source.html#l00033">Provincia_model.php:33</a></div></div>
+<div class="ttc" id="class_provincia__model_html_a095c5d389db211932136b53f25f39685"><div class="ttname"><a href="class_provincia__model.html#a095c5d389db211932136b53f25f39685">Provincia_model\__construct</a></div><div class="ttdeci">__construct()</div><div class="ttdef"><b>Definition:</b> <a href="_provincia__model_8php_source.html#l00008">Provincia_model.php:8</a></div></div>
+<div class="ttc" id="class_provincia__model_html"><div class="ttname"><a href="class_provincia__model.html">Provincia_model</a></div><div class="ttdef"><b>Definition:</b> <a href="_provincia__model_8php_source.html#l00005">Provincia_model.php:5</a></div></div>
+<div class="ttc" id="constants_8php_html_ae04a3efe6aa42044f803ee90c2277846"><div class="ttname"><a href="constants_8php.html#ae04a3efe6aa42044f803ee90c2277846">TRUE</a></div><div class="ttdeci">defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE' TRUE</div><div class="ttdef"><b>Definition:</b> <a href="constants_8php_source.html#l00014">constants.php:14</a></div></div>
+<div class="ttc" id="class_provincia__model_html_af0c9eb580272833a800efe3971a39e06"><div class="ttname"><a href="class_provincia__model.html#af0c9eb580272833a800efe3971a39e06">Provincia_model\check_access_conditions</a></div><div class="ttdeci">check_access_conditions($datos)</div><div class="ttdef"><b>Definition:</b> <a href="_provincia__model_8php_source.html#l00022">Provincia_model.php:22</a></div></div>
+<div class="ttc" id="class_provincia__model_html_aa4238f9c65bd1e979a5562407ee16b51"><div class="ttname"><a href="class_provincia__model.html#aa4238f9c65bd1e979a5562407ee16b51">Provincia_model\get_id_by_nombre</a></div><div class="ttdeci">get_id_by_nombre($nombre_provincia)</div><div class="ttdef"><b>Definition:</b> <a href="_provincia__model_8php_source.html#l00077">Provincia_model.php:77</a></div></div>
+<div class="ttc" id="crear__galeria_8php_html_a2380a4bc9113d829e3105f24d6c9488b"><div class="ttname"><a href="crear__galeria_8php.html#a2380a4bc9113d829e3105f24d6c9488b">class</a></div><div class="ttdeci">&lt; a href=&quot;&lt;?php echo site_url('page/ordenar_carrusel/'.$id_carrusel);?&gt; class</div><div class="ttdef"><b>Definition:</b> <a href="crear__galeria_8php_source.html#l00095">crear_galeria.php:95</a></div></div>
+<div class="ttc" id="constants_8php_html_a876a7ff4b01a7bf707758e31aa9ea60d"><div class="ttname"><a href="constants_8php.html#a876a7ff4b01a7bf707758e31aa9ea60d">defined</a></div><div class="ttdeci">defined( 'FILE_READ_MODE') OR define( 'FILE_READ_MODE'</div><div class="ttdef"><b>Definition:</b> <a href="constants_8php_source.html#l00029">constants.php:29</a></div></div>
+<div class="ttc" id="class_provincia__model_html_ade205f8671d945bdb3e753e4a2c0bb29"><div class="ttname"><a href="class_provincia__model.html#ade205f8671d945bdb3e753e4a2c0bb29">Provincia_model\get_provincias_in_array</a></div><div class="ttdeci">get_provincias_in_array($ids_provincias)</div><div class="ttdef"><b>Definition:</b> <a href="_provincia__model_8php_source.html#l00054">Provincia_model.php:54</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_9be49a88b1b6a68547165ef88fe5404c.html">openrs</a></li><li class="navelem"><a class="el" href="dir_f9fbfdb5c7b35f712d40edbf4e0511b3.html">models</a></li><li class="navelem"><a class="el" href="_provincia__model_8php.html">Provincia_model.php</a></li>
+    <li class="footer">Generado por
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
+</body>
+</html>
