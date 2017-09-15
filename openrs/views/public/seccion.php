@@ -404,7 +404,7 @@ $mensaje = array(
 									<?php }?>
 								</article>
 								<article id="etiquetas-fav">
-									<h5><?php echo $this->lang->line('blog_categorias');?></h5>
+									<h5><?php echo $this->lang->line('blog_etiquetas');?></h5>
 									<?php foreach($etiquetas_favoritas as $favorita):?>
 										<div>
 											<?php $cadena= utf8_decode($favorita->etiqueta);
