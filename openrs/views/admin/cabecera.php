@@ -221,7 +221,7 @@ $no_change_logo = array(
 						<div class="col-sm-10">
 							<div class="input-file pull-left">
 								<label for="file"><?php echo $this->lang->line('admin_seleccionar_archivo');?></label>
-								<input type="file" class="input-file" name="userfile" id="userfile"/>
+								<input type="file" class="input-file" name="userfile" id="file"/>
 							</div>
 						</div>
 					</div>
