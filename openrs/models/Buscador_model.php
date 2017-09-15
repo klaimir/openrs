@@ -94,6 +94,7 @@ class Buscador_model extends MY_Model {
         
         public function getImagenesInmueble($id){
             $this->db->where('inmueble_id',$id);
+            $this->db->where('publicada',1);
             return $this->db->get('inmuebles_imagenes')->result();
         }
         
