@@ -1230,6 +1230,8 @@ class Inmueble_model extends MY_Model
         unset($inmueble->id);
         $inmueble->referencia = uniqid();
         $inmueble->fecha_alta = date("Y-m-d");
+        // Se tiene que quitar la publicación para que no esté publicado sin portada y demás datos
+        $inmueble->publicado = 0;
         unset($inmueble->fecha_actualizacion);
         // Crear duplicado
         return $this->create($inmueble);
