@@ -269,6 +269,7 @@ $lang['tienda_inmueble_venta'] = 'VENTA';
 $lang['tienda_inmueble_alquiler'] = 'ALQUILER';
 $lang['tienda_inmueble_venta_alquiler'] = 'VENTA Y ALQUILER';
 $lang['tienda_inmueble_oferta'] = 'OPORTUNIDAD';
+$lang['tienda_inmueble_rebajado'] = 'REBAJADO';
 $lang['tienda_inmueble_ver'] = 'VER';
 $lang['tienda_inmueble_destacados'] = 'DESTACADOS';
 $lang['tienda_inmueble_oportunidades'] = 'OPORTUNIDADES';

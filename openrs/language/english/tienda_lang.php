@@ -267,6 +267,7 @@ $lang['tienda_inmueble_venta'] = 'SALE';
 $lang['tienda_inmueble_alquiler'] = 'RENT';
 $lang['tienda_inmueble_venta_alquiler'] = 'SALE AND RENT';
 $lang['tienda_inmueble_oferta'] = 'OPORTUNITY';
+$lang['tienda_inmueble_rebajado'] = 'PRICE LOWERED';
 $lang['tienda_inmueble_ver'] = 'SEE';
 $lang['tienda_inmueble_destacados'] = 'FEATURED';
 $lang['tienda_inmueble_oportunidades'] = 'OPPORTUNITIES';

@@ -465,8 +465,8 @@ $mensaje = array(
                                                                     <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
                                                                 <?php }?>
 																<p class="tipo-oferta col-sm-12">
-																	<?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){
-																		echo $this->lang->line('tienda_inmueble_oferta');
+																	<?php if(($inmueble->precio_compra_anterior > 0 && $inmueble->precio_compra_anterior > $inmueble->precio_compra) || ($inmueble->precio_alquiler_anterior > 0 && $inmueble->precio_alquiler_anterior > $inmueble->precio_alquiler)){
+																		echo $this->lang->line('tienda_inmueble_rebajado');
 																	}?>
 																</p>
 															</div>
@@ -566,8 +566,8 @@ $mensaje = array(
                                                                     <p class="tipo-inmueble"><?php echo $this->lang->line('tienda_inmueble_venta_alquiler');?></p>
                                                                 <?php }?>
 																<p class="tipo-oferta col-sm-12">
-																	<?php if($inmueble->precio_compra_anterior > 0 || $inmueble->precio_alquiler_anterior > 0){
-																		echo $this->lang->line('tienda_inmueble_oferta');
+																	<?php if(($inmueble->precio_compra_anterior > 0 && $inmueble->precio_compra_anterior > $inmueble->precio_compra) || ($inmueble->precio_alquiler_anterior > 0 && $inmueble->precio_alquiler_anterior > $inmueble->precio_alquiler)){
+																		echo $this->lang->line('tienda_inmueble_rebajado');
 																	}?>
 																</p>
 															</div>
