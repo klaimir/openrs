@@ -1027,12 +1027,20 @@ class Inmueble_model extends MY_Model
             $this->db->where('metros <=', $filtros['metros_hasta']);
         }
         // Precios
-        if (isset($filtros['precios_desde']) && $filtros['precios_desde'] != '' && $filtros['precios_desde'] >0)
+        // Si se establecen filtros de precios conjunto se comprueba conjunto
+        // Hay que hacerlo así para que el precio de aquellos que tienen doble precio no afecte a la otra condición
+        if(isset($filtros['precios_desde']) && $filtros['precios_desde'] != '' && $filtros['precios_desde'] >0 && isset($filtros['precios_hasta']) && $filtros['precios_hasta']  != '' && $filtros['precios_hasta'] >0)
+        {
+            $precio_desde=$filtros['precios_desde'];
+            $precio_hasta=$filtros['precios_hasta'];
+            $this->db->where("((precio_compra >= '$precio_desde' AND  precio_compra <= '$precio_hasta') OR (precio_alquiler >= '$precio_desde' AND precio_alquiler <= '$precio_hasta'))");
+        }
+        else if (isset($filtros['precios_desde']) && $filtros['precios_desde'] != '' && $filtros['precios_desde'] >0)
         {
             $precio_desde=$filtros['precios_desde'];
             $this->db->where("((precio_compra <> 0 AND precio_compra >= '$precio_desde') OR (precio_alquiler <> 0 AND precio_alquiler >= '$precio_desde'))");
         }
-        if (isset($filtros['precios_hasta']) && $filtros['precios_hasta']  != '' && $filtros['precios_hasta'] >0)
+        else if (isset($filtros['precios_hasta']) && $filtros['precios_hasta']  != '' && $filtros['precios_hasta'] >0)
         {
             $precio_hasta=$filtros['precios_hasta'];
             $this->db->where("((precio_compra <> 0 AND precio_compra <= '$precio_hasta') OR (precio_alquiler <> 0 AND precio_alquiler <= '$precio_hasta'))");
