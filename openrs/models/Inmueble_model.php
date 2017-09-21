@@ -873,7 +873,7 @@ class Inmueble_model extends MY_Model
             $this->db->where_in('zona_id', $filtros['zonas']);
         }
         // Filtro Tipos
-        if (isset($filtros['tipos_inmuebles']) && is_array($filtros['tipos_inmuebles']) && count($filtros['zonas'])>0)
+        if (isset($filtros['tipos_inmuebles']) && is_array($filtros['tipos_inmuebles']) && count($filtros['tipos_inmuebles'])>0)
         {
             $this->db->where_in('tipo_id', $filtros['tipos_inmuebles']);
         }

@@ -539,6 +539,9 @@ class Demanda_model extends MY_Model
         $inmuebles_seleccionados = $this->utilities->get_keys_objects_array($this->Inmueble_model->get_by_filtros_demandas($filtros), 'id');  
                 
         // For testing
+        //echo "<br>FILTROS<br>";
+        //var_dump($filtros);
+        //echo "<br>Inmuebles seleccionados<br>";
         //var_dump($inmuebles_seleccionados);
 
         // Inmuebles para borrar
@@ -546,7 +549,9 @@ class Demanda_model extends MY_Model
         $inmuebles_asignados=$this->utilities->get_keys_objects_array($this->Inmueble_demanda_model->get_inmuebles_demanda($demanda_id), 'inmueble_id');
         
         // For testing
+        //echo "<br>Inmuebles seleccionados anteriormente<br>";
         //var_dump($inmuebles_seleccionados_anteriormente);
+        //echo "<br>Inmuebles asignados<br>";
         //var_dump($inmuebles_asignados);
         
         // Datos de demanda
